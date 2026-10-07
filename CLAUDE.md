@@ -47,6 +47,10 @@ node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs
 node tools/rcg.mjs level --dir jobs/<id>/assets/voice --lufs -13.5 --ceiling -1.5
 node tools/rcg.mjs captions --job jobs/<id> --words <audio_meta.json|words.json|.srt> --voice vo1 --style tiktok --mode word --start 0.4 --id cap-vo1 --insert
 node tools/rcg.mjs title --job jobs/<id> --text "LINE ONE|LINE TWO" --preset slam --style trailer --start 11 --duration 1.5 --id title-main --insert
+node tools/shaders/catalog.mjs --find "nebula gold"
+node tools/rcg.mjs shader --job jobs/<id> --shader <slug> --audio jobs/<id>/assets/song-limited.wav --fit fill --duration 15 --id sh-bg --track 0 --insert
+node tools/rcg.mjs beatflash --job jobs/<id> --words "BASS|MID|TREBLE" --audio jobs/<id>/assets/song-limited.wav --source bands --effect neon --duration 15 --id flash --insert
+node tools/rcg.mjs analyze music.wav data/audio.json --fps 24 [--clock pulse]
 node tools/rcg.mjs limit in.mp3 out.wav [--ceiling -2.5]
 node tools/rcg.mjs mix-check jobs/<id>/index.html
 node tools/rcg.mjs hf --cwd jobs/<id> check

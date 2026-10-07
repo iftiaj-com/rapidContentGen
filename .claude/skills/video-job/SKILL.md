@@ -76,6 +76,12 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
   modern, subtitle, glitch, retro, earthquake, vertical_ghost):
   `node tools/rcg.mjs captions --job jobs/<id> --words jobs/<id>/assets/voice/audio_meta.json --voice vo1 --style tiktok --mode word|2word|phrase --start <voice data-start> --id cap-vo1 --insert`
   For footage speech, transcribe first: `rcg voice transcribe <file> --out words.json` and pass `--words words.json`.
+- Music structure for cuts: run `analyze-beatgrid.py` with the voice venv (see `docs/capabilities.md`)
+  and cut on `grid.downbeats_sec` (bars) or `grid.beats_sec`.
+- Audio-reactive visuals: `rcg shader` (pick with `node tools/shaders/catalog.mjs --find "<look>"`) and
+  `rcg beatflash`. Both analyze the music themselves; pass the LIMITED music file and the right
+  `--audio-offset` (seconds into the file where the block's t = 0 sits). Shaders are centered objects:
+  leave room around foreground footage, and set host z-index in the job CSS. See `docs/shaders/README.md`.
 - Volume: use a `data-automation` volume lane; its values ARE the level. Do not also set `data-volume`.
 - Run `node tools/rcg.mjs mix-check jobs/<id>/index.html` after the audio is placed. It must print
   `MIX OK` (no predicted gain reduction). Read the per-clip levels: SFX should sit 1-4 dB above

@@ -19,7 +19,195 @@ Source root: `E:/Develop/Antigravity_testing/Adits_Modular`
 | learn | `Adits/effects/auto/advance/timeline.js` | `docs/job-spec.md` | 78bea0ce | no | 2026-10-07 | segment rules: absolute seconds, no overlaps per track, report-not-throw validation |
 | port | `Adits/shared/smart-captions.js` | `library/caption-styles.json` | 78bea0ce | no | 2026-10-07 | _renderStyled presets (font, color, stroke, pill, glow) + flash decay; kinetic scatter params |
 | learn | `Adits/shared/active-tracking-captions.js` | `library/caption-styles.json` | 78bea0ce | no | 2026-10-07 | style switch near line 1737 (same presets); lyric styles deferred |
+| port | `Adits/shared/captions.js` | `tools/blocks/beatflash.mjs` | 78bea0ce | no | 2026-10-07 | beat-flash decay/threshold/pulse/effects; states precomputed per frame; seeded shake; onsets option |
 | learn | `Adits/shared/captions.js` | `tools/blocks/captions.mjs` | 78bea0ce | no | 2026-10-07 | beat-flash captions: deferred to P2 (needs audio table) |
+
+## aditsShaders
+
+Source root: `E:/Develop/Antigravity_testing/AditsShaders`
+
+| Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
+|---|---|---|---|---|---|---|
+| copy | `public/llms.md` | `library/adits-shaders/public/llms.md` | aaacff2f | no | 2026-10-07 | agent docs (shader-guide is normative) |
+| copy | `public/shader-guide.md` | `library/adits-shaders/public/shader-guide.md` | aaacff2f | no | 2026-10-07 | agent docs (shader-guide is normative) |
+| copy | `public/skill.md` | `library/adits-shaders/public/skill.md` | aaacff2f | no | 2026-10-07 | agent docs (shader-guide is normative) |
+| copy | `scripts/compile-check.mjs` | `library/adits-shaders/scripts/compile-check.mjs` | aaacff2f | no | 2026-10-07 | CLI (runs in place inside the mirror) |
+| copy | `scripts/lib/offline-shader.mjs` | `library/adits-shaders/scripts/lib/offline-shader.mjs` | aaacff2f | no | 2026-10-07 | offline WebGL harness / corpus reader |
+| copy | `scripts/lib/shader-corpus.mjs` | `library/adits-shaders/scripts/lib/shader-corpus.mjs` | aaacff2f | no | 2026-10-07 | offline WebGL harness / corpus reader |
+| copy | `scripts/render-frames.mjs` | `library/adits-shaders/scripts/render-frames.mjs` | aaacff2f | no | 2026-10-07 | CLI (runs in place inside the mirror) |
+| copy | `scripts/validate.mjs` | `library/adits-shaders/scripts/validate.mjs` | aaacff2f | no | 2026-10-07 | CLI (runs in place inside the mirror) |
+| copy | `shaders/abyssal-frond-bouquet.glsl` | `library/adits-shaders/shaders/abyssal-frond-bouquet.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/acid-urchin-armillary.glsl` | `library/adits-shaders/shaders/acid-urchin-armillary.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/aether-gyroid-chrysalis.glsl` | `library/adits-shaders/shaders/aether-gyroid-chrysalis.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/alabaster-lambdabulb-vortex.glsl` | `library/adits-shaders/shaders/alabaster-lambdabulb-vortex.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/amber-hourglass-spindle.glsl` | `library/adits-shaders/shaders/amber-hourglass-spindle.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/amber-pod-bristlebomb.glsl` | `library/adits-shaders/shaders/amber-pod-bristlebomb.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/anaglyph-crystal-moth.glsl` | `library/adits-shaders/shaders/anaglyph-crystal-moth.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/arcane-chain-singularity.glsl` | `library/adits-shaders/shaders/arcane-chain-singularity.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/argent-corner-bloom.glsl` | `library/adits-shaders/shaders/argent-corner-bloom.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/armillary-neon-orb.glsl` | `library/adits-shaders/shaders/armillary-neon-orb.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/astral-inversion-core.glsl` | `library/adits-shaders/shaders/astral-inversion-core.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/aurora-plasma-anemone.glsl` | `library/adits-shaders/shaders/aurora-plasma-anemone.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/beaded-orbit-medusa.glsl` | `library/adits-shaders/shaders/beaded-orbit-medusa.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/beeswax-votive-bulb.glsl` | `library/adits-shaders/shaders/beeswax-votive-bulb.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/beryl-inclusion-heart.glsl` | `library/adits-shaders/shaders/beryl-inclusion-heart.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/billowing-plasma-nebula.glsl` | `library/adits-shaders/shaders/billowing-plasma-nebula.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/bismuth-crystal-scarab.glsl` | `library/adits-shaders/shaders/bismuth-crystal-scarab.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/blacklacquer-coral.glsl` | `library/adits-shaders/shaders/blacklacquer-coral.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/blood-lacquer-strata.glsl` | `library/adits-shaders/shaders/blood-lacquer-strata.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/bouncy-gelee-crown.glsl` | `library/adits-shaders/shaders/bouncy-gelee-crown.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/brushed-steel-carillon.glsl` | `library/adits-shaders/shaders/brushed-steel-carillon.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/catalytic-chrome-drop.glsl` | `library/adits-shaders/shaders/catalytic-chrome-drop.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/celestial-orbital-sphere.glsl` | `library/adits-shaders/shaders/celestial-orbital-sphere.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/chalcedony-tellurion-diadem.glsl` | `library/adits-shaders/shaders/chalcedony-tellurion-diadem.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/chladni-brass-plate.glsl` | `library/adits-shaders/shaders/chladni-brass-plate.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/chroma-moire-orchid.glsl` | `library/adits-shaders/shaders/chroma-moire-orchid.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/chromatic-cube-morph.glsl` | `library/adits-shaders/shaders/chromatic-cube-morph.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/chromatic-dispersion-cube.glsl` | `library/adits-shaders/shaders/chromatic-dispersion-cube.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/chrome-filament-armature.glsl` | `library/adits-shaders/shaders/chrome-filament-armature.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/chrome-filament-spinner.glsl` | `library/adits-shaders/shaders/chrome-filament-spinner.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/chrome-tinsel-burst.glsl` | `library/adits-shaders/shaders/chrome-tinsel-burst.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/citrine-tendril-whorl.glsl` | `library/adits-shaders/shaders/citrine-tendril-whorl.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/cleaved-glass-reliquary.glsl` | `library/adits-shaders/shaders/cleaved-glass-reliquary.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/cloudchamber-vapor-jar.glsl` | `library/adits-shaders/shaders/cloudchamber-vapor-jar.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/contested-fissure-globe.glsl` | `library/adits-shaders/shaders/contested-fissure-globe.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/crimson-eclipse-ejecta.glsl` | `library/adits-shaders/shaders/crimson-eclipse-ejecta.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/cyan-striated-arachnid.glsl` | `library/adits-shaders/shaders/cyan-striated-arachnid.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/cymatic-harmonic-rotor.glsl` | `library/adits-shaders/shaders/cymatic-harmonic-rotor.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/damascene-clockwork-nautilus.glsl` | `library/adits-shaders/shaders/damascene-clockwork-nautilus.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/damascene-heraldbeetle.glsl` | `library/adits-shaders/shaders/damascene-heraldbeetle.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/ember-lacquer-strobilus.glsl` | `library/adits-shaders/shaders/ember-lacquer-strobilus.glsl` | aaacff2f | yes | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/ember-vortex-plume.glsl` | `library/adits-shaders/shaders/ember-vortex-plume.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/escapement-cog-orb.glsl` | `library/adits-shaders/shaders/escapement-cog-orb.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/faceted-dispersion-polyhedron.glsl` | `library/adits-shaders/shaders/faceted-dispersion-polyhedron.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/faceted-oracle-shell.glsl` | `library/adits-shaders/shaders/faceted-oracle-shell.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/ferrofluid-spike-crown.glsl` | `library/adits-shaders/shaders/ferrofluid-spike-crown.glsl` | aaacff2f | yes | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/ferrofluid-triskelion-sigil.glsl` | `library/adits-shaders/shaders/ferrofluid-triskelion-sigil.glsl` | aaacff2f | yes | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/folded-lattice-medallion.glsl` | `library/adits-shaders/shaders/folded-lattice-medallion.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/fresnel-lighthouse-optic.glsl` | `library/adits-shaders/shaders/fresnel-lighthouse-optic.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/frostglass-dandelion.glsl` | `library/adits-shaders/shaders/frostglass-dandelion.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/geodesic-facet-resonator.glsl` | `library/adits-shaders/shaders/geodesic-facet-resonator.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/gimbal-blade-spinner.glsl` | `library/adits-shaders/shaders/gimbal-blade-spinner.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/glass-mandelbulb-core.glsl` | `library/adits-shaders/shaders/glass-mandelbulb-core.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/glowcap-gill-lantern.glsl` | `library/adits-shaders/shaders/glowcap-gill-lantern.glsl` | aaacff2f | yes | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/graphite-snowflake-spire.glsl` | `library/adits-shaders/shaders/graphite-snowflake-spire.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/halftone-caustic-spindle.glsl` | `library/adits-shaders/shaders/halftone-caustic-spindle.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/holographic-brass-astrolabe.glsl` | `library/adits-shaders/shaders/holographic-brass-astrolabe.glsl` | aaacff2f | yes | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/hopf-fiber-lantern.glsl` | `library/adits-shaders/shaders/hopf-fiber-lantern.glsl` | aaacff2f | yes | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/incandescent-filament-coil.glsl` | `library/adits-shaders/shaders/incandescent-filament-coil.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/iridescent-icosa-nautilus.glsl` | `library/adits-shaders/shaders/iridescent-icosa-nautilus.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/iridescent-thistle-star.glsl` | `library/adits-shaders/shaders/iridescent-thistle-star.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/jade-flux-effigy.glsl` | `library/adits-shaders/shaders/jade-flux-effigy.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/kifs-lattice-resonator.glsl` | `library/adits-shaders/shaders/kifs-lattice-resonator.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/kifs-morphic-voyager.glsl` | `library/adits-shaders/shaders/kifs-morphic-voyager.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/kinetic-csg-orbiter.glsl` | `library/adits-shaders/shaders/kinetic-csg-orbiter.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/kinetic-tessera-dome.glsl` | `library/adits-shaders/shaders/kinetic-tessera-dome.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/kleinian-fractal-orb.glsl` | `library/adits-shaders/shaders/kleinian-fractal-orb.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/lacquer-spikebomb.glsl` | `library/adits-shaders/shaders/lacquer-spikebomb.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/living-coral-mandelbulb.glsl` | `library/adits-shaders/shaders/living-coral-mandelbulb.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/living-gas-ball.glsl` | `library/adits-shaders/shaders/living-gas-ball.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/mint-crimson-frostbug.glsl` | `library/adits-shaders/shaders/mint-crimson-frostbug.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/morphogen-bloom-capsule.glsl` | `library/adits-shaders/shaders/morphogen-bloom-capsule.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/neon-crescent-armature.glsl` | `library/adits-shaders/shaders/neon-crescent-armature.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/neon-filigree-cicada.glsl` | `library/adits-shaders/shaders/neon-filigree-cicada.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/neon-gyroscope.glsl` | `library/adits-shaders/shaders/neon-gyroscope.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/neon-halo-turbine.glsl` | `library/adits-shaders/shaders/neon-halo-turbine.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/neon-lace-peacock.glsl` | `library/adits-shaders/shaders/neon-lace-peacock.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/neon-lotus-engine.glsl` | `library/adits-shaders/shaders/neon-lotus-engine.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/neon-pendulum-wave.glsl` | `library/adits-shaders/shaders/neon-pendulum-wave.glsl` | aaacff2f | yes | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/neon-ribcage.glsl` | `library/adits-shaders/shaders/neon-ribcage.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/neon-scorpioid-armature.glsl` | `library/adits-shaders/shaders/neon-scorpioid-armature.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/nested-aurora-veils.glsl` | `library/adits-shaders/shaders/nested-aurora-veils.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/nimbus-spikeball.glsl` | `library/adits-shaders/shaders/nimbus-spikeball.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/nova-spiral-shroud.glsl` | `library/adits-shaders/shaders/nova-spiral-shroud.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-ammonite-crux.glsl` | `library/adits-shaders/shaders/obsidian-ammonite-crux.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-bipyramid-harness.glsl` | `library/adits-shaders/shaders/obsidian-bipyramid-harness.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-caduceus-diadem.glsl` | `library/adits-shaders/shaders/obsidian-caduceus-diadem.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-caliper-diadem.glsl` | `library/adits-shaders/shaders/obsidian-caliper-diadem.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-calyx-coronet.glsl` | `library/adits-shaders/shaders/obsidian-calyx-coronet.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-censer-vault.glsl` | `library/adits-shaders/shaders/obsidian-censer-vault.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-chimera-carapace.glsl` | `library/adits-shaders/shaders/obsidian-chimera-carapace.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-chitin-astrolabe.glsl` | `library/adits-shaders/shaders/obsidian-chitin-astrolabe.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-chitin-clepsydra.glsl` | `library/adits-shaders/shaders/obsidian-chitin-clepsydra.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-clepsydra-pinnacle.glsl` | `library/adits-shaders/shaders/obsidian-clepsydra-pinnacle.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-clepsydra-vessel.glsl` | `library/adits-shaders/shaders/obsidian-clepsydra-vessel.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-diadem-crucible.glsl` | `library/adits-shaders/shaders/obsidian-diadem-crucible.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-horologium-sextant.glsl` | `library/adits-shaders/shaders/obsidian-horologium-sextant.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-hyperboloid-caduceus.glsl` | `library/adits-shaders/shaders/obsidian-hyperboloid-caduceus.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-hyperboloid-pinnacle.glsl` | `library/adits-shaders/shaders/obsidian-hyperboloid-pinnacle.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-keystone-obelisk.glsl` | `library/adits-shaders/shaders/obsidian-keystone-obelisk.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-knuckle-arachnid.glsl` | `library/adits-shaders/shaders/obsidian-knuckle-arachnid.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-lattice-thurible.glsl` | `library/adits-shaders/shaders/obsidian-lattice-thurible.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-mantis-crown.glsl` | `library/adits-shaders/shaders/obsidian-mantis-crown.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-merkabah-sanctuary.glsl` | `library/adits-shaders/shaders/obsidian-merkabah-sanctuary.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-monstrance-totem.glsl` | `library/adits-shaders/shaders/obsidian-monstrance-totem.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-orrery-clepsydra.glsl` | `library/adits-shaders/shaders/obsidian-orrery-clepsydra.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-sentinel.glsl` | `library/adits-shaders/shaders/obsidian-sentinel.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-solenoid-coronet.glsl` | `library/adits-shaders/shaders/obsidian-solenoid-coronet.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-spine-helix.glsl` | `library/adits-shaders/shaders/obsidian-spine-helix.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-tergite-exoskeleton.glsl` | `library/adits-shaders/shaders/obsidian-tergite-exoskeleton.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-thurible-sanctum.glsl` | `library/adits-shaders/shaders/obsidian-thurible-sanctum.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-vanguard-phylactery.glsl` | `library/adits-shaders/shaders/obsidian-vanguard-phylactery.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-vespid-astrolabe.glsl` | `library/adits-shaders/shaders/obsidian-vespid-astrolabe.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/obsidian-votive-caduceus.glsl` | `library/adits-shaders/shaders/obsidian-votive-caduceus.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/oilslick-orchid-arachnid.glsl` | `library/adits-shaders/shaders/oilslick-orchid-arachnid.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/orbital-ring-station.glsl` | `library/adits-shaders/shaders/orbital-ring-station.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/pansy-void-starburst.glsl` | `library/adits-shaders/shaders/pansy-void-starburst.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/pearlescent-caustic-bloom.glsl` | `library/adits-shaders/shaders/pearlescent-caustic-bloom.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/petal-bloom.glsl` | `library/adits-shaders/shaders/petal-bloom.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/phyllotaxis-ember-corona.glsl` | `library/adits-shaders/shaders/phyllotaxis-ember-corona.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/plaited-corona-ring.glsl` | `library/adits-shaders/shaders/plaited-corona-ring.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/plankton-lantern-swarm.glsl` | `library/adits-shaders/shaders/plankton-lantern-swarm.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/porcelain-lambdabulb-organism.glsl` | `library/adits-shaders/shaders/porcelain-lambdabulb-organism.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/porous-sponge-monolith.glsl` | `library/adits-shaders/shaders/porous-sponge-monolith.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/prismatic-barb-star.glsl` | `library/adits-shaders/shaders/prismatic-barb-star.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/prismatic-cube-resonator.glsl` | `library/adits-shaders/shaders/prismatic-cube-resonator.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/prismatic-lattice-burst.glsl` | `library/adits-shaders/shaders/prismatic-lattice-burst.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/prismatic-quaternion-helix.glsl` | `library/adits-shaders/shaders/prismatic-quaternion-helix.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/prismatic-rhombic-clepsydra.glsl` | `library/adits-shaders/shaders/prismatic-rhombic-clepsydra.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/pyroclast-fissure-core.glsl` | `library/adits-shaders/shaders/pyroclast-fissure-core.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/quartic-prism-bead.glsl` | `library/adits-shaders/shaders/quartic-prism-bead.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/quicksilver-rosary.glsl` | `library/adits-shaders/shaders/quicksilver-rosary.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/radiant-plasma-tendrils.glsl` | `library/adits-shaders/shaders/radiant-plasma-tendrils.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/rainbeaded-enamel-gourd.glsl` | `library/adits-shaders/shaders/rainbeaded-enamel-gourd.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/reticulate-spore-cage.glsl` | `library/adits-shaders/shaders/reticulate-spore-cage.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/rocaille-scroll-medallion.glsl` | `library/adits-shaders/shaders/rocaille-scroll-medallion.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/rose-flagellate-polyp.glsl` | `library/adits-shaders/shaders/rose-flagellate-polyp.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/saccadic-vigil-eye.glsl` | `library/adits-shaders/shaders/saccadic-vigil-eye.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/satellite-mandala.glsl` | `library/adits-shaders/shaders/satellite-mandala.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/silk-fiber-sheaf.glsl` | `library/adits-shaders/shaders/silk-fiber-sheaf.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/sinew-wound-trefoil.glsl` | `library/adits-shaders/shaders/sinew-wound-trefoil.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/skeletal-orbital-prism.glsl` | `library/adits-shaders/shaders/skeletal-orbital-prism.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/soapfilm-wire-chalice.glsl` | `library/adits-shaders/shaders/soapfilm-wire-chalice.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/sparkler-gyro-cage.glsl` | `library/adits-shaders/shaders/sparkler-gyro-cage.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/spectral-laser-insectoid.glsl` | `library/adits-shaders/shaders/spectral-laser-insectoid.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/spectral-mandel-cycler.glsl` | `library/adits-shaders/shaders/spectral-mandel-cycler.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/spectral-morph-triad.glsl` | `library/adits-shaders/shaders/spectral-morph-triad.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/standing-wave-bell.glsl` | `library/adits-shaders/shaders/standing-wave-bell.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/stellar-void-orb.glsl` | `library/adits-shaders/shaders/stellar-void-orb.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/stipple-fern-spire.glsl` | `library/adits-shaders/shaders/stipple-fern-spire.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/stormcell-anvil-cloud.glsl` | `library/adits-shaders/shaders/stormcell-anvil-cloud.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/systolic-trilobe-viscus.glsl` | `library/adits-shaders/shaders/systolic-trilobe-viscus.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/titanium-kifs-relic.glsl` | `library/adits-shaders/shaders/titanium-kifs-relic.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/tokamak-fusion-reactor.glsl` | `library/adits-shaders/shaders/tokamak-fusion-reactor.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/ultramarine-blade-nova.glsl` | `library/adits-shaders/shaders/ultramarine-blade-nova.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/umbral-shard-cocoon.glsl` | `library/adits-shaders/shaders/umbral-shard-cocoon.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/vaporous-vigil-wraith.glsl` | `library/adits-shaders/shaders/vaporous-vigil-wraith.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/veined-wing-diptych.glsl` | `library/adits-shaders/shaders/veined-wing-diptych.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/veinlit-obsidian-deity.glsl` | `library/adits-shaders/shaders/veinlit-obsidian-deity.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/velvet-antler-crown.glsl` | `library/adits-shaders/shaders/velvet-antler-crown.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/voidlit-octopod-nocturne.glsl` | `library/adits-shaders/shaders/voidlit-octopod-nocturne.glsl` | aaacff2f | yes | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/voltaic-jellyfish-lantern.glsl` | `library/adits-shaders/shaders/voltaic-jellyfish-lantern.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/voltaic-mandala-scarab.glsl` | `library/adits-shaders/shaders/voltaic-mandala-scarab.glsl` | aaacff2f | yes | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/votive-shard-mask.glsl` | `library/adits-shaders/shaders/votive-shard-mask.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/voxel-matrix-resonator.glsl` | `library/adits-shaders/shaders/voxel-matrix-resonator.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `shaders/weathered-cairn-totem.glsl` | `library/adits-shaders/shaders/weathered-cairn-totem.glsl` | aaacff2f | no | 2026-10-07 | 166 shader objects (2 had uncommitted edits at copy time) |
+| copy | `src/lib/shader-core/header.mjs` | `library/adits-shaders/src/lib/shader-core/header.mjs` | aaacff2f | no | 2026-10-07 | shader-core (unchanged; relative imports preserved) |
+| copy | `src/lib/shader-core/parse.mjs` | `library/adits-shaders/src/lib/shader-core/parse.mjs` | aaacff2f | no | 2026-10-07 | shader-core (unchanged; relative imports preserved) |
+| copy | `src/lib/shader-core/seo.mjs` | `library/adits-shaders/src/lib/shader-core/seo.mjs` | aaacff2f | no | 2026-10-07 | shader-core (unchanged; relative imports preserved) |
+| copy | `src/lib/shader-core/validate.mjs` | `library/adits-shaders/src/lib/shader-core/validate.mjs` | aaacff2f | no | 2026-10-07 | shader-core (unchanged; relative imports preserved) |
+| port | `src/lib/audio.ts` | `tools/audio/analyze.mjs` | aaacff2f | no | 2026-10-07 | AudioSpeed flywheel integrated at fixed dt into a per-frame TIME column (seekable) |
+| port | `scripts/lib/offline-shader.mjs` | `tools/blocks/shader.mjs` | aaacff2f | no | 2026-10-07 | PAGE_GL_RUNTIME: compile once, draw per seek via GSAP setter; prepareShader imported from the copy |
 
 ## aditsStudio
 
@@ -27,6 +215,7 @@ Source root: `E:/Develop/Antigravity_testing/AditsStudio`
 
 | Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
 |---|---|---|---|---|---|---|
+| port | `server/lib/audio-analysis.mjs` | `tools/audio/analyze.mjs` | 97907a6d | no | 2026-10-07 | analyseTrack ported; decode averages channels (AnalyserNode downmix) instead of ffmpeg -ac 1; added offset |
 | port | `server/lib/ffmpeg.mjs` | `tools/lib/ffmpeg.mjs` | 97907a6d | no | 2026-10-07 | probe + loudnorm/faststart; binaries from config; added loudness, section levels, limiter, contact sheet |
 
 ## tts

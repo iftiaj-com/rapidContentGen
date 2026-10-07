@@ -19,7 +19,7 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 |---|---|---|---|---|---|
 | ☑ | Caption style presets: fonts, colors, pill, glow (tiktok, karaoke, neon, kinetic, motion3d, flying3d, flow, instagram, spotlight, kinetic_impact) | `shared/active-tracking-captions.js` (style table about line 1737+), `shared/smart-captions.js` | Port presets → `library/caption-styles.json` | — | P1 |
 | ☑ | Caption styles rebuilt as seekable DOM+GSAP blocks; word / 2-word / line modes | same | Port (the Adits caption code is stateful, `flashAlpha *= 0.80` and voice-level guessing, so its logic is Learn only) | `library/blocks/captions/<style>/` | P1 |
-| ☐ | Beat-flash captions | `shared/captions.js` | Port with a closed-form decay driven by the audio table | caption block | P2 |
+| ☑ | Beat-flash captions | `shared/captions.js` | Port: per-frame states from the audio table, setter-driven | `tools/blocks/beatflash.mjs` | P2 |
 | ☑ | SRT import | caption engines | Port | `tools/captions/srt-to-words.mjs` | P1 |
 | ☐ | 46 camera moves (whip_pan, crash_zoom, dolly, orbit, drone…), all pure math | `core/anam/CameraMovements.js` lines 68-130, 308-327, 374-404 | Port, replacing the `performance.now()` clock with timeline time | `library/runtime/camera-moves.js`; blocks `camera-move/` (CSS on footage) and `three-scene/` | P3 |
 | ☐ | 2D camera presets | `core/VirtualCamera.js` | Port into `camera-moves.js` | same | P3 |
@@ -40,19 +40,19 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 
 | ☐ | Feature | Source | Decision | Target | Phase |
 |---|---|---|---|---|---|
-| ☐ | 166 GLSL shader objects (2.2 MB) | `shaders/` | Copy. Check the CREDIT headers on any Shadertoy-derived files. | `library/shaders/` | P2 |
-| ☐ | Header parse / validate core | `src/lib/shader-core/{header,parse,validate}.mjs` | Copy | `tools/lib/shader-core/` | P2 |
-| ☐ | Plain-JS WebGL runtime, any W×H | `scripts/lib/offline-shader.mjs` `PAGE_GL_RUNTIME` lines 145-255 | Port: compile once at init, draw on each seek. Do not use `renderer.ts`, which forces a square canvas. | `library/runtime/adits-shader-runtime.js` + `library/blocks/shader-layer/` | P2 |
-| ☐ | Audio Drive flywheel (TIME follows the music) | `src/lib/audio.ts` `AudioSpeed.update` lines 65-87 | Port: integrate in Node at a fixed `dt = 1/fps` into a `shaderTime[]` column, so the output is the same on every render | `tools/audio/analyze.mjs` | P2 |
-| ☐ | validate, compile-check, render-frames | `scripts/` | Copy | `tools/shaders/` | P2 |
-| ☐ | shader-guide, skill, llms docs | `public/` | Copy | `docs/shaders/` | P2 |
+| ☑ | 166 GLSL shader objects (2.2 MB) | `shaders/` | Copy. CREDIT headers checked: all AI-authored; 6 rebuild a Shadertoy technique (flagged) | `library/adits-shaders/shaders/` + `library/shaders-catalog.json` | P2 |
+| ☑ | Header parse / validate core | `src/lib/shader-core/{header,parse,validate}.mjs` | Copy | `library/adits-shaders/src/lib/shader-core/` (mirrored layout, imports unchanged) | P2 |
+| ☑ | Plain-JS WebGL runtime, any W×H | `scripts/lib/offline-shader.mjs` `PAGE_GL_RUNTIME` lines 145-255 | Port: compile once at init, draw on each seek. Do not use `renderer.ts`, which forces a square canvas. | `tools/blocks/shader.mjs` (generates the layer; runtime inlined per job) | P2 |
+| ☑ | Audio Drive flywheel (TIME follows the music) | `src/lib/audio.ts` `AudioSpeed.update` lines 65-87 | Port: integrate in Node at a fixed `dt = 1/fps` into a `shaderTime[]` column, so the output is the same on every render | `tools/audio/analyze.mjs` | P2 |
+| ☑ | validate, compile-check, render-frames | `scripts/` | Copy | `library/adits-shaders/scripts/` (run in place) | P2 |
+| ☑ | shader-guide, skill, llms docs | `public/` | Copy | `library/adits-shaders/public/` + `docs/shaders/README.md` | P2 |
 | — | React gallery, posters (18 MB), SEO, Worker, training media | `src/`, `public/posters`, etc. | Skip | — | — |
 
 ### 3. AditsStudio (helpers only)
 
 | ☐ | Feature | Source | Decision | Target | Phase |
 |---|---|---|---|---|---|
-| ☐ | Music → per-frame AUDIO_* table (pure FFT) | `server/lib/audio-analysis.mjs` `analyseTrack()` line 121 | Port: ffmpeg path from config instead of `ffmpeg-static` | `tools/audio/analyze.mjs` | P2 |
+| ☑ | Music → per-frame AUDIO_* table (pure FFT) | `server/lib/audio-analysis.mjs` `analyseTrack()` line 121 | Port: ffmpeg path from config instead of `ffmpeg-static` | `tools/audio/analyze.mjs` | P2 |
 | ☑ | Probe, loudnorm, faststart | `server/lib/ffmpeg.mjs` | Port | `tools/lib/ffmpeg.mjs` | P0 |
 | — | Extras (caption, intro/outro, logo) | `server/lib/extras.mjs` | Learn | — | — |
 | — | Publishing adapters, queue, DB, UI | `server/`, `ui/` | Skip (posting stays a manual step you approve) | — | — |
@@ -100,7 +100,7 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 |---|---|---|---|
 | P0 Foundation | tools, config, template, docs, provenance | R0 mop-star rebuild | ☑ done 2026-10-07: all verify checks pass, PSNR 72 dB vs reference |
 | P1 Voice + captions | voice venv, voice CLI, caption blocks, title cards | R1 + R1b | ☑ done 2026-10-08: R1 -14.5 LUFS (mix-check -14.4), 4 caption styles; R1b 4 title presets |
-| P2 Shaders + audio | audio table, shader-layer block, 166 shaders | R2 | not started |
+| P2 Shaders + audio | audio table, shader-layer block, 166 shaders, beat-flash | R2 + smoke | ☑ done 2026-10-08: 166/166 validate + compile; shader snapshots identical across runs; music vs silence 15-18 dB |
 | P3 3D + camera | camera moves, three-scene, camera-move | R3 | not started |
 | P4 Flythrough | flowEditor modules, flythrough block | R4 | not started |
 | P5 Integration | recipes, all-in-one job | R5 | not started |

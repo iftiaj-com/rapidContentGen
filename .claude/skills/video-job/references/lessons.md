@@ -70,6 +70,19 @@ Each entry cost real time on a past job. Read before building.
 13h. **Edit JS with the Edit tool or a Node script, not Python string literals.** Escapes such as
      `\b` and `\n` inside Python strings became control characters (backspace) in JS regexes.
 
+13i. **Local renders are not byte-identical.** Two renders of R2 agreed at 51 dB PSNR (invisible)
+     but not bit for bit, in footage-only regions too: capture and encode vary. Shader snapshots
+     ARE pixel-identical across runs. For byte-identical output HyperFrames documents
+     `render --docker`. Regression criteria use PSNR >= 45 dB between renders.
+13j. **AditsShaders are centered objects, not wallpapers.** A full-size footage card hid the nebula;
+     a 640 px card let it frame the footage. Plan layout around the object.
+13k. **Onset-driven beat flash flickers on busy hats** (45 hat onsets in 15 s). Bands alternate the
+     bass/mid words at about 3 per second. Loud masters pin bass near 1; pick words accordingly.
+13l. **Loud masters saturate the audio table** (bass/mid near 1.0) and push the flywheel clock to
+     5-6x. `rcg shader` defaults to the pulse clock at drive 0.35 (about 2.5x on loud music).
+13m. **HyperFrames `beats` only reads the project's own music clip.** For a loose file, run
+     `analyze-beatgrid.py` with the voice venv (librosa is installed there).
+
 ## Environment
 
 13. PowerShell pipes add a UTF-8 BOM; parse JSON with `utf-8-sig` or write it from Node.

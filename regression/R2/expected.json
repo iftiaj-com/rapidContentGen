@@ -1,0 +1,57 @@
+{
+  "job": "R2 shader beat cuts",
+  "phase": "P2",
+  "inputs": {
+    "video": "D:/Video/101066-video-1080.mp4",
+    "music": "D:/Music/Audio files/Songs Sound Clips/Paper ring - taylor swift.mp3"
+  },
+  "render": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 24,
+    "duration": 15
+  },
+  "audio": {
+    "integratedLufs": [
+      -16,
+      -12
+    ],
+    "truePeakMax": -1,
+    "gainReductionInLog": false
+  },
+  "layers": [
+    "shader fill billowing-plasma-nebula (pulse clock, drive 0.35)",
+    "footage card cut on 9 downbeats (analyze-beatgrid, 136 BPM)",
+    "beatflash CLEAN|SPIN|REPEAT (bands, neon, kinetic style)"
+  ],
+  "determinism": {
+    "renderVsRenderPsnrMin": 45,
+    "note": "local HyperFrames renders are not byte-identical (capture/encode); use render --docker for byte-identical output",
+    "snapshotRunsIdentical": true,
+    "musicVsSilentPsnrMax": 25
+  },
+  "lastRun": {
+    "date": "2026-10-08",
+    "integratedLufs": -14.9,
+    "truePeakDb": -2.2,
+    "renderSeconds": [
+      77,
+      56
+    ],
+    "renderVsRenderPsnr": {
+      "avg": 51.1,
+      "min": 49.8
+    },
+    "snapshotMd5Identical": [
+      true,
+      true
+    ],
+    "musicVsSilentPsnr": [
+      18.3,
+      15.7
+    ],
+    "shadersValidated": 166,
+    "shadersCompiled": 166,
+    "result": "pass"
+  }
+}

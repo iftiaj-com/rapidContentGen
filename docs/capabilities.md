@@ -22,6 +22,11 @@ not yet regression-verified), **planned** (phase in `PORTING_CHECKLIST.md`).
 | `level` | Sets integrated loudness as heard (mono is made dual-mono first), then limits peaks; `--dir` for a folder of lines | ready (R1) |
 | `captions` | Word timings (audio_meta.json, words JSON or SRT) -> caption sub-composition in an Adits style (tiktok, karaoke, neon, kinetic, modern, subtitle, glitch, retro, earthquake, vertical_ghost); word / 2word / phrase modes; fits the safe box | ready (R1: tiktok, karaoke, kinetic, neon) |
 | `title` | Kinetic title card sub-composition: slam, stagger-up, kinetic-pop, type-on; trailer serif or any caption style | ready (R1b) |
+| `analyze` | Music -> per-frame audio table (bass/mid/treble/vol/level, kick/snare/hat, 24 bands), kick times, and a seekable shader clock (default / pulse / flywheel / tilt). Pure function: same table every run | ready (R2) |
+| `shader` | Any of the 166 AditsShaders objects as an audio-reactive layer (fill or square), driven by the audio table; BIND inputs follow their bands | ready (R2) |
+| `beatflash` | Adits beat-flash words: one word per band (or kick/snare/hat) flashes and pulses on hits; effects none/neon/shadow/rgb/vertical_ghost/shake | ready (R2) |
+| Beat grid | `tools/voice/.venv/Scripts/python.exe <plugin>/skills/music-to-video/scripts/analyze-beatgrid.py <music> -o data/audiomap.json` (tempo, beats, downbeats, phases). HyperFrames `beats` only reads a project's own music clip | ready (R2) |
+| Shader catalog | `node tools/shaders/catalog.mjs --find "<look>"` searches `library/shaders-catalog.json` | ready |
 | `hf` | Runs the HyperFrames CLI via the plugin launcher (`--cwd <job>`). Auto-handles graded footage at t=0: render gets `--browser-timeout 180`, check/snapshot run on a grade-free mirror | ready |
 | `provenance copy\|record\|check\|render` | Copies or records material from source projects with commit and sha256 | ready |
 
@@ -49,13 +54,13 @@ not yet regression-verified), **planned** (phase in `PORTING_CHECKLIST.md`).
 | Grades: `trailer-cold`, `trailer-warm` | `library/recipes/grades.json` | ready (mop-star) |
 | Vertical 9:16 template | `templates/vertical-1080x1920/` | ready (R0) |
 | Caption style presets (10, from Adits) | `library/caption-styles.json` | ready (R1) |
+| AditsShaders (166 objects + validator, compile check, frame renderer, guide) | `library/adits-shaders/` (see `docs/shaders/README.md`) | ready (R2: 166/166 validate + compile) |
 | Kokoro weights (git-ignored) | `models/` | ready |
 
 ## Coming next (see `PORTING_CHECKLIST.md`)
 
 | Phase | Adds |
 |---|---|
-| P2 | 166 AditsShaders shaders as an audio-reactive `shader-layer` block; per-frame audio table; beat-flash captions |
 | P3 | 46 Adits camera moves for footage (`camera-move`) and 3D (`three-scene`) |
 | P4 | flowEditor camera flythrough over cards, layouts, entrances, Ken Burns, beat snap |
 | P5 | Recipes, end-to-end job using everything |

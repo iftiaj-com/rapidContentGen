@@ -1,0 +1,3375 @@
+{
+  "generated": "2026-10-07",
+  "count": 166,
+  "shaders": [
+    {
+      "slug": "abyssal-frond-bouquet",
+      "description": "A deep-water bouquet grown by recursion, on the branch-on-a-sphere construction from a widely shared Shadertoy fractal, with direction snapping standing in for its Fibonacci lookup. A nucleus sprouts twenty fronds, each of those twenty more, three deep, every floret breathing on its own clock. Eight numbers morph it through four forms: fused indigo bulb, teal coral bouquet, antler thicket, magenta needle nova. Bass thickens the fronds, mid curls them, treble hones the tips. Rests as the bouquet.",
+      "categories": [
+        "raymarching",
+        "morph",
+        "recursive",
+        "coral",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5",
+      "techniqueNote": true
+    },
+    {
+      "slug": "acid-urchin-armillary",
+      "description": "An acid urchin caged in three glossy tube hoops, cage and membrane unchanging, wearing twenty spines that each change species on their own schedule. Each is one primitive under nine interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: blunt club, ribbed speckled spine, barbed hook, white-hot hair quill. Bass clubs the fringe, treble draws it to needles, and the change sweeps across the shell one spine at a time. Rests as the ribbed spine.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "armillary",
+        "urchin",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "aether-gyroid-chrysalis",
+      "description": "A floating 3D biomechanical chrysalis cradled inside nested interlocking gimbal armatures. An inner glowing gyroid plasma core breathes through carved obsidian armor plates. Spectral balance drives a continuous morph between an armored cocoon, an open gyro-astrolabe, and a flared crystalline crown, while kicks pulse thermal core emission and hats sharpen the outer rim facets.",
+      "categories": [
+        "3d",
+        "raymarching",
+        "generative",
+        "morph",
+        "biomech",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 4,
+      "audioBinds": [
+        "level",
+        "bass",
+        "mid",
+        "hat"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "alabaster-lambdabulb-vortex",
+      "description": "Sacred 3D Alabaster Lambdabulb Astrolabe Vortex with 6-fold gothic calyx petals, chiral logarithmic vortex funnels, concentric three-axis gimbal filigree rings, and a glowing apricot-terracotta singularity core. Bass unfurls the calyx wings and swells fractal volume, mid accelerates chiral vortex twisting and astrolabe ring precession, treble ignites molten copper-gold damascene crests, and beats pulse the radiant core bloom.",
+      "categories": [
+        "generative",
+        "fractal",
+        "3d",
+        "julia",
+        "lambdabulb",
+        "audio",
+        "astrolabe"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 4,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "beat"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "amber-hourglass-spindle",
+      "description": "An amber-lit glass hourglass whose lens-shaped bulbs and axial sand grains morph across four states under spectral balance: a fat molten glass bulb, a ribbed brass vase, a faceted crystal gem, and a slender glass spindle trailing a long needle spire. Bass swells the bulbs, treble draws out the spire and facets, mid drives a slow precession. Rests as the molten glass bulb.",
+      "categories": [
+        "generative",
+        "morph",
+        "geometry",
+        "glass",
+        "hourglass",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "mid"
+      ],
+      "credit": "claude-sonnet-5"
+    },
+    {
+      "slug": "amber-pod-bristlebomb",
+      "description": "A bilateral cluster of black lens pods holding molten amber irises, strung on gold wires, guarded by three starbursts whose every needle changes species on its own schedule. Each needle is one primitive under six interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: blunt thorn, hair needle, barbed hook, glinting filament. Bass swells the pods round and thorns the guard, treble slits them and draws the guard to filaments. Rests as the hair needle.",
+      "categories": [
+        "generative",
+        "morph",
+        "obsidian",
+        "amber",
+        "creature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 18,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "mid"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "anaglyph-crystal-moth",
+      "description": "A crystalline moth in anaglyph, thorax and hair antennae unchanging, wearing seven mirrored blades that each change species on their own schedule. Each is one primitive under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four crystal forms: broad plated scale, swept serrated wing, bowed comb sickle, glass needle. Bass plates the moth, treble strips it to needles, and the change sweeps wingtip to hip one blade at a time. Rests as the swept wing.",
+      "categories": [
+        "generative",
+        "morph",
+        "chroma-split",
+        "iridescent",
+        "creature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 18,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "mid"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "arcane-chain-singularity",
+      "description": "An arcane singularity enveloped by billowing astral spell veils and interlocking celestial chains that rupture into swirling crystalline shards under acoustic pressure.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "neon"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 4,
+      "audioBinds": [
+        "mid",
+        "treble",
+        "bass"
+      ],
+      "credit": "Gemini 3.7 Flash"
+    },
+    {
+      "slug": "argent-corner-bloom",
+      "description": "A chrome-and-obsidian sphere built from four recursive corner-carved folds, its teeth-shaped gaps breathing open and shut on their own clock while the whole lattice spins (adapted from a widely shared Shadertoy recursive-sphere technique, not an original Adits concept). Mid sets the spin's pace, bass deepens its rhythmic lurch, treble sharpens the chrome glint, and kicks shove the spin forward.",
+      "categories": [
+        "generative",
+        "fractal",
+        "raymarching",
+        "chrome",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": null,
+      "inputs": 3,
+      "audioBinds": [
+        "mid",
+        "bass",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5",
+      "techniqueNote": true
+    },
+    {
+      "slug": "armillary-neon-orb",
+      "description": "An armillary orb: a sphere banded in cyan, magenta and black chevrons with eye motifs printed over them, the print unchanging, caged by six hoops that each change species on their own schedule. Each hoop is one tube under six interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: fat belt, glossy tube, beaded chain, hair filament. Bass belts the cage in tight, treble opens it to filaments, and the change sweeps hoop by hoop. Rests as the glossy tube.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "armillary",
+        "gyroscope",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "hat"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "astral-inversion-core",
+      "description": "Silky volumetric vortex ribbon core driven by dual spherical space-inversions and domain-twisted turbulence. Bass expands the inversion core, mid accelerates the vortex twists, treble sharpens filament ridges, and beats pulse core radiance.",
+      "categories": [
+        "generative",
+        "volumetric",
+        "fractal",
+        "audio",
+        "plasma"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 4,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "beat"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "aurora-plasma-anemone",
+      "description": "A bioluminescent neon plasma anemone whose waving electric tentacles morph across four discharge states under spectral balance. Heavy coiled violet arcs under bass give way to twisting cyan tentacles, a double-helix crown, and high-frequency xenon spires under treble.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "plasma",
+        "creature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "Gemini 3.5 Flash"
+    },
+    {
+      "slug": "beaded-orbit-medusa",
+      "description": "A ribbed gill disc, scalloped and speckled, unchanging, hung inside four orbit rings that each change species on their own schedule. Each ring is one wire under six interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: heavy lozenge chain, beaded ring, studded thorn ring, bare hair wire. Bass fattens the beads and swells the disc, treble strips the rings to wire, and the change sweeps ring by ring. Rests as the beaded ring.",
+      "categories": [
+        "generative",
+        "morph",
+        "armillary",
+        "medusa",
+        "neon",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "beeswax-votive-bulb",
+      "description": "A beeswax votive lit from inside, shaded by translucency that is measured rather than faked: from every visible point the shader marches toward the key light and counts how much wax the light actually had to cross, then transmits what survives, so a honeycomb core hidden under a sealed skin shows through only as the light finds the thin way past its walls. It rests as a fat amber bulb, draws into a tall dripping taper, then opens into a hexagonal comb lantern pouring light out of its cells.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "translucent"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "beryl-inclusion-heart",
+      "description": "A beryl crystal shaded by real optics: the ray refracts in, the interior is marched for its true chord, and the colour is whatever survives Beer-Lambert absorption over that path, so thin tips stay pale while the thick waist goes deep and a fern garden of inclusions scatters inside it. Beryl is one mineral in several varieties, so the spectrum picks the variety: it rests as a squat golden heliodor barrel, draws out into a tall emerald prism, then a fluted aquamarine needle.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "crystal",
+        "refraction"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "billowing-plasma-nebula",
+      "description": "A volumetric billowing plasma nebula with multi-scattering sunlight and an inner stellar core, morphing between volcanic magma plume, celestial biocoral gas, and a high-energy solar corona.",
+      "categories": [
+        "generative",
+        "morph",
+        "3d",
+        "audio",
+        "volumetric"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "level",
+        "treble"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "bismuth-crystal-scarab",
+      "description": "An iridescent bismuth crystal scarab built from stepped hopper-crystal terraces and rainbow oxide films. Morphing across four geometric states under spectral balance, heavy stepped bismuth plates under bass give way to open faceted elytra, a nested hopper mandala, and needle-fine crystal spire quills under treble.",
+      "categories": [
+        "generative",
+        "morph",
+        "crystal",
+        "bismuth",
+        "creature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 18,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "Gemini 3.6 Flash"
+    },
+    {
+      "slug": "blacklacquer-coral",
+      "description": "A wet black lacquer coral: a knot of glossy orbs and two amber lanterns, unchanging, crossed by six arms that each change species on their own schedule. Each arm is one primitive under eight interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: fat bead club, segmented lacquer arm, barbed whip, hair antenna. Bass swells the arms into clubs, treble draws them out to antennae, and the change sweeps arm by arm. Rests as the segmented arm.",
+      "categories": [
+        "generative",
+        "morph",
+        "obsidian",
+        "lacquer",
+        "creature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 22,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "blood-lacquer-strata",
+      "description": "A glossy orb encased in sculpted blood-red lacquer flanges and obsidian disc strata, rippling with studio reflections and natural precession. Motion derives from its rhythmic undulating displacement.",
+      "categories": [
+        "generative",
+        "3d",
+        "raymarching",
+        "audio",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 4,
+      "audioBinds": [
+        "mid",
+        "treble",
+        "bass"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "bouncy-gelee-crown",
+      "description": "A mouthwatering, translucent gourmet jelly confection that squashes, stretches, and wobbles with gelatinous elasticity. Sculpted with fluted ridges, glossy sugar glaze, and an inner glowing fruit core, it morphs across four confectionery archetypes under spectral balance: a fluted bundt kanten mold in bass, a bouncy tiered dome gelée, a prismatic star-crested crystal agar, and an effervescent floral petal gelée under treble.",
+      "categories": [
+        "generative",
+        "morph",
+        "3d",
+        "audio",
+        "food"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "Gemini 3.8 Flash"
+    },
+    {
+      "slug": "brushed-steel-carillon",
+      "description": "A carillon of lathe-turned discs shaded with an anisotropic microfacet lobe: roughness runs low along each turning groove and high across it, so the key smears into the radial streak a brushed disc really shows, and the metal colour is a per-channel reflectance, not a tint. It rests as a squat steel gong stack, stretches into a tall bronze bell tower, then flattens into a cymbal fan whose grain turns radial and closes the streak into a ring. Kicks ring a wave out from every hub.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "chrome",
+        "metal"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "catalytic-chrome-drop",
+      "description": "A drop of liquid chrome being eaten by its own chemistry: a branching reaction network etches channels into the mirror, the banks stay bright metal and spectral light climbs out of the grooves; it rests as a smooth drop faintly veined and is cut into a deep river network and then eaten through into a chrome lace as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "chrome"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "celestial-orbital-sphere",
+      "description": "A 3D celestial orbital data sphere with glowing stellar core and gyroscopic armillary rings; morphs from a dense bronze astrolabe under bass into an illuminated meridian network and an explosive satellite constellation under treble. Rests in silence on the bronze astrolabe.",
+      "categories": [
+        "generative",
+        "3d",
+        "morph",
+        "geometric",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-3.8-flash"
+    },
+    {
+      "slug": "chalcedony-tellurion-diadem",
+      "description": "A 3D mechanical tellurion diadem with obsidian biomech arms, chalcedony rings, and a glowing orbital core.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "chladni-brass-plate",
+      "description": "A thick square Chladni slab of dark brass on a slow turntable, a solid the camera can orbit, carrying piles of sand along the nodal lines of its vibration. Drive frequency follows the spectrum, bowing the plate through four figures: a bass ring-in-diamond, a mid rosette, a treble star lattice, a fine mesh, each a superposition of the plate's cosine modes. Bass flexes the brass and squeezes the sand thinner, treble lifts dust above the antinodes, a kick throws the grains. Rests as the rosette.",
+      "categories": [
+        "generative",
+        "morph",
+        "3d",
+        "physics",
+        "chladni",
+        "brass",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "treble"
+      ],
+      "credit": "claude-fable-5-1"
+    },
+    {
+      "slug": "chroma-moire-orchid",
+      "description": "A seven-fold spider-orchid of scalloped neon ripple bands, every edge split into acid-green, hot-magenta and deep-blue moire fringes. The petal profile is one primitive under six interpolated numbers, so the flower morphs by deforming, not cross-fading, through four forms: round scallop bulb, spider-orchid petal, raked claw, needle ray. Bass rounds the bloom, treble sharpens it to rays, and the change sweeps across the flower rather than flipping it. Rests as the spider-orchid petal.",
+      "categories": [
+        "generative",
+        "morph",
+        "psychedelic",
+        "moire",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5"
+    },
+    {
+      "slug": "chromatic-cube-morph",
+      "description": "A quantum crystal matrix featuring three distinct archetypes: a floating plate hypercube at bass, a rotating tesseract framework in the mids, and a crystalline spire cluster at treble. The object uses a teal-cyan-magenta color scheme with precise geometric rotations, orbiting energy rings, and pulsating core elements.",
+      "categories": [
+        "generative",
+        "morph",
+        "3d",
+        "geometric",
+        "audio",
+        "tech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "mid",
+        "level"
+      ],
+      "credit": "claude-sonnet-4-6"
+    },
+    {
+      "slug": "chromatic-dispersion-cube",
+      "description": "A refractive crystal hypercube with chromatic dispersion and segmented kinetic facets, morphing between a monolithic prism vault, an articulated floating plate matrix, and a hyperfaceted diamond stellate.",
+      "categories": [
+        "generative",
+        "morph",
+        "3d",
+        "refraction",
+        "audio",
+        "geometric"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "mid",
+        "level"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "chrome-filament-armature",
+      "description": "A hyper-reflective chrome filament armature featuring counter-rotating woven ribs surrounding a glowing cyan core. Morphs spectrally through four archetypes: heavy ribbed cage, filament solenoid, lattice spindle, and needle corona. Rests as the filament solenoid.",
+      "categories": [
+        "generative",
+        "morph",
+        "chrome",
+        "filament",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 5,
+      "audioBinds": [
+        "bass",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "chrome-filament-spinner",
+      "description": "A chrome dandelion of silver wires arcing out from a dense glowing hub, the hub unchanging, every wire changing species on its own schedule. Each is one primitive under eight interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: tapered chrome ribbon, hair filament, glinting tendril, needle spray. Bass turns the head into ribbons, treble draws it out to needles, and the change sweeps around the head one wire at a time. Rests as the hair filament.",
+      "categories": [
+        "generative",
+        "morph",
+        "chrome",
+        "filament",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 18,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-sonnet-5"
+    },
+    {
+      "slug": "chrome-tinsel-burst",
+      "description": "A burst of shredded foil around a dense flake ball and four armature wires, the hub unchanging, wearing eleven legs that each change species on their own schedule. Each leg is one primitive under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: broad foil paddle, tinsel leg, shredded whip, needle streamer. Bass packs the burst into paddles, treble shreds it to streamers, and the change sweeps leg by leg. Rests as the tinsel leg.",
+      "categories": [
+        "generative",
+        "morph",
+        "chrome",
+        "tinsel",
+        "sparkle",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "citrine-tendril-whorl",
+      "description": "A fibonacci-sphere tentacle creature that spins and bunches its own tendrils faster on the mids, swells its body on the bass, sharpens its surface grain on the treble, and snaps a tighter twist on every kick.",
+      "categories": [
+        "generative",
+        "3d",
+        "organic",
+        "tentacle",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": null,
+      "inputs": 3,
+      "audioBinds": [
+        "mid",
+        "bass",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5"
+    },
+    {
+      "slug": "cleaved-glass-reliquary",
+      "description": "A hollow octahedral glass reliquary whose wall is cut open by rotating slice planes, marched layer by layer so the ray reads the front wall, the folded shell suspended inside it and the lit nucleus at its centre all at once; it rests nearly intact with one deep cleave and is quartered and then split into a cage of shards as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "crystal"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "cloudchamber-vapor-jar",
+      "description": "A cloud chamber of supersaturated vapour with particle tracks condensing through it. The vapour is a real volume integral: Beer-Lambert transmittance along the ray, a shadow ray from every sample back to the light, and Henyey-Greenstein scattering whose asymmetry decides whether it glows forward or lights only at its rim. The tracks are solved in closed form. It rests as a squat chamber crossed by one muon, stretches into a column of electron arcs, then flattens into a disc of alphas.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "volumetric"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "contested-fissure-globe",
+      "description": "A dark mineral globe cracked open by three colonies of living light, each draining its own territory through channels that thicken as they converge on its nucleus; the three bands of the spectrum are the three vigours, so bass, mid and treble literally widen and collapse the territories against each other and the map on the object is never twice the same.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "organic"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "crimson-eclipse-ejecta",
+      "description": "A black glass orb eclipsed behind its own thin crimson ring, orbited by a blast of cleaved obsidian chunks that a red shock front lights from inside as it passes through the field twice per loop; it rests as a tight dark shell of debris packed around the ring, is thrown outward into a detonation trailing red ejecta streaks, and is drawn into a long splinter storm as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "obsidian"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-fable-5-1"
+    },
+    {
+      "slug": "cyan-striated-arachnid",
+      "description": "A bioluminescent arachnid over a core starburst that never changes, wearing five mirrored leg pairs that each change species on their own schedule. Each leg is one blade under eight interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: armour paddle, striated blade, barbed claw, hair needle. Bass armours the legs, treble strips them to needles, and the change sweeps head to tail one pair at a time. Two legs in five stay dark. Rests as the striated blade.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "creature",
+        "bioluminescent",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "cymatic-harmonic-rotor",
+      "description": "A brushed-metal rotor whose rim is a four-term Fourier series, hung inside one elliptical orbit ring with travelling spark nodes. The rivet band, turbine iris and chrome hub never change; the harmonic amplitudes do, so the rim morphs by deforming through four forms: two-lobe gong, eight-blade gear, five-lobe turbine, sixteen-tooth cymatic plate. Bass deepens the harmonics, mid precesses the ring and iris, treble runs the shimmer. Rests as the eight-blade gear.",
+      "categories": [
+        "generative",
+        "morph",
+        "geometry",
+        "metal",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "damascene-clockwork-nautilus",
+      "description": "A damascene clockwork nautilus whose spiraling chambers and astrolabe rings morph across four archetypes under spectral balance. Heavy etched steel armour under bass gives way to bronze escapement gears, opaline radiolarin struts, and razor-sharp golden chronometer filaments under treble.",
+      "categories": [
+        "generative",
+        "morph",
+        "metal",
+        "astrolabe",
+        "clockwork",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "Gemini 3.7 Flash"
+    },
+    {
+      "slug": "damascene-heraldbeetle",
+      "description": "A heraldic beetle forged in damascus steel, its marbled carapace and lens plates unchanging, wearing five leg pairs that each change species on their own schedule. Each leg is one primitive under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: armour plate, segmented leg, barbed claw, wire feeler. Bass armours the legs, treble strips them to feelers, and the change sweeps head to tail one pair at a time. Rests as the segmented leg.",
+      "categories": [
+        "generative",
+        "morph",
+        "chrome",
+        "damascene",
+        "creature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 22,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "ember-lacquer-strobilus",
+      "description": "A wet black lacquer pinecone: ninety shingled scales on a spiral lattice around an incandescent ember body, each scale one flattened round cone under seven interpolated numbers. It rests as an open cone with the ember showing between the scales, seals into an armoured pod under bass, droops into a long-petalled bloom through the mids, and bursts into a needle nova on treble, every scale crossing on its own static offset.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "obsidian",
+        "botanical"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-fable-5-1"
+    },
+    {
+      "slug": "ember-vortex-plume",
+      "description": "A smoke vortex: log-spiral arms wound around an ember heart that never changes, the whole body advected by a domain-warped drift that closes on the loop. One spiral field under eight interpolated numbers, so the vortex morphs by deforming, not cross-fading, through four forms: dense ember bulb, wispy smoke plume, tight whirlpool, sparse filament nova. Bass thickens it, mid twists the warp, treble raises the fine detail. Rests as the smoke plume.",
+      "categories": [
+        "generative",
+        "morph",
+        "fluid",
+        "smoke",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 14,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "escapement-cog-orb",
+      "description": "Six toothed cogs mounted on the faces of a cube around a lit core, drawn from a single gear evaluation by folding the point into the cube symmetry, which mirrors neighbouring cogs so they appear to counter-turn across every edge; it rests as a heavy solid escapement and opens into a spoked train and then a fine skeletal movement as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "mechanical"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "faceted-dispersion-polyhedron",
+      "description": "A multifaceted 3D crystal prism casting chromatic dispersion caustics; morphs from a heavy cut amber gem under bass into a cleaved reliquary with visible nucleus and an ultra-sharp needle star under treble. Rests in silence on the cut jewel.",
+      "categories": [
+        "generative",
+        "3d",
+        "morph",
+        "crystal",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-3.8-flash"
+    },
+    {
+      "slug": "faceted-oracle-shell",
+      "description": "A low-poly shell rasterised triangle by triangle inside the pixel, so its silhouette is cut from straight edges and every facet is flat, with the barycentric distance lighting the wireframe; it rests as a calm six-sided ovoid and buckles into a lobed melon and then a spiked crystal urchin as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "wireframe"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "ferrofluid-spike-crown",
+      "description": "Magnetic ferrofluid totem of wet black metal: smooth ovoid dome at rest, audio-driven spikes morphing from rounded lobes through ridged pods and hedgehog clusters to tall needle crown.",
+      "categories": [
+        "generative",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 5,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-4.6"
+    },
+    {
+      "slug": "ferrofluid-triskelion-sigil",
+      "description": "Three molten iron arms drawn from a glowing crucible core at 120 degrees apart. The arms morph between fat teardrop pods, segmented ferrofluid blades, and sharp needle lances as the spectrum tilts from bass to treble. Rests as the segmented blade.",
+      "categories": [
+        "generative",
+        "morph",
+        "audio",
+        "ferrofluid",
+        "sigil"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-4-7"
+    },
+    {
+      "slug": "folded-lattice-medallion",
+      "description": "A crystal medallion whose rim and inner folded web both change species under spectral balance. Five KIFS folds draw the lattice inside one six-lobed envelope of five interpolated numbers, so the medallion morphs by deforming, not cross-fading, through four forms: filled ice plate, lobed wire lattice, scalloped spiral rotor, six-ray needle star. Bass breathes the folds, mid twists the web into a vortex, treble hones every filament. Rests as the lobed wire lattice.",
+      "categories": [
+        "generative",
+        "morph",
+        "geometry",
+        "fractal",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "fresnel-lighthouse-optic",
+      "description": "A rotating lighthouse optic: a drum of stepped annular prisms whose tilt grows with distance from the belt, the way a real Fresnel ring does so every ring bends light to one focus. The lamp inside is seen only through the glass, by refracting into each prism, marching to its exit face and refracting out again at three separate indices, so the lamp image splits into real colour fringes. It rests as a squat first-order optic, rises into a catadioptric drum, then collapses into fat bullseye belts.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "refraction",
+        "glass"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "frostglass-dandelion",
+      "description": "A frosted-glass dandelion around a milky lens hub that never changes, wearing nineteen filaments that each change species on their own schedule. Each is one primitive under eight interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: glass blade, feathered filament, barbed bristle, hair whisker. Bass thickens the head into blades, treble strips it to whiskers, and the change sweeps across the head one filament at a time. Rests as the feathered filament.",
+      "categories": [
+        "generative",
+        "morph",
+        "chrome",
+        "filament",
+        "glass",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "geodesic-facet-resonator",
+      "description": "An icosahedral geodesic resonator morphing between resonant armor, harmonic wave plates, and crystalline iris filigree driven by audio balance.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "gimbal-blade-spinner",
+      "description": "A raymarched gimbal spinner: a hollowed octahedral core inside three counter-rotating gimbal rings, neither of which changes, throwing eight swept blades that change species together under spectral balance. The blade is one tapered plate under eight interpolated numbers, so the rotor morphs by deforming through four forms: short turbine paddle, swept crystal blade, long scythe, needle rake. Bass lifts the core glow, mid twists the sweep, treble runs the ring shimmer. Rests as the crystal blade.",
+      "categories": [
+        "raymarching",
+        "morph",
+        "mechanical",
+        "artifact",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "glass-mandelbulb-core",
+      "description": "Solar supernova Mandelbulb crystal with fiery blood-orange magma mantle, white-hot central singularity, obsidian shadows, and golden coronal flame rims. Bass expands fractal power and thermonuclear radiance, mid twists solar flare orbital filaments, treble sharpens solar coronal rim glints, and beats trigger solar flare shockwaves.",
+      "categories": [
+        "generative",
+        "fractal",
+        "solar",
+        "fire",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 4,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "beat"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "glowcap-gill-lantern",
+      "description": "A bioluminescent mushroom seen from below, its gills spinning around a stem of light, and the spectrum chooses the species: a heavy ember toadstool with cream freckles when the bass owns the mix, a wide scalloped teal parasol through the low mids, a tall violet bell pitted like a honeycomb through the high mids, and an ivory lion's-mane hung with a curtain of glowing spines when the treble takes over. It rests as the ember toadstool.",
+      "categories": [
+        "generative",
+        "morph",
+        "botanical",
+        "bioluminescent",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5-5"
+    },
+    {
+      "slug": "graphite-snowflake-spire",
+      "description": "A graphite snowflake whose woven dome never changes, wearing ten spires that each change species on their own schedule. Each spire is one primitive under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: blunt buttress, tapered spire, barbed halberd, bare needle. Bass buttresses the crown, treble draws it out to needles, and the change sweeps spire by spire. Rests as the tapered spire.",
+      "categories": [
+        "generative",
+        "morph",
+        "lattice",
+        "obsidian",
+        "snowflake",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "halftone-caustic-spindle",
+      "description": "A hollow lens filled with a halftone lattice of light dots, fringed with hair-thin rim rays and pierced by a dotted axis. The lens is one superellipse under six interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: fat caustic pod, wide astroid lens, tall spindle, four-point caustic star. Bass swells it into a flat pod, treble opens it into a four-point star, and the dot lattice turns over as a wave running outward from the hollow. Rests as the astroid lens.",
+      "categories": [
+        "generative",
+        "morph",
+        "halftone",
+        "chroma-split",
+        "lattice",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 14,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "holographic-brass-astrolabe",
+      "description": "A holographic brass astrolabe that morphs between rings, a star core, and a spindle.",
+      "categories": [
+        "generative",
+        "holo",
+        "morph",
+        "brass",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 3,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-3.1-pro"
+    },
+    {
+      "slug": "hopf-fiber-lantern",
+      "description": "A Hopf fibration in neon: three nested tori woven from linked circles of light, counter-rolling around a white axis beam that threads the hole. One fibred torus under five interpolated numbers, so it morphs by deforming through four forms: woven ball, Hopf nest, braided bangle, tall light lantern. Bass swells and thickens the weave, mid ripples the tori, treble runs glints along every fibre, and beats flash the light. Rests as the Hopf nest.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "raymarch",
+        "audio",
+        "loop"
+      ],
+      "alpha": "premultiplied",
+      "loop": 32,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5-5"
+    },
+    {
+      "slug": "incandescent-filament-coil",
+      "description": "A tungsten filament wound into a standing coil on two support posts, coloured from a black-body curve so its glow runs dull red at the cold ends and white at the hot centre while heat waves travel the wire; it rests as a loose open spring and winds into a tight coil and then a dense coiled coil as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "incandescent"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "iridescent-icosa-nautilus",
+      "description": "A luminous iridescent icosahedral chrysalis with twisting glass petals, chromatic dispersion, and an amber spiral core that morphs smoothly across spectral frequencies under audio transients.",
+      "categories": [
+        "generative",
+        "morph",
+        "3d",
+        "iridescent",
+        "bloom",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "mid",
+        "bass",
+        "treble"
+      ],
+      "credit": "gemini-3.7-flash (Medium)"
+    },
+    {
+      "slug": "iridescent-thistle-star",
+      "description": "A thistle star on a scalloped hub of chroma rings that never changes, wearing fourteen spines that each change species on their own schedule. Each is one primitive under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: broad scale plate, plated needle, barbed thorn, hair quill. Every scale edge still splits into a real RGB fringe. Bass plates the star, treble strips it to quills. Rests as the plated needle.",
+      "categories": [
+        "generative",
+        "morph",
+        "iridescent",
+        "chroma-split",
+        "star",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "jade-flux-effigy",
+      "description": "A translucent jade effigy whose whole body is one sphere pushed through four folds of a sine warp, each fold driven by the axis next to it so the form twists rather than merely bulges; it rests as a smooth three-lobed stone and grows a knotted torso and then a deeply convoluted mass as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "organic"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "kifs-lattice-resonator",
+      "description": "A pulsating KIFS fractal lattice resonator with orbiting reflective tendrils, geometric nodes, and harmonic light cores that respond dynamically to audio transients.",
+      "categories": [
+        "generative",
+        "fractal",
+        "kifs",
+        "3d",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 4,
+      "audioBinds": [
+        "mid",
+        "bass",
+        "treble"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "kifs-morphic-voyager",
+      "description": "A morphing KIFS kaleidoscope traversing house, sailboat, starcraft, and orbital ring archetypes with neon filigree edges, diagonal blueprint hatching, and rapid transient-driven transformations.",
+      "categories": [
+        "morph",
+        "kifs",
+        "generative",
+        "fractal",
+        "3d",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 5,
+      "audioBinds": [
+        "mid",
+        "bass",
+        "treble"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "kinetic-csg-orbiter",
+      "description": "A kinetic CSG junction morphing between an obsidian titanium vault, an iridescent plasma gyro-nut, and a hyper-resonant star-core with orbiting harmonic satellites.",
+      "categories": [
+        "generative",
+        "morph",
+        "3d",
+        "audio",
+        "geometric"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "level"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "kinetic-tessera-dome",
+      "description": "A dome tiled by a geodesic triangle lattice, every tessera lifting, turning and drifting on its own schedule off a hash of where it sits, so the surface comes apart tile by tile rather than all at once; it rests as flush armour over a lit core and lifts into raised scales and then into a suspended shell of drifting plates as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "geodesic"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "kleinian-fractal-orb",
+      "description": "A glowing kaleidoscopic fractal sphere built from a widely-shared Shadertoy pseudo-Kleinian IFS technique (an inversion-fold formula, not an original Adits concept), precessing slowly with a warm fresnel rim standing in for a reflection. Bass swells the glow, mid warps the fractal's own fold constant and drives the precession, treble sharpens the filaments to fine sparkle, and beats flash the surface.",
+      "categories": [
+        "generative",
+        "fractal",
+        "raymarching",
+        "kleinian",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 5,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5",
+      "techniqueNote": true
+    },
+    {
+      "slug": "lacquer-spikebomb",
+      "description": "A lacquered spike bomb on a cluster of glossy pods that never changes, wearing eighteen spikes that each change species on their own schedule. Each is one cone under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: broad wedge, tapered cone, hooked spike, bare needle. Bass wedges the burst, treble hones it to needles, and the change sweeps spike by spike. Rests as the tapered cone.",
+      "categories": [
+        "generative",
+        "morph",
+        "lacquer",
+        "spike",
+        "obsidian",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 18,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "living-coral-mandelbulb",
+      "description": "Living abyssal coral Mandelbulb organism with tiered concentric crenellations, fiery terracotta mantle strata, electric cyan-turquoise reef frills, and deep bioluminescent indigo crevices. Bass expands fractal power and coral volume, mid accelerates undulating peristaltic ripple waves, treble sharpens iridescent pearl-crested micro-ridges, and beats trigger deep bio-photonic mantle surges.",
+      "categories": [
+        "generative",
+        "fractal",
+        "creature",
+        "coral",
+        "bioluminescence",
+        "morph",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 4,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "beat"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "living-gas-ball",
+      "description": "An incandescent gas ball whose skin resolves into a sprawling web of white-hot filaments: it rests as that filament nova, bass fuses the web into a solid molten bulb, and treble shatters it into a needle-thin shockwave corona.",
+      "categories": [
+        "generative",
+        "morph",
+        "3d",
+        "audio",
+        "volumetric"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "mint-crimson-frostbug",
+      "description": "A frost insect in anaglyph, its beaded antennae and crystalline core unchanging, wearing four wing spine pairs that each change species on their own schedule. Each is one blade under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: frost scale, chevron wing, barbed sickle, ice needle. Every limb still splits crimson one side and mint the other. Bass plates it, treble strips it to needles. Rests as the chevron wing.",
+      "categories": [
+        "generative",
+        "morph",
+        "chroma-split",
+        "frost",
+        "creature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 18,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "morphogen-bloom-capsule",
+      "description": "A wet black seed capsule wearing a living morphogen skin, its markings crawling as the pattern threshold slides; it rests as a closed egg speckled with raised bosses and opens into a ridged pod veined with labyrinth channels and then a flared crown eaten through with pores.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "neon-crescent-armature",
+      "description": "A shifting neon armature that morphs from a gentle crescent cage at silence, to spinning ribbed tori in the mids, and erupts into glowing cyan and magenta spines on treble peaks.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 5,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "neon-filigree-cicada",
+      "description": "A hollow neon cicada drawn only in edges, its five dome arcs unchanging, wearing fourteen mirrored lens blades that each change species on their own schedule. Each is one arc under four interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: fat lens, lens blade, flat sliver, hairline. Every line still carries a hard chromatic fringe. Bass swells the frame into lenses, treble draws it to hairlines. Rests as the lens blade.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "armature",
+        "chroma-split",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "neon-gyroscope",
+      "description": "A neon gyroscope: four iridescent cyan-violet-magenta rings tumbling around a plasma core that never changes, each ring changing species on its own schedule. Each is one ellipse under six interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: fat glass band, neon ring, beaded chain, hair filament. Bass bands the gyro, treble draws it to filaments, and the change sweeps ring by ring. Rests as the neon ring.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "audio",
+        "loop"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "level",
+        "bass",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5"
+    },
+    {
+      "slug": "neon-halo-turbine",
+      "description": "A glowing neon armature of nesting rings. Archetypes shift from a delicate cyan halo, to a pulsing violet turbine, to an intense magenta starburst. Rings expand with bass, rotate with mids, and spark with treble.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 4,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "neon-lace-peacock",
+      "description": "A neon lace peacock: ninety filaments fanning out of a ringed core, with twelve whiskers past them and eight petals drifting outside, the core and petals unchanging. Each filament is one primitive under five interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: feather blade, lace filament, barbed quill, hair whisker. Bass feathers the fan, treble strips it to hair. Rests as the lace filament.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "lace",
+        "psychedelic",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "neon-lotus-engine",
+      "description": "A mechanical lotus drawn in pure neon light around a glowing heart that never changes, its three petal rings each changing species on their own schedule. Each ring is one arc under five interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: broad bloom petal, neon petal, barbed lance, needle ray. Bass blooms the lotus, treble hones it to rays. Rests as the neon petal.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "armature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "neon-pendulum-wave",
+      "description": "Ring of sixteen neon pendulums at harmonic frequencies, weaving mesmerizing alignment waves. Rests as warm amber necklace, bass thickens to heavy chained orbs, treble scatters to bright spark constellation.",
+      "categories": [
+        "generative",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 5,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-4.6"
+    },
+    {
+      "slug": "neon-ribcage",
+      "description": "A hovering bioluminescent ribcage of neon arcs in cyan and violet, hung on a spine that never changes, its seven rib pairs each changing species on their own schedule. Each rib is one two-segment bone under six interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: heavy plate rib, neon rib, hooked barb, hair filament. Bass plates the cage, treble strips it to filaments. Rests as the neon rib.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "skeletal",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "level",
+        "bass",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "neon-scorpioid-armature",
+      "description": "A neon scorpioid armature with jointed skeletal ribs and a glowing energy core. Morphs through four neon forms: armoured plate, skeletal ribcage, barbed pincers, and filament nova. Bass swells the ribcage, treble sharpens the neon glow, and onsets snap the archetypes. Rests as the skeletal ribcage.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "armature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "nested-aurora-veils",
+      "description": "Five nested veils of light, each an ellipsoid solved in closed form and composited outer to inner without a single march step, every one carrying its own drifting curtain pattern; it rests as one dense pearl and separates into spaced veils and then into a wide nested cage of tilted shells as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "volumetric"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "nimbus-spikeball",
+      "description": "A luminous volumetric spikeball of glowing fog, icosahedral spines breathing as one primitive under interpolated sharpness and reach, morphing through four forms: dense pollen cloud, classic mist urchin, living anemone, needle nova. Bass swells the volume, mid warps the grain, treble hones the spines. Rests as the mist urchin.",
+      "categories": [
+        "generative",
+        "morph",
+        "volumetric",
+        "audio",
+        "3d"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "Cursor Grok 4.6"
+    },
+    {
+      "slug": "nova-spiral-shroud",
+      "description": "A volumetric nova shroud: a lens of glowing gas wrapped in ridged spiral filaments around a white-hot nucleus, built from the widely-shared Shadertoy supernova technique (a lens primitive summed with ridged spiral noise, not an original Adits concept). It turns once per loop while a closed drift path slides its interior through it. Bass thickens the gas and opens the shroud out, mid sloshes and twists the interior, treble draws the filaments finer, beats brighten the nucleus, a kick inflates it.",
+      "categories": [
+        "generative",
+        "volumetric",
+        "raymarching",
+        "nebula",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "beat"
+      ],
+      "credit": "claude-opus-5",
+      "techniqueNote": true
+    },
+    {
+      "slug": "obsidian-ammonite-crux",
+      "description": "A glossy obsidian biomechanical ammonite crux with segmented whorls, pulsating energy septa, and articulated dorsal ribs. Spectral audio morphs it from a tight fossilized relic, to an arched ribbed turbine, to an open radiating biomech organism.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-bipyramid-harness",
+      "description": "A glossy obsidian bipyramidal cage enclosing a pulsing bioluminescent core. It rests as a smooth fused carapace pod, unfolds into an articulated skeletal harness, and extends into a needle-spined polyhedral star under spectral audio drive.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-caduceus-diadem",
+      "description": "An obsidian biomech caduceus diadem featuring double-helix chitinous tendrils wrapping a ribbed core spire, spectrally morphing into an unfolding bio-armature and a flared crown diadem under audio drive.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-caliper-diadem",
+      "description": "An obsidian biomech diadem with articulated caliper jaws and a glowing central core. Spectrally morphs between a compact pod vessel, an articulated caliper crown, and a flared biomech diadem.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-calyx-coronet",
+      "description": "A biomechanical obsidian calyx enclosing a bio-luminescent core. Spectrally morphs from an armored pod to a flared coronet and an aggressive fanged crown as higher frequencies dominate.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-censer-vault",
+      "description": "A floating biomechanical censer enclosed by nested obsidian vault arches. Low frequencies swell the heavy central vessel, mids rotate the floating mechanical ribs, and highs ignite glowing energy seams across its carapace.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-chimera-carapace",
+      "description": "An obsidian carapace of banded armour, unchanging, wearing a fringe of eighteen appendages that each change species on their own schedule. Each is one blade under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four keratin forms: overlapping scale, serrated mandible, sickle talon, needle quill. Bass armours the fringe into a pangolin, treble strips it to a porcupine, and the change sweeps head to tail one edge at a time. Rests as the mandible form.",
+      "categories": [
+        "generative",
+        "morph",
+        "obsidian",
+        "metal",
+        "creature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 18,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "obsidian-chitin-astrolabe",
+      "description": "Glossy obsidian chitin astrolabe morphing spectrally between three biomechanical forms: a heavy 7-segmented trilobite carapace under bass, a 12-blade layered chitin astrolabe rotor in the mids, and a 24-spire chitin needle crest under treble. Driven by spectral tilt and onset pulses, resting at silence on the astrolabe rotor.",
+      "categories": [
+        "generative",
+        "morph",
+        "biomech",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 5,
+      "audioBinds": [
+        "bass",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-chitin-clepsydra",
+      "description": "An obsidian chitin clepsydra water-glass featuring vertical hourglass ribs over a glowing crimson plasma vessel, spectrally morphing through three biomech archetypes: Armored Clepsydra, Open Lattice Water-Glass, and Flared Needle Siphon. Rests on the Open Lattice Water-Glass at silence.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-clepsydra-pinnacle",
+      "description": "A 3D obsidian clepsydra vessel with sweeping biomechanical ribs and bioluminescent core veins. Morphs spectrally between chalice vault, biconical spire, hourglass cage, and orbital rotor. Bass expands the vessel waist, mid tilts the rib precession, and treble flares the specular rims.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-clepsydra-vessel",
+      "description": "An obsidian biomech water-vessel that spectrally morphs between a bulbous ovoid pod, a flared dual-chambered clepsydra, and a crown-flared hydraulic sanctum.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-diadem-crucible",
+      "description": "An obsidian diadem vessel that spectrally morphs between a bulbous biomech pod, a flared fluted chalice, and a multi-tiered crowned crucible. Bass carves deep vertical flutes, mid flares the crown blades, and treble ignites cyan rim fresnel highlights.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-horologium-sextant",
+      "description": "A glossy obsidian sextant whose mechanical arc morphs spectrally: resting as an articulated heavy monolith, opening into a dual-vernier gimbal ring on mid frequencies, and blossoming into a radiant precision needle array on high transients.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-hyperboloid-caduceus",
+      "description": "Intertwined obsidian biomech helix coiling within an articulated hyperboloid cage. Bass expands the central core, mid drives counter-rotational twist, and treble ignites glowing chitin veins.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-hyperboloid-pinnacle",
+      "description": "A double-ruled obsidian hyperboloid with flared end-caps and an inner emissive core. Morphing from a monolithic ribbed cage to an open helical lattice and spiked crown pinnacles.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-keystone-obelisk",
+      "description": "An ancient obsidian keystone monolith whose carved core splits, levitates, and flares into winged armor fins as music shifts from deep bass monolith to mid-band levitating plates and treble star spire.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-knuckle-arachnid",
+      "description": "A raymarched arachnid of obsidian and iridescent metal, its rippled core and five counter-rotating tendrils unchanging, its eight knuckled legs changing species together under spectral balance. The leg is one beaded capsule under ten interpolated numbers, so the body morphs by deforming through four forms: crab claw, knuckled spider leg, harvestman stilt, beaded filament. Bass extends the span, mid drives the obsidian-to-metal blend, treble fires the pulse. Rests as the spider leg.",
+      "categories": [
+        "raymarching",
+        "morph",
+        "creature",
+        "metal",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "obsidian-lattice-thurible",
+      "description": "A suspended biomechanic thurible of high-gloss obsidian and lattice vents enclosing a burning plasma core. Morphs spectrally through four archetypes: monolithic censer, filigree lattice lantern, stellate ring censer, and needle corona thurible.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "mid",
+        "bass",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-mantis-crown",
+      "description": "A wet obsidian mantis crown on a segmented spine caged by four whisker arcs, neither of which changes, wearing seven limb pairs that each change species on their own schedule. Each limb is one chain under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: armour plate, vertebra limb, barbed sickle, hair feeler. Bass armours the crown, treble strips it to feelers. Rests as the vertebra limb.",
+      "categories": [
+        "generative",
+        "morph",
+        "creature",
+        "obsidian",
+        "dark",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "obsidian-merkabah-sanctuary",
+      "description": "A star-tetrahedral obsidian sanctuary floating in space, morphing from a fused geometric vault into an unfolded counter-rotating Merkabah cage exposing a glowing crystalline core.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-monstrance-totem",
+      "description": "A monumental obsidian biomech monstrance whose architectural archetypes shift spectrally: resting as a heavy ribbed monolith, expanding into an articulated halo relic, and unfolding into radiating spires under treble drive.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-orrery-clepsydra",
+      "description": "A 3D kinetic obsidian clepsydra orrery: concentric polished black-stone rings and precessing satellite nodes orbit an audio-reactive emissive core, morphing between a fused heavy equatorial vessel, a tri-axial astrolabe, and an expanded stellar spindle.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "obsidian"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-sentinel",
+      "description": "A glossy obsidian insectoid sentinel on a segmented near-black core that never changes, its limbs each changing species on their own schedule. Each limb is one tapered spike under six interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: armour paddle, serrated limb, barbed sickle, hair needle. Bass armours the sentinel, treble strips it to needles, and the change sweeps limb by limb. Rests as the serrated limb.",
+      "categories": [
+        "generative",
+        "morph",
+        "creature",
+        "dark",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 6,
+      "audioBinds": [
+        "level",
+        "bass",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5"
+    },
+    {
+      "slug": "obsidian-solenoid-coronet",
+      "description": "An obsidian biomechanical coronet featuring helical solenoid coils and articulated claw-ribs around a glowing central spire, morphing spectrally between a dense spiked crown, an orbiting solenoid cage, and a flared needle starburst.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 5,
+      "audioBinds": [
+        "bass",
+        "mid"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-spine-helix",
+      "description": "A near-black obsidian double helix wound around a bright axial filament, turning once per loop with every edge rim-lit. Each vertebra is one bead-and-process primitive under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: stacked plate, processed vertebra, swept barb, radiating quill. Bass widens the helix, mid twists it, treble ignites the rims, and the change climbs the spine. Rests as the processed vertebra.",
+      "categories": [
+        "generative",
+        "morph",
+        "obsidian",
+        "biomech",
+        "helix",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-tergite-exoskeleton",
+      "description": "A vaulted 3D biomechanical arthropod exoskeleton with segmented dorsal tergites and sweeping lateral pleural spines. Bass swells the dorsal vault, mid flares the pleural sweep, and treble sharpens the bioluminescent rim.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-thurible-sanctum",
+      "description": "A suspended 3D obsidian thurible whose carved biomechanical shell opens under spectral drive to expose a glowing core: rests as a closed monolithic censer, separates into three stacked floating tiers, and flares open into an ornate six-finned sanctuary.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-vanguard-phylactery",
+      "description": "A glossy obsidian reliquary hovering in 3D space, morphing spectrally between a heavy rib-caged armored vessel, a triple-ringed biomechanical sentinel, and a radiating crystal starburst.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-vespid-astrolabe",
+      "description": "An obsidian biomech astrolabe with vespid armatures morphing across four spectral archetypes: Carapace Vault, Mantis Spire, Astrolabe Ring, and Needle Nova Star.",
+      "categories": [
+        "generative",
+        "morph",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "obsidian-votive-caduceus",
+      "description": "A volumetric obsidian caduceus staff with entwined helical strands and an unfolding winged crest. Bass thickens the central spine, mid drives helical twist rate, and treble ignites the inner emissive conduits.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "oilslick-orchid-arachnid",
+      "description": "An oil-slick orchid arachnid on a ribbed spine and three antlers that never change, wearing five frond pairs that each change species on their own schedule. Each is one plated blade under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: scale plate, chevron frond, barbed sickle, oil needle. Every rib edge still splits into a real dispersion fringe. Bass plates it, treble hones it to needles. Rests as the chevron frond.",
+      "categories": [
+        "generative",
+        "morph",
+        "iridescent",
+        "chroma-split",
+        "creature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "orbital-ring-station",
+      "description": "An orbital ring station: a ribbed habitat wheel with lit window bays, four spokes into a docking hub, and an antenna mast through the axis. The whole station is one distance field under fifteen interpolated numbers, so it morphs by deforming rather than cross-fading, through four hulls: heavy drum, habitat wheel, bladed rotor, needle array. Bass swells the wheel, mid flares the collector blades, treble draws the mast and radial needles out. Rests as the habitat wheel.",
+      "categories": [
+        "generative",
+        "morph",
+        "station",
+        "orbital",
+        "metal",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5",
+      "techniqueNote": true
+    },
+    {
+      "slug": "pansy-void-starburst",
+      "description": "A raymarched obsidian void flower hovering on a 24 fps kinetoscope step, its iridescent rim and hovering gait unchanging, its fourteen petals changing species together under spectral balance. The petal field is one lobed extrusion under seven interpolated numbers, so the body morphs by deforming, not cross-fading, through four forms: heavy obsidian bulb, fourteen-petal pansy, long urchin spine, needle nova. Bass extends the petals, mid warps the surface, treble lifts the rim. Rests as the pansy.",
+      "categories": [
+        "raymarching",
+        "morph",
+        "creature",
+        "void",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "pearlescent-caustic-bloom",
+      "description": "An iridescent organo-metallic membrane iris with pearlescent vesicular petals, a glowing chartreuse caustic core, and prismatic dispersion fringes. Spectrum morphs across a deep obsidian chrysalis, a translucent vesicle orchid, and a crystalline filament star.",
+      "categories": [
+        "generative",
+        "morph",
+        "spectral",
+        "audio",
+        "psychedelic"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 5,
+      "audioBinds": [
+        "mid",
+        "treble",
+        "bass",
+        "level"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "petal-bloom",
+      "description": "A six-petal bloom with three sparks orbiting it, the sparks unchanging. The petal profile is one lobe field under five interpolated numbers, so the bloom morphs by deforming, not cross-fading, through four forms: round bulb, six-petal bloom, starburst, needle star. Bass rounds it into a bulb, treble hones it to needles, and the change crosses the bloom as a wave. Rests as the six-petal bloom.",
+      "categories": [
+        "generative",
+        "morph",
+        "bloom",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 8,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5"
+    },
+    {
+      "slug": "phyllotaxis-ember-corona",
+      "description": "Two counter-rotating phyllotaxis blooms unfurl from a shared core. The spectral balance morphs the petals from a round warm ember bud toward a needle-sharp violet burst, resting on a cool cyan form in silence, while kicks and hats snap the shift and beats flash the tips.",
+      "categories": [
+        "generative",
+        "bloom",
+        "morph",
+        "audio",
+        "raymarching"
+      ],
+      "alpha": "premultiplied",
+      "loop": 4,
+      "inputs": 4,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5"
+    },
+    {
+      "slug": "plaited-corona-ring",
+      "description": "A ring plaited from luminous strands whose cross-section is stirred by an iterative flow warp, so the whole braid creeps like liquid metal under an oil film; it rests as one thick fused rope and opens into a five-strand plait and then an eleven-strand frayed cable as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "iridescent"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "plankton-lantern-swarm",
+      "description": "A bioluminescent siphonophore: one glowing strand closed into a precessing three-lobed clover around a nucleus that never changes, beaded with twenty-four lanterns that each change species on their own schedule. Each lantern is one anisotropic bead under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: spore bulb, haloed plankton, trailing comet, radial needle. Bass widens the clover, mid scallops it, treble hones every core. Rests as the plankton.",
+      "categories": [
+        "generative",
+        "morph",
+        "particle",
+        "bloom",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 8,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "porcelain-lambdabulb-organism",
+      "description": "Living 3D Lambdabulb bio-fractal organism with sculpted porcelain cauliflower folds, copper-peach mantle crevices, undulating radial tubular crown tendrils, and pulsing iridescent rainbow spark embers. Bass expands fractal power and radial crown volume, mid twists logarithmic petal swirls, treble sharpens pearlescent micro-ridges, and beats ignite internal bioluminescent photonic surges.",
+      "categories": [
+        "generative",
+        "fractal",
+        "3d",
+        "organism",
+        "bioluminescence",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 4,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "beat"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "porous-sponge-monolith",
+      "description": "A cavernous porous sponge monolith morphing between volcanic basalt pumice, marine biocoral aerogel, and an iridescent nano-porous crystal resonator with pulsating core caverns.",
+      "categories": [
+        "generative",
+        "morph",
+        "3d",
+        "audio",
+        "organic"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "level",
+        "treble"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "prismatic-barb-star",
+      "description": "An eleven-spined barb star that eclipses to a black silhouette twice per loop, its nucleus unchanging, every spine changing species on its own schedule. Each is one knotted chain under seven interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: pod club, barb spine, serrated lance, hair needle. Every edge still splits into a prismatic fringe. Bass clubs the star, treble hones it to needles. Rests as the barb spine.",
+      "categories": [
+        "generative",
+        "morph",
+        "iridescent",
+        "chroma-split",
+        "star",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "prismatic-cube-resonator",
+      "description": "A cube armature of chrome spheres and glowing edge beams that morphs through its spectral identity: heavy copper orb-lattice at bass, a folded prismatic organ in the mids, and a 24-spike iridescent nova at treble. At silence it rests on the cube lattice.",
+      "categories": [
+        "generative",
+        "morph",
+        "geometric",
+        "audio",
+        "3d"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 5,
+      "audioBinds": [
+        "bass",
+        "level"
+      ],
+      "credit": "claude-sonnet-4-6"
+    },
+    {
+      "slug": "prismatic-lattice-burst",
+      "description": "A counter-rotating starburst of magenta, violet and emerald struts beaded with drifting light nodes, around a core and three orbiting sparks that never change. Each strut is one line under six interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: heavy bar, neon strut, beaded lance, hair ray. Bass bars the burst, treble draws it to hair, and the change sweeps strut by strut. Rests as the neon strut.",
+      "categories": [
+        "generative",
+        "morph",
+        "lattice",
+        "neon",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5"
+    },
+    {
+      "slug": "prismatic-quaternion-helix",
+      "description": "A polished quaternion Julia fractal: an interlocking chrome ribbon that continuously twists and reforms. Bass swells its glow and reach, mid warps and tilts the fractal's own core parameter for a real silhouette change, treble tightens filament banding into sparkle, and beats snap a bright pulse through the surface.",
+      "categories": [
+        "generative",
+        "fractal",
+        "quaternion",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 5,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5"
+    },
+    {
+      "slug": "prismatic-rhombic-clepsydra",
+      "description": "A dual-conical rhombic crystal clepsydra: resting as a sealed faceted hourglass, unspooling into counter-rotating interlocking crystal rings, and expanding into a stellated prismatic lattice with orbiting gem beads as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "prismatic"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "pyroclast-fissure-core",
+      "description": "A mass of cooled basalt lit from inside by a crawling network of incandescent fissures, wrapped in a heat corona traced from how near each ray passed; it rests as a heavy round slag boulder and is recut into a fissured anvil slab and then a six-pointed cinder jack as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "fractal"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "quartic-prism-bead",
+      "description": "A solved glass bead: the quartic surface it is cut from is intersected in closed form rather than marched, so its edges stay razor sharp at any size, and the ray is refracted at the way in and again at the way out to read the interior; it rests as a soft rounded pebble and hardens into a squared bead and then a near-cubic prism as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "crystal"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "quicksilver-rosary",
+      "description": "A ring of mercury beads whose blend radius is the whole morph: it rests as one fused lobed mass, parts into a rosary of seven distinct beads, and breaks into fourteen small ones flung wide as the spectrum brightens, the film hue keyed to the grazing angle so the chrome stays vivid instead of muddying.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "iridescent"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "radiant-plasma-tendrils",
+      "description": "A swirling cosmic plasma orb featuring volumetric fluid tendrils and inner turbulent flow reflection. The sphere frame stays strictly locked in size while audio dynamically multiplies the number of writhing tendril rays, extends their reach, and accelerates plasma turbulence.",
+      "categories": [
+        "3d",
+        "volumetric",
+        "plasma",
+        "generative",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 4,
+      "audioBinds": [
+        "level",
+        "bass",
+        "mid",
+        "hat"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "rainbeaded-enamel-gourd",
+      "description": "A rain-beaded enamel gourd under a two-layer coat: clear lacquer reflects its own Fresnel share and passes the rest down to a pigmented base with metallic flake, and every flake carries its own normal, so the sparkle comes and goes with the angle a real show finish does. The droplets are geometry bumped into the field on a jittered lattice, each a lens with a water Fresnel and a bright meniscus. It rests as a fat black-cherry pear, drenches into a calabash, then squats into a ribbed gourd.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "lacquer"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "reticulate-spore-cage",
+      "description": "A spore shell reduced to the struts between its own windows, folded into icosahedral symmetry so one evaluation draws all sixty of them, with a spine standing on every vertex and a lit body caught inside; it rests as a closed thick-walled husk and opens into a strutted cage and then a fine reticulum of long spines as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "organic"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "rocaille-scroll-medallion",
+      "description": "A baroque medallion of scrolled rocaille, its ornament built from six layers of a turbulence that folds a coordinate back through itself, cut in relief on a shallow disc and mirrored into an eight-fold wedge; it rests as a heavy cartouche with few deep scrolls and works itself into a fine filigree and then a pierced lace as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "ornament"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "rose-flagellate-polyp",
+      "description": "A coral colony grown by a smooth-mirror recursive fold, on the bifurcating sphere-chain construction from a widely shared Shadertoy creature. Ten folds give limbs that writhe, a tail that lashes, and a swell travelling out along the chain, every joint on its own clock. Twelve numbers morph it through four forms: fused rose polyp, branched coral hand, two-ended spined spindle, pearl quill nova. Bass swells the lobes, mid writhes it, treble hones the nap. Rests as the coral hand.",
+      "categories": [
+        "raymarching",
+        "morph",
+        "recursive",
+        "coral",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5",
+      "techniqueNote": true
+    },
+    {
+      "slug": "saccadic-vigil-eye",
+      "description": "An obsidian eye that holds the viewer, darts away in hard saccades and blinks behind a turning armature; it rests as a hooded lidded orb and morphs into an aperture of nine blades and then a corona of needles as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "satellite-mandala",
+      "description": "A kinetic satellite mandala: a faceted low-poly core that never changes, ringed by thirty-two satellites on a Fibonacci shell that each change species on their own schedule. Each is one orb, spoke and needle under six interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: heavy orb, spiked orb, barbed spike, needle node. Bass swells the shell into orbs, treble draws it out to needles. Rests as the spiked orb.",
+      "categories": [
+        "generative",
+        "morph",
+        "mandala",
+        "lowpoly",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "level",
+        "bass",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "silk-fiber-sheaf",
+      "description": "A sheaf of silk fibres shaded with the three paths light really takes through a strand: R off the surface, TT straight through, and TRT in and off the far wall and out. Each path's highlight is a cone about the fibre axis, and the cuticle tilt shifts each cone differently, which is what separates the white primary band from the coloured secondary. It rests as a tight vertical hank, splays into a horsetail whisk, then blows open into a radial corona where the secondary blazes.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "filament"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "sinew-wound-trefoil",
+      "description": "A wet black knot laced with glowing veins, traced from a ridged field that rotates itself as it climbs in frequency so the partings wind around the body rather than sitting flat on it; it rests as a heavy three-crossing trefoil and tightens into a five-crossing knot and then a seven-crossing cable as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "skeletal-orbital-prism",
+      "description": "A 3D morphing relic uniting a faceted crystal prism under bass, a biomechanical skeletal vertebrae ribcage in the mids, and an armillary celestial gyro under treble. Rests in silence on the faceted jewel.",
+      "categories": [
+        "generative",
+        "3d",
+        "morph",
+        "biomech",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-3.8-flash"
+    },
+    {
+      "slug": "soapfilm-wire-chalice",
+      "description": "Soap films on a wire chalice, coloured by real interference: thickness is carried in nanometres, the optical path difference is taken through the refracted angle, and each channel beats against its own wavelength, so the colours run Newton's series and the drained top goes properly black instead of pale. The films are catenoids, the surface soap actually makes between two rings. It rests as a wide two-ring hourglass, narrows into a pinched goblet, then packs into a five-ring lantern.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "iridescent"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "sparkler-gyro-cage",
+      "description": "Seven great-circle wires tumbling as one gyroscopic cage around six warm sparkler bursts that never change, each wire changing species on its own schedule. Each is one hoop and node under five interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: heavy band, gyro wire, barbed hoop, hair filament. Bass bands the cage, treble strips it to filaments. Rests as the gyro wire.",
+      "categories": [
+        "generative",
+        "morph",
+        "gyroscope",
+        "sparkler",
+        "armillary",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "spectral-laser-insectoid",
+      "description": "A bilateral cyber-insectoid drawn only in laser filaments, its beaded spine and green head orb unchanging, wearing five mirrored limb pairs that each change species on their own schedule. Each limb is one two-segment articulated arm under eight interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: short armour claw, curved neon arc, long laser lance, beaded hair needle. Bass swells the glow, mid opens the sweep, treble hones the filaments. Rests as the neon arc.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "creature",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 10,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "spectral-mandel-cycler",
+      "description": "An electric Mandelbrot orbit trap resonator with dual travelling cycle detectors, logarithmic spiral energy guides, and audio-reactive spectral morphing. Deep bass triggers gravitational contraction and molten gold-indigo plasma; mid frequencies swirl dual cyan-violet orbit traps; treble ignites laser rainbow ribbons and sharp needle filaments. Rests in silence on the dual-orbit seahorse cycler.",
+      "categories": [
+        "generative",
+        "fractal",
+        "morph",
+        "audio",
+        "neon"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "spectral-morph-triad",
+      "description": "Three objects in one file, with the spectrum choosing: a heavy five-lobed obsidian bulb when the bass owns the mix, a squat thirteen-blade plated chrome rotor through the mids, and a thirty-six needle acid nova when the treble takes over. The selector is the balance of the three band levels, expanded hard and shoved by hat and kick onsets, so the identity changes within a beat rather than over a bar. At silence it rests on the chrome rotor.",
+      "categories": [
+        "generative",
+        "morph",
+        "spectral",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "standing-wave-bell",
+      "description": "A hollow bell of light whose wall is a stack of standing wave modes, mirrored about its equator and drawn by accumulating glow through both walls, so the far side interferes with the near one; it rests as a slow banded shell and tightens into a ripple rosette and then a bristling interference star as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "volumetric"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "stellar-void-orb",
+      "description": "A luminous nebula orb that pulses and morphs between four cosmic archetypes, reacting to audio bands.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "nebula"
+      ],
+      "alpha": "premultiplied",
+      "loop": 12,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-2.5-pro (Jules)"
+    },
+    {
+      "slug": "stipple-fern-spire",
+      "description": "A stipple spire of nine discs stacked up a beaded axis that never changes, each tier changing species on its own schedule. Each is one stippled disc under six interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: broad plate, stipple disc, scalloped ring, needle ring. Bass broadens the tiers, treble narrows them to rings, and the change climbs the spire tier by tier. Rests as the stipple disc.",
+      "categories": [
+        "generative",
+        "morph",
+        "halftone",
+        "stipple",
+        "spire",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "treble",
+        "level"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "stormcell-anvil-cloud",
+      "description": "A dark storm cell lit mostly from inside by its own discharges, with a second short ray marched toward the sun at every sample so the mass casts shadows onto itself; it rests as a dense low cumulus and builds an anvil head and then a torn shear wall as the spectrum brightens, the lightning firing on every beat.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "volumetric"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "systolic-trilobe-viscus",
+      "description": "A beating three-chambered body of translucent flesh lit from inside by the vessels growing through it, read where the refracted ray reaches them so the network sits under the skin with real parallax; it rests as one round blob and separates into three turgid chambers and then into a deeply scooped lobed mass as the spectrum brightens, a systolic front leaving each nucleus on every kick.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "organic"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "titanium-kifs-relic",
+      "description": "A hard-surfaced titanium relic built from four octahedral KIFS folds, tumbling on a fixed loop with every corner rim-worn. The fold chain is one primitive under nine interpolated numbers, so the solid morphs by deforming, not cross-fading, through four forms: blocky monolith cluster, spiked relic, tall spire stack, thin blade shard. Bass deepens the hinge breathing, mid opens the second hinge, treble raises the edge wear. Rests as the spiked relic.",
+      "categories": [
+        "raymarching",
+        "morph",
+        "solid",
+        "mechanical",
+        "fractal"
+      ],
+      "alpha": "premultiplied",
+      "loop": 24,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "tokamak-fusion-reactor",
+      "description": "A magnetic confinement fusion tokamak featuring D-shaped toroidal field coils, a central solenoid transformer, and a burning thermonuclear plasma torus with helical magnetic flux lines and Bremsstrahlung emission, morphing spectrally between quiescent H-mode confinement, twisted helical stellarator mode, and turbulent filamentary ELM bursts.",
+      "categories": [
+        "generative",
+        "3d",
+        "physics",
+        "audio",
+        "morph"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "gemini-3.8-flash"
+    },
+    {
+      "slug": "ultramarine-blade-nova",
+      "description": "A starburst of flat kite-cut glass blades around a white-hot nucleus, each blade a translucent ultramarine crystal lit from inside by marbled veins that crawl along its length; it rests as a corona of a few great petals among small motes, spreads into a wide ring of dark slabs with glowing veins, and closes into a dense needle nova as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "crystal"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-fable-5-1"
+    },
+    {
+      "slug": "umbral-shard-cocoon",
+      "description": "An alien seed pod tumbling slowly in the dark: twelve faceted shell plates, set on a dodecahedral frame, hinged open around a pulsing plasma core along bioluminescent seams. Bass blooms the shell open to reveal the core, mid sets the pod's zero-gravity tumble, treble sharpens the glowing seams, and kicks make the whole shell flinch wider.",
+      "categories": [
+        "generative",
+        "alien",
+        "space",
+        "raymarching",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": null,
+      "inputs": 5,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-sonnet-5"
+    },
+    {
+      "slug": "vaporous-vigil-wraith",
+      "description": "A hooded revenant of luminous vapour with two embers burning where its face should be, drawn by how deep each ray sank into the body rather than by shading a surface, so it has no skin to catch the light; it rests as a gathered figure and unfurls into a billowing shroud and then tears into a spray of wisps as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "volumetric"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "veined-wing-diptych",
+      "description": "A bilateral pair of membrane wings on a slim spine, their veins drawn by onion shells cut through a domain that is itself warped, so the venation ripples with the membrane instead of being painted flat on it; it rests folded and half-lit and opens to a spread pair and then to long swept primaries as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "organic"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "veinlit-obsidian-deity",
+      "description": "A near-black baroque mass, mirrored into a Rorschach and fringed with feathered wisps, its silhouette unchanging and its whole surface tiled with glowing hooks that each change species on their own schedule. Each hook is one arc under five interpolated numbers, so it morphs by deforming, not cross-fading, through four forms: fat scale, crescent hook, barbed claw, hair filigree. Bass plates the surface, treble etches it. Rests as the crescent hook.",
+      "categories": [
+        "generative",
+        "morph",
+        "obsidian",
+        "baroque",
+        "neon",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 22,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "velvet-antler-crown",
+      "description": "A pair of antlers still in velvet, shaded with an inverted microfacet lobe: the sheen distribution peaks at grazing incidence instead of head-on, so the light gathers into a fuzzy halo along the silhouette rather than a highlight on the front, and a backscatter term brightens the nap wherever the key swings round toward the eye. It rests as a young spike pair, grows into a full pearled four-point rack, then strips to hard polished bone whose sheen gives way to a mirror gloss.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "skeletal"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "voidlit-octopod-nocturne",
+      "description": "An eight-armed deep-sea cephalopod in obsidian biomech with bright rim light, the spectrum morphing it between a furled bass-heavy knot, a drifting octopus with photophore suckers travelling out along each arm, and a long thin treble lash nova. Bass swells the mantle, mid writhes the arms, treble lights the suckers, and every beat flashes the glossy hood. It rests as the drifting octopus.",
+      "categories": [
+        "generative",
+        "morph",
+        "biomech",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-4-8"
+    },
+    {
+      "slug": "voltaic-jellyfish-lantern",
+      "description": "A bio-electric deep-sea jellyfish lantern whose bioluminescent bell and trailing voltaic tentacles morph across four archetypes under spectral balance. A relaxed radial bell under bass contracts into a pulsing mantle with trailing streams, fractures into a neural filament web, then ignites into a voltaic crown nova under treble.",
+      "categories": [
+        "generative",
+        "morph",
+        "bioluminescent",
+        "creature",
+        "neon",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-sonnet-4-6"
+    },
+    {
+      "slug": "voltaic-mandala-scarab",
+      "description": "A bioluminescent cybernetic entity that morphs through four distinct archetypes: a radiant needle starburst rosette, an electric filigree mantis with arched plasma tendrils, a faceted polyhedral chitin carapace, and orbiting chevron rune sentinels.",
+      "categories": [
+        "generative",
+        "morph",
+        "neon",
+        "creature",
+        "sacred",
+        "audio"
+      ],
+      "alpha": "premultiplied",
+      "loop": 20,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "treble"
+      ],
+      "credit": "gemini-3.7-flash"
+    },
+    {
+      "slug": "votive-shard-mask",
+      "description": "A hollow volcanic-glass mask lit from behind its own eye and mouth voids, its face broken by an octahedral fold that rotates itself each pass so the cracks run at every angle; it rests as a smooth plate and grows a pair of horns and then splits into a floating cage of shards as the spectrum brightens.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "biomech"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 7,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble"
+      ],
+      "credit": "claude-opus-5"
+    },
+    {
+      "slug": "voxel-matrix-resonator",
+      "description": "A circular matrix of kinetic voxel columns and volumetric god rays that morphs across spectral archetypes: brutalist obsidian monoliths at bass, a spiraling geometric citadel in the mids, and an iridescent laser spire grid at treble.",
+      "categories": [
+        "generative",
+        "morph",
+        "geometric",
+        "audio",
+        "3d"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 6,
+      "audioBinds": [
+        "bass",
+        "level",
+        "mid"
+      ],
+      "credit": "Gemini 3.7 Flash"
+    },
+    {
+      "slug": "weathered-cairn-totem",
+      "description": "A balanced cairn of eroded river stones, carried by the two things that actually sell physical presence: five-tap distance-field occlusion darkening every contact where two stones meet, and a real penumbra-traced soft shadow so each stone lays a soft edge on the one below. A rising waterline splits wet stone from dry. It rests as a squat cobble cairn of pale granite, stacks into a tall precarious spire of wet slate plates, then shatters into an angular obsidian shard pile.",
+      "categories": [
+        "generative",
+        "3d",
+        "audio",
+        "morph",
+        "obsidian",
+        "stone"
+      ],
+      "alpha": "premultiplied",
+      "loop": 16,
+      "inputs": 8,
+      "audioBinds": [
+        "bass",
+        "mid",
+        "treble",
+        "kick"
+      ],
+      "credit": "claude-opus-5"
+    }
+  ]
+}
