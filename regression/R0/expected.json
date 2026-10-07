@@ -1,0 +1,41 @@
+{
+  "job": "R0 mop-star rebuild",
+  "phase": "P0",
+  "inputs": {
+    "video": "D:/Video/101066-video-1080.mp4",
+    "audio": "D:/Music/Audio files/Songs Sound Clips/Paper ring - taylor swift.mp3"
+  },
+  "render": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 24,
+    "duration": 16.88,
+    "silence": [
+      "4.02-4.18"
+    ]
+  },
+  "audio": {
+    "integratedLufs": [
+      -15,
+      -13
+    ],
+    "truePeakMax": -1,
+    "gainReductionInLog": false,
+    "mixCheckPredictionMatchesRenderWithinLu": 0.3
+  },
+  "reference": {
+    "file": "videos/mop-star-trailer/renders/mop-star-trailer.mp4",
+    "psnrMinDb": 50
+  },
+  "lastRun": {
+    "date": "2026-10-07",
+    "integratedLufs": -13.9,
+    "truePeakDb": -1.3,
+    "mixCheckLufs": -13.9,
+    "mixCheckTruePeak": -1.3,
+    "psnrAvgDb": 72.4,
+    "psnrMinDb": 58.3,
+    "renderSeconds": 160,
+    "result": "pass"
+  }
+}

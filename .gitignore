@@ -1,0 +1,30 @@
+# Machine-specific config (absolute paths live here)
+config/workspace.local.json
+
+# Large or generated
+models/
+tools/voice/.venv/
+node_modules/
+.hyperframes/
+snapshots/
+renders/
+*.mp4
+*.mov
+*.webm
+*.wav
+*.mp3
+!library/sfx/*.wav
+!library/sfx/*.mp3
+
+# User media and job working files
+inbox/*
+!inbox/README.md
+!inbox/prompt.template.md
+jobs/*/assets/
+videos/*/assets/
+jobs/*/data/frames/
+regression/*/out/
+
+# Python
+__pycache__/
+*.pyc

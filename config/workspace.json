@@ -1,0 +1,33 @@
+{
+  "$comment": "Committed defaults. Machine-specific absolute paths go in workspace.local.json (git-ignored). Relative paths resolve against the repo root.",
+  "hyperframes": {
+    "pluginRoot": null,
+    "launcher": "skills/hyperframes/scripts/plugin-cli.mjs"
+  },
+  "bin": {
+    "ffmpeg": "ffmpeg",
+    "ffprobe": "ffprobe",
+    "python311": null
+  },
+  "paths": {
+    "library": "library",
+    "templates": "templates",
+    "jobs": "jobs",
+    "inbox": "inbox",
+    "models": "models",
+    "regression": "regression",
+    "voiceVenv": "tools/voice/.venv"
+  },
+  "fonts": {
+    "label": null
+  },
+  "defaults": {
+    "template": "vertical-1080x1920",
+    "fps": 24,
+    "loudnessTarget": -14,
+    "truePeakCeiling": -1.0,
+    "musicLimitDb": -2.5,
+    "mode": null
+  },
+  "sources": {}
+}

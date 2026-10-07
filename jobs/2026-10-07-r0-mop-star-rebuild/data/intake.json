@@ -1,0 +1,53 @@
+[
+  {
+    "kind": "video",
+    "source": "D:/Video/101066-video-1080.mp4",
+    "asset": "assets/101066-video-1080.mp4",
+    "probe": {
+      "file": "E:\\Develop\\Antigravity_testing\\rapidContentGen\\jobs\\2026-10-07-r0-mop-star-rebuild\\assets\\101066-video-1080.mp4",
+      "duration": 12.804458,
+      "sizeBytes": 48628917,
+      "video": {
+        "codec": "h264",
+        "width": 1080,
+        "height": 1920,
+        "fps": 23.976023976023978,
+        "pixFmt": "yuv420p",
+        "aspect": 0.5625
+      },
+      "audio": [],
+      "notes": [
+        "No audio track: there are no spoken words to transcribe.",
+        "Source is 23.976 fps: slowing it below 1x will stutter. Use a freeze frame or interpolation instead."
+      ]
+    },
+    "sheet": "data/intake-101066-video-1080.png"
+  },
+  {
+    "kind": "audio",
+    "source": "D:/Music/Audio files/Songs Sound Clips/Paper ring - taylor swift.mp3",
+    "asset": "assets/Paper_ring_-_taylor_swift.mp3",
+    "probe": {
+      "file": "E:\\Develop\\Antigravity_testing\\rapidContentGen\\jobs\\2026-10-07-r0-mop-star-rebuild\\assets\\Paper_ring_-_taylor_swift.mp3",
+      "duration": 15.020375,
+      "sizeBytes": 240474,
+      "video": null,
+      "audio": [
+        {
+          "index": 0,
+          "codec": "mp3",
+          "sampleRate": 44100,
+          "channels": 2
+        }
+      ],
+      "loudness": {
+        "integratedLufs": -14.5,
+        "lra": 4,
+        "truePeakDb": 0.4
+      },
+      "notes": [
+        "True peak 0.4 dBTP is above -1: limit it before mixing (tools/audio/limit.mjs)."
+      ]
+    }
+  }
+]

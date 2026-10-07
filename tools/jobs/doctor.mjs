@@ -1,0 +1,52 @@
+// Workspace health check: config, binaries, HyperFrames plugin, Python, voice
+// venv, Kokoro weights, provenance. Read-only.
+//
+// Usage: node tools/jobs/doctor.mjs
+
+import { execFileSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { isMain } from '../lib/cli.mjs';
+import { loadConfig } from '../lib/config.mjs';
+import { checkLedger } from '../lib/provenance.mjs';
+
+function version(bin, args = ['-version']) {
+  try {
+    return execFileSync(bin, args, { encoding: 'utf8', windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] }).split('\n')[0].trim();
+  } catch {
+    return null;
+  }
+}
+
+export function doctor() {
+  const cfg = loadConfig({ fresh: true });
+  const rows = [];
+  const add = (name, ok, detail, optional = false) => rows.push({ name, ok, detail, optional });
+
+  add('node', true, process.version);
+  const ff = version(cfg.bin.ffmpeg);
+  add('ffmpeg', Boolean(ff), ff || `not found (${cfg.bin.ffmpeg})`);
+  const fp = version(cfg.bin.ffprobe);
+  add('ffprobe', Boolean(fp), fp || `not found (${cfg.bin.ffprobe})`);
+  add('hyperframes plugin', Boolean(cfg.hyperframes.launcherPath && existsSync(cfg.hyperframes.launcherPath)), cfg.hyperframes.pluginRoot || 'not found');
+  const py = cfg.bin.python311 ? version(cfg.bin.python311, ['--version']) : null;
+  add('python 3.11 (voice venv base)', Boolean(py), py || 'set bin.python311 in config/workspace.local.json', true);
+  const venvOk = cfg.bin.voicePython && existsSync(cfg.bin.voicePython);
+  add('voice venv', venvOk, venvOk ? cfg.bin.voicePython : 'not created yet (Phase 1)', true);
+  const models = cfg.paths.models;
+  const kokoro = existsSync(join(models, 'kokoro-v1.0.onnx')) && existsSync(join(models, 'voices.bin'));
+  add('Kokoro weights', kokoro, kokoro ? models : 'not copied yet (Phase 1)', true);
+  add('label font', Boolean(cfg.fonts?.label && existsSync(cfg.fonts.label)), cfg.fonts?.label || 'set fonts.label (contact sheet timestamps)', true);
+  for (const [key, p] of Object.entries(cfg.sources || {})) add(`source: ${key}`, existsSync(p), p, true);
+  const prov = checkLedger();
+  add('provenance ledger', prov.problems.length === 0, `${prov.entries} entries, ${prov.problems.length} problems, ${prov.drift.length} source drift`);
+  return rows;
+}
+
+if (isMain(import.meta.url)) {
+  const rows = doctor();
+  for (const r of rows) console.log(`${r.ok ? 'OK  ' : r.optional ? 'TODO' : 'FAIL'}  ${r.name.padEnd(32)} ${r.detail}`);
+  const failed = rows.filter((r) => !r.ok && !r.optional);
+  console.log(failed.length ? `${failed.length} required check(s) failed` : 'Required checks pass');
+  process.exit(failed.length ? 1 : 0);
+}

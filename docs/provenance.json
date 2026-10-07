@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/effects/auto/advance/timeline.js",
+      "kind": "learn",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "f814b486514d58d101d1ec9471133f8f6d2619756c6159d20804e52007054a52",
+      "date": "2026-10-07",
+      "note": "segment rules: absolute seconds, no overlaps per track, report-not-throw validation",
+      "to": "docs/job-spec.md"
+    },
+    {
+      "source": "aditsStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsStudio",
+      "from": "server/lib/ffmpeg.mjs",
+      "kind": "port",
+      "gitHead": "97907a6db9e9db0d49639d1c75b8d9fcf9111f47",
+      "dirtyAtCopy": false,
+      "sha256Source": "4290f7e77dcfd47a33d4e889f8f7e222eed0efbbe445a581663a5492e7e67457",
+      "date": "2026-10-07",
+      "note": "probe + loudnorm/faststart; binaries from config; added loudness, section levels, limiter, contact sheet",
+      "to": "tools/lib/ffmpeg.mjs"
+    }
+  ]
+}

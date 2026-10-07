@@ -1,0 +1,19 @@
+{
+  "$comment": "Copy to workspace.local.json and adjust. This file holds absolute, machine-specific paths and is git-ignored.",
+  "hyperframes": {
+    "pluginRoot": "C:/Users/<you>/.claude/plugins/cache/hyperframes/hyperframes/<version>"
+  },
+  "bin": {
+    "python311": "C:/Users/<you>/AppData/Local/Programs/Python/Python311/python.exe"
+  },
+  "fonts": {
+    "label": "C:/Windows/Fonts/arial.ttf"
+  },
+  "sources": {
+    "adits": "E:/Develop/Antigravity_testing/Adits_Modular",
+    "aditsShaders": "E:/Develop/Antigravity_testing/AditsShaders",
+    "aditsStudio": "E:/Develop/Antigravity_testing/AditsStudio",
+    "flowEditor": "E:/Develop/Antigravity_testing/flowEditor",
+    "tts": "E:/Develop/Antigravity_testing/tts_app modular"
+  }
+}
