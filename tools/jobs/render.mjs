@@ -8,7 +8,7 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { mixCheck } from '../audio/mix-check.mjs';
+import { mixCheck, parseComposition } from '../audio/mix-check.mjs';
 import { isMain, parseArgs } from '../lib/cli.mjs';
 import { loadConfig } from '../lib/config.mjs';
 import { verifyRender } from '../media/verify.mjs';
@@ -31,7 +31,10 @@ export async function renderJob(jobDir, opts = {}) {
   const out = join(dir, 'renders', `${name}.mp4`);
   const logFile = join(dir, 'renders', `${name}.log`);
 
-  if (!opts.skipMixCheck) {
+  // A composition with no audible media renders without an audio stream; do not
+  // fail it for that (the title-preset demo is silent on purpose).
+  const hasAudio = parseComposition(readFileSync(indexHtml, 'utf8')).clips.length > 0;
+  if (!opts.skipMixCheck && hasAudio) {
     const mix = await mixCheck(indexHtml);
     if (!mix.ok) {
       return { ok: false, stage: 'mix-check', mix, message: 'Mix check failed: HyperFrames would lower the whole mix. Fix the mix first (or pass --skip-mix-check).' };
@@ -60,6 +63,7 @@ export async function renderJob(jobDir, opts = {}) {
     log: logFile,
     sheet: join(dir, 'renders', `${name}-sheet.png`),
     silence: opts.silence,
+    expectAudio: hasAudio,
   });
   return { ok: verify.ok, stage: 'verify', out, logFile, verify };
 }

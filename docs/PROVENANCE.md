@@ -17,6 +17,9 @@ Source root: `E:/Develop/Antigravity_testing/Adits_Modular`
 | Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
 |---|---|---|---|---|---|---|
 | learn | `Adits/effects/auto/advance/timeline.js` | `docs/job-spec.md` | 78bea0ce | no | 2026-10-07 | segment rules: absolute seconds, no overlaps per track, report-not-throw validation |
+| port | `Adits/shared/smart-captions.js` | `library/caption-styles.json` | 78bea0ce | no | 2026-10-07 | _renderStyled presets (font, color, stroke, pill, glow) + flash decay; kinetic scatter params |
+| learn | `Adits/shared/active-tracking-captions.js` | `library/caption-styles.json` | 78bea0ce | no | 2026-10-07 | style switch near line 1737 (same presets); lyric styles deferred |
+| learn | `Adits/shared/captions.js` | `tools/blocks/captions.mjs` | 78bea0ce | no | 2026-10-07 | beat-flash captions: deferred to P2 (needs audio table) |
 
 ## aditsStudio
 
@@ -25,3 +28,25 @@ Source root: `E:/Develop/Antigravity_testing/AditsStudio`
 | Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
 |---|---|---|---|---|---|---|
 | port | `server/lib/ffmpeg.mjs` | `tools/lib/ffmpeg.mjs` | 97907a6d | no | 2026-10-07 | probe + loudnorm/faststart; binaries from config; added loudness, section levels, limiter, contact sheet |
+
+## tts
+
+Source root: `E:/Develop/Antigravity_testing/tts_app modular`
+
+| Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
+|---|---|---|---|---|---|---|
+| learn | `core/version.py` | `-` | b73506e3 | no | 2026-10-07 | License: GPL-3.0-or-later applies to copied TTS code |
+| copy | `kokoro-v1.0.onnx` | `models/kokoro-v1.0.onnx` | b73506e3 | no | 2026-10-07 | Kokoro-82M ONNX weights (git-ignored) |
+| copy | `voices.bin` | `models/voices.bin` | b73506e3 | no | 2026-10-07 | Kokoro voice embeddings (git-ignored) |
+| copy | `core/__init__.py` | `tools/voice/core/__init__.py` | b73506e3 | no | 2026-10-07 |  |
+| copy | `core/audio_io.py` | `tools/voice/core/audio_io.py` | b73506e3 | no | 2026-10-07 | WAV/MP3 I/O via libsndfile |
+| copy | `core/constants.py` | `tools/voice/core/constants.py` | b73506e3 | no | 2026-10-07 | KOKORO_VOICES / KOKORO_LANGS maps (UI tokens unused) |
+| port | `core/paths.py` | `tools/voice/core/paths.py` | b73506e3 | no | 2026-10-07 | shim: bundle_dir() -> rapidContentGen models dir; no frozen-app logic |
+| copy | `effects/__init__.py` | `tools/voice/effects/__init__.py` | b73506e3 | no | 2026-10-07 |  |
+| copy | `effects/audio_effects.py` | `tools/voice/effects/audio_effects.py` | b73506e3 | no | 2026-10-07 | 33 voice effects DSP (GPL-3.0-or-later) |
+| copy | `effects/registry.py` | `tools/voice/effects/registry.py` | b73506e3 | no | 2026-10-07 | effect registry |
+| copy | `engines/__init__.py` | `tools/voice/engines/__init__.py` | b73506e3 | no | 2026-10-07 |  |
+| copy | `engines/base.py` | `tools/voice/engines/base.py` | b73506e3 | no | 2026-10-07 | engine interface |
+| copy | `engines/kokoro_engine.py` | `tools/voice/engines/kokoro_engine.py` | b73506e3 | no | 2026-10-07 | Kokoro adapter; ONNX path used (no torch installed) |
+| port | `ui/app.py` | `tools/voice/pipeline.py` | b73506e3 | no | 2026-10-07 | _generate_worker post chain (silence, speed, effects, EQ, ambiance, normalize) without UI |
+| port | `core/subtitles.py` | `tools/voice/voice_cli.py` | b73506e3 | no | 2026-10-07 | faster-whisper word timestamps without torch; JSON words aligned to script + SRT |

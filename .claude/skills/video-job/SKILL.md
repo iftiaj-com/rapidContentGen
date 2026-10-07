@@ -61,7 +61,21 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
 - SFX: copy from `library/sfx/` into `jobs/<id>/assets/sfx/`. Place each by `crestStartS` from
   `library/sfx/manifest.json` (line the crest start up with the visual hit). Hits are about
   -6.5 LUFS hot; start them low (lane value 0.2-0.35) and check.
-- Voiceover: Phase 1 voice tools (see `docs/capabilities.md`).
+- Voiceover (local Kokoro, 54 voices, 9 languages; 33 voice effects):
+  1. Write `jobs/<id>/data/vo-lines.json`: `[{"id":"vo1","text":"...","voice":"af_heart"}, ...]`
+     (optional per line: `lang`, `speed`, `effects`). `rcg voice voices` / `rcg voice effects` list options.
+  2. `node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice [--effect cinematic]`
+     writes `<id>.wav`, `<id>.srt` and `audio_meta.json` (word times aligned to the script; check
+     `alignment.matched_fraction`, below 0.8 means the words need a look).
+  3. `node tools/rcg.mjs level --dir jobs/<id>/assets/voice --lufs -13.5 --ceiling -1.5`
+     (writes stereo; the target is the level as heard in the render).
+  4. Place each line as `<audio id="vo1" src="assets/voice/vo1.wav" data-start=".." data-duration="<duration_s>">`.
+     Give voice clips their real `data-duration` (lint treats open-ended clips as overlapping).
+  5. Duck music under speech with its volume lane (about 0.3 under voice, 0.7 in gaps over 1 s).
+- Captions from voiceover or transcript words (Adits styles: tiktok, karaoke, neon, kinetic,
+  modern, subtitle, glitch, retro, earthquake, vertical_ghost):
+  `node tools/rcg.mjs captions --job jobs/<id> --words jobs/<id>/assets/voice/audio_meta.json --voice vo1 --style tiktok --mode word|2word|phrase --start <voice data-start> --id cap-vo1 --insert`
+  For footage speech, transcribe first: `rcg voice transcribe <file> --out words.json` and pass `--words words.json`.
 - Volume: use a `data-automation` volume lane; its values ARE the level. Do not also set `data-volume`.
 - Run `node tools/rcg.mjs mix-check jobs/<id>/index.html` after the audio is placed. It must print
   `MIX OK` (no predicted gain reduction). Read the per-clip levels: SFX should sit 1-4 dB above

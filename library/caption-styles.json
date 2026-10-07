@@ -1,0 +1,67 @@
+{
+  "$comment": "Caption style presets ported from Adits shared/smart-captions.js _renderStyled() and shared/active-tracking-captions.js (style switch near line 1737). Colors, pills and glows are Adits' values. Fonts are mapped to HyperFrames' bundled families so renders need no font download; the Adits original is kept in aditsFont. 'flash' reproduces Adits' per-word flash (flashAlpha = 1 on a new word, x0.80 per 60 fps frame) as a seekable decay: scale = 1 + flash * flashScale, glow blur = glow + flash * flashGlow.",
+  "flash": { "decayPerFrame": 0.8, "fps": 60, "scale": 0.22, "seconds": 0.35 },
+  "styles": {
+    "modern": {
+      "aditsFont": "Inter 800", "font": "Inter", "weight": 900, "uppercase": false,
+      "color": "#ffffff", "stroke": "#000000", "pill": null,
+      "glow": { "color": "rgba(255,255,255,0.85)", "blur": 0, "flashBlur": 28 }
+    },
+    "tiktok": {
+      "aditsFont": "Bebas Neue 900", "font": "League Gothic", "weight": 400, "uppercase": true,
+      "color": "#FFFF00", "stroke": "#000000", "pill": { "bg": "rgba(0,0,0,0.78)", "radius": 8 },
+      "glow": { "color": "#ff0080", "blur": 6, "flashBlur": 20 }
+    },
+    "neon": {
+      "aditsFont": "Russo One 700", "font": "Archivo Black", "weight": 400, "uppercase": false,
+      "color": "#00ffff", "stroke": "#ff00ff", "pill": { "bg": "rgba(0,0,30,0.55)", "radius": 16 },
+      "glow": { "color": "#00ffff", "blur": 20, "flashBlur": 45 }
+    },
+    "karaoke": {
+      "aditsFont": "Oswald 700", "font": "Oswald", "weight": 700, "uppercase": false,
+      "color": "#ffffff", "stroke": "#000000",
+      "pill": { "bg": "rgba(217,70,239,0.55)", "bgFlash": "rgba(217,70,239,0.85)", "radius": 22 },
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "activeWord": { "color": "#FFE600" },
+      "$note": "Adits karaoke pulses the pill on each word. The active-word highlight inside a phrase is an addition for line/phrase mode."
+    },
+    "subtitle": {
+      "aditsFont": "Inter 700", "font": "Inter", "weight": 700, "uppercase": false,
+      "color": "#ffffff", "stroke": "#000000", "pill": { "bg": "rgba(0,0,0,0.68)", "radius": 5 },
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 }
+    },
+    "glitch": {
+      "aditsFont": "VT323 400", "font": "Space Mono", "weight": 700, "uppercase": true,
+      "color": "#ff4444", "stroke": null, "pill": null,
+      "glow": { "color": "#00ff44", "blur": 10, "flashBlur": 30 }
+    },
+    "retro": {
+      "aditsFont": "Press Start 2P 400", "font": "Space Mono", "weight": 700, "uppercase": true,
+      "color": "#ffd700", "stroke": "#332200", "pill": { "bg": "rgba(0,0,0,0.82)", "radius": 4 },
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 }
+    },
+    "earthquake": {
+      "aditsFont": "Rubik Glitch 400", "font": "Archivo Black", "weight": 400, "uppercase": true,
+      "color": "#ff8c00", "stroke": "#000000", "pill": null,
+      "glow": { "color": "#ff0000", "blur": 10, "flashBlur": 20 }
+    },
+    "vertical_ghost": {
+      "aditsFont": "Creepster 400", "font": "League Gothic", "weight": 400, "uppercase": true,
+      "color": "#a8ffb2", "stroke": "#1a331a", "pill": null,
+      "glow": { "color": "#00ff33", "blur": 22, "flashBlur": 0 }
+    },
+    "kinetic": {
+      "aditsFont": "Montserrat 900", "font": "Montserrat", "weight": 900, "uppercase": true,
+      "color": "#FFD700", "stroke": null, "pill": null,
+      "glow": { "color": "rgba(0,0,0,0.5)", "blur": 15, "flashBlur": 0 },
+      "kinetic": { "spreadX": 0.25, "spreadY": 0.15, "maxRotateDeg": 8, "popIn": 0.3, "popScale": 1.2, "popBlur": 10, "minHold": 1.2, "exit": 0.8, "exitScale": 1.5, "exitBlur": 20 },
+      "$note": "Adits kinetic scatters each word with Math.random(); here positions come from a seeded PRNG and are clamped to the 9:16 safe box."
+    }
+  },
+  "deferred": {
+    "motion3d": "Adits _handleMotion3DCanvas: 3D canvas transform per phrase (Phase 3, with camera moves)",
+    "flying3d": "Adits _handleFlying3D: words fly in 3D space (Phase 3)",
+    "fisheye": "Adits fisheye warp through an offscreen canvas (Phase 6 pre-pass)",
+    "flow": "active-tracking lyric styles flow / instagram / stack / spotlight / wave / carousel / kinetic_impact (later phase)"
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "meta": "E:\\Develop\\Antigravity_testing\\rapidContentGen\\jobs\\2026-10-07-r1-voice-captions\\assets\\voice\\audio_meta.json",
+  "voices": [
+    {
+      "id": "vo1",
+      "path": "vo1.wav",
+      "text": "Monday morning. The floors are dirty.",
+      "voice": "af_heart",
+      "lang": "a",
+      "speed": 1.0,
+      "duration_s": 2.325,
+      "processing": [
+        "normalize -3 dB"
+      ],
+      "words": [
+        {
+          "text": "Monday",
+          "start": 0.0,
+          "end": 0.3
+        },
+        {
+          "text": "morning.",
+          "start": 0.3,
+          "end": 0.78
+        },
+        {
+          "text": "The",
+          "start": 1.1,
+          "end": 1.18
+        },
+        {
+          "text": "floors",
+          "start": 1.18,
+          "end": 1.5
+        },
+        {
+          "text": "are",
+          "start": 1.5,
+          "end": 1.7
+        },
+        {
+          "text": "dirty.",
+          "start": 1.7,
+          "end": 1.98
+        }
+      ],
+      "alignment": {
+        "matched_fraction": 1.0,
+        "script_words": 6,
+        "heard_words": 6
+      },
+      "srt": "vo1.srt",
+      "seconds_to_make": 10.9
+    },
+    {
+      "id": "vo2",
+      "path": "vo2.wav",
+      "text": "But she has a plan, a mop, and a playlist.",
+      "voice": "am_michael",
+      "lang": "a",
+      "speed": 1.0,
+      "duration_s": 2.581,
+      "processing": [
+        "normalize -3 dB"
+      ],
+      "words": [
+        {
+          "text": "But",
+          "start": 0.0,
+          "end": 0.12
+        },
+        {
+          "text": "she",
+          "start": 0.12,
+          "end": 0.26
+        },
+        {
+          "text": "has",
+          "start": 0.26,
+          "end": 0.36
+        },
+        {
+          "text": "a",
+          "start": 0.36,
+          "end": 0.54
+        },
+        {
+          "text": "plan,",
+          "start": 0.54,
+          "end": 0.88
+        },
+        {
+          "text": "a",
+          "start": 1.14,
+          "end": 1.2
+        },
+        {
+          "text": "mop,",
+          "start": 1.2,
+          "end": 1.5
+        },
+        {
+          "text": "and",
+          "start": 1.5,
+          "end": 1.72
+        },
+        {
+          "text": "a",
+          "start": 1.72,
+          "end": 1.82
+        },
+        {
+          "text": "playlist.",
+          "start": 1.82,
+          "end": 2.18
+        }
+      ],
+      "alignment": {
+        "matched_fraction": 1.0,
+        "script_words": 10,
+        "heard_words": 10
+      },
+      "srt": "vo2.srt",
+      "seconds_to_make": 6.6
+    },
+    {
+      "id": "vo3",
+      "path": "vo3.wav",
+      "text": "Clean. Spin. Repeat.",
+      "voice": "af_heart",
+      "lang": "a",
+      "speed": 1.0,
+      "duration_s": 1.6,
+      "processing": [
+        "normalize -3 dB"
+      ],
+      "words": [
+        {
+          "text": "Clean.",
+          "start": 0.0,
+          "end": 0.24
+        },
+        {
+          "text": "Spin.",
+          "start": 0.24,
+          "end": 0.68
+        },
+        {
+          "text": "Repeat.",
+          "start": 1.02,
+          "end": 1.26
+        }
+      ],
+      "alignment": {
+        "matched_fraction": 1.0,
+        "script_words": 3,
+        "heard_words": 3
+      },
+      "srt": "vo3.srt",
+      "seconds_to_make": 5.5
+    },
+    {
+      "id": "vo4",
+      "path": "vo4.wav",
+      "text": "Chores just became a concert.",
+      "voice": "am_michael",
+      "lang": "a",
+      "speed": 1.0,
+      "duration_s": 2.069,
+      "processing": [
+        "normalize -3 dB"
+      ],
+      "words": [
+        {
+          "text": "Chores",
+          "start": 0.0,
+          "end": 0.42
+        },
+        {
+          "text": "just",
+          "start": 0.42,
+          "end": 0.66
+        },
+        {
+          "text": "became",
+          "start": 0.66,
+          "end": 1.04
+        },
+        {
+          "text": "a",
+          "start": 1.04,
+          "end": 1.24
+        },
+        {
+          "text": "concert.",
+          "start": 1.24,
+          "end": 1.66
+        }
+      ],
+      "alignment": {
+        "matched_fraction": 1.0,
+        "script_words": 5,
+        "heard_words": 5
+      },
+      "srt": "vo4.srt",
+      "seconds_to_make": 5.8
+    }
+  ]
+}

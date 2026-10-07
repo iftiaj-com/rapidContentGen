@@ -1,0 +1,15 @@
+# Voice tools (Python 3.11 venv at tools/voice/.venv)
+# Versions pinned to the ones already working in the TTS app's venv_311,
+# except librosa (0.9.1 there is too old for numpy 2).
+# No torch, kokoro, misaki, phonemizer-fork, GUI packages, or edge-tts
+# (Edge TTS was declined: it sends text to Microsoft).
+
+numpy==2.4.3
+soundfile==0.13.1
+pydub==0.25.1
+scipy==1.17.1
+librosa>=0.10.2
+onnxruntime==1.24.4
+espeakng-loader==0.2.4
+kokoro-onnx==0.6.1
+faster-whisper==1.2.1

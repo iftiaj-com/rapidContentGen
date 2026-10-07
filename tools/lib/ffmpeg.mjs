@@ -173,6 +173,36 @@ export async function limitAudio(src, out, { ceilingDb = -2.5, maxPasses = 3 } =
   return { out, ...result };
 }
 
+/**
+ * Bring audio to a target integrated loudness, then catch peaks with the
+ * oversampled limiter. Measure -> static gain -> limit, so the result is
+ * predictable (no dynamic loudnorm pumping). Output is 48 kHz 16-bit STEREO WAV.
+ *
+ * Mono input is first made dual-mono at full level, the way HyperFrames plays a
+ * mono file. Loudness is measured on that, so "-14 LUFS" means -14 as heard in
+ * the render (a mono file measures 3 LU quieter than its dual-mono playback).
+ */
+export async function levelAudio(src, out, { lufs = -14, ceilingDb = -2 } = {}) {
+  const info = await probe(src);
+  const mono = (info.audio[0]?.channels || 2) === 1;
+  const stereo = `${out}.stereo.wav`;
+  await run('ffmpeg', ['-y', '-hide_banner', '-i', src, '-vn',
+    '-af', mono ? 'aformat=channel_layouts=mono,pan=stereo|c0=c0|c1=c0' : 'aformat=channel_layouts=stereo',
+    '-ar', '48000', '-c:a', 'pcm_f32le', stereo]);
+  const before = await loudness(stereo);
+  if (before.integratedLufs == null || !Number.isFinite(before.integratedLufs)) {
+    rmSync(stereo, { force: true });
+    throw new Error(`Cannot measure loudness of ${src} (silent or too short).`);
+  }
+  const gainDb = +(lufs - before.integratedLufs).toFixed(2);
+  const tmp = `${out}.gain.wav`;
+  await run('ffmpeg', ['-y', '-hide_banner', '-i', stereo, '-af', `volume=${gainDb}dB`, '-c:a', 'pcm_f32le', tmp]);
+  const limited = await limitAudio(tmp, out, { ceilingDb });
+  rmSync(tmp, { force: true });
+  rmSync(stereo, { force: true });
+  return { src, out, gainDb, monoUpmixed: mono, before, after: { integratedLufs: limited.integratedLufs, lra: limited.lra, truePeakDb: limited.truePeakDb } };
+}
+
 /** Loudness-normalize audio and move the moov atom up front; video is copied. */
 export async function finalizeVideo(src, out, { lufs = -14, tp = -1.5, reencode = false } = {}) {
   await run('ffmpeg', [

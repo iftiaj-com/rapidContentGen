@@ -31,7 +31,9 @@ function parseAttrs(src) {
 
 const decodeEntities = (s) => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
 
-export function parseComposition(html) {
+export function parseComposition(rawHtml) {
+  // Comments can hold example markup (the template has a commented-out <audio>).
+  const html = rawHtml.replace(/<!--[\s\S]*?-->/g, '');
   const warnings = [];
   const rootTag = html.match(/<[a-z]+\b[^>]*data-composition-id[^>]*>/i);
   const root = rootTag ? parseAttrs(rootTag[0]) : {};
@@ -110,10 +112,9 @@ export async function mixCheck(htmlPath, { out } = {}) {
   for (const c of clips) {
     c.path = resolve(baseDir, c.src);
     if (!existsSync(c.path)) throw new Error(`${c.id}: source not found: ${c.path}`);
-    if (c.duration == null) {
-      const info = await probe(c.path);
-      c.duration = Math.max(0, (info.duration - c.mediaStart) / c.rate);
-    }
+    const info = await probe(c.path);
+    c.channels = info.audio[0]?.channels || 2;
+    if (c.duration == null) c.duration = Math.max(0, (info.duration - c.mediaStart) / c.rate);
     if (rootDuration != null && c.start + c.duration > rootDuration + 1e-3) {
       warnings.push(`${c.id}: ends at ${(c.start + c.duration).toFixed(2)}s, past the root duration ${rootDuration}s (it will be cut).`);
     }
@@ -130,6 +131,9 @@ export async function mixCheck(htmlPath, { out } = {}) {
       `atrim=start=${c.mediaStart}:duration=${(c.duration * c.rate).toFixed(6)}`,
       'asetpts=PTS-STARTPTS',
       ...atempoChain(c.rate),
+      // HyperFrames plays a mono source at FULL level in both channels. ffmpeg's
+      // default mono->stereo upmix is 3 dB quieter, which hid 3 dB on R1's voices.
+      ...(c.channels === 1 ? ['aformat=channel_layouts=mono', 'pan=stereo|c0=c0|c1=c0'] : []),
       'aformat=sample_rates=48000:channel_layouts=stereo',
       vol,
       `adelay=${delayMs}|${delayMs}`,

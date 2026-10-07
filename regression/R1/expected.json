@@ -1,0 +1,53 @@
+{
+  "job": "R1 voice + captions",
+  "phase": "P1",
+  "inputs": {
+    "video": "D:/Video/101066-video-1080.mp4",
+    "music": "D:/Music/Audio files/Songs Sound Clips/Paper ring - taylor swift.mp3",
+    "lines": "data/vo-lines.json (4 lines, af_heart + am_michael)"
+  },
+  "render": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 24,
+    "duration": 12.8
+  },
+  "audio": {
+    "integratedLufs": [
+      -16,
+      -12
+    ],
+    "truePeakMax": -1,
+    "gainReductionInLog": false,
+    "mixCheckWithinLu": 0.3
+  },
+  "voice": {
+    "alignmentMatchedMin": 0.8
+  },
+  "captions": {
+    "styles": [
+      "tiktok/word",
+      "karaoke/phrase",
+      "kinetic",
+      "neon/2word"
+    ],
+    "layoutIssues": 0,
+    "contrastAA": "all"
+  },
+  "lastRun": {
+    "date": "2026-10-08",
+    "integratedLufs": -14.5,
+    "truePeakDb": -2.6,
+    "mixCheckLufs": -14.4,
+    "mixCheckTruePeak": -2.6,
+    "alignmentMatched": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "checkSeconds": 44,
+    "renderSeconds": 135,
+    "result": "pass"
+  }
+}

@@ -17,10 +17,10 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 
 | ☐ | Feature | Source | Decision | Target | Phase |
 |---|---|---|---|---|---|
-| ☐ | Caption style presets: fonts, colors, pill, glow (tiktok, karaoke, neon, kinetic, motion3d, flying3d, flow, instagram, spotlight, kinetic_impact) | `shared/active-tracking-captions.js` (style table about line 1737+), `shared/smart-captions.js` | Port presets → `library/caption-styles.json` | — | P1 |
-| ☐ | Caption styles rebuilt as seekable DOM+GSAP blocks; word / 2-word / line modes | same | Port (the Adits caption code is stateful, `flashAlpha *= 0.80` and voice-level guessing, so its logic is Learn only) | `library/blocks/captions/<style>/` | P1 |
+| ☑ | Caption style presets: fonts, colors, pill, glow (tiktok, karaoke, neon, kinetic, motion3d, flying3d, flow, instagram, spotlight, kinetic_impact) | `shared/active-tracking-captions.js` (style table about line 1737+), `shared/smart-captions.js` | Port presets → `library/caption-styles.json` | — | P1 |
+| ☑ | Caption styles rebuilt as seekable DOM+GSAP blocks; word / 2-word / line modes | same | Port (the Adits caption code is stateful, `flashAlpha *= 0.80` and voice-level guessing, so its logic is Learn only) | `library/blocks/captions/<style>/` | P1 |
 | ☐ | Beat-flash captions | `shared/captions.js` | Port with a closed-form decay driven by the audio table | caption block | P2 |
-| ☐ | SRT import | caption engines | Port | `tools/captions/srt-to-words.mjs` | P1 |
+| ☑ | SRT import | caption engines | Port | `tools/captions/srt-to-words.mjs` | P1 |
 | ☐ | 46 camera moves (whip_pan, crash_zoom, dolly, orbit, drone…), all pure math | `core/anam/CameraMovements.js` lines 68-130, 308-327, 374-404 | Port, replacing the `performance.now()` clock with timeline time | `library/runtime/camera-moves.js`; blocks `camera-move/` (CSS on footage) and `three-scene/` | P3 |
 | ☐ | 2D camera presets | `core/VirtualCamera.js` | Port into `camera-moves.js` | same | P3 |
 | ☐ | GLB models (26) + planet textures | `assets/models3d/` | **Hold**: no license notes, "bandicoot" may be a third-party character, 5 look like duplicates. Use procedural geometry until cleared. | `library/models3d/` | P3 |
@@ -75,13 +75,13 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 
 | ☐ | Feature | Source | Decision | Target | Phase |
 |---|---|---|---|---|---|
-| ☐ | Kokoro, 54 voices, 9 languages (ONNX path only) | `engines/{base,kokoro_engine}.py` | Copy, with a small `core/paths.py` shim (`bundle_dir`, `user_dir`, `ascii_path`, `FROZEN`) | `tools/voice/engines/` | P1 |
-| ☐ | Kokoro weights 325 MB + 28 MB | repo root | Copy (git-ignored) | `models/` | P1 |
-| ☐ | Edge TTS, 9 voices (cloud; text goes to Microsoft) | `engines/edge_engine.py` | Copy; used only when asked | `tools/voice/engines/` | P1 |
-| ☐ | 33 voice effects | `effects/{audio_effects,registry}.py` | Copy | `tools/voice/effects/` | P1 |
-| ☐ | Post chain: silence removal → speed → effect → EQ → ambiance → normalize −3 dB | `ui/app.py` `_generate_worker` | Port into one function (no UI import) | `tools/voice/pipeline.py` | P1 |
-| ☐ | Word timestamps | `core/subtitles.py` | Port as new code without torch: faster-whisper words aligned to the script, written in HF `audio_meta.json` shape `voices[].{id,path,duration_s,words[]}` plus SRT | `tools/voice/voice_cli.py` | P1 |
-| ☐ | Audio I/O, constants, self-test | `core/{audio_io,constants,selftest}.py` | Copy / port | `tools/voice/` | P1 |
+| ☑ | Kokoro, 54 voices, 9 languages (ONNX path only) | `engines/{base,kokoro_engine}.py` | Copy, with a small `core/paths.py` shim (`bundle_dir`, `user_dir`, `ascii_path`, `FROZEN`) | `tools/voice/engines/` | P1 |
+| ☑ | Kokoro weights 325 MB + 28 MB | repo root | Copy (git-ignored) | `models/` | P1 |
+| — | Edge TTS, 9 voices (cloud; text goes to Microsoft) | `engines/edge_engine.py` | Skipped: user declined Edge TTS at install (2026-10-07) | `tools/voice/engines/` | P1 |
+| ☑ | 33 voice effects | `effects/{audio_effects,registry}.py` | Copy | `tools/voice/effects/` | P1 |
+| ☑ | Post chain: silence removal → speed → effect → EQ → ambiance → normalize −3 dB | `ui/app.py` `_generate_worker` | Port into one function (no UI import) | `tools/voice/pipeline.py` | P1 |
+| ☑ | Word timestamps | `core/subtitles.py` | Port as new code without torch: faster-whisper words aligned to the script, written in HF `audio_meta.json` shape `voices[].{id,path,duration_s,words[]}` plus SRT | `tools/voice/voice_cli.py` | P1 |
+| ☑ | Audio I/O, constants, self-test | `core/{audio_io,constants,selftest}.py` | Copy / port | `tools/voice/` | P1 |
 | ☐ | pyttsx3, gTTS, Piper, Melo | `engines/*` | Defer | — | P6 |
 | — | GUI, pygame, PyInstaller and installer | `ui/`, `build_exe.py`, `installer.iss` | Skip | — | — |
 
@@ -99,7 +99,7 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | Phase | Scope | Regression job | Status |
 |---|---|---|---|
 | P0 Foundation | tools, config, template, docs, provenance | R0 mop-star rebuild | ☑ done 2026-10-07: all verify checks pass, PSNR 72 dB vs reference |
-| P1 Voice + captions | voice venv, voice CLI, caption blocks | R1 | not started |
+| P1 Voice + captions | voice venv, voice CLI, caption blocks, title cards | R1 + R1b | ☑ done 2026-10-08: R1 -14.5 LUFS (mix-check -14.4), 4 caption styles; R1b 4 title presets |
 | P2 Shaders + audio | audio table, shader-layer block, 166 shaders | R2 | not started |
 | P3 3D + camera | camera moves, three-scene, camera-move | R3 | not started |
 | P4 Flythrough | flowEditor modules, flythrough block | R4 | not started |

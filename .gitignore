@@ -28,3 +28,9 @@ regression/*/out/
 # Python
 __pycache__/
 *.pyc
+
+# Grade-free mirror for check/snapshot (tools/jobs/hf.mjs)
+.rcg-nograde/
+
+# Generated intake contact sheets (regenerate with rcg new-job / rcg sheet)
+jobs/*/data/*.png

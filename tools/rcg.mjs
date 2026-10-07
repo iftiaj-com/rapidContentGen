@@ -15,9 +15,13 @@ const COMMANDS = {
   'doctor': ['tools/jobs/doctor.mjs', 'Check config, ffmpeg, HyperFrames plugin, Python and the voice venv'],
   'new-job': ['tools/jobs/new-job.mjs', 'Create jobs/<date>-<name>/ from a template with intake probe + sheets'],
   'beat-sheet': ['tools/jobs/beat-sheet.mjs', 'validate | md: check a beat-sheet.json and write the approval table'],
+  'voice': ['tools/voice/voice_cli.py', 'Voiceover (Kokoro, 54 voices) + 33 voice effects + word timings -> audio_meta.json (Python venv)'],
   'probe': ['tools/media/probe.mjs', 'Media summary + loudness/true peak + intake notes (JSON)'],
   'sheet': ['tools/media/contact-sheet.mjs', 'Labeled contact sheet, --safe draws the 9:16 no-text zones'],
   'limit': ['tools/audio/limit.mjs', 'Peak-limit music/voice to a true-peak ceiling (default -2.5 dBTP)'],
+  'level': ['tools/audio/level.mjs', 'Set integrated loudness (static gain) then limit peaks; --dir levels every WAV in a folder'],
+  'captions': ['tools/blocks/captions.mjs', 'Caption track (Adits styles) from word timings -> HyperFrames sub-composition'],
+  'title': ['tools/blocks/title.mjs', 'Kinetic title card (slam, stagger-up, kinetic-pop, type-on) -> HyperFrames sub-composition'],
   'mix-check': ['tools/audio/mix-check.mjs', 'Rebuild a composition mix offline and predict HyperFrames gain reduction'],
   'measure-sfx': ['tools/audio/measure-sfx.mjs', 'Re-measure library/sfx onsets, crests, loudness'],
   'render': ['tools/jobs/render.mjs', 'mix-check -> HyperFrames render -> verify (+ frame sheet)'],
@@ -39,6 +43,18 @@ if (!existsSync(script)) {
   console.error(`Not built yet: ${COMMANDS[cmd][0]}`);
   process.exit(1);
 }
-loadConfig();
-const child = spawn(process.execPath, [script, ...rest], { stdio: 'inherit', windowsHide: true });
+const cfg = loadConfig();
+let bin = process.execPath;
+if (script.endsWith('.py')) {
+  bin = cfg.bin.voicePython;
+  if (!bin || !existsSync(bin)) {
+    console.error('Voice venv not found. Create it (see tools/voice/requirements.txt) or run `rcg doctor`.');
+    process.exit(1);
+  }
+}
+const child = spawn(bin, [script, ...rest], {
+  stdio: 'inherit',
+  windowsHide: true,
+  env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
+});
 child.on('close', (code) => process.exit(code ?? 1));
