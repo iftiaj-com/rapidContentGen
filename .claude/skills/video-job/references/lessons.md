@@ -266,6 +266,16 @@ Each entry cost real time on a past job. Read before building.
      outgoing scene. `rcg infographics resolve` holds the outgoing scene through the entrance (`"end":
      "scene"` / `"#g4"`) and sets `reveal` on the incoming parts. Also: a child `z-index` escapes a style
      host (the prompt cursor sat over the next scene); keep z-index out of components.
+13bq. **An untimed wrapper with a background covers the whole edit.** split.mjs put `background: #000`
+     on each untimed b-full wrapper; untimed elements stay on screen for the whole composition, so the
+     last wrapper painted every other window black (the presenter, the panels) and `rcg verify` passed
+     (it checks size, audio and edge bands, not content). The backing is now a timed clip. Read the
+     sheet before trusting a pass; a file far smaller than expected (14.5 MB for 78 s here) is a hint.
+13br. **An edited presenter clip is not a talking head throughout.** Script 1L had cutaways (stock
+     B-roll, title cards) for 60% of its length and burned-in captions: `split-screen plan --onscreen`
+     keeps the presenter panel to the on-camera ranges, `--drop` frames a close-up with little
+     headroom, and `presenter.maskBelow` / `maskAfull` / `maskStyle: paper` cover burned-in captions
+     (a blur left 90 px text readable). Map the source at 1 fps and with cut detection first.
 13bo. **A caption block may run past the root.** Captions hold 0.35 s after the last word plus 0.1 s;
      trim 0.5 s after the last word (lint `clip_ends_past_root_duration` at 0.35 s).
 

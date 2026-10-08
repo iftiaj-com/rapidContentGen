@@ -28,6 +28,11 @@
       "sha256": "163a4e787655de6b5b50bfb0dc0e6818c015ba32106eb14fe12c3daf033a892b",
       "added": "2026-10-08"
     },
+    "bold/piggy-bank-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/piggy-bank-bold.svg",
+      "sha256": "e626fafa7463e3c1c8e9adfff33f1964ce1353b3b1e8a89769226cc26a1cd30f",
+      "added": "2026-10-08"
+    },
     "bold/rocket-launch-bold.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/rocket-launch-bold.svg",
       "sha256": "17cdf50ac375807224f127d664edd1b1090dad01a4156c6d9d042f49beb0475d",
@@ -41,6 +46,11 @@
     "bold/speaker-high-bold.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/speaker-high-bold.svg",
       "sha256": "f0fc825cb96958238882b98aea55afdb63da92c4c5c8b499c0e1068e9abb299e",
+      "added": "2026-10-08"
+    },
+    "bold/storefront-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/storefront-bold.svg",
+      "sha256": "c10db3f6f1cb38a8d8678f9e4e42dd9661a6053412595d50ccc8a057fa23561e",
       "added": "2026-10-08"
     },
     "fill/sparkle-fill.svg": {

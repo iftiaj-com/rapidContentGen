@@ -7,7 +7,7 @@
 // highlights 9 | titles and captions 40 | handle 60. Every video is a timed clip; panel wrappers are untimed. Geometry
 // comes from library/split-screen/layout.json. Tracks: B panel 1, presenter 2, cut-out 3, presenter side fill 13, a-full 4,
 // b-full 5, b-full blurred fill 6, band ground 7, band 8, seam 9, shade 10, handle 11,
-// highlights 12, voice 22, sounds 40-47.
+// highlights 12, caption mask 14 (presenter.maskBelow), b-full black backing 15, a-full caption mask 16 (presenter.maskAfull), voice 22, sounds 40-47.
 
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -37,6 +37,24 @@ export function fitPlace(bw, bh, boxW, boxH) {
 const box = (p) => `left: ${p.left}px; top: ${p.top}px; width: ${p.width}px; height: ${p.height}px;`;
 const timing = (s, e, mediaStart, track) => `data-start="${f3(s)}" data-duration="${f3(e - s)}"${mediaStart != null ? ` data-media-start="${f3(mediaStart)}"` : ''} data-track-index="${track}"`;
 
+/**
+ * A cover over burned-in captions: "blur" (a blurred, darkened band with a soft top edge) or "paper"
+ * (an opaque strip of collage paper with a torn top edge, seeded so it is the same on every render).
+ */
+function captionCover(id, start, end, top, track, z, W, H, style = 'blur', seed = 1) {
+  const t = `${timing(start, end, null, track)}`;
+  const base = `position: absolute; left: 0; top: ${top}px; width: ${W}px; height: ${H - top}px; z-index: ${z};`;
+  if (style !== 'paper') {
+    return `<div id="${id}" class="clip" ${t} style="${base} backdrop-filter: blur(16px) brightness(0.62); -webkit-backdrop-filter: blur(16px) brightness(0.62); background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.55)); -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 46px); mask-image: linear-gradient(to bottom, transparent 0, #000 46px);"></div>`;
+  }
+  let a = seed >>> 0;
+  const rnd = () => { a = (a + 0x6D2B79F5) | 0; let x = Math.imul(a ^ (a >>> 15), 1 | a); x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+  const pts = [];
+  for (let x = 0; x <= W; x += 36) pts.push(`${Math.min(W, x)}px ${f2(6 + rnd() * 16)}px`);
+  const poly = `polygon(0 100%, ${pts.join(', ')}, ${W}px 100%)`;
+  return `<div id="${id}" class="clip" ${t} style="${base} filter: drop-shadow(0 -6px 6px rgba(37,35,31,0.28));"><div style="position: absolute; inset: 0; clip-path: ${poly}; background: radial-gradient(circle, rgba(37,35,31,0.11) 1.7px, transparent 2.2px) 0 0 / 36px 36px, #f3e8cc;"></div></div>`;
+}
+
 export function writeLayout(opts) {
   const jobDir = resolve(opts.job);
   const P = readJson(join(jobDir, 'data', 'split-plan.json'));
@@ -51,6 +69,7 @@ export function writeLayout(opts) {
   let videos = 0;
   const vid = (id, src, s, e, ms, track, style, extra = '') => { videos++; return `<video id="${id}" class="clip" src="${src}" ${timing(s, e, ms, track)} muted playsinline style="position: absolute; ${style} object-fit: fill;"${extra}></video>`; };
   const kb = (sel, s, e, dir, k = B.kenBurns) => {
+    if (!dir) return; // sync pieces carry their own motion
     const a = dir > 0 ? 1 : f3(1 + k); const b = dir > 0 ? f3(1 + k) : 1;
     tweens.push(`tl.fromTo("${sel}", { scale: ${a} }, { scale: ${b}, duration: ${f3(e - s)}, ease: "none" }, ${f3(s)});`);
   };
@@ -92,6 +111,15 @@ export function writeLayout(opts) {
   }
   body.push('      </div>');
 
+  // Burned-in captions in the presenter source (plan presenter.maskBelow, a fraction of the source
+  // height): a blurred, darkened band from just above where those rows land, soft at its top edge.
+  if (pres.maskBelow) {
+    for (const w of pShots) {
+      const top = Math.round(clamp(w.crop.ty + w.crop.s * pres.maskBelow * pres.height - 40, S.aTop, H - 20));
+      body.push(`      ${captionCover(`mask${w.i}`, w.start, w.end, top, 14, 3, W, H, pres.maskStyle, w.i)}`);
+    }
+  }
+
   // Seam: the B panel fades to black; the presenter panel starts under a dark shade (the caption band).
   for (const w of seams) {
     body.push(`      <div id="seam${w.i}" class="clip" ${timing(w.start, w.end, null, 9)} style="position: absolute; left: 0; top: ${S.fadeFrom}px; width: ${W}px; height: ${S.bBottom - S.fadeFrom + 1}px; z-index: 3; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 55%, #000 100%);"></div>`);
@@ -105,6 +133,12 @@ export function writeLayout(opts) {
       <div id="wa${w.i}" class="shot" style="z-index: 5;">
         <video id="va${w.i}" class="clip" src="${pres.src}" ${timing(w.start, w.end, w.start, 4)} muted playsinline></video>
       </div>`);
+    // presenter.maskAfull: the output y where burned-in captions start in a full-frame window (set by
+    // hand for the window's framing; the camera moves the source, so it cannot be derived here).
+    if (pres.maskAfull) {
+      const top = Math.round(clamp(pres.maskAfull, 0, H - 20));
+      body.push(`      ${captionCover(`maska${w.i}`, w.start, w.end, top, 16, 6, W, H, pres.maskStyle, 100 + w.i)}`);
+    }
   }
 
   // Full-frame B-roll windows: cover, fit over a blurred fill, or a white band card.
@@ -127,8 +161,11 @@ export function writeLayout(opts) {
       const fill = s.treatment === 'fit'
         ? `\n          ${vid(`vf${id}b`, s.src, s.start, s.end, s.mediaStart, 6, `${box(coverPlace(s.w, s.h, W, H, s.focus))} filter: ${B.fitBlur};`)}`
         : '';
+      // The black backing is a timed clip of its own: on the untimed wrapper it stayed on screen for
+      // the whole edit and every later window's wrapper covered all the panels (black frames).
       body.push(`      <!-- B-full ${id}: ${s.treatment} -->
-      <div id="wf${id}" class="fshot" style="position: absolute; inset: 0; z-index: 5; overflow: hidden; background: #000;">
+      <div id="bf${id}" class="clip" ${timing(s.start, s.end, null, 15)} style="position: absolute; inset: 0; z-index: 5; background: #000;"></div>
+      <div id="wf${id}" class="fshot" style="position: absolute; inset: 0; z-index: 5; overflow: hidden;">
         <div id="kf${id}" data-layout-allow-overflow style="position: absolute; inset: 0; transform-origin: ${f2(s.focus.x * 100)}% ${f2(s.focus.y * 100)}%;">${fill}
           ${vid(`vf${id}`, s.src, s.start, s.end, s.mediaStart, 5, box(main))}
         </div>

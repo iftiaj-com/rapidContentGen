@@ -29,7 +29,7 @@ export function checkSplit(opts) {
   const errors = []; const lines = [];
   const pres = P.presenter;
   const track = readJson(join(jobDir, pres.track));
-  const broll = readJson(join(jobDir, 'data', 'broll.json'));
+  const broll = readJson(join(jobDir, 'data', 'broll.json'), { clips: [] }); // sync mode has none
   const clipDur = Object.fromEntries(broll.clips.map((c) => [c.src, c.duration]));
   const ws = P.windows;
 
@@ -60,7 +60,9 @@ export function checkSplit(opts) {
   for (const w of ws.filter((x) => x.layout === 'split')) {
     const c = w.crop;
     const widthOk = c.fill ? c.tx >= -0.5 && c.tx + pres.width * c.s <= W + 0.5 : c.tx <= 0.5 && c.tx + pres.width * c.s >= W - 0.5;
-    if (!widthOk || c.ty > S.aTop + 0.5 || c.ty + pres.height * c.s < H - 0.5) errors.push(`w${w.i}: the presenter crop leaves part of the panel empty`);
+    // A plan made with --drop may leave a strip at the panel top, no deeper than the seam shade.
+    const gap = pres.drop ? Math.min(pres.drop, S.shadeTo - S.aTop) : 0;
+    if (!widthOk || c.ty > S.aTop + gap + 0.5 || c.ty + pres.height * c.s < H - 0.5) errors.push(`w${w.i}: the presenter crop leaves part of the panel empty`);
     const fps = track.fps;
     const i0 = Math.max(0, Math.floor((w.start - (track.start || 0)) * fps));
     const i1 = Math.min(track.face.cx.length, Math.ceil((w.end - (track.start || 0)) * fps));

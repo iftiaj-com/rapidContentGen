@@ -1,0 +1,353 @@
+{
+  "version": 1,
+  "title": "Split screen: 2026-10-08-script-1l-split",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration": 78.233
+  },
+  "summary": "Split-screen edit: presenter assets/Script_1L_FINAL.mp4, info assets/info-sync.mp4. 16 layout windows (split 0.25, b-full 0.67, a-full 0.08).",
+  "beats": [
+    {
+      "start": 0,
+      "end": 4.7,
+      "words": "Alright, so this one is probably the single biggest tax move available to small business owners and",
+      "onScreen": "SPLIT (hook (always split); explaining). B: sync@0. Presenter crop 0.676x, face 290px, out 0.",
+      "text": [
+        {
+          "content": "captions (split-seam)",
+          "position": "custom",
+          "at": 0,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 4.7,
+      "end": 18.733,
+      "words": "most people have never actually had someone sit down and explain to them. It's called the S-Corp election. Here's what you need to know. If your business is making over $40,000 in net profit as a sole proprietor, you're probably overpaying taxes and there's a legal way to fix it.",
+      "onScreen": "B-FULL (presenter off camera in the source (hook (always split); explaining)). B: sync@4.7 cover.",
+      "text": [
+        {
+          "content": "captions (split-pill)",
+          "position": "custom",
+          "at": 4.7,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 18.733,
+      "end": 19.9,
+      "words": "Here's how it works.",
+      "onScreen": "SPLIT (explaining; explaining; explaining). B: sync@18.733. Presenter crop 0.676x, face 300px, out 0.",
+      "text": [
+        {
+          "content": "captions (split-seam)",
+          "position": "custom",
+          "at": 18.733,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 19.9,
+      "end": 28.033,
+      "words": "As a sole proprietor, every dollar of profit gets hit with a 15.3% self-employment tax. You're paying both the employee and employer side of that.",
+      "onScreen": "B-FULL (presenter off camera in the source (explaining; explaining; explaining)). B: sync@19.9 cover.",
+      "text": [
+        {
+          "content": "captions (split-pill)",
+          "position": "custom",
+          "at": 19.9,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 28.033,
+      "end": 28.667,
+      "words": "All of it.",
+      "onScreen": "SPLIT (explaining; explaining). B: sync@28.033. Presenter crop 0.676x, face 312px, out 0.",
+      "text": [
+        {
+          "content": "captions (split-seam)",
+          "position": "custom",
+          "at": 28.033,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 28.667,
+      "end": 33.78,
+      "words": "With an S-Corp, you pay yourself a reasonable salary. That salary gets hit with payroll taxes.",
+      "onScreen": "B-FULL (presenter off camera in the source (explaining; explaining)). B: sync@28.667 cover.",
+      "text": [
+        {
+          "content": "captions (split-pill)",
+          "position": "custom",
+          "at": 28.667,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 33.78,
+      "end": 35.79,
+      "words": "But the remaining profit distributed to",
+      "onScreen": "A-FULL (opener \"But the\"). Titles: \"But the / remaining profit distributed\" (italic), \"to\" (italic).",
+      "text": [
+        {
+          "content": "remaining profit distributed",
+          "position": "custom",
+          "at": 33.81,
+          "box": {
+            "x": 102,
+            "y": 1236,
+            "w": 760,
+            "h": 300
+          }
+        },
+        {
+          "content": "to",
+          "position": "custom",
+          "at": 35.69,
+          "box": {
+            "x": 102,
+            "y": 1236,
+            "w": 760,
+            "h": 300
+          }
+        }
+      ],
+      "sound": "voice + whoosh (light leak)"
+    },
+    {
+      "start": 35.79,
+      "end": 39.9,
+      "words": "you as the owner does not. That's where the savings come from.",
+      "onScreen": "SPLIT (explaining; explaining). B: sync@35.79. Presenter crop 0.676x, face 302px, out 0.",
+      "text": [
+        {
+          "content": "captions (split-seam)",
+          "position": "custom",
+          "at": 35.79,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 39.9,
+      "end": 44.62,
+      "words": "On $100,000 in net profit, the difference is roughly $7,500 a year.",
+      "onScreen": "B-FULL (presenter off camera in the source (explaining; explaining)). B: sync@39.9 cover.",
+      "text": [
+        {
+          "content": "captions (split-pill)",
+          "position": "custom",
+          "at": 39.9,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 44.62,
+      "end": 46.5,
+      "words": "Now two things most people miss.",
+      "onScreen": "A-FULL (opener \"Now two\"). Titles: \"Now two things / most people miss\" (italic).",
+      "text": [
+        {
+          "content": "most people miss",
+          "position": "custom",
+          "at": 44.67,
+          "box": {
+            "x": 102,
+            "y": 1236,
+            "w": 760,
+            "h": 300
+          }
+        }
+      ],
+      "sound": "voice + whoosh (light leak)"
+    },
+    {
+      "start": 46.5,
+      "end": 57.08,
+      "words": "First, the QBI deduction, which is now 23% for 2026, interacts directly with your salary decision. Set the salary too high and you reduce your deduction, too low and the IRS flags it.",
+      "onScreen": "B-FULL (number or stat). B: sync@46.5 cover.",
+      "text": [
+        {
+          "content": "captions (split-pill)",
+          "position": "custom",
+          "at": 46.5,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 57.08,
+      "end": 61.367,
+      "words": "There's no universal rule. It has to be modeled for your specific situation. Second,",
+      "onScreen": "SPLIT (explaining; explaining; explaining). B: sync@57.08. Presenter crop 0.676x, face 301px, out 0.",
+      "text": [
+        {
+          "content": "captions (split-seam)",
+          "position": "custom",
+          "at": 57.08,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 61.367,
+      "end": 69.9,
+      "words": "if you're in New York City, the city does not recognize the S-Corp status. You're still subject to the general corporation tax. That's an 8.85% layer.",
+      "onScreen": "B-FULL (presenter off camera in the source (explaining; explaining; explaining)). B: sync@61.367 cover.",
+      "text": [
+        {
+          "content": "captions (split-pill)",
+          "position": "custom",
+          "at": 61.367,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 69.9,
+      "end": 74.38,
+      "words": "Most business owners don't see coming. The S-Corp election is one of the highest leverage moves available",
+      "onScreen": "SPLIT (explaining; explaining). B: sync@69.9. Presenter crop 0.676x, face 295px, out 0.",
+      "text": [
+        {
+          "content": "captions (split-seam)",
+          "position": "custom",
+          "at": 69.9,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 74.38,
+      "end": 76.01,
+      "words": "to small business owners. But",
+      "onScreen": "B-FULL (explaining; rhythm (split ran 4.34 s)). B: sync@74.38 cover.",
+      "text": [
+        {
+          "content": "captions (split-pill)",
+          "position": "custom",
+          "at": 74.38,
+          "box": {
+            "x": 64,
+            "y": 1196,
+            "w": 836,
+            "h": 80
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 76.01,
+      "end": 78.233,
+      "words": "only when it's structured correctly.",
+      "onScreen": "A-FULL (opener \"But only\"). Titles: \"only when / it's structured correctly\" (italic).",
+      "text": [
+        {
+          "content": "it's structured correctly",
+          "position": "custom",
+          "at": 76.15,
+          "box": {
+            "x": 102,
+            "y": 1236,
+            "w": 760,
+            "h": 300
+          }
+        }
+      ],
+      "sound": "voice + whoosh (light leak)"
+    }
+  ],
+  "notes": [
+    "Words from data/words.json (correct them before building).",
+    "Presenter background luma 196: left as shot.",
+    "A face was found on only 63% of presenter frames.",
+    "No hook title: the first line has no strong key word (best score 1.59). Add one to data/style-plan.json by hand if wanted.",
+    "split share 0.25 is outside the soft target 0.4-0.55 (fine for a short clip; check the rhythm).",
+    "bfull share 0.67 is outside the soft target 0.25-0.35 (fine for a short clip; check the rhythm).",
+    "afull share 0.08 is outside the soft target 0.15-0.25 (fine for a short clip; check the rhythm)."
+  ]
+}

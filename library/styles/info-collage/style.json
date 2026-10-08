@@ -1,0 +1,111 @@
+{
+  "$comment": "Theme pack: the info-graphics components re-skinned with the Tactile Paper Collage palette and fonts (library/styles/tactile-collage, MIT port; fonts Apache-2.0 / OFL, licences in that pack's fonts/). Token names are the info-graphics roles: orange = the collage signal red, good = resolve green, cream = paper, white = sheet. Use it in the same plan as tactile-collage items. Made for the split-screen + info-graphics + collage job on 2026-10-08.",
+  "label": "Info-graphics in Paper Collage",
+  "use": "Counters, equations, gauges, icons, orbits and word-timed type stacks in the paper collage look: warm paper, ink edges, signal red and resolve green, Archivo Black, Courier Prime and marker emphasis. Pair with tactile-collage paper, cards, stamps and tape.",
+  "keywords": [
+    "collage infographic",
+    "paper infographic",
+    "tactile infographic",
+    "scrapbook chart",
+    "handmade explainer"
+  ],
+  "from": "library/styles/info-graphics (components) + library/styles/tactile-collage (palette, fonts)",
+  "skill": ".claude/skills/skill-info-graphics/SKILL.md",
+  "components": "components.mjs",
+  "tokens": {
+    "dark": "#25231f",
+    "dark-2": "#3a3630",
+    "cream": "#f3e8cc",
+    "paper": "#fffaf0",
+    "ink": "#25231f",
+    "white": "#fffaf0",
+    "muted": "#6b6252",
+    "muted-dark": "#c9bfa8",
+    "orange": "#d95b45",
+    "orange-deep": "#b8432f",
+    "orange-soft": "#f2c3a9",
+    "good": "#58aa8d",
+    "good-deep": "#2f7a60",
+    "primary": "#3159c8",
+    "spark": "#e2b93f",
+    "chip": "#25231f",
+    "line": "#c9bfa8",
+    "shadow": "rgba(37, 35, 31, 0.22)"
+  },
+  "type": {
+    "display": {
+      "family": "Archivo Black",
+      "weight": 400,
+      "$note": "bundled heavy sans (the collage pack display face)"
+    },
+    "body": {
+      "family": "TPC Courier",
+      "weight": 700,
+      "file": "../tactile-collage/fonts/courier-prime-700.woff2",
+      "$note": "Courier Prime Bold (OFL): labels, notes, posts"
+    },
+    "heavy": {
+      "family": "TPC Marker",
+      "weight": 400,
+      "file": "../tactile-collage/fonts/permanent-marker-400.woff2",
+      "$note": "Permanent Marker (Apache-2.0): the *emphasis* word in a stack with heavy=true"
+    },
+    "mono": {
+      "family": "TPC Courier",
+      "weight": 700,
+      "file": "../tactile-collage/fonts/courier-prime-700.woff2",
+      "$note": "Courier Prime Bold"
+    }
+  },
+  "captions": {
+    "style": "collage",
+    "mode": "phrase",
+    "$note": "the collage pack caption card"
+  },
+  "motion": {
+    "enter": 0.5,
+    "enterEase": "power3.out",
+    "word": 0.36,
+    "wordEase": "back.out(1.6)",
+    "stagger": 0.11,
+    "draw": 0.5,
+    "drawEase": "power2.inOut",
+    "exit": 0.2,
+    "exitEase": "power2.in",
+    "rise": 30,
+    "blur": 8,
+    "push": 0.04
+  },
+  "sfx": {
+    "$note": "Collage-quiet versions of the info-graphics sounds (the library has no paper sounds).",
+    "swipe": {
+      "name": "whoosh-short",
+      "volume": 0.16
+    },
+    "pop": {
+      "name": "pop",
+      "volume": 0.2
+    },
+    "click": {
+      "name": "click",
+      "volume": 0.28
+    },
+    "tick": {
+      "name": "click-soft",
+      "volume": 0.3
+    },
+    "type": {
+      "name": "typing",
+      "volume": 0.12
+    },
+    "hit": {
+      "name": "impact-bass-1",
+      "volume": 0.12
+    },
+    "shine": {
+      "name": "sparkle",
+      "volume": 0.14
+    }
+  },
+  "status": "built"
+}

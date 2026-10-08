@@ -26,6 +26,12 @@ function loadIcon(name, weight, what) {
 }
 
 const r1 = (n) => Math.round(n * 10) / 10;
+/** 153, 1, "," -> "15.3"; 40000, 0, "," -> "40,000" (the counter's widest text, for fitting). */
+function fmtNum(n, dec = 0, sep = '') {
+  const s = String(n).padStart(dec + 1, '0');
+  const int = s.slice(0, s.length - dec).replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+  return dec ? `${int}.${s.slice(-dec)}` : int;
+}
 const r2 = (n) => Math.round(n * 100) / 100;
 
 function oneOf(v, list, what) {
@@ -41,6 +47,15 @@ function nums(s, what) {
   if (out.some((n) => !Number.isFinite(n))) throw new Error(`${what}: times must be numbers (got "${s}")`);
   return out;
 }
+/** "0.5@0.4, 0.9@2" -> [{ pos: 0.5, t: 0.4 }, { pos: 0.9, t: 2 }] (range knob moves). */
+function parseMoves(s) {
+  return String(s || '').split(',').map((x) => x.trim()).filter(Boolean).map((x) => {
+    const [pos, t] = x.split('@').map(Number);
+    if (!Number.isFinite(pos) || !Number.isFinite(t) || pos < 0 || pos > 1) throw new Error(`range: a move must be "pos@t" with pos 0..1 (got "${x}")`);
+    return { pos, t };
+  });
+}
+
 /** n start times: the given ones, then `step` apart after the last. */
 function fillTimes(given, n, first, step) {
   const out = [];
@@ -104,8 +119,11 @@ const HELPERS = (m) => `
 // Values below 10^p leave the cell blank (no leading zeros). A digit that would roll more
 // than 40 times shows 40 cells ending on its target (it is a blur at that speed anyway).
 const ODOMETER = `
-            function odometer(el, from, to, f, size, at, dur, ease) {
-              var digits = String(to).length, cw = measure("0", f, size);
+            function odometer(el, from, to, f, size, at, dur, ease, dec, sep) {
+              // dec: decimal places (to = 153, dec = 1 shows 15.3); sep: thousands separator. The point
+              // and the separator ride on their digit's cells, so a blank digit never shows one.
+              dec = dec || 0; sep = sep || "";
+              var digits = Math.max(String(to).length, dec + 1), cw = measure("0", f, size);
               el.innerHTML = "";
               var cols = [];
               for (var p = digits - 1; p >= 0; p--) {
@@ -114,14 +132,15 @@ const ODOMETER = `
                 var col = document.createElement("span");
                 col.className = "odo-col";
                 col.setAttribute("data-layout-allow-overflow", "");
-                col.style.width = cw.toFixed(1) + "px";
+                var tail = dec && p === dec ? "." : sep && p > dec && (p - dec) % 3 === 0 ? sep : "";
+                col.style.width = (cw + (tail ? measure(tail, f, size) : 0)).toFixed(1) + "px";
                 var strip = document.createElement("span");
                 strip.className = "odo-strip";
                 strip.setAttribute("data-layout-allow-overflow", "");
                 for (var v = a; v <= b; v++) {
                   var cell = document.createElement("span");
                   cell.className = "odo-cell";
-                  cell.textContent = v <= 0 && p > 0 ? "\\u00a0" : String(((v % 10) + 10) % 10);
+                  cell.textContent = v <= 0 && p > dec ? "\\u00a0" : String(((v % 10) + 10) % 10) + tail;
                   strip.appendChild(cell);
                 }
                 col.appendChild(strip);
@@ -133,9 +152,9 @@ const ODOMETER = `
               return cols;
             }`;
 const ODO_CSS = (sel) => `
-      ${sel} .odo-col { display: inline-block; height: 1em; overflow: hidden; vertical-align: top; text-align: center; }
+      ${sel} .odo-col { display: inline-block; height: 1.18em; overflow: hidden; vertical-align: top; text-align: left; }
       ${sel} .odo-strip { display: block; }
-      ${sel} .odo-cell { display: block; height: 1em; line-height: 1em; }`;
+      ${sel} .odo-cell { display: block; height: 1.18em; line-height: 1.18em; }`;
 
 // Hand-drawn arrow "x1,y1>x2,y2" (output px) as a quadratic curve with a two-stroke head.
 function arrowPaths(spec, bend) {
@@ -171,6 +190,7 @@ const OPS = {
   '>': ['M 28 20 L 76 50 L 28 80'],
   '<': ['M 72 20 L 24 50 L 72 80'],
   '→': ['M 14 50 H 84', 'M 62 28 L 86 50 L 62 72'],
+  '↔': ['M 12 50 H 88', 'M 32 30 L 12 50 L 32 70', 'M 68 30 L 88 50 L 68 70'],
   '+': ['M 50 18 V 82', 'M 18 50 H 82'],
   '×': ['M 24 24 L 76 76', 'M 76 24 L 24 76'],
 };
@@ -241,7 +261,7 @@ export const components = {
         color: ${c.fg};
         text-align: ${p.align};
       }
-      ${ctx.sel('hero')} .em { color: ${c.accent}; ${p.heavy ? `font-weight: ${ctx.type.heavy.weight};` : ''} }
+      ${ctx.sel('hero')} .em { color: ${c.accent}; ${p.heavy ? ctx.family('heavy') : ''} }
       ${ctx.sel('hero')} .ln { padding-bottom: 0.06em; }
       ${ctx.sel('svg')} { position: absolute; left: 0; top: 0; overflow: visible; }`;
       const html = `
@@ -274,7 +294,7 @@ export const components = {
   },
 
   'equation': {
-    summary: 'An equation: left, a drawn operator (= ≠ > < → + ×) and right, appearing at times "left,op,right". *word* is orange; chip=left|right sets that term as a dark key cap with orange text (like an app icon). "|" breaks a term into two lines.',
+    summary: 'An equation: left, a drawn operator (= ≠ > < → ↔ + ×) and right, appearing at times "left,op,right". *word* is orange; chip=left|right sets that term as a dark key cap with orange text (like an app icon). "|" breaks a term into two lines.',
     sfx: (p, D) => {
       const t = fillTimes(nums(p.times, 'equation'), 3, 0.05, 0.4);
       return [{ role: 'tick', at: t[1] + 0.1 }, ...(p.chip !== 'none' ? [{ role: 'pop', at: t[p.chip === 'left' ? 0 : 2] + 0.12 }] : [])];
@@ -694,7 +714,7 @@ export const components = {
       const R = p.size / 2, core = Math.round(p.size * 0.44), cx = p.w / 2, cy = p.h / 2;
       const css = `${SLOT(ctx.sel('slot'), p)}
       ${ctx.sel('disc')} { position: absolute; left: ${r1(cx - R)}px; top: ${r1(cy - R)}px; width: ${p.size}px; height: ${p.size}px; border-radius: 50%;
-        background: radial-gradient(circle at 40% 35%, #f19a5c, var(--orange) 55%, #c95d1c); box-shadow: 0 30px 60px rgba(0,0,0,0.35); }
+        background: radial-gradient(circle at 40% 35%, color-mix(in srgb, var(--orange) 70%, white), var(--orange) 55%, color-mix(in srgb, var(--orange) 80%, black)); box-shadow: 0 30px 60px rgba(0,0,0,0.35); }
       ${ctx.sel('core')} { position: absolute; left: ${r1(cx - core / 2)}px; top: ${r1(cy - core / 2)}px; width: ${core}px; height: ${core}px; border-radius: 50%;
         background: var(--chip); display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 30px rgba(0,0,0,0.4); }
       ${ctx.sel('lab')} { display: block; ${ctx.family('display')} font-style: italic; color: var(--white); text-align: center; line-height: 1.02; }
@@ -732,9 +752,9 @@ export const components = {
   },
 
   'counter': {
-    summary: 'A big number that rolls from `from` to `to` (whole numbers) between countAt and countAt + countDur, with prefix and suffix (the suffix in orange) and a label under it. For real, sourced figures only.',
+    summary: 'A big number that rolls from `from` to `to` (whole numbers; decimals=1 shows to=153 as 15.3, sep="," groups thousands) between countAt and countAt + countDur, with prefix and suffix (the suffix in the accent) and a label under it. For real, sourced figures only.',
     sfx: (p) => [{ role: 'tick', at: p.countAt + p.countDur }],
-    params: { from: 0, to: 100, prefix: '', suffix: '', label: '', on: 'dark', x: null, y: 760, w: 760, h: 420, size: 220, countAt: 0.15, countDur: 1.2, ease: 'power2.out', out: 'fade' },
+    params: { from: 0, to: 100, decimals: 0, sep: '', prefix: '', suffix: '', label: '', on: 'dark', x: null, y: 760, w: 760, h: 420, size: 220, countAt: 0.15, countDur: 1.2, ease: 'power2.out', out: 'fade' },
     prepare(p) {
       if (!Number.isInteger(p.from) || !Number.isInteger(p.to) || p.from < 0 || p.to < p.from) throw new Error('counter: from and to must be whole numbers with 0 <= from <= to');
     },
@@ -744,23 +764,90 @@ export const components = {
       const f = font(ctx, 'display', { track: -0.04 });
       const css = `${SLOT(ctx.sel('slot'), p)}
       ${ctx.sel('slot')} { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-      ${ctx.sel('row')} { display: flex; align-items: flex-start; ${ctx.family('display')} line-height: 1; letter-spacing: -0.04em; color: ${c.fg}; font-variant-numeric: tabular-nums; white-space: nowrap; }
+      ${ctx.sel('row')} { display: flex; align-items: flex-start; ${ctx.family('display')} line-height: 1.18; letter-spacing: -0.04em; color: ${c.fg}; font-variant-numeric: tabular-nums; white-space: nowrap; }
       ${ctx.sel('suf')} { color: ${c.accent}; }
-      ${ctx.sel('lab')} { display: block; margin-top: 26px; ${ctx.family('body')} color: ${c.muted}; text-align: center; line-height: 1.2; }${ODO_CSS(ctx.sel('num'))}`;
+      ${ctx.sel('lab')} { display: block; margin-top: ${Math.max(26, Math.round(p.size * 0.12))}px; ${ctx.family('body')} color: ${c.muted}; text-align: center; line-height: 1.2; }${ODO_CSS(ctx.sel('num'))}`;
       const html = `
           <div id="${ctx.idf('slot')}">
             <div id="${ctx.idf('row')}"><span id="${ctx.idf('pre')}">${ctx.esc(p.prefix)}</span><span id="${ctx.idf('num')}"></span><span id="${ctx.idf('suf')}">${ctx.esc(p.suffix)}</span></div>${p.label ? `
             <span id="${ctx.idf('lab')}"></span>` : ''}
           </div>`;
       const js = `${HELPERS(ctx.motion)}${ODOMETER}
-            var full = ${ctx.js(p.prefix + String(p.to) + p.suffix)};
+            var full = ${ctx.js(p.prefix + fmtNum(p.to, p.decimals, p.sep) + p.suffix)};
             var size = ${p.size};
             while (size > 60 && measure(full, ${ctx.js(f)}, size) > ${p.w}) size *= 0.95;
             $("row").style.fontSize = size.toFixed(1) + "px";
-            odometer($("num"), ${p.from}, ${p.to}, ${ctx.js(f)}, size, ${p.countAt}, ${p.countDur}, ${ctx.js(p.ease)});${p.label ? `
+            odometer($("num"), ${p.from}, ${p.to}, ${ctx.js(f)}, size, ${p.countAt}, ${p.countDur}, ${ctx.js(p.ease)}, ${p.decimals}, ${ctx.js(p.sep)});${p.label ? `
             fit($("lab"), ${ctx.js(p.label)}, { font: ${ctx.js(font(ctx, 'body'))}, size: 40, min: 26, maxW: ${p.w}, maxH: 100, maxLines: 2, lh: 1.2 });
             reveal($("lab"), ${r2(p.countAt + 0.2)}, { rise: 16, blur: 6 });` : ''}
             reveal($("row"), 0, { rise: 40, blur: 12, dur: 0.4 });
+            out($("slot"), ${ctx.js(p.out)});`;
+      return { html, css, js };
+    },
+  },
+
+  'range': {
+    summary: 'A gauge for a trade-off: a bar cut into zones "Label:note:bad|Label:note:good|..." and a labelled knob that glides to each position in moves "pos@t,..." (pos 0..1 along the bar, t seconds from the item start; the first move places it). When the knob lands in a zone, the zone pulses and its note appears. Use for too-low / sweet-spot / too-high decisions.',
+    sfx: (p) => parseMoves(p.moves).slice(1).map((m) => ({ role: 'tick', at: m.t + 0.25 })),
+    params: { zones: 'Too low:IRS flags it:bad|Sweet spot::good|Too high:Smaller deduction:bad', knob: 'Salary', moves: '0.5@0.4,0.88@2,0.12@3.6', title: '', on: 'light', x: null, y: 860, w: 820, h: 420, label: 34, out: 'fade' },
+    prepare(p) {
+      const zones = splitList(p.zones).map((z) => { const [label, note = '', tone = 'neutral'] = z.split(':').map((s) => s.trim()); return { label, note, tone }; });
+      if (zones.length < 2) throw new Error('range: give at least two zones ("Low:note:bad|High:note:good")');
+      for (const z of zones) oneOf(z.tone, ['bad', 'good', 'neutral'], 'range: zone tone');
+      p._zones = zones;
+      p._moves = parseMoves(p.moves);
+      if (!p._moves.length) throw new Error('range: moves needs at least one "pos@t"');
+    },
+    render(p, ctx) {
+      oneOf(p.out, ['fade', 'blur', 'cut'], 'range: out');
+      const c = inks(p.on);
+      const m = ctx.motion;
+      const zones = p._zones; const moves = p._moves;
+      const barH = 34; const knob = 70;
+      const titleH = p.title ? Math.round(p.label * 1.9) : 0;
+      const barY = titleH + Math.round(p.label * 2.1) + 20;
+      const zw = p.w / zones.length;
+      const fill = { bad: 'color-mix(in srgb, var(--orange) 38%, var(--white))', good: 'color-mix(in srgb, var(--good) 45%, var(--white))', neutral: 'var(--white)' };
+      const ink = { bad: c.accent, good: 'var(--good-deep)', neutral: c.fg };
+      const css = `${SLOT(ctx.sel('slot'), p)}
+      ${ctx.sel('title')} { position: absolute; left: 0; top: 0; width: 100%; display: block; ${ctx.family('display')} color: ${c.fg}; text-align: center; line-height: 1.05; }
+      ${ctx.sel('bar')} { position: absolute; left: 0; top: ${barY}px; width: ${p.w}px; height: ${barH}px; display: flex; border: 4px solid var(--ink); border-radius: ${barH}px; overflow: hidden; transform-origin: 0 50%; box-shadow: 0 8px 0 var(--shadow); }
+      #${ctx.id}-layer .zn { flex: 1; height: 100%; transform-origin: 50% 50%; }
+      #${ctx.id}-layer .zn + .zn { border-left: 3px solid var(--ink); }
+      #${ctx.id}-layer .zl { position: absolute; top: ${barY - Math.round(p.label * 1.55)}px; display: block; text-align: center; ${ctx.family('display')} line-height: 1; white-space: nowrap; }
+      #${ctx.id}-layer .zt { position: absolute; top: ${barY + barH / 2 + knob / 2 + 10 + Math.round(p.label * 0.8 * 1.64) + 16}px; display: block; text-align: center; ${ctx.family('body')} line-height: 1.15; }
+      ${ctx.sel('knob')} { position: absolute; left: 0; top: ${barY + barH / 2 - knob / 2}px; width: ${knob}px; height: ${knob}px; border-radius: 50%; background: var(--white); border: 5px solid var(--ink); box-shadow: 0 10px 18px var(--shadow); }
+      ${ctx.sel('tag')} { position: absolute; left: 50%; top: ${knob + 10}px; transform: translateX(-50%); white-space: nowrap; ${ctx.family('display')} font-size: ${Math.round(p.label * 0.8)}px; line-height: 1; color: var(--white); background: var(--chip); padding: 0.32em 0.6em; border-radius: 8px; }`;
+      const html = `
+          <div id="${ctx.idf('slot')}">${p.title ? `
+            <span id="${ctx.idf('title')}"></span>` : ''}
+            <div id="${ctx.idf('bar')}">${zones.map((z, i) => `<i class="zn" id="${ctx.idf('z' + i)}" style="background: ${fill[z.tone]};"></i>`).join('')}</div>${zones.map((z, i) => `
+            <span class="zl" id="${ctx.idf('l' + i)}" style="left: ${r1(i * zw)}px; width: ${r1(zw)}px; color: ${ink[z.tone]};"></span>${z.note ? `
+            <span class="zt" id="${ctx.idf('n' + i)}" style="left: ${r1(i * zw)}px; width: ${r1(zw)}px; color: ${ink[z.tone]};"></span>` : ''}`).join('')}
+            <div id="${ctx.idf('knob')}"><span id="${ctx.idf('tag')}">${ctx.esc(p.knob)}</span></div>
+          </div>`;
+      const zoneAt = (pos) => Math.min(zones.length - 1, Math.max(0, Math.floor(pos * zones.length)));
+      const kx = (pos) => r1(pos * p.w - knob / 2);
+      const js = `${HELPERS(m)}${p.title ? `
+            fit($("title"), ${ctx.js(p.title)}, { font: ${ctx.js(font(ctx, 'display'))}, size: ${Math.round(p.label * 1.4)}, min: 24, maxW: ${p.w}, maxH: ${titleH}, maxLines: 1, lh: 1.05 });
+            reveal($("title"), 0);` : ''}
+            var Z = ${ctx.js(zones)};
+            for (var i = 0; i < Z.length; i++) {
+              fit($("l" + i), Z[i].label, { font: ${ctx.js(font(ctx, 'display'))}, size: ${p.label}, min: 20, maxW: ${r1(zw - 12)}, maxH: ${Math.round(p.label * 1.2)}, maxLines: 1, lh: 1 });
+              if (Z[i].note) fit($("n" + i), Z[i].note, { font: ${ctx.js(font(ctx, 'body'))}, size: ${Math.round(p.label * 0.8)}, min: 18, maxW: ${r1(zw - 12)}, maxH: ${Math.round(p.label * 2)}, maxLines: 2, lh: 1.15 });
+              reveal($("l" + i), 0.2 + i * 0.1, { rise: 14, blur: 6, dur: 0.3 });
+            }
+            tl.fromTo($("bar"), { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "power3.out" }, 0.05);
+            tl.set($("knob"), { x: ${kx(moves[0].pos)} }, 0);
+            pop($("knob"), ${moves[0].t}, { from: 0.3 });${moves.map((mv, k) => {
+              const z = zoneAt(mv.pos);
+              const land = k ? r2(mv.t + 0.25) : r2(mv.t + 0.15);
+              return `${k ? `
+            tl.to($("knob"), { x: ${kx(mv.pos)}, duration: 0.5, ease: "power3.inOut" }, ${r2(mv.t - 0.25)});` : ''}
+            tl.fromTo($("z${z}"), { scaleY: 1 }, { scaleY: 1.6, duration: 0.14, ease: "power2.out", yoyo: true, repeat: 1 }, ${land});
+            tl.to($("knob"), { borderColor: ${ctx.js(zones[z].tone === 'good' ? ctx.tokens['good-deep'] : zones[z].tone === 'bad' ? ctx.tokens['orange-deep'] : ctx.tokens.ink)}, duration: 0.2, ease: "power1.out" }, ${land});${zones[z].note ? `
+            reveal($("n${z}"), ${land}, { rise: 12, blur: 6, dur: 0.3 });` : ''}`;
+            }).join('')}
             out($("slot"), ${ctx.js(p.out)});`;
       return { html, css, js };
     },
@@ -788,7 +875,7 @@ export const components = {
       const color = p.badge === 'disc' ? 'var(--ink)' : p.badge === 'chip' ? 'var(--orange)' : tone;
       const badge = {
         none: '',
-        disc: 'border-radius: 50%; background: radial-gradient(circle at 40% 35%, #f19a5c, var(--orange) 55%, #c95d1c); box-shadow: 0 18px 36px rgba(0,0,0,0.3);',
+        disc: 'border-radius: 50%; background: radial-gradient(circle at 40% 35%, color-mix(in srgb, var(--orange) 70%, white), var(--orange) 55%, color-mix(in srgb, var(--orange) 80%, black)); box-shadow: 0 18px 36px rgba(0,0,0,0.3);',
         chip: `border-radius: ${Math.round(p._box * 0.24)}px; background: linear-gradient(160deg, #3a3a3a, var(--chip) 60%); box-shadow: 0 14px 30px var(--shadow), inset 0 2px 0 rgba(255,255,255,0.14);`,
         ring: `border-radius: 50%; border: ${Math.max(4, Math.round(p.size * 0.04))}px solid ${tone};`,
       }[p.badge];

@@ -7,7 +7,12 @@
 //
 //   node tools/recipes/split-screen.mjs prep  --job <dir> --presenter <clip> --info <clip> [--info <clip> ...]
 //        [--trim] [--denoise 12] [--lufs -14]
-//   node tools/recipes/split-screen.mjs plan  --job <dir> [--seed 1] [--handle "@name"] [--cta "text"] [--darken auto|on|off]
+//   node tools/recipes/split-screen.mjs prep  --job <dir> --presenter <clip> --sync [--trim]   (no info video: sync mode)
+//   node tools/recipes/split-screen.mjs plan  --job <dir> [--seed 1] [--handle "@name"] [--cta "text"] [--darken auto|on|off] [--sync assets/info-sync.mp4]
+//        [--onscreen "0-4.7,18.73-19.9"] [--hide-below 0.78]
+// --onscreen: an edited presenter clip with cutaways: the ranges where the presenter is on camera; the rest goes b-full.
+// --hide-below: a band of the source (fraction of its height, down to the bottom: burned-in captions) kept under the panel.
+// --drop <px>: let the source sit up to this far below the panel top (little headroom); the gap is black under the seam shade.
 //   node tools/recipes/split-screen.mjs layout --job <dir>          (writes index.html from data/split-plan.json)
 //   node tools/recipes/split-screen.mjs commands|build --job <dir> [--dry-run]
 //   node tools/recipes/split-screen.mjs clamp --job <dir>           (caption hosts end with their windows; build runs it)
@@ -22,6 +27,11 @@
 //   presenter's background through a cut-out (rcg matte), titles, captions per window, transitions
 //   and sounds. Writes data/split-plan.json, data/style-plan.json, caption word files and beat-sheet.json.
 //   Edit data/split-plan.json (layouts, shots, highlights) and run build; build never re-plans.
+// sync mode (--sync <clip>): no montage. One 1080x1920 info clip made in step with the speech (for
+//   example rendered info-graphics) plays at the edit's own time: every split and b-full window shows
+//   it from mediaStart = the window start, top-anchored in the B panel (its top 1190 px) and full
+//   frame in b-full; no Ken Burns, no auto hook title. The clip may be made after planning (the
+//   graphics are planned against the windows); it must exist before layout.
 
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -49,8 +59,9 @@ const NAME = 'a';
 export async function prep(opts) {
   const jobDir = resolve(opts.job);
   const infos = [].concat(opts.info || []);
-  if (!opts.presenter || !infos.length) throw new Error('prep needs --presenter <clip> and at least one --info <clip>');
+  if (!opts.presenter || (!infos.length && !opts.sync)) throw new Error('prep needs --presenter <clip> and at least one --info <clip> (or --sync for a clip made later)');
   const pres = await MP.prep({ job: jobDir, src: opts.presenter, name: NAME, trim: opts.trim, denoise: opts.denoise, lufs: opts.lufs, ceiling: opts.ceiling, scaffold: true });
+  if (!infos.length) return { presenter: pres, broll: { clips: [] } };
   const preps = [];
   for (const [i, src] of infos.entries()) {
     const abs = isAbsolute(src) ? src : join(jobDir, src);
@@ -112,7 +123,7 @@ export function faceOverrun(f, c, L) {
  * (faceOverrun > 2 px), then the face closest to its target. When no cover crop passes, it tries
  * smaller scales with a blurred side fill (fill: true; portrait selfies, people who move).
  */
-export function solveCrop(track, t0, t1, L, srcW, srcH) {
+export function solveCrop(track, t0, t1, L, srcW, srcH, { hideBelow = null, drop = 0 } = {}) {
   const P = L.presenter; const S = L.seam;
   const W = L.W; const H = L.H;
   const fps = track.fps;
@@ -122,14 +133,19 @@ export function solveCrop(track, t0, t1, L, srcW, srcH) {
   let missing = 0;
   for (let i = i0; i < i1; i++) { const f = faceFrame(track, i, srcW, srcH, P); if (f) faces.push(f); else missing++; }
   const panelH = H - S.aTop;
-  const sCover = Math.max(W / srcW, panelH / srcH);
+  // hideBelow: a band of the source (fraction of its height down to the bottom, e.g. burned-in
+  // captions) that must stay under the panel's bottom edge: a floor on the scale and on ty.
+  const sHide = hideBelow ? panelH / (hideBelow * srcH) : 0;
+  const sCover = Math.max(W / srcW, panelH / srcH, sHide);
   if (!faces.length) return { s: f3(sCover), tx: f2((W - srcW * sCover) / 2), ty: f2(S.aTop), out: 1, frames: 0, missing, faceH: 0, fill: false, note: 'no face in this window' };
   const mfh = median(faces.map((f) => f.fh));
   const mcx = median(faces.map((f) => f.cx));
   const mcy = median(faces.map((f) => f.cy));
   const grid = (lo, hi, n) => (hi - lo < 1 ? [(lo + hi) / 2] : Array.from({ length: n + 1 }, (_, k) => lo + ((hi - lo) * k) / n));
   const best = (s, fill) => {
-    const tyR = [H - s * srcH, S.aTop];
+    // drop: the source may sit up to `drop` px below the panel top (a source with little headroom);
+    // the strip it leaves is black under the dark seam shade, so it reads as part of the seam.
+    const tyR = [hideBelow ? Math.max(H - s * srcH, H - s * hideBelow * srcH) : H - s * srcH, S.aTop + Math.min(drop, S.shadeTo - S.aTop)];
     if (tyR[0] > tyR[1] + 0.5) return null; // cannot cover the panel's height
     const txR = fill ? [0, W - s * srcW] : [W - s * srcW, 0];
     let top = null;
@@ -151,7 +167,7 @@ export function solveCrop(track, t0, t1, L, srcW, srcH) {
     if (b && (!pick || b.out < pick.out)) pick = { ...b, fill: false };
     if (pick && pick.out / faces.length <= P.maxOut) break;
   }
-  if (pick.out / faces.length > P.maxOut) {
+  if (pick.out / faces.length > P.maxOut && !hideBelow) {
     for (let s = sCover * 0.94; s >= sCover * P.fitMin - 1e-9; s *= 0.94) {
       const b = best(s, true);
       if (b && b.out < pick.out) pick = { ...b, fill: true };
@@ -224,7 +240,8 @@ export async function plan(opts) {
   const D = f3(source.duration);
   const srcW = source.prep.width; const srcH = source.prep.height;
   const words = readJson(join(jobDir, 'data', 'words.json')).words.filter((w) => String(w.text).trim());
-  const broll = readJson(join(jobDir, 'data', 'broll.json'));
+  const sync = opts.sync ? String(opts.sync).replace(/\\/g, '/') : null;
+  const broll = sync ? { clips: [{ src: sync, width: L.W, height: L.H, orientation: 'portrait', sync: true, shots: [] }] } : readJson(join(jobDir, 'data', 'broll.json'));
   const warnings = [];
 
   const trackFile = join(jobDir, 'data', `track-${NAME}.json`);
@@ -300,10 +317,33 @@ export async function plan(opts) {
     w.end = cut;
   }
 
+  // 2b. --onscreen "a-b,c-d": the presenter is on camera only in these ranges (an edited source with
+  //     cutaways). Windows are cut at the bounds; every part outside them becomes b-full, so no other
+  //     footage reaches the presenter panel or an a-full window. Short on-camera parts go b-full too.
+  const onscreen = opts.onscreen ? String(opts.onscreen).split(',').map((r) => r.split('-').map(Number)).filter((r) => r.length === 2 && r.every(Number.isFinite)) : null;
+  if (onscreen) {
+    const inR = (t) => onscreen.some(([a, b]) => t >= a - 1e-6 && t < b - 1e-6);
+    const bounds = onscreen.flat();
+    const next = [];
+    for (const w of windows) {
+      const cuts = [w.start, ...bounds.filter((b) => b > w.start + 1e-3 && b < w.end - 1e-3).sort((x, y) => x - y), w.end];
+      for (let k = 0; k + 1 < cuts.length; k++) {
+        const on = inR((cuts[k] + cuts[k + 1]) / 2);
+        next.push({ ...w, beats: [...w.beats], start: f3(cuts[k]), end: f3(cuts[k + 1]), layout: on ? w.layout : 'bfull', reason: on ? w.reason : `presenter off camera in the source (${w.reason})` });
+      }
+    }
+    for (const w of next) if (w.layout !== 'bfull' && w.end - w.start < PC.minWindow) { w.layout = 'bfull'; w.reason = `${w.reason}; on-camera part under ${PC.minWindow} s`; }
+    // Same-layout neighbours merge (no cap: in sync mode the graphics carry the rhythm).
+    windows = next.reduce((acc, w) => { const p = acc[acc.length - 1]; if (p && p.layout === w.layout && (w.layout === 'bfull' || p.end - p.start + w.end - w.start <= PC.splitMax + 1e-6)) { p.end = w.end; p.beats.push(...w.beats.filter((b) => !p.beats.includes(b))); } else acc.push(w); return acc; }, []);
+    // A b-full part under the minimum joins its b-full neighbour, else the window before.
+    for (let i = windows.length - 1; i > 0; i--) if (windows[i].end - windows[i].start < PC.minWindow) { windows[i - 1].end = windows[i].end; windows.splice(i, 1); }
+  }
+  const cropOpts = { hideBelow: opts['hide-below'] != null ? Number(opts['hide-below']) : null, drop: Number(opts.drop || 0) };
+
   // 3. Presenter crop per split window; a window whose head leaves the panel changes layout.
   for (const w of windows) {
     if (w.layout !== 'split') continue;
-    w.crop = solveCrop(track, w.start, w.end, L, srcW, srcH);
+    w.crop = solveCrop(track, w.start, w.end, L, srcW, srcH, cropOpts);
     if (w.crop.out > L.presenter.maxOut) {
       const to = w.end - w.start <= PC.afullMax ? 'afull' : 'bfull';
       warnings.push(`${f2(w.start)}-${f2(w.end)} s: the head leaves the presenter panel on ${(w.crop.out * 100).toFixed(0)}% of frames; the window becomes ${to}.`);
@@ -312,8 +352,8 @@ export async function plan(opts) {
       delete w.crop;
     }
   }
-  merge();
-  for (const w of windows) if (w.layout === 'split' && !w.crop) w.crop = solveCrop(track, w.start, w.end, L, srcW, srcH);
+  if (!onscreen) merge();
+  for (const w of windows) if (w.layout === 'split' && !w.crop) w.crop = solveCrop(track, w.start, w.end, L, srcW, srcH, cropOpts);
   windows.forEach((w, i) => { w.i = i + 1; w.start = f3(w.start); w.end = f3(w.end); });
 
   // 4. Darken the presenter's background (cut-out over a dark blurred copy) when it is bright.
@@ -331,10 +371,16 @@ export async function plan(opts) {
 
   // 5. B-roll montage. Top-panel shots cut on clause onsets every 1-2.6 s; full-frame windows take
   //    the card / UI shots first.
-  const { take } = makePools(broll);
+  const { take } = sync ? { take: null } : makePools(broll);
   const [minShot, targetShot, maxShot] = PC.topShot;
+  const syncPiece = (w, focus) => ({ shot: 'sync', src: sync, mediaStart: w.start, dur: f3(w.end - w.start), cls: 'sync', w: L.W, h: L.H, orientation: 'portrait', focus, kb: 0, reuse: 0, start: w.start, end: w.end });
   const onsets = clauses.map((c) => f3(c.onset - PC.lead));
   for (const w of windows) {
+    if (sync) {
+      if (w.layout === 'split') w.shots = [syncPiece(w, { x: 0.5, y: 0 })];
+      else if (w.layout === 'bfull') { w.shots = [{ ...syncPiece(w, { x: 0.5, y: 0.5 }), treatment: 'cover' }]; w.highlights = []; }
+      continue;
+    }
     if (w.layout === 'split') {
       const cuts = [w.start];
       let cur = w.start;
@@ -407,7 +453,7 @@ export async function plan(opts) {
   const first = windows[0];
   const hook = beats[0] ? MP.pickHero(beats[0], { first: true }) : null;
   if (hook && hook.score < 2.5) warnings.push(`No hook title: the first line has no strong key word (best score ${hook.score}). Add one to data/style-plan.json by hand if wanted.`);
-  if (first.layout === 'split' && hook && hook.score >= 2.5) {
+  if (!sync && first.layout === 'split' && hook && hook.score >= 2.5) {
     const h = hook;
     const kw = beats[0].words.slice(h.a, h.b + 1).map((x) => String(x.text).replace(/[,.;:!?]+$/, '')).join(' ');
     const shot0 = first.shots?.[0];
@@ -454,7 +500,7 @@ export async function plan(opts) {
 
   const splitPlan = {
     version: 1, seed, duration: D, layoutFile: 'library/split-screen/layout.json',
-    presenter: { src: source.prep.file, voice: `assets/${NAME}-voice.wav`, width: srcW, height: srcH, track: `data/track-${NAME}.json`, darken, bgLuma, cutout: darken ? `assets/matte/${NAME}-fg.webm` : null },
+    presenter: { src: source.prep.file, voice: `assets/${NAME}-voice.wav`, width: srcW, height: srcH, track: `data/track-${NAME}.json`, darken, bgLuma, cutout: darken ? `assets/matte/${NAME}-fg.webm` : null, onscreen, hideBelow: cropOpts.hideBelow, drop: cropOpts.drop },
     clips: broll.clips.map((c) => ({ src: c.src, width: c.width, height: c.height, orientation: c.orientation })),
     handle: opts.handle ? { text: String(opts.handle) } : null,
     windows, transitions, sfx, shares, warnings,
@@ -540,13 +586,13 @@ if (isMain(import.meta.url)) {
   const fail = (m) => { console.error(m); process.exit(2); };
   try {
     if (cmd === 'prep') {
-      if (!a.job || !a.presenter || !a.info) fail('Usage: split-screen.mjs prep --job <dir> --presenter <clip> --info <clip> [--info <clip>] [--trim] [--denoise 12] [--lufs -14]');
+      if (!a.job || !a.presenter || (!a.info && !a.sync)) fail('Usage: split-screen.mjs prep --job <dir> --presenter <clip> --info <clip> [--info <clip>] [--trim] [--denoise 12] [--lufs -14]');
       const { presenter, broll } = await prep({ ...a, trim: Boolean(a.trim) });
       const r = presenter.report;
       console.log(`Presenter ${r.source.width}x${r.source.height} -> ${r.prep.file} ${r.prep.width}x${r.prep.height} @ ${r.prep.fps} fps; voice ${r.audio.after.integratedLufs} LUFS; trim ${r.trim.start}-${r.trim.end} s; duration ${r.duration} s`);
       console.log(`Transcript (${presenter.words.length} words): ${presenter.words.map((w) => w.text).join(' ')}`);
       for (const c of broll.clips) console.log(`Info ${c.src}: ${c.width}x${c.height} ${c.orientation}, ${c.duration} s, shots: ${c.shots.map((s) => `${s.id} ${s.cls}`).join(', ')}`);
-      console.log('Next: correct data/words.json, READ data/broll-sheet.png (fix classes in data/broll.json), then rcg split-screen plan');
+      console.log(a.sync ? 'Next: correct data/words.json, then rcg split-screen plan --sync assets/info-sync.mp4' : 'Next: correct data/words.json, READ data/broll-sheet.png (fix classes in data/broll.json), then rcg split-screen plan');
     } else if (cmd === 'plan') {
       if (!a.job) fail('Usage: split-screen.mjs plan --job <dir> [--seed 1] [--handle "@name"] [--cta "text"] [--darken auto|on|off]');
       const { splitPlan: P, items, problems } = await plan(a);

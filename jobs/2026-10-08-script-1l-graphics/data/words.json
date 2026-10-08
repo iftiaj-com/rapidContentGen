@@ -1,0 +1,1514 @@
+{
+  "audio": "E:\\Develop\\Antigravity_testing\\rapidContentGen\\jobs\\2026-10-08-script-1l-split\\assets\\a-voice.wav",
+  "language": "en",
+  "words": [
+    {
+      "text": "Alright,",
+      "start": 0,
+      "end": 0.36,
+      "probability": 0.367
+    },
+    {
+      "text": "so",
+      "start": 0.52,
+      "end": 0.58,
+      "probability": 0.9
+    },
+    {
+      "text": "this",
+      "start": 0.58,
+      "end": 0.78,
+      "probability": 0.957
+    },
+    {
+      "text": "one",
+      "start": 0.78,
+      "end": 0.98,
+      "probability": 0.938
+    },
+    {
+      "text": "is",
+      "start": 0.98,
+      "end": 1.12,
+      "probability": 0.965
+    },
+    {
+      "text": "probably",
+      "start": 1.12,
+      "end": 1.4,
+      "probability": 0.972
+    },
+    {
+      "text": "the",
+      "start": 1.4,
+      "end": 1.66,
+      "probability": 0.974
+    },
+    {
+      "text": "single",
+      "start": 1.66,
+      "end": 2.12,
+      "probability": 0.978
+    },
+    {
+      "text": "biggest",
+      "start": 2.12,
+      "end": 2.6,
+      "probability": 0.945
+    },
+    {
+      "text": "tax",
+      "start": 2.6,
+      "end": 2.9,
+      "probability": 0.968
+    },
+    {
+      "text": "move",
+      "start": 2.9,
+      "end": 3.12,
+      "probability": 0.854
+    },
+    {
+      "text": "available",
+      "start": 3.12,
+      "end": 3.54,
+      "probability": 0.98
+    },
+    {
+      "text": "to",
+      "start": 3.54,
+      "end": 3.74,
+      "probability": 0.976
+    },
+    {
+      "text": "small",
+      "start": 3.74,
+      "end": 4,
+      "probability": 0.954
+    },
+    {
+      "text": "business",
+      "start": 4,
+      "end": 4.26,
+      "probability": 0.824
+    },
+    {
+      "text": "owners",
+      "start": 4.26,
+      "end": 4.56,
+      "probability": 0.996
+    },
+    {
+      "text": "and",
+      "start": 4.56,
+      "end": 5.06,
+      "probability": 0.506
+    },
+    {
+      "text": "most",
+      "start": 5.06,
+      "end": 5.24,
+      "probability": 0.987
+    },
+    {
+      "text": "people",
+      "start": 5.24,
+      "end": 5.62,
+      "probability": 0.995
+    },
+    {
+      "text": "have",
+      "start": 5.62,
+      "end": 6.08,
+      "probability": 0.881
+    },
+    {
+      "text": "never",
+      "start": 6.08,
+      "end": 6.38,
+      "probability": 0.993
+    },
+    {
+      "text": "actually",
+      "start": 6.38,
+      "end": 6.86,
+      "probability": 0.968
+    },
+    {
+      "text": "had",
+      "start": 6.86,
+      "end": 7.14,
+      "probability": 0.987
+    },
+    {
+      "text": "someone",
+      "start": 7.14,
+      "end": 7.44,
+      "probability": 0.993
+    },
+    {
+      "text": "sit",
+      "start": 7.44,
+      "end": 7.72,
+      "probability": 0.963
+    },
+    {
+      "text": "down",
+      "start": 7.72,
+      "end": 7.94,
+      "probability": 0.995
+    },
+    {
+      "text": "and",
+      "start": 7.94,
+      "end": 8.1,
+      "probability": 0.985
+    },
+    {
+      "text": "explain",
+      "start": 8.1,
+      "end": 8.4,
+      "probability": 0.974
+    },
+    {
+      "text": "to",
+      "start": 8.4,
+      "end": 8.64,
+      "probability": 0.754
+    },
+    {
+      "text": "them.",
+      "start": 8.64,
+      "end": 8.74,
+      "probability": 0.986
+    },
+    {
+      "text": "It's",
+      "start": 8.94,
+      "end": 9.14,
+      "probability": 0.957
+    },
+    {
+      "text": "called",
+      "start": 9.14,
+      "end": 9.28,
+      "probability": 0.995
+    },
+    {
+      "text": "the",
+      "start": 9.28,
+      "end": 9.48,
+      "probability": 0.931
+    },
+    {
+      "text": "S-Corp",
+      "start": 9.48,
+      "end": 9.88,
+      "probability": 0.577
+    },
+    {
+      "text": "election.",
+      "start": 9.88,
+      "end": 10.32,
+      "probability": 0.803
+    },
+    {
+      "text": "Here's",
+      "start": 10.62,
+      "end": 10.84,
+      "probability": 0.913
+    },
+    {
+      "text": "what",
+      "start": 10.84,
+      "end": 10.94,
+      "probability": 0.995
+    },
+    {
+      "text": "you",
+      "start": 10.94,
+      "end": 11.04,
+      "probability": 0.995
+    },
+    {
+      "text": "need",
+      "start": 11.04,
+      "end": 11.18,
+      "probability": 0.992
+    },
+    {
+      "text": "to",
+      "start": 11.18,
+      "end": 11.3,
+      "probability": 0.998
+    },
+    {
+      "text": "know.",
+      "start": 11.3,
+      "end": 11.44,
+      "probability": 0.999
+    },
+    {
+      "text": "If",
+      "start": 11.76,
+      "end": 11.88,
+      "probability": 0.964
+    },
+    {
+      "text": "your",
+      "start": 11.88,
+      "end": 11.98,
+      "probability": 0.541
+    },
+    {
+      "text": "business",
+      "start": 11.98,
+      "end": 12.26,
+      "probability": 0.987
+    },
+    {
+      "text": "is",
+      "start": 12.26,
+      "end": 12.42,
+      "probability": 0.965
+    },
+    {
+      "text": "making",
+      "start": 12.42,
+      "end": 12.6,
+      "probability": 0.992
+    },
+    {
+      "text": "over",
+      "start": 12.6,
+      "end": 13,
+      "probability": 0.986
+    },
+    {
+      "text": "$40,000",
+      "start": 13,
+      "end": 13.78,
+      "probability": 0.695
+    },
+    {
+      "text": "in",
+      "start": 13.78,
+      "end": 13.86,
+      "probability": 0.862
+    },
+    {
+      "text": "net",
+      "start": 13.86,
+      "end": 14,
+      "probability": 0.766
+    },
+    {
+      "text": "profit",
+      "start": 14,
+      "end": 14.4,
+      "probability": 0.995
+    },
+    {
+      "text": "as",
+      "start": 14.4,
+      "end": 14.58,
+      "probability": 0.993
+    },
+    {
+      "text": "a",
+      "start": 14.58,
+      "end": 14.66,
+      "probability": 0.974
+    },
+    {
+      "text": "sole",
+      "start": 14.66,
+      "end": 14.84,
+      "probability": 0.935
+    },
+    {
+      "text": "proprietor,",
+      "start": 14.84,
+      "end": 15.4,
+      "probability": 0.988
+    },
+    {
+      "text": "you're",
+      "start": 15.62,
+      "end": 15.74,
+      "probability": 0.89
+    },
+    {
+      "text": "probably",
+      "start": 15.74,
+      "end": 16.1,
+      "probability": 0.996
+    },
+    {
+      "text": "overpaying",
+      "start": 16.1,
+      "end": 16.74,
+      "probability": 0.947
+    },
+    {
+      "text": "taxes",
+      "start": 16.74,
+      "end": 17.12,
+      "probability": 0.993
+    },
+    {
+      "text": "and",
+      "start": 17.12,
+      "end": 17.56,
+      "probability": 0.532
+    },
+    {
+      "text": "there's",
+      "start": 17.56,
+      "end": 17.74,
+      "probability": 0.983
+    },
+    {
+      "text": "a",
+      "start": 17.74,
+      "end": 17.82,
+      "probability": 0.99
+    },
+    {
+      "text": "legal",
+      "start": 17.82,
+      "end": 18.02,
+      "probability": 0.998
+    },
+    {
+      "text": "way",
+      "start": 18.02,
+      "end": 18.18,
+      "probability": 0.999
+    },
+    {
+      "text": "to",
+      "start": 18.18,
+      "end": 18.26,
+      "probability": 0.998
+    },
+    {
+      "text": "fix",
+      "start": 18.26,
+      "end": 18.52,
+      "probability": 0.998
+    },
+    {
+      "text": "it.",
+      "start": 18.52,
+      "end": 18.68,
+      "probability": 0.995
+    },
+    {
+      "text": "Here's",
+      "start": 18.9,
+      "end": 19.16,
+      "probability": 0.988
+    },
+    {
+      "text": "how",
+      "start": 19.16,
+      "end": 19.26,
+      "probability": 0.998
+    },
+    {
+      "text": "it",
+      "start": 19.26,
+      "end": 19.4,
+      "probability": 0.997
+    },
+    {
+      "text": "works.",
+      "start": 19.4,
+      "end": 19.56,
+      "probability": 0.998
+    },
+    {
+      "text": "As",
+      "start": 20.1,
+      "end": 20.18,
+      "probability": 0.901
+    },
+    {
+      "text": "a",
+      "start": 20.18,
+      "end": 20.3,
+      "probability": 0.98
+    },
+    {
+      "text": "sole",
+      "start": 20.3,
+      "end": 20.48,
+      "probability": 0.998
+    },
+    {
+      "text": "proprietor,",
+      "start": 20.48,
+      "end": 21.16,
+      "probability": 0.998
+    },
+    {
+      "text": "every",
+      "start": 21.34,
+      "end": 21.5,
+      "probability": 0.995
+    },
+    {
+      "text": "dollar",
+      "start": 21.5,
+      "end": 21.84,
+      "probability": 0.998
+    },
+    {
+      "text": "of",
+      "start": 21.84,
+      "end": 22,
+      "probability": 0.469
+    },
+    {
+      "text": "profit",
+      "start": 22,
+      "end": 22.26,
+      "probability": 0.995
+    },
+    {
+      "text": "gets",
+      "start": 22.26,
+      "end": 22.48,
+      "probability": 0.986
+    },
+    {
+      "text": "hit",
+      "start": 22.48,
+      "end": 22.66,
+      "probability": 0.976
+    },
+    {
+      "text": "with",
+      "start": 22.66,
+      "end": 22.78,
+      "probability": 0.992
+    },
+    {
+      "text": "a",
+      "start": 22.78,
+      "end": 22.88,
+      "probability": 0.967
+    },
+    {
+      "text": "15.3%",
+      "start": 22.88,
+      "end": 24.22,
+      "probability": 0.984
+    },
+    {
+      "text": "self-employment",
+      "start": 24.22,
+      "end": 24.92,
+      "probability": 0.947
+    },
+    {
+      "text": "tax.",
+      "start": 24.92,
+      "end": 25.2,
+      "probability": 0.997
+    },
+    {
+      "text": "You're",
+      "start": 25.58,
+      "end": 25.72,
+      "probability": 0.878
+    },
+    {
+      "text": "paying",
+      "start": 25.72,
+      "end": 25.88,
+      "probability": 0.242
+    },
+    {
+      "text": "both",
+      "start": 25.88,
+      "end": 26.16,
+      "probability": 0.911
+    },
+    {
+      "text": "the",
+      "start": 26.16,
+      "end": 26.34,
+      "probability": 0.806
+    },
+    {
+      "text": "employee",
+      "start": 26.34,
+      "end": 26.78,
+      "probability": 0.792
+    },
+    {
+      "text": "and",
+      "start": 26.78,
+      "end": 27.12,
+      "probability": 0.975
+    },
+    {
+      "text": "employer",
+      "start": 27.12,
+      "end": 27.52,
+      "probability": 0.863
+    },
+    {
+      "text": "side",
+      "start": 27.52,
+      "end": 27.76,
+      "probability": 0.883
+    },
+    {
+      "text": "of",
+      "start": 27.76,
+      "end": 27.88,
+      "probability": 0.955
+    },
+    {
+      "text": "that.",
+      "start": 27.88,
+      "end": 28.04,
+      "probability": 0.936
+    },
+    {
+      "text": "All",
+      "start": 28.22,
+      "end": 28.32,
+      "probability": 0.6
+    },
+    {
+      "text": "of",
+      "start": 28.32,
+      "end": 28.48,
+      "probability": 0.973
+    },
+    {
+      "text": "it.",
+      "start": 28.48,
+      "end": 28.64,
+      "probability": 0.197
+    },
+    {
+      "text": "With",
+      "start": 28.84,
+      "end": 28.94,
+      "probability": 0.787
+    },
+    {
+      "text": "an",
+      "start": 28.94,
+      "end": 29.12,
+      "probability": 0.951
+    },
+    {
+      "text": "S-Corp,",
+      "start": 29.12,
+      "end": 29.48,
+      "probability": 0.653
+    },
+    {
+      "text": "you",
+      "start": 29.66,
+      "end": 29.72,
+      "probability": 0.989
+    },
+    {
+      "text": "pay",
+      "start": 29.72,
+      "end": 29.84,
+      "probability": 0.993
+    },
+    {
+      "text": "yourself",
+      "start": 29.84,
+      "end": 30.08,
+      "probability": 0.985
+    },
+    {
+      "text": "a",
+      "start": 30.08,
+      "end": 30.24,
+      "probability": 0.957
+    },
+    {
+      "text": "reasonable",
+      "start": 30.24,
+      "end": 30.58,
+      "probability": 0.994
+    },
+    {
+      "text": "salary.",
+      "start": 30.58,
+      "end": 31.04,
+      "probability": 0.99
+    },
+    {
+      "text": "That",
+      "start": 31.58,
+      "end": 31.78,
+      "probability": 0.972
+    },
+    {
+      "text": "salary",
+      "start": 31.78,
+      "end": 32.16,
+      "probability": 0.993
+    },
+    {
+      "text": "gets",
+      "start": 32.16,
+      "end": 32.36,
+      "probability": 0.987
+    },
+    {
+      "text": "hit",
+      "start": 32.36,
+      "end": 32.58,
+      "probability": 0.995
+    },
+    {
+      "text": "with",
+      "start": 32.58,
+      "end": 32.74,
+      "probability": 0.994
+    },
+    {
+      "text": "payroll",
+      "start": 32.74,
+      "end": 33,
+      "probability": 0.995
+    },
+    {
+      "text": "taxes.",
+      "start": 33,
+      "end": 33.38,
+      "probability": 0.98
+    },
+    {
+      "text": "But",
+      "start": 33.86,
+      "end": 33.96,
+      "probability": 0.98
+    },
+    {
+      "text": "the",
+      "start": 33.96,
+      "end": 34.08,
+      "probability": 0.941
+    },
+    {
+      "text": "remaining",
+      "start": 34.08,
+      "end": 34.4,
+      "probability": 0.997
+    },
+    {
+      "text": "profit",
+      "start": 34.4,
+      "end": 34.94,
+      "probability": 0.981
+    },
+    {
+      "text": "distributed",
+      "start": 34.94,
+      "end": 35.74,
+      "probability": 0.355
+    },
+    {
+      "text": "to",
+      "start": 35.74,
+      "end": 36.04,
+      "probability": 0.987
+    },
+    {
+      "text": "you",
+      "start": 36.04,
+      "end": 36.32,
+      "probability": 0.959
+    },
+    {
+      "text": "as",
+      "start": 36.32,
+      "end": 36.7,
+      "probability": 0.846
+    },
+    {
+      "text": "the",
+      "start": 36.7,
+      "end": 36.88,
+      "probability": 0.911
+    },
+    {
+      "text": "owner",
+      "start": 36.88,
+      "end": 37.12,
+      "probability": 0.997
+    },
+    {
+      "text": "does",
+      "start": 37.12,
+      "end": 37.62,
+      "probability": 0.858
+    },
+    {
+      "text": "not.",
+      "start": 37.62,
+      "end": 37.86,
+      "probability": 0.988
+    },
+    {
+      "text": "That's",
+      "start": 38.34,
+      "end": 38.66,
+      "probability": 0.971
+    },
+    {
+      "text": "where",
+      "start": 38.66,
+      "end": 38.78,
+      "probability": 0.956
+    },
+    {
+      "text": "the",
+      "start": 38.78,
+      "end": 38.92,
+      "probability": 0.988
+    },
+    {
+      "text": "savings",
+      "start": 38.92,
+      "end": 39.26,
+      "probability": 0.946
+    },
+    {
+      "text": "come",
+      "start": 39.26,
+      "end": 39.62,
+      "probability": 0.886
+    },
+    {
+      "text": "from.",
+      "start": 39.62,
+      "end": 39.86,
+      "probability": 0.997
+    },
+    {
+      "text": "On",
+      "start": 40.06,
+      "end": 40.14,
+      "probability": 0.887
+    },
+    {
+      "text": "$100,000",
+      "start": 40.14,
+      "end": 41.06,
+      "probability": 0.88
+    },
+    {
+      "text": "in",
+      "start": 41.06,
+      "end": 41.24,
+      "probability": 0.901
+    },
+    {
+      "text": "net",
+      "start": 41.24,
+      "end": 41.34,
+      "probability": 0.791
+    },
+    {
+      "text": "profit,",
+      "start": 41.34,
+      "end": 41.72,
+      "probability": 0.997
+    },
+    {
+      "text": "the",
+      "start": 41.86,
+      "end": 41.92,
+      "probability": 0.985
+    },
+    {
+      "text": "difference",
+      "start": 41.92,
+      "end": 42.2,
+      "probability": 0.987
+    },
+    {
+      "text": "is",
+      "start": 42.2,
+      "end": 42.4,
+      "probability": 0.997
+    },
+    {
+      "text": "roughly",
+      "start": 42.4,
+      "end": 42.68,
+      "probability": 0.998
+    },
+    {
+      "text": "$7,500",
+      "start": 42.68,
+      "end": 43.7,
+      "probability": 0.853
+    },
+    {
+      "text": "a",
+      "start": 43.7,
+      "end": 44.16,
+      "probability": 0.967
+    },
+    {
+      "text": "year.",
+      "start": 44.16,
+      "end": 44.34,
+      "probability": 0.999
+    },
+    {
+      "text": "Now",
+      "start": 44.72,
+      "end": 44.82,
+      "probability": 0.943
+    },
+    {
+      "text": "two",
+      "start": 44.82,
+      "end": 45.04,
+      "probability": 0.653
+    },
+    {
+      "text": "things",
+      "start": 45.04,
+      "end": 45.28,
+      "probability": 0.994
+    },
+    {
+      "text": "most",
+      "start": 45.28,
+      "end": 45.48,
+      "probability": 0.994
+    },
+    {
+      "text": "people",
+      "start": 45.48,
+      "end": 45.76,
+      "probability": 0.998
+    },
+    {
+      "text": "miss.",
+      "start": 45.76,
+      "end": 46,
+      "probability": 0.978
+    },
+    {
+      "text": "First,",
+      "start": 46.58,
+      "end": 46.72,
+      "probability": 0.785
+    },
+    {
+      "text": "the",
+      "start": 46.88,
+      "end": 46.94,
+      "probability": 0.967
+    },
+    {
+      "text": "QBI",
+      "start": 46.94,
+      "end": 47.4,
+      "probability": 0.913
+    },
+    {
+      "text": "deduction,",
+      "start": 47.4,
+      "end": 48,
+      "probability": 0.959
+    },
+    {
+      "text": "which",
+      "start": 48.36,
+      "end": 48.5,
+      "probability": 0.996
+    },
+    {
+      "text": "is",
+      "start": 48.5,
+      "end": 48.6,
+      "probability": 0.99
+    },
+    {
+      "text": "now",
+      "start": 48.6,
+      "end": 48.74,
+      "probability": 0.991
+    },
+    {
+      "text": "23%",
+      "start": 48.74,
+      "end": 49.54,
+      "probability": 0.743
+    },
+    {
+      "text": "for",
+      "start": 49.54,
+      "end": 49.72,
+      "probability": 0.837
+    },
+    {
+      "text": "2026,",
+      "start": 49.72,
+      "end": 50.34,
+      "probability": 0.53
+    },
+    {
+      "text": "interacts",
+      "start": 50.68,
+      "end": 50.96,
+      "probability": 0.989
+    },
+    {
+      "text": "directly",
+      "start": 50.96,
+      "end": 51.42,
+      "probability": 0.98
+    },
+    {
+      "text": "with",
+      "start": 51.42,
+      "end": 51.58,
+      "probability": 0.998
+    },
+    {
+      "text": "your",
+      "start": 51.58,
+      "end": 51.68,
+      "probability": 0.836
+    },
+    {
+      "text": "salary",
+      "start": 51.68,
+      "end": 51.94,
+      "probability": 0.999
+    },
+    {
+      "text": "decision.",
+      "start": 51.94,
+      "end": 52.34,
+      "probability": 0.989
+    },
+    {
+      "text": "Set",
+      "start": 52.68,
+      "end": 52.82,
+      "probability": 0.983
+    },
+    {
+      "text": "the",
+      "start": 52.82,
+      "end": 52.96,
+      "probability": 0.99
+    },
+    {
+      "text": "salary",
+      "start": 52.96,
+      "end": 53.22,
+      "probability": 0.998
+    },
+    {
+      "text": "too",
+      "start": 53.22,
+      "end": 53.44,
+      "probability": 0.967
+    },
+    {
+      "text": "high",
+      "start": 53.44,
+      "end": 53.8,
+      "probability": 0.545
+    },
+    {
+      "text": "and",
+      "start": 53.8,
+      "end": 54.02,
+      "probability": 0.726
+    },
+    {
+      "text": "you",
+      "start": 54.02,
+      "end": 54.18,
+      "probability": 0.334
+    },
+    {
+      "text": "reduce",
+      "start": 54.18,
+      "end": 54.44,
+      "probability": 0.954
+    },
+    {
+      "text": "your",
+      "start": 54.44,
+      "end": 54.7,
+      "probability": 0.962
+    },
+    {
+      "text": "deduction,",
+      "start": 54.7,
+      "end": 55.1,
+      "probability": 0.973
+    },
+    {
+      "text": "too",
+      "start": 55.1,
+      "end": 55.58,
+      "probability": 0.606
+    },
+    {
+      "text": "low",
+      "start": 55.58,
+      "end": 55.82,
+      "probability": 0.866
+    },
+    {
+      "text": "and",
+      "start": 55.82,
+      "end": 55.96,
+      "probability": 0.448
+    },
+    {
+      "text": "the",
+      "start": 55.96,
+      "end": 56.1,
+      "probability": 0.869
+    },
+    {
+      "text": "IRS",
+      "start": 56.1,
+      "end": 56.34,
+      "probability": 0.246
+    },
+    {
+      "text": "flags",
+      "start": 56.34,
+      "end": 56.64,
+      "probability": 0.951
+    },
+    {
+      "text": "it.",
+      "start": 56.64,
+      "end": 56.88,
+      "probability": 0.993
+    },
+    {
+      "text": "There's",
+      "start": 57.24,
+      "end": 57.32,
+      "probability": 0.906
+    },
+    {
+      "text": "no",
+      "start": 57.32,
+      "end": 57.42,
+      "probability": 0.998
+    },
+    {
+      "text": "universal",
+      "start": 57.42,
+      "end": 57.9,
+      "probability": 0.976
+    },
+    {
+      "text": "rule.",
+      "start": 57.9,
+      "end": 58.22,
+      "probability": 0.995
+    },
+    {
+      "text": "It",
+      "start": 58.42,
+      "end": 58.5,
+      "probability": 0.99
+    },
+    {
+      "text": "has",
+      "start": 58.5,
+      "end": 58.64,
+      "probability": 0.969
+    },
+    {
+      "text": "to",
+      "start": 58.64,
+      "end": 58.8,
+      "probability": 0.997
+    },
+    {
+      "text": "be",
+      "start": 58.8,
+      "end": 58.88,
+      "probability": 0.998
+    },
+    {
+      "text": "modeled",
+      "start": 58.88,
+      "end": 59.1,
+      "probability": 0.942
+    },
+    {
+      "text": "for",
+      "start": 59.1,
+      "end": 59.28,
+      "probability": 0.994
+    },
+    {
+      "text": "your",
+      "start": 59.28,
+      "end": 59.36,
+      "probability": 0.8
+    },
+    {
+      "text": "specific",
+      "start": 59.36,
+      "end": 59.8,
+      "probability": 0.997
+    },
+    {
+      "text": "situation.",
+      "start": 59.8,
+      "end": 60.52,
+      "probability": 0.995
+    },
+    {
+      "text": "Second,",
+      "start": 60.94,
+      "end": 61.18,
+      "probability": 0.915
+    },
+    {
+      "text": "if",
+      "start": 61.58,
+      "end": 61.72,
+      "probability": 0.975
+    },
+    {
+      "text": "you're",
+      "start": 61.72,
+      "end": 61.82,
+      "probability": 0.976
+    },
+    {
+      "text": "in",
+      "start": 61.82,
+      "end": 61.92,
+      "probability": 0.525
+    },
+    {
+      "text": "New",
+      "start": 61.92,
+      "end": 62.04,
+      "probability": 0.955
+    },
+    {
+      "text": "York",
+      "start": 62.04,
+      "end": 62.14,
+      "probability": 0.998
+    },
+    {
+      "text": "City,",
+      "start": 62.14,
+      "end": 62.42,
+      "probability": 0.954
+    },
+    {
+      "text": "the",
+      "start": 62.82,
+      "end": 62.88,
+      "probability": 0.978
+    },
+    {
+      "text": "city",
+      "start": 62.88,
+      "end": 63.1,
+      "probability": 0.936
+    },
+    {
+      "text": "does",
+      "start": 63.1,
+      "end": 63.26,
+      "probability": 0.985
+    },
+    {
+      "text": "not",
+      "start": 63.26,
+      "end": 63.42,
+      "probability": 0.998
+    },
+    {
+      "text": "recognize",
+      "start": 63.42,
+      "end": 63.98,
+      "probability": 0.962
+    },
+    {
+      "text": "the",
+      "start": 63.98,
+      "end": 64.22,
+      "probability": 0.961
+    },
+    {
+      "text": "S-Corp",
+      "start": 64.22,
+      "end": 64.6,
+      "probability": 0.692
+    },
+    {
+      "text": "status.",
+      "start": 64.6,
+      "end": 65.02,
+      "probability": 0.529
+    },
+    {
+      "text": "You're",
+      "start": 65.4,
+      "end": 65.52,
+      "probability": 0.948
+    },
+    {
+      "text": "still",
+      "start": 65.52,
+      "end": 65.72,
+      "probability": 0.999
+    },
+    {
+      "text": "subject",
+      "start": 65.72,
+      "end": 66.1,
+      "probability": 0.993
+    },
+    {
+      "text": "to",
+      "start": 66.1,
+      "end": 66.32,
+      "probability": 0.998
+    },
+    {
+      "text": "the",
+      "start": 66.32,
+      "end": 66.42,
+      "probability": 0.973
+    },
+    {
+      "text": "general",
+      "start": 66.42,
+      "end": 66.68,
+      "probability": 0.947
+    },
+    {
+      "text": "corporation",
+      "start": 66.68,
+      "end": 67.2,
+      "probability": 0.902
+    },
+    {
+      "text": "tax.",
+      "start": 67.2,
+      "end": 67.62,
+      "probability": 0.969
+    },
+    {
+      "text": "That's",
+      "start": 68.02,
+      "end": 68.22,
+      "probability": 0.991
+    },
+    {
+      "text": "an",
+      "start": 68.22,
+      "end": 68.28,
+      "probability": 0.943
+    },
+    {
+      "text": "8.85%",
+      "start": 68.28,
+      "end": 69.4,
+      "probability": 0.977
+    },
+    {
+      "text": "layer.",
+      "start": 69.4,
+      "end": 69.68,
+      "probability": 0.938
+    },
+    {
+      "text": "Most",
+      "start": 70,
+      "end": 70.18,
+      "probability": 0.991
+    },
+    {
+      "text": "business",
+      "start": 70.18,
+      "end": 70.44,
+      "probability": 0.348
+    },
+    {
+      "text": "owners",
+      "start": 70.44,
+      "end": 70.74,
+      "probability": 0.958
+    },
+    {
+      "text": "don't",
+      "start": 70.74,
+      "end": 71.08,
+      "probability": 0.992
+    },
+    {
+      "text": "see",
+      "start": 71.08,
+      "end": 71.28,
+      "probability": 0.989
+    },
+    {
+      "text": "coming.",
+      "start": 71.28,
+      "end": 71.52,
+      "probability": 0.903
+    },
+    {
+      "text": "The",
+      "start": 71.82,
+      "end": 71.88,
+      "probability": 0.978
+    },
+    {
+      "text": "S-Corp",
+      "start": 71.88,
+      "end": 72.28,
+      "probability": 0.994
+    },
+    {
+      "text": "election",
+      "start": 72.28,
+      "end": 72.62,
+      "probability": 0.898
+    },
+    {
+      "text": "is",
+      "start": 72.62,
+      "end": 72.84,
+      "probability": 0.995
+    },
+    {
+      "text": "one",
+      "start": 72.84,
+      "end": 73,
+      "probability": 0.997
+    },
+    {
+      "text": "of",
+      "start": 73,
+      "end": 73.12,
+      "probability": 0.976
+    },
+    {
+      "text": "the",
+      "start": 73.12,
+      "end": 73.2,
+      "probability": 0.998
+    },
+    {
+      "text": "highest",
+      "start": 73.2,
+      "end": 73.62,
+      "probability": 0.995
+    },
+    {
+      "text": "leverage",
+      "start": 73.62,
+      "end": 73.96,
+      "probability": 0.936
+    },
+    {
+      "text": "moves",
+      "start": 73.96,
+      "end": 74.22,
+      "probability": 0.982
+    },
+    {
+      "text": "available",
+      "start": 74.22,
+      "end": 74.64,
+      "probability": 0.993
+    },
+    {
+      "text": "to",
+      "start": 74.64,
+      "end": 74.86,
+      "probability": 0.989
+    },
+    {
+      "text": "small",
+      "start": 74.86,
+      "end": 75.06,
+      "probability": 0.983
+    },
+    {
+      "text": "business",
+      "start": 75.06,
+      "end": 75.32,
+      "probability": 0.745
+    },
+    {
+      "text": "owners.",
+      "start": 75.32,
+      "end": 75.62,
+      "probability": 0.991
+    },
+    {
+      "text": "But",
+      "start": 76,
+      "end": 76.2,
+      "probability": 0.962
+    },
+    {
+      "text": "only",
+      "start": 76.2,
+      "end": 76.62,
+      "probability": 0.975
+    },
+    {
+      "text": "when",
+      "start": 76.62,
+      "end": 76.96,
+      "probability": 0.932
+    },
+    {
+      "text": "it's",
+      "start": 76.96,
+      "end": 77.06,
+      "probability": 0.901
+    },
+    {
+      "text": "structured",
+      "start": 77.06,
+      "end": 77.34,
+      "probability": 0.332
+    },
+    {
+      "text": "correctly.",
+      "start": 77.34,
+      "end": 77.74,
+      "probability": 0.55
+    }
+  ],
+  "trimmedFrom": 0,
+  "corrected": "2026-10-08: ASR tokens joined; words fixed against the source video burned-in captions (net profit, of profit, too high/too low, layer, structured). words.asr.json keeps the raw transcript."
+}

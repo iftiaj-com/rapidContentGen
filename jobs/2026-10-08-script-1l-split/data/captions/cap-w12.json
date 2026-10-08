@@ -1,0 +1,74 @@
+{
+  "words": [
+    {
+      "text": "There's",
+      "start": 0.16,
+      "end": 0.24
+    },
+    {
+      "text": "no",
+      "start": 0.24,
+      "end": 0.34
+    },
+    {
+      "text": "universal",
+      "start": 0.34,
+      "end": 0.82
+    },
+    {
+      "text": "rule.",
+      "start": 0.82,
+      "end": 1.14
+    },
+    {
+      "text": "It",
+      "start": 1.34,
+      "end": 1.42
+    },
+    {
+      "text": "has",
+      "start": 1.42,
+      "end": 1.56
+    },
+    {
+      "text": "to",
+      "start": 1.56,
+      "end": 1.72
+    },
+    {
+      "text": "be",
+      "start": 1.72,
+      "end": 1.8
+    },
+    {
+      "text": "modeled",
+      "start": 1.8,
+      "end": 2.02
+    },
+    {
+      "text": "for",
+      "start": 2.02,
+      "end": 2.2
+    },
+    {
+      "text": "your",
+      "start": 2.2,
+      "end": 2.28
+    },
+    {
+      "text": "specific",
+      "start": 2.28,
+      "end": 2.72
+    },
+    {
+      "text": "situation.",
+      "start": 2.72,
+      "end": 3.44
+    },
+    {
+      "text": "Second,",
+      "start": 3.86,
+      "end": 4.1
+    }
+  ]
+}

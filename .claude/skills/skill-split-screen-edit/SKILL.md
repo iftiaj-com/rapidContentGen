@@ -78,6 +78,23 @@ Before changing the crop or a check: `references/face-safe-framing.md`. For the 
 - Info-video audio stays muted unless the user asks for it.
 - No copying the reference's people, copy, logos, brands or channel name.
 
+## Sync mode and edited sources (2026-10-09, job `jobs/2026-10-08-script-1l-split`)
+
+- **No info video, generated graphics instead:** `prep --sync`, then `plan --sync assets/info-sync.mp4`:
+  every split and b-full window plays one 1080x1920 clip at the edit's own time (top-anchored in the B
+  panel, full frame in b-full; no montage, no Ken Burns, no auto hook title). Make the clip in a
+  separate graphics job timed to `data/words.json` (split windows use y 200-960, b-full the whole
+  frame), render it, re-encode with `-g 15 -an`. Its sounds do not travel with a muted clip: carry them
+  into `split-plan.json` `sfx` (see the job's `data/post-plan.mjs`).
+- **An edited presenter clip (cutaways, title cards):** `--onscreen "a-b,c-d"` (the on-camera ranges,
+  from a 1 fps sheet and `select='gt(scene,0.3)'` cuts); everything else goes b-full.
+- **Little headroom:** `--drop <px>` lets the source sit lower in the panel; the strip is under the
+  seam shade, and split-check accepts it up to the shade's depth.
+- **Burned-in captions in the source:** `presenter.maskBelow` (source fraction) covers them in split
+  windows, `presenter.maskAfull` (output y, for a wide a-full framing) in a-full windows, and
+  `presenter.maskStyle: "paper"` uses a torn paper strip instead of the default blur. On a 16:9
+  close-up, set the a-full cues to `z=1` (the planner's 1.6 cut the forehead).
+
 ## Known gaps
 
 - Pacing is montage only: the info video is a shot library cut to the speech. A screen recording

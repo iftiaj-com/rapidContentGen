@@ -1,0 +1,38 @@
+{
+  "src": "assets/Script_1L_FINAL.mp4",
+  "source": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 29.97,
+    "duration": 94.74
+  },
+  "audio": {
+    "before": {
+      "integratedLufs": -17,
+      "lra": 2.1,
+      "truePeakDb": -1
+    },
+    "after": {
+      "integratedLufs": -14.5,
+      "lra": 1.7,
+      "truePeakDb": -3.6
+    },
+    "gainDb": 3.1,
+    "denoise": 12,
+    "floorDb": -120
+  },
+  "trim": {
+    "start": 0,
+    "end": 78.24
+  },
+  "prep": {
+    "file": "assets/a-prep.mp4",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 78.23,
+    "upscaled": false
+  },
+  "duration": 78.233,
+  "scaffold": true
+}

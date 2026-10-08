@@ -33,6 +33,8 @@ jobs/*/data/frames/
 output/
 outputs/
 .hyperframes/
+# HyperFrames Studio preview thumbnails (written by `rcg hf ... preview`)
+.thumbnails/
 # Grade-free mirror for check/snapshot (tools/jobs/hf.mjs)
 .rcg-nograde/
 regression/*/out/

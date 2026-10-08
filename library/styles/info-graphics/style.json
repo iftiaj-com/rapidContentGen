@@ -18,6 +18,8 @@
     "orange": "#e4722a",
     "orange-deep": "#b4500f",
     "orange-soft": "#f6c9a6",
+    "good": "#3c9a6c",
+    "good-deep": "#1f6f4a",
     "chip": "#101010",
     "line": "#d9d2c3",
     "shadow": "rgba(0, 0, 0, 0.18)"

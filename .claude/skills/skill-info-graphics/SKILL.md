@@ -8,7 +8,9 @@ description: Make a voice-led info-graphics video (video essay, explainer, facel
 This skill owns the script, the scene plan, the assets and the look. The `video-job` skill still
 owns intake, the working mode, the mix rules, render, report and the final send.
 
-- Pack: `library/styles/info-graphics/` (tokens, `frame.md`, 12 components). Fonts: Inter and
+- Pack: `library/styles/info-graphics/` (tokens, `frame.md`, 13 components; `counter` takes `decimals` and `sep`).
+  Theme `library/styles/info-collage/`: the same components in the Tactile Paper Collage palette and
+  fonts, for a collage look (pair with `tactile-collage` items in one plan, item-level `"style"`). Fonts: Inter and
   JetBrains Mono, both bundled by HyperFrames. Captions: `rcg captions --style info-chip`.
 - Assets: `node tools/rcg.mjs assets icon | search | fetch | credit | credits` (`tools/media/assets.mjs`),
   only the approved sources in `references/assets.md` (Phosphor, Unsplash, Pixabay, Pexels by hand,
@@ -106,6 +108,7 @@ numbers pass through. `x`, `y` are the item's centre (x defaults to 482, the saf
 | `prompt` | a tool or a request: typing, a cursor click, an optional result image | typing, click, pop |
 | `orbit` | one idea with many parts, chips popping on words | pop, tick per chip |
 | `counter` | one real, sourced number rolling up | tick |
+| `range` | a trade-off gauge: zones "Label:note:bad|good|neutral", a labelled knob that glides to `moves` "pos@t", notes appear as it lands | tick per move |
 | `icon` | a Phosphor icon (`rcg assets icon add`) with badge `none`, `disc`, `chip` or `ring` and a label; beside the word it names, or in a row | `sound` param (default pop) |
 
 ## Boundaries
