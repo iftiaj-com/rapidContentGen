@@ -2363,6 +2363,30 @@
       "to": "library/caption-styles.json"
     },
     {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/anam/CameraMovements.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "88b2a5e5f68b3a06a79f3b277f8e10880414dfe54f5fb76f7622c6f6c18dbd22",
+      "date": "2026-10-07",
+      "note": "46 MOVES table and pose math verbatim; performance.now clock replaced by timeline time; DOM slider reads became arguments; compositeBackground redraw became poseToCss; layering, from/rev, bars beat sync added",
+      "to": "library/runtime/camera-moves.js"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/VirtualCamera.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "10172786c4bf5c005b60465e24b6a8cc65c243dc88fc5fb2c56ece21d110b082",
+      "date": "2026-10-07",
+      "note": "20 presets (vc.*), getCurrentParams + applyTransform clamp, curve/zigzag/handheld, 6 audio-react modes on timeline time; drawBackground blurred fill ported into tools/blocks/camera.mjs (72 px overscan); focus-blur types, feather edges and keystone slices not ported",
+      "to": "library/runtime/camera-moves.js"
+    },
+    {
       "source": "tts",
       "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
       "from": "kokoro-v1.0.onnx",
@@ -2447,6 +2471,18 @@
       "date": "2026-10-07",
       "note": "PAGE_GL_RUNTIME: compile once, draw per seek via GSAP setter; prepareShader imported from the copy",
       "to": "tools/blocks/shader.mjs"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/AnamorphicCamera.js",
+      "kind": "learn",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "598a30e03f3c24ec20d0de53eda6f41532941065532a3fc1f052f5e4381d70f0",
+      "date": "2026-10-07",
+      "note": "base camera pose and applyToCamera order; scene setup rebuilt with procedural geometry (GLB models on hold)",
+      "to": "tools/blocks/three.mjs"
     },
     {
       "source": "aditsStudio",

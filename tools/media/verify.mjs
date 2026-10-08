@@ -1,5 +1,6 @@
 // Verify a rendered video: look at the artifact, not the exit code.
-// Checks dimensions, fps, duration, that audio exists and is not silent,
+// Checks dimensions, fps, duration, no dead (black) strip at a frame edge,
+// that audio exists and is not silent,
 // loudness and true peak, and (given the render log) that HyperFrames did not
 // lower the whole mix. Writes a labeled frame sheet for a visual check.
 //
@@ -12,7 +13,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { isMain, numList, parseArgs } from '../lib/cli.mjs';
 import { loadConfig } from '../lib/config.mjs';
-import { contactSheet, loudness, probe, sectionLevels } from '../lib/ffmpeg.mjs';
+import { contactSheet, edgeBands, loudness, probe, sectionLevels } from '../lib/ffmpeg.mjs';
 
 export async function verifyRender(file, opts = {}) {
   const cfg = loadConfig();
@@ -29,6 +30,15 @@ export async function verifyRender(file, opts = {}) {
     const frame = v?.fps ? 1 / v.fps : 0.05;
     const diff = Math.abs(info.duration - Number(opts.duration));
     add('duration', diff <= frame * 2 + 0.02, `${info.duration.toFixed(3)} s (expected ${opts.duration}, tolerance 2 frames)`);
+  }
+
+  if (v && opts.edges !== false) {
+    // A dark strip down a frame edge (ffmpeg yuv420p -> gbrp bug): sample 8 frames.
+    const times = Array.from({ length: 8 }, (_, i) => +((info.duration * (i + 0.5)) / 8).toFixed(2));
+    const e = await edgeBands(file, { times, width: v.width, height: v.height });
+    const worst = Math.max(e.right, e.left);
+    add('no dead edge band', worst < 2, worst < 2 ? `edges carry picture in ${e.frames} sampled frames`
+      : `${e.right >= e.left ? 'right' : 'left'} 8 px are black in ${worst}/${e.frames} frames: the ffmpeg HyperFrames uses has the 1080-wide yuv420p -> gbrp bug (run rcg doctor)`);
   }
 
   const hasAudio = info.audio.length > 0;

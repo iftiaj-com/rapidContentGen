@@ -24,6 +24,8 @@ const COMMANDS = {
   'title': ['tools/blocks/title.mjs', 'Kinetic title card (slam, stagger-up, kinetic-pop, type-on) -> HyperFrames sub-composition'],
   'shader': ['tools/blocks/shader.mjs', 'AditsShaders object (166) as an audio-reactive HyperFrames layer (fill or square)'],
   'beatflash': ['tools/blocks/beatflash.mjs', 'Adits beat-flash words (bass/mid/treble or kick/snare/hat) -> HyperFrames sub-composition'],
+  'camera': ['tools/blocks/camera.mjs', '46 Adits camera moves on footage (layered cues, whip transitions, kick shake); --list'],
+  'three': ['tools/blocks/three.mjs', 'Procedural 3D scene (orb/knot/crystal/rings) with camera-move cues and music reactivity'],
   'analyze': ['tools/audio/analyze.mjs', 'Music -> per-frame audio table (bands, onsets, kicks) + seekable shader clock'],
   'mix-check': ['tools/audio/mix-check.mjs', 'Rebuild a composition mix offline and predict HyperFrames gain reduction'],
   'measure-sfx': ['tools/audio/measure-sfx.mjs', 'Re-measure library/sfx onsets, crests, loudness'],

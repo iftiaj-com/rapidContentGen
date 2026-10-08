@@ -1,20 +1,49 @@
 # Machine-specific config (absolute paths live here)
 config/workspace.local.json
 
-# Large or generated
+# Models, environments, dependencies
 models/
 tools/voice/.venv/
+# Extra binaries (for example the ffmpeg HyperFrames uses, see lessons 16b)
+tools/bin/
 node_modules/
-.hyperframes/
-snapshots/
-renders/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Media: inputs and outputs are never committed (only the measured SFX library)
 *.mp4
 *.mov
 *.webm
+*.mkv
 *.wav
 *.mp3
+*.m4a
+*.aac
+*.flac
 !library/sfx/*.wav
 !library/sfx/*.mp3
+
+# Render and preview outputs (any depth)
+renders/
+snapshots/
+video-frames/
+jobs/*/frames/
+jobs/*/data/frames/
+output/
+outputs/
+.hyperframes/
+# Grade-free mirror for check/snapshot (tools/jobs/hf.mjs)
+.rcg-nograde/
+regression/*/out/
+
+# Drafts and scratch work
+drafts/
+*.draft.*
+scratch/
+tmp/
+temp/
+.cache/
 
 # User media and job working files
 inbox/*
@@ -22,15 +51,25 @@ inbox/*
 !inbox/prompt.template.md
 jobs/*/assets/
 videos/*/assets/
-jobs/*/data/frames/
-regression/*/out/
-
-# Python
-__pycache__/
-*.pyc
-
-# Grade-free mirror for check/snapshot (tools/jobs/hf.mjs)
-.rcg-nograde/
-
-# Generated intake contact sheets (regenerate with rcg new-job / rcg sheet)
+# HyperFrames `beats` output
+jobs/*/beats/
+# Generated per job; regenerate with the tools
+#   intake contact sheets (rcg new-job / rcg sheet)
 jobs/*/data/*.png
+#   audio tables written by rcg shader / rcg beatflash (already inlined in compositions/)
+jobs/*/data/*.audio.json
+#   raw tool output dumps
+jobs/*/data/*-say.json
+
+# Logs, partial downloads, temp files
+*.log
+npm-debug.log*
+*.part
+*.tmp
+*.bak
+
+# OS and editor clutter
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp

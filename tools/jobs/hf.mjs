@@ -5,6 +5,8 @@
 // Usage: node tools/jobs/hf.mjs [--cwd <dir>] <hyperframes args...>
 
 import { spawn } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { tmpdir } from 'node:os';
 import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { isAbsolute, join, resolve } from 'node:path';
 import { isMain } from '../lib/cli.mjs';
@@ -16,6 +18,16 @@ export function hfEnv() {
   // Point HyperFrames' Python-based tools (Kokoro TTS, etc.) at the voice venv
   // once it exists, so nothing ever falls back to the broken `python3` alias.
   if (cfg.bin.voicePython && existsSync(cfg.bin.voicePython)) env.HYPERFRAMES_PYTHON = cfg.bin.voicePython;
+  // A separate ffmpeg for HyperFrames (rcg doctor's edge test explains why).
+  if (cfg.bin.hfFfmpeg) env.HYPERFRAMES_FFMPEG_PATH = cfg.bin.hfFfmpeg;
+  if (cfg.bin.hfFfprobe) env.HYPERFRAMES_FFPROBE_PATH = cfg.bin.hfFfprobe;
+  // HyperFrames caches extracted video frames keyed by source, range, fps and
+  // format, not by ffmpeg build, so frames from another build would be reused.
+  // One cache folder per ffmpeg binary keeps them apart.
+  if (!env.HYPERFRAMES_EXTRACT_CACHE_DIR) {
+    const ff = cfg.bin.hfFfmpeg || cfg.bin.ffmpeg || 'ffmpeg';
+    env.HYPERFRAMES_EXTRACT_CACHE_DIR = join(tmpdir(), `hyperframes-extract-cache-${createHash('sha1').update(ff).digest('hex').slice(0, 8)}`);
+  }
   return env;
 }
 

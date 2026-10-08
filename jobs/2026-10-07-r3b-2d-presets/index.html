@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <!--
+      rapidContentGen vertical template (9:16, Reels / Shorts / TikTok).
+      Built from the mop-star-trailer job. Conventions:
+        - Text never enters the bottom 20% (y >= 1536) or the right 180 px (x >= 900):
+          that is where the app buttons and caption UI sit. The text safe box is
+          x 64..900 (width 836); the top 192 px is kept clear for the app header.
+        - Text cards are FLAT: the .clip element holds the spans directly
+          (no nested div), and GSAP animates the spans, never the .clip.
+        - Footage sits in an untimed .shot wrapper; camera moves animate the wrapper.
+        - Comments in this file never contain literal tags (a regex edit once
+          matched a tag inside a comment and commented out the footage).
+        - Audio: a data-automation volume lane gives ABSOLUTE levels and overrides
+          data-volume. Check the mix with `node tools/rcg.mjs mix-check index.html`
+          before rendering.
+      Replace JOB_DURATION, the shot list, cards and audio for each job.
+    -->
+    <style>
+      :root {
+        --safe-left: 64px;
+        --safe-width: 836px;
+        --band-top: 220px;
+        --band-height: 200px;
+        --ink: #f4efe4;
+        --font-display: "EB Garamond", Garamond, serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+        font-family: var(--font-display);
+      }
+      .shot {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+        transform-origin: 50% 40%;
+      }
+      .shot video,
+      .shot img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 1920px;
+        object-fit: cover;
+      }
+      .bar {
+        position: absolute;
+        left: 0;
+        width: 1080px;
+        background: #000;
+        z-index: 50;
+      }
+      #bar-top {
+        top: 0;
+        height: 192px;
+      }
+      #bar-bottom {
+        top: 1536px;
+        height: 384px;
+      }
+      .card {
+        position: absolute;
+        left: var(--safe-left);
+        width: var(--safe-width);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 60;
+      }
+      .card.center {
+        top: 660px;
+        height: 400px;
+      }
+      .card.top {
+        top: var(--band-top);
+        height: var(--band-height);
+      }
+      .txt {
+        text-align: center;
+        color: var(--ink);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        line-height: 1.08;
+        text-shadow:
+          0 2px 16px rgba(0, 0, 0, 0.85),
+          0 0 28px rgba(255, 236, 200, 0.28);
+      }
+      .txt span {
+        display: block;
+        width: var(--safe-width);
+      }
+      #t1.txt {
+        font-size: 96px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="9.311"
+      data-width="1080"
+      data-height="1920"
+    >
+      <!-- Two camera wrappers (rcg camera drives each; nothing else tweens them).
+           w1: blurred fill (Adits look). w2: cover fill (fixed zoom per cue). -->
+      <div id="w1-fill" data-rcg="camera-fill" class="shot" aria-hidden="true" style="filter: blur(22px); transform: scale(1.1333, 1.0750); transform-origin: 50% 50%;">
+        <video id="clip1-fill" class="clip" src="assets/101066-video-1080.mp4" data-start="0" data-duration="2.392" data-media-start="0" data-track-index="51" muted playsinline></video>
+        <video id="clip2-fill" class="clip" src="assets/101066-video-1080.mp4" data-start="2.392" data-duration="1.811" data-media-start="3" data-track-index="51" muted playsinline></video>
+      </div>
+      <div id="w1" class="shot">
+        <video id="clip1" class="clip" src="assets/101066-video-1080.mp4" data-start="0" data-duration="2.392" data-media-start="0" data-track-index="1" muted playsinline></video>
+        <video id="clip2" class="clip" src="assets/101066-video-1080.mp4" data-start="2.392" data-duration="1.811" data-media-start="3" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="w2" class="shot">
+        <video id="clip3" class="clip" src="assets/101066-video-1080.mp4" data-start="4.203" data-duration="1.672" data-media-start="6" data-track-index="1" muted playsinline></video>
+        <video id="clip4" class="clip" src="assets/101066-video-1080.mp4" data-start="5.875" data-duration="1.671" data-media-start="8" data-track-index="1" muted playsinline></video>
+        <video id="clip5" class="clip" src="assets/101066-video-1080.mp4" data-start="7.546" data-duration="1.765" data-media-start="10" data-track-index="1" muted playsinline></video>
+      </div>
+      <audio id="music" src="assets/song-limited.wav" data-start="0" data-duration="9.311" data-track-index="20"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.04,"v":1},{"t":8.711,"v":1},{"t":9.311,"v":0}]}]}'></audio>
+    </div>
+    <script src="lib/camera-moves.js" data-rcg="camera-runtime"></script>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // Text card: ease in, slow drift, fade out before the clip ends.
+      function card(sel, start, dur) {
+        const el = sel + " > span";
+        tl.fromTo(el, { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 0.45, ease: "power2.out" }, start);
+        tl.to(el, { scale: 0.97, duration: dur - 0.45, ease: "none" }, start + 0.45);
+        tl.to(el, { opacity: 0, duration: 0.25, ease: "power1.in" }, start + dur - 0.25);
+      }
+      
+      // rcg:camera cam-w1 begin (generated by tools/blocks/camera.mjs; regenerate instead of editing)
+      (function () {
+        var el = document.querySelector("#w1");
+        var CUES = [{"at":0,"move":"vc.lean_sweep","layer":"a","fill":"blur","dur":2.392},{"at":2.392,"move":"vc.dutch_angle_drift","layer":"a","react":"bass_zoom","sens":0.6,"fill":"blur","dur":1.811},{"at":4.203,"move":"static_shot","layer":"a"}];
+        var KICK = null;
+        var AUD = [[0.751,0.751,0.557],[0.938,0.938,0.89],[0.984,0.984,0.972],[0.996,0.996,0.953],[0.999,0.999,0.988],[1,1,0.974],[1,0.986,0.925],[1,0.997,0.901],[1,0.999,0.975],[1,0.996,0.961],[1,0.984,0.889],[1,0.996,0.972],[1,0.999,0.993],[1,0.995,0.955],[1,0.999,0.989],[1,1,0.997],[1,1,0.999],[1,1,1],[1,1,1],[1,1,1],[1,1,1],[1,1,1],[1,1,0.976],[1,1,0.955],[1,1,0.941],[1,1,0.908],[1,1,0.866],[1,1,0.833],[1,1,0.792],[1,1,0.753],[1,1,0.72],[1,1,0.681],[1,1,0.645],[1,1,0.61],[1,1,0.582],[1,1,0.551],[1,1,0.522],[1,1,0.508],[1,1,0.49],[1,1,0.474],[1,1,0.473],[1,1,0.623],[1,1,0.669],[1,1,0.7],[1,0.998,0.701],[1,0.989,0.883],[1,0.98,0.971],[1,0.952,0.993],[0.984,0.937,0.998],[0.996,0.984,0.938],[0.999,0.996,0.868],[1,0.999,0.816],[1,1,0.757],[1,1,0.671],[0.988,1,0.622],[0.997,1,0.58],[0.999,0.989,0.565],[1,0.967,0.518],[1,0.944,0.441],[1,0.93,0.426],[1,0.983,0.576],[1,0.97,0.633],[1,0.954,0.612],[1,0.944,0.561],[1,0.935,0.544],[0.999,0.918,0.817],[0.987,0.905,0.727],[0.979,0.976,0.67],[0.995,0.994,0.592],[0.999,0.999,0.552],[1,1,0.585],[1,1,0.575],[0.999,1,0.58],[0.966,1,0.601],[0.96,1,0.578],[0.988,1,0.523],[0.997,0.998,0.465],[0.999,1,0.481],[1,1,0.53],[1,1,0.524],[1,1,0.505],[1,1,0.491],[1,1,0.46],[0.996,1,0.432],[0.967,1,0.423],[0.957,0.985,0.46],[0.966,0.944,0.518],[0.971,0.917,0.601],[0.959,0.928,0.624],[0.973,0.982,0.613],[0.976,0.996,0.581],[0.972,0.999,0.555],[0.993,1,0.532],[0.998,1,0.5],[1,1,0.481],[1,1,0.462],[1,0.998,0.44],[1,0.999,0.43],[1,0.989,0.545],[1,0.997,0.609],[0.988,0.999,0.662],[0.969,0.976,0.573],[0.988,0.946,0.474],[0.996,0.933,0.45],[0.999,0.983,0.673],[1,0.996,0.782],[0.999,0.999,0.755],[1,0.99,0.694],[0.981,0.978,0.636],[0.972,0.957,0.545],[0.993,0.946,0.488],[0.998,0.987,0.517],[1,0.988,0.491],[1,0.997,0.455],[1,0.999,0.408],[0.994,1,0.415],[0.998,1,0.423],[0.986,1,0.441],[0.983,1,0.47],[0.993,1,0.469],[0.962,0.992,0.45],[0.991,0.975,0.535],[0.998,0.963,0.761],[0.999,0.941,0.699],[1,0.971,0.604],[1,0.993,0.6],[0.986,0.998,0.586],[0.997,1,0.547],[0.98,1,0.514],[0.995,1,0.484],[0.985,1,0.454],[0.996,1,0.452],[0.984,1,0.536],[0.996,1,0.514],[0.999,1,0.502],[1,1,0.471],[1,1,0.432],[1,0.997,0.385],[0.995,0.996,0.369],[0.963,0.999,0.366],[0.991,1,0.434],[0.987,1,0.428],[0.974,1,0.445],[0.952,1,0.445],[0.928,1,0.458],[0.886,1,0.453],[0.895,1,0.467],[0.892,1,0.471],[0.884,1,0.459],[0.875,1,0.448],[0.876,1,0.434],[0.881,0.987,0.4],[0.923,0.977,0.379],[0.901,0.989,0.351],[0.886,0.979,0.33],[0.858,0.964,0.308],[0.833,0.948,0.286],[0.836,0.942,0.264],[0.835,0.937,0.242],[0.82,0.933,0.259],[0.826,0.983,0.276],[0.817,0.994,0.27],[0.82,0.985,0.27],[0.863,0.984,0.27],[0.845,0.977,0.342],[0.839,0.994,0.372],[0.917,0.989,0.414],[0.956,0.985,0.456],[0.936,0.977,0.47],[0.92,0.969,0.49],[0.898,0.977,0.501],[0.88,0.989,0.546],[0.871,0.981,0.545],[0.851,0.979,0.558],[0.945,0.979,0.554],[0.929,0.97,0.557],[0.917,0.945,0.527],[0.893,0.934,0.467],[0.948,0.918,0.387],[0.902,0.907,0.335],[0.976,0.977,0.551],[0.949,0.994,0.57],[0.934,0.999,0.603],[0.915,1,0.65],[0.979,1,0.647],[0.995,0.993,0.628],[0.966,0.974,0.907],[0.955,0.994,0.977],[0.989,0.998,0.931],[0.997,1,0.848],[0.999,1,0.78],[1,1,0.741],[1,1,0.724],[0.998,1,0.712],[0.999,1,0.698],[1,0.995,0.694],[0.97,0.994,0.705],[0.988,0.994,0.683],[0.979,0.984,0.655],[0.963,0.968,0.61],[0.957,0.941,0.535],[0.966,0.924,0.478],[0.962,0.918,0.558],[0.955,0.915,0.618],[0.942,0.904,0.612],[0.933,0.898,0.594],[0.923,0.894,0.552],[0.923,0.867,0.463],[0.968,0.9,0.444],[0.976,0.963,0.516],[0.954,0.987,0.514],[0.965,0.989,0.478],[0.912,0.983,0.45],[0.931,0.983,0.42],[0.92,0.979,0.381],[0.907,0.983,0.381],[0.899,0.996,0.377],[0.887,0.993,0.403],[0.892,0.998,0.419],[0.877,1,0.411],[0.96,1,0.444],[0.922,1,0.444],[0.956,1,0.432],[0.947,1,0.401],[0.923,1,0.372]];
+        var FPS = 24;
+        var DUR = 9.311;
+        var W = el.offsetWidth || 1080, H = el.offsetHeight || 1920;
+        el.style.transformOrigin = "50% 50%";
+        el.style.willChange = "transform, filter";
+        function frame(n, t) { return Math.max(0, Math.min(n - 1, Math.floor(t * FPS + 1e-6))); }
+        function kickAt(t) { return KICK ? KICK[frame(KICK.length, t)] : 0; }
+        function audioAt(t) {
+          if (!AUD) return null;
+          var f = frame(AUD.length, t), a = AUD[f], b = AUD[Math.max(0, f - 1)];
+          return { bass: a[0], mid: a[1], treble: a[2], prevBass: b[0] };
+        }
+        function apply(t) {
+          var c = RCGCameraMoves.poseToCss(RCGCameraMoves.poseAt(CUES, t, kickAt, audioAt), W, H);
+          el.style.transform = c.transform;
+          el.style.filter = c.filter;
+        }
+        var drv = { _t: 0 };
+        Object.defineProperty(drv, "t", { get: function () { return this._t; }, set: function (v) { this._t = v; apply(v); } });
+        tl.to(drv, { t: DUR, duration: DUR, ease: "none" }, 0);
+        apply(0);
+      })();
+      // rcg:camera cam-w1 end
+      // rcg:camera cam-w2 begin (generated by tools/blocks/camera.mjs; regenerate instead of editing)
+      (function () {
+        var el = document.querySelector("#w2");
+        var CUES = [{"at":4.203,"move":"vc.cinematic_zoom_pan","layer":"a","fill":"cover","dur":1.672,"cover":2},{"at":5.875,"move":"vc.ken_burns","layer":"a","handheld":40,"fill":"cover","dur":1.671,"cover":1.1496},{"at":7.546,"move":"vc.warp_tilt","layer":"a","curve":150,"fill":"cover","dur":1.765,"cover":1.5409}];
+        var KICK = null;
+        var AUD = null;
+        var FPS = 24;
+        var DUR = 9.311;
+        var W = el.offsetWidth || 1080, H = el.offsetHeight || 1920;
+        el.style.transformOrigin = "50% 50%";
+        el.style.willChange = "transform, filter";
+        function frame(n, t) { return Math.max(0, Math.min(n - 1, Math.floor(t * FPS + 1e-6))); }
+        function kickAt(t) { return KICK ? KICK[frame(KICK.length, t)] : 0; }
+        function audioAt(t) {
+          if (!AUD) return null;
+          var f = frame(AUD.length, t), a = AUD[f], b = AUD[Math.max(0, f - 1)];
+          return { bass: a[0], mid: a[1], treble: a[2], prevBass: b[0] };
+        }
+        function apply(t) {
+          var c = RCGCameraMoves.poseToCss(RCGCameraMoves.poseAt(CUES, t, kickAt, audioAt), W, H);
+          el.style.transform = c.transform;
+          el.style.filter = c.filter;
+        }
+        var drv = { _t: 0 };
+        Object.defineProperty(drv, "t", { get: function () { return this._t; }, set: function (v) { this._t = v; apply(v); } });
+        tl.to(drv, { t: DUR, duration: DUR, ease: "none" }, 0);
+        apply(0);
+      })();
+      // rcg:camera cam-w2 end
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

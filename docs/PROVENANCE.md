@@ -19,8 +19,11 @@ Source root: `E:/Develop/Antigravity_testing/Adits_Modular`
 | learn | `Adits/effects/auto/advance/timeline.js` | `docs/job-spec.md` | 78bea0ce | no | 2026-10-07 | segment rules: absolute seconds, no overlaps per track, report-not-throw validation |
 | port | `Adits/shared/smart-captions.js` | `library/caption-styles.json` | 78bea0ce | no | 2026-10-07 | _renderStyled presets (font, color, stroke, pill, glow) + flash decay; kinetic scatter params |
 | learn | `Adits/shared/active-tracking-captions.js` | `library/caption-styles.json` | 78bea0ce | no | 2026-10-07 | style switch near line 1737 (same presets); lyric styles deferred |
+| port | `Adits/core/anam/CameraMovements.js` | `library/runtime/camera-moves.js` | 78bea0ce | no | 2026-10-07 | 46 MOVES table and pose math verbatim; performance.now clock replaced by timeline time; DOM slider reads became arguments; compositeBackground redraw became poseToCss; layering, from/rev, bars beat sync added |
+| port | `Adits/core/VirtualCamera.js` | `library/runtime/camera-moves.js` | 78bea0ce | no | 2026-10-07 | 20 presets (vc.*), getCurrentParams + applyTransform clamp, curve/zigzag/handheld, 6 audio-react modes on timeline time; drawBackground blurred fill ported into tools/blocks/camera.mjs (72 px overscan); focus-blur types, feather edges and keystone slices not ported |
 | port | `Adits/shared/captions.js` | `tools/blocks/beatflash.mjs` | 78bea0ce | no | 2026-10-07 | beat-flash decay/threshold/pulse/effects; states precomputed per frame; seeded shake; onsets option |
 | learn | `Adits/shared/captions.js` | `tools/blocks/captions.mjs` | 78bea0ce | no | 2026-10-07 | beat-flash captions: deferred to P2 (needs audio table) |
+| learn | `Adits/core/AnamorphicCamera.js` | `tools/blocks/three.mjs` | 78bea0ce | no | 2026-10-07 | base camera pose and applyToCamera order; scene setup rebuilt with procedural geometry (GLB models on hold) |
 
 ## aditsShaders
 

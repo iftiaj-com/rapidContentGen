@@ -82,6 +82,23 @@ Each entry cost real time on a past job. Read before building.
      5-6x. `rcg shader` defaults to the pulse clock at drive 0.35 (about 2.5x on loud music).
 13m. **HyperFrames `beats` only reads the project's own music clip.** For a loose file, run
      `analyze-beatgrid.py` with the voice venv (librosa is installed there).
+13n. **Camera cues hold.** A one-shot move or preset keeps its end framing until the next cue on
+     its layer. Run continuous moves on layer `a` and one-shots on `b`. A whip across a cut:
+     `b/<cut-0.5>:whip_pan_right`, then `b/<cut>:whip_pan_left:from=0.5:rev`. End a preset at a cut
+     with `<cut>:static_shot` (its default duration runs to that cue).
+13o. **Portrait 3D needs its own framing.** The orb filled the 9:16 frame at landscape settings.
+     `rcg three` uses fov 50 on portrait and frames the narrow axis, with a starfield for depth.
+13p. **Large inline runtimes trip `composition_file_too_large`.** Keep runtimes in a job `lib/` file
+     loaded with `<script src>` from index.html; sub-compositions inline a comment-stripped copy.
+13q. **WebGL canvases need `data-layout-allow-overflow`**, or check reports `canvas_content_at_edge`.
+     three.js loads inside a sub-composition through a module import from jsDelivr; register the
+     timeline after the scene is built.
+13r. **Perspective and spin presets reveal edges on 9:16.** To cover the frame, lean_sweep needs
+     2.3x zoom, whip_pan and dynamic_spin 2.0x, dramatic_3d_tilt 1.8x. Keep `--fill blur` (a blurred
+     copy behind the footage, the Adits look). Its clones trigger HyperFrames'
+     `duplicate_media_discovery_risk` warning, which its docs call benign; R3b renders both layers.
+13s. **CSS blur fades an element's own edges** over about 3x the radius. The blurred fill needs
+     72 px overscan per side at blur(22px); at 28 px (the Adits value) the frame border went dark.
 
 ## Environment
 
@@ -92,6 +109,18 @@ Each entry cost real time on a past job. Read before building.
 16a. Windows Python prints with cp1252: `print()` of characters like ☑ or emoji raises
      UnicodeEncodeError (after any file write already happened). Set `PYTHONIOENCODING=utf-8`
      or avoid printing such characters.
+16b. **ffmpeg 8.1 (gyan.dev full build) blanks the last 8 columns** when it converts 1080-wide
+     yuv420p or yuvj420p to gbrp. Widths that are multiples of 16 convert correctly, and so do
+     yuv444p and rgb24 sources; `-cpuflags 0` avoids it. HyperFrames runs this conversion when it
+     extracts video frames and again when it encodes. So every render up to 2026-10-08 (mop-star,
+     R0-R3b) has a black 8 px strip down the right edge, and skewed footage shows a dark line on
+     its right edge. Found on R3b. `verify` now fails it and `doctor` tests the binary. Fix: point
+     `bin.hfFfmpeg` / `bin.hfFfprobe` (workspace.local.json) at an ffmpeg without the bug;
+     HyperFrames reads them as HYPERFRAMES_FFMPEG_PATH / HYPERFRAMES_FFPROBE_PATH. Applied
+     2026-10-08: gyan.dev 9.0.2 essentials in `tools/bin/` (git-ignored) converts correctly.
+     HyperFrames also caches extracted frames without the ffmpeg build in the key, so the first
+     re-render reused the bad frames. `rcg hf` now gives each ffmpeg binary its own cache folder
+     (HYPERFRAMES_EXTRACT_CACHE_DIR). The old cache (`%TEMP%/hyperframes-extract-cache-u`) is unused.
 17. Renders take about 2-3 minutes for 17 s at 1080x1920 with 3 workers on this laptop
     (screenshot capture mode). Low free RAM (< 2.5 GB) risks failures; close apps first.
 

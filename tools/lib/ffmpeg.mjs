@@ -44,6 +44,32 @@ export function runBuffer(args) {
   });
 }
 
+/**
+ * Dead edge bands: a strip at the left or right frame edge that stays near
+ * black while the columns just inside carry picture. Catches the ffmpeg 8.1
+ * (gyan.dev full build) yuv420p -> gbrp conversion, which leaves the last 8
+ * columns of a 1080-wide frame black; HyperFrames runs that conversion when it
+ * extracts video frames and again when it encodes (found 2026-10-08).
+ * Returns { frames, right, left }: how many sampled frames show a band.
+ */
+export async function edgeBands(file, { times, width, height, band = 8 }) {
+  const hits = { frames: 0, right: 0, left: 0 };
+  for (const t of times) {
+    const buf = await runBuffer(['-v', 'error', '-ss', String(t), '-i', file, '-frames:v', '1', '-f', 'rawvideo', '-pix_fmt', 'gray', '-']);
+    if (buf.length < width * height) continue;
+    hits.frames++;
+    const strip = (x0, x1) => {
+      let s = 0;
+      for (let y = 0; y < height; y += 2) for (let x = x0; x < x1; x++) s += buf[y * width + x];
+      return s / (Math.ceil(height / 2) * (x1 - x0));
+    };
+    const dead = (edge, inner) => inner > 40 && edge < 24 && edge < inner * 0.4;
+    if (dead(strip(width - band, width), strip(width - 2 * band - 4, width - band - 4))) hits.right++;
+    if (dead(strip(0, band), strip(band + 4, 2 * band + 4))) hits.left++;
+  }
+  return hits;
+}
+
 const parseRate = (r) => {
   const [n, d] = String(r || '0/1').split('/').map(Number);
   return d ? n / d : 0;

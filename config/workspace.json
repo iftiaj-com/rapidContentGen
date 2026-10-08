@@ -7,6 +7,8 @@
   "bin": {
     "ffmpeg": "ffmpeg",
     "ffprobe": "ffprobe",
+    "hfFfmpeg": null,
+    "hfFfprobe": null,
     "python311": null
   },
   "paths": {

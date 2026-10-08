@@ -18,6 +18,22 @@ function version(bin, args = ['-version']) {
   }
 }
 
+/**
+ * ffmpeg 8.1 (gyan.dev full build) leaves the last 8 columns black when it
+ * converts 1080-wide yuv420p to gbrp. HyperFrames runs that conversion when it
+ * extracts video frames and when it encodes, so every 1080-wide render gets a
+ * black strip down the right edge. true = this binary converts correctly.
+ */
+export function gbrpTailOk(ffmpeg) {
+  try {
+    const buf = execFileSync(ffmpeg, ['-v', 'error', '-f', 'lavfi', '-i', 'color=c=0x808080:s=1080x16,format=yuv420p',
+      '-frames:v', '1', '-vf', 'format=gbrp', '-f', 'rawvideo', '-pix_fmt', 'gbrp', '-'], { windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] });
+    return buf[1079] > 60;
+  } catch {
+    return null;
+  }
+}
+
 export function doctor() {
   const cfg = loadConfig({ fresh: true });
   const rows = [];
@@ -29,6 +45,12 @@ export function doctor() {
   const fp = version(cfg.bin.ffprobe);
   add('ffprobe', Boolean(fp), fp || `not found (${cfg.bin.ffprobe})`);
   add('hyperframes plugin', Boolean(cfg.hyperframes.launcherPath && existsSync(cfg.hyperframes.launcherPath)), cfg.hyperframes.pluginRoot || 'not found');
+  const hfFf = cfg.bin.hfFfmpeg || cfg.bin.ffmpeg;
+  const tail = gbrpTailOk(hfFf);
+  add('ffmpeg for HyperFrames (edge test)', tail === true,
+    tail === true ? `${cfg.bin.hfFfmpeg ? 'bin.hfFfmpeg' : 'PATH ffmpeg'}: 1080-wide yuv420p -> gbrp keeps the last columns`
+      : tail === false ? `${hfFf}: 1080-wide yuv420p -> gbrp blanks the last 8 columns (black strip on the right of every render). Point bin.hfFfmpeg at an ffmpeg build without the bug.`
+        : `could not run ${hfFf}`);
   const py = cfg.bin.python311 ? version(cfg.bin.python311, ['--version']) : null;
   add('python 3.11 (voice venv base)', Boolean(py), py || 'set bin.python311 in config/workspace.local.json', true);
   const venvOk = cfg.bin.voicePython && existsSync(cfg.bin.voicePython);

@@ -31,7 +31,8 @@ It holds the full workflow: intake, mode, beat sheet, audio, build, render, veri
 - `python` is 3.13. Never call `python3` (broken Store alias). The voice venv is Python 3.11.
 - Git Bash `/tmp` is not the same folder Windows Python sees. Use Windows paths or the
   session scratchpad.
-- ffmpeg/ffprobe 8.1 are on PATH. `drawtext` needs an explicit `fontfile` (fontconfig is not
+- ffmpeg/ffprobe 8.1 are on PATH. HyperFrames uses ffmpeg 9.0.2 from `tools/bin/` (git-ignored) via
+  `bin.hfFfmpeg` / `bin.hfFfprobe` in the local config, because of pitfall 9. `drawtext` needs an explicit `fontfile` (fontconfig is not
   set up); `tools/lib/ffmpeg.mjs` handles this via `fonts.label` in config.
 - HyperFrames runs through the plugin launcher: `node tools/rcg.mjs hf --cwd <job> <args>`.
   Its usage command returns "unknown" here; telemetry is disabled.
@@ -51,6 +52,9 @@ node tools/shaders/catalog.mjs --find "nebula gold"
 node tools/rcg.mjs shader --job jobs/<id> --shader <slug> --audio jobs/<id>/assets/song-limited.wav --fit fill --duration 15 --id sh-bg --track 0 --insert
 node tools/rcg.mjs beatflash --job jobs/<id> --words "BASS|MID|TREBLE" --audio jobs/<id>/assets/song-limited.wav --source bands --effect neon --duration 15 --id flash --insert
 node tools/rcg.mjs analyze music.wav data/audio.json --fps 24 [--clock pulse]
+node tools/rcg.mjs camera --list
+node tools/rcg.mjs camera --job jobs/<id> --target "#w1" --cue "a/0:handheld" --cue "b/5.5:whip_pan_right" --cue "0:vc.ken_burns:hh=30" [--kick m.wav] [--audio m.wav] [--fill blur|cover|none]
+node tools/rcg.mjs three --job jobs/<id> --scene orb --cue "a/0:orbit_cw" --cue "b/2.39:crash_zoom_in:i=0.5" --audio m.wav --duration 6 --id three-orb --track 3 --insert
 node tools/rcg.mjs limit in.mp3 out.wav [--ceiling -2.5]
 node tools/rcg.mjs mix-check jobs/<id>/index.html
 node tools/rcg.mjs hf --cwd jobs/<id> check
@@ -85,3 +89,5 @@ See `.claude/skills/video-job/references/lessons.md`. The short list:
 6. Text cards must be flat (spans directly inside the `.clip`); animate spans, never the clip.
 7. Keep text out of the bottom 20% and the right 180 px on 9:16 (app buttons).
 8. ffmpeg `-ac 1` downmix reads up to +3 dB hot; level tools average channels instead.
+9. The PATH ffmpeg 8.1 blanks the right 8 px of every 1080-wide HyperFrames render (yuv420p -> gbrp
+   bug). `rcg verify` fails it; `rcg doctor` tests it. `bin.hfFfmpeg` points HyperFrames at 9.0.2.

@@ -94,6 +94,15 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
   catalog for named looks (`rcg hf catalog --query "<look>" --json`).
 - Grades: `library/recipes/grades.json` (`data-color-grading` payloads).
 - Text cards flat: spans inside the `.clip`, GSAP animates `#id > span`.
+- Camera on footage: put the clips in an untimed `.shot` wrapper that nothing else tweens, then
+  `node tools/rcg.mjs camera --job jobs/<id> --target "#w1" --cue "a/0:handheld" --cue "b/5.5:whip_pan_right" [--kick <music>]`.
+  Moves (`whip_pan_left`, `crash_zoom_in`, `orbit_cw`...) and Adits presets (`vc.ken_burns`,
+  `vc.dutch_angle_drift`...; `--list` prints all). A preset's default duration runs to the next
+  cue on its layer, so end it with a cue such as `<cut>:static_shot`. Perspective, spin and whip
+  presets reveal edges on 9:16: keep the default `--fill blur` there (`cover` zooms 1.5-2.3x).
+  Audio-react presets (`:react=bass_zoom`) need `--audio <limited music>`.
+- 3D: `node tools/rcg.mjs three --job jobs/<id> --scene orb|knot|crystal|rings --cue "a/0:orbit_cw" --cue "b/<downbeat>:crash_zoom_in:i=0.5" [--audio <music>] --duration <s> --id three-x --track <n> --insert`,
+  then set the host's z-index in the job CSS. Cue on downbeats from the beat grid.
 - Root `data-duration` must equal the plan.
 
 ## 7. Check
@@ -107,7 +116,7 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
 `node tools/rcg.mjs render jobs/<id> --fps <fps> --workers 3 [--silence a-b]`
 
 It runs mix-check, renders, saves `renders/final.log`, and verifies (dimensions, fps, duration,
-audio present and not silent, loudness, true peak, no "Audio lowered by"), then writes
+no dead strip at a frame edge, audio present and not silent, loudness, true peak, no "Audio lowered by"), then writes
 `renders/final-sheet.png`. READ the sheet. A failed verify means the job is not done.
 Mode (c): ask before this final render.
 

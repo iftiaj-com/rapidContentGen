@@ -21,8 +21,8 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | ☑ | Caption styles rebuilt as seekable DOM+GSAP blocks; word / 2-word / line modes | same | Port (the Adits caption code is stateful, `flashAlpha *= 0.80` and voice-level guessing, so its logic is Learn only) | `library/blocks/captions/<style>/` | P1 |
 | ☑ | Beat-flash captions | `shared/captions.js` | Port: per-frame states from the audio table, setter-driven | `tools/blocks/beatflash.mjs` | P2 |
 | ☑ | SRT import | caption engines | Port | `tools/captions/srt-to-words.mjs` | P1 |
-| ☐ | 46 camera moves (whip_pan, crash_zoom, dolly, orbit, drone…), all pure math | `core/anam/CameraMovements.js` lines 68-130, 308-327, 374-404 | Port, replacing the `performance.now()` clock with timeline time | `library/runtime/camera-moves.js`; blocks `camera-move/` (CSS on footage) and `three-scene/` | P3 |
-| ☐ | 2D camera presets | `core/VirtualCamera.js` | Port into `camera-moves.js` | same | P3 |
+| ☑ | 46 camera moves (whip_pan, crash_zoom, dolly, orbit, drone…), all pure math | `core/anam/CameraMovements.js` lines 68-130, 308-327, 374-404 | Port, replacing the `performance.now()` clock with timeline time; adds layers, `from`/`rev`, `bars` beat sync, kick shake | `library/runtime/camera-moves.js`; `tools/blocks/camera.mjs` (CSS on footage), `tools/blocks/three.mjs` (3D) | P3 |
+| ☑ | 2D camera presets (20, plus curve, zigzag, handheld, 6 audio-react modes, blurred fill) | `core/VirtualCamera.js` | Port into `camera-moves.js` as `vc.*`; 1440 sampled poses match the Adits code; fill from `drawBackground` | `library/runtime/camera-moves.js`, `tools/blocks/camera.mjs` | P3 |
 | ☐ | GLB models (26) + planet textures | `assets/models3d/` | **Hold**: no license notes, "bandicoot" may be a third-party character, 5 look like duplicates. Use procedural geometry until cleared. | `library/models3d/` | P3 |
 | ☐ | 3D environments: BlackHole, Clouds, SmokeEnv, TunnelCorridor, RainSystem, HoloSheen | `core/anam/*` | Port selectively into `three-scene` | `library/blocks/three-env/` | P6 |
 | ☐ | GLSL footage effects: FrameTunnel, PixelStretch, RevealUnder, ReversePhi, SplitScreen; VJ deck 8 FX + 47 presets | `effects/video/*.js`, `effects/vj/` | Defer → offline footage pre-pass (frames → headless page → PNG → ffmpeg) | `tools/fx/prepass.mjs` | P6 |
@@ -101,7 +101,9 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | P0 Foundation | tools, config, template, docs, provenance | R0 mop-star rebuild | ☑ done 2026-10-07: all verify checks pass, PSNR 72 dB vs reference |
 | P1 Voice + captions | voice venv, voice CLI, caption blocks, title cards | R1 + R1b | ☑ done 2026-10-08: R1 -14.5 LUFS (mix-check -14.4), 4 caption styles; R1b 4 title presets |
 | P2 Shaders + audio | audio table, shader-layer block, 166 shaders, beat-flash | R2 + smoke | ☑ done 2026-10-08: 166/166 validate + compile; shader snapshots identical across runs; music vs silence 15-18 dB |
-| P3 3D + camera | camera moves, three-scene, camera-move | R3 | not started |
+| P3 3D + camera | camera moves, three-scene, camera-move | R3 + R3b | ☑ done 2026-10-08: 46 moves and 20 presets pass unit and fidelity tests (1440 poses match Adits); 3D snapshots identical across runs; R3 -14.6 LUFS, R3b -14.7 LUFS, all 11 verify checks pass |
 | P4 Flythrough | flowEditor modules, flythrough block | R4 | not started |
 | P5 Integration | recipes, all-in-one job | R5 | not started |
 | P6 Optional | footage FX pre-pass, WGSL, extras | — | not started |
+
+**Note (2026-10-08):** renders made before this date (mop-star, R0-R3b) had a black 8 px strip down the right edge from an ffmpeg 8.1 conversion bug (lessons 16b). HyperFrames now uses ffmpeg 9.0.2, and R0, R1, R1b, R2 (final + repeat, 51.7 dB apart), R3 and R3b were re-rendered: all pass verify, including the new edge check. The mop-star trailer in `videos/` still has the strip.
