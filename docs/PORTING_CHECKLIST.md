@@ -24,9 +24,14 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | ☑ | 46 camera moves (whip_pan, crash_zoom, dolly, orbit, drone…), all pure math | `core/anam/CameraMovements.js` lines 68-130, 308-327, 374-404 | Port, replacing the `performance.now()` clock with timeline time; adds layers, `from`/`rev`, `bars` beat sync, kick shake | `library/runtime/camera-moves.js`; `tools/blocks/camera.mjs` (CSS on footage), `tools/blocks/three.mjs` (3D) | P3 |
 | ☑ | 2D camera presets (20, plus curve, zigzag, handheld, 6 audio-react modes, blurred fill) | `core/VirtualCamera.js` | Port into `camera-moves.js` as `vc.*`; 1440 sampled poses match the Adits code; fill from `drawBackground` | `library/runtime/camera-moves.js`, `tools/blocks/camera.mjs` | P3 |
 | ☐ | GLB models (26) + planet textures | `assets/models3d/` | **Hold**: no license notes, "bandicoot" may be a third-party character, 5 look like duplicates. Use procedural geometry until cleared. | `library/models3d/` | P3 |
-| ☐ | 3D environments: BlackHole, Clouds, SmokeEnv, TunnelCorridor, RainSystem, HoloSheen | `core/anam/*` | Port selectively into `three-scene` | `library/blocks/three-env/` | P6 |
-| ☐ | GLSL footage effects: FrameTunnel, PixelStretch, RevealUnder, ReversePhi, SplitScreen; VJ deck 8 FX + 47 presets | `effects/video/*.js`, `effects/vj/` | Defer → offline footage pre-pass (frames → headless page → PNG → ffmpeg) | `tools/fx/prepass.mjs` | P6 |
-| ☐ | About 29 WGSL (WebGPU) effects | `effects/video/*.js` | Defer (headless WebGPU unproven) | TypeGPU trial | P6 |
+| ☑ | Offline footage FX harness: runs Adits effects and environments unmodified, frame by frame, deterministic (frame-time clock, seeded random, one rAF per frame), Adits render-loop parity, pre-roll for stateful effects, side B, WebGPU | Adits render loop (`core/main.js`), UI defaults and ranges (`index.html`), presets (`core/main.js`) | Port: headless Chrome over the DevTools protocol (no dependencies); defaults, ranges and presets extracted as data | `tools/fx/` (`rcg fx`), `library/fx/harness.*`, `library/fx/effects.json`, `library/fx/shims/` | P6 |
+| ☑ | 3D environments: SmokeEnv (ambient, jet, mist), RainSystem (wind, colour modes, splashes), HoloSheen | `core/anam/{SmokeEnv,RainSystem,HoloSheen,anam-utils}.js`, `assets/visuals/smoke.png`, three.js r184 (MIT) | Copy (unmodified), plus host shims that rebuild AnamorphicCamera's scene (camera 35° at z 5, ACES, transparent clear); rendered over footage by `rcg fx`. `smoke.png`: license not documented in Adits | `library/adits-fx/core/anam/`, `library/fx/shims/env-*.js` | P6 |
+| ☐ | 3D environments: BlackHole, Clouds, TunnelCorridor | `core/anam/*` | Defer (not in the P6 selection; the env host shim is ready) | `rcg fx` | later |
+| ☑ | GLSL footage effects: FrameTunnel (30 presets), RevealUnder (5 presets), SplitScreen (linear split or 10 mask shapes) with side B from a second clip | `effects/video/{FrameTunnel,RevealUnder,SplitScreen}.js`, `shared/{BaseEffect,gl-link}.js`, `assets/visuals/{bird.gif,flower.png,leaf.png}` | Copy (unmodified); offline pre-pass (`rcg fx`). Mask images: license not documented in Adits | `library/adits-fx/effects/video/` | P6 |
+| ☐ | GLSL footage effects: PixelStretch, ReversePhi; VJ deck 8 FX + 47 presets | `effects/video/*.js`, `effects/vj/` | Defer (not in the P6 selection; the harness is ready) | `rcg fx` | later |
+| ☑ | WGSL (WebGPU) effects: HeatHaze, BlowPixels | `effects/video/{HeatHaze,BlowPixels}.js` | Copy (unmodified). WebGPU runs in the installed Chrome (`--headless=new`); HyperFrames' headless shell cannot create a device (no `dxil.dll`) | `rcg fx` | P6 |
+| ☐ | About 27 more WGSL (WebGPU) effects | `effects/video/*.js` | Defer (the WebGPU path is proven) | `rcg fx` | later |
+| ☑ | Canvas footage effects: Motion Trail (MotionTrails), Ghost (AdvGhost), Origami | `effects/video/{MotionTrails,AdvGhost,Origami}.js` | Copy (unmodified); pre-roll builds the history of the stateful ones (ghost 2.5 s, trails 2 s) | `rcg fx` | P6 |
 | ☐ | Voxels + Rapier physics, explode, 2D→3D relief, invisibility cloak, motion extraction | various | Defer | — | P6 |
 | ☐ | Social frames, doodle overlay (rough.js) | `effects/frames/SocialFrames.js`, Doodle | Port | `library/blocks/frames/`, `doodle/` | P6 |
 | ☑ | Advance JSON segment schema + prompt builder | `effects/auto/advance/` | Learn → shape of `beat-sheet.json` | `docs/job-spec.md` | P0 |
@@ -94,6 +99,35 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 
 ---
 
+## Ported so far, by source
+
+Counts are checklist rows (one row can hold several features). "Waiting" means not ported yet;
+"No work needed" means HyperFrames covers it, it is learn-only, or it was skipped.
+
+| Source | Ported ☑ | Waiting ☐ | On hold | No work needed |
+|---|---|---|---|---|
+| Adits_Modular | 13 | 5 | 1 (GLB models) | 4 |
+| AditsShaders | 6 | 0 | 0 | 1 |
+| AditsStudio | 2 | 0 | 0 | 2 |
+| flowEditor | 6 | 2 | 0 | 1 |
+| TTS app | 6 | 1 | 0 | 2 |
+| mop-star lessons | 2 | 0 | 0 | 0 |
+| **Total** | **35** | **8** | **1** | **10** |
+
+**Adits effects in `library/adits-fx/` (copied unmodified, run by `rcg fx`), 11 of them:**
+- Footage, canvas: Ghost (`AdvGhost`), Motion Trail (`MotionTrails`), Origami.
+- Footage, WebGPU: Heat Haze (`HeatHaze`), Blow Pixels (`BlowPixels`).
+- Footage, GLSL: Frame Tunnel (`FrameTunnel`), Reveal Under (`RevealUnder`), Split Screen (`SplitScreen`).
+- 3D environments: Smoke (`SmokeEnv`), Rain (`RainSystem`), Holo Sheen (`HoloSheen`).
+
+**Still waiting (rows marked ☐ above):**
+- Adits: BlackHole, Clouds and TunnelCorridor environments; PixelStretch, ReversePhi and the VJ
+  deck; about 27 more WGSL effects; voxels/physics and the other heavy effects; social frames and
+  doodle.
+- flowEditor: newspaper background; `.flow` import.
+- TTS app: pyttsx3, gTTS, Piper, Melo engines.
+- On hold: the 26 Adits GLB models (no license notes).
+
 ## Progress summary
 
 | Phase | Scope | Regression job | Status |
@@ -104,6 +138,7 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | P3 3D + camera | camera moves, three-scene, camera-move | R3 + R3b | ☑ done 2026-10-08: 46 moves and 20 presets pass unit and fidelity tests (1440 poses match Adits); 3D snapshots identical across runs; R3 -14.6 LUFS, R3b -14.7 LUFS, all 11 verify checks pass |
 | P4 Flythrough | flowEditor modules, flythrough block | R4 + R4b | ☑ done 2026-10-08: R4 8 cards (board, star) snapped to downbeats within 6 ms, -15.8 LUFS, 11/11 verify; R4b cards motion, silent, 8/8; stack arrangement checked by snapshot |
 | P5 Integration | recipes, all-in-one job | R5 | ☑ done 2026-10-08: cosmic-promo recipe planned and built in one command (3D, flythrough, shader, beat-flash, camera, ramp, voice, captions, titles); 14.5 s, -15.7 LUFS, 11/11 verify |
-| P6 Optional | footage FX pre-pass, WGSL, extras | — | not started |
+| P6 Optional (selected subset) | `rcg fx` harness; Ghost, Motion Trail, Origami, Heat Haze, Blow Pixels, FrameTunnel, RevealUnder, SplitScreen; SmokeEnv, RainSystem, HoloSheen | R6 | ☑ subset done 2026-10-08: 11 effects rendered offline into a 13.75 s reel, -14.8 LUFS, 11/11 verify; Blow Pixels at intensity 0 returns its input exactly; 3 effects byte-identical across two runs |
+| P6 remainder | other footage FX and environments, newspaper background, frames/doodle, `.flow` import, extra TTS engines | none yet | not started |
 
 **Note (2026-10-08):** renders made before this date (mop-star, R0-R3b) had a black 8 px strip down the right edge from an ffmpeg 8.1 conversion bug (lessons 16b). HyperFrames now uses ffmpeg 9.0.2, and R0, R1, R1b, R2 (final + repeat, 51.7 dB apart), R3 and R3b were re-rendered: all pass verify, including the new edge check. The mop-star trailer in `videos/` still has the strip.

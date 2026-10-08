@@ -1,0 +1,61 @@
+{
+  "job": "R6 fx reel",
+  "phase": "P6 (subset)",
+  "inputs": {
+    "video": "D:/Video/101066-video-1080.mp4",
+    "music": "jobs/2026-10-08-r5-cosmic-promo/assets/song-limited.wav"
+  },
+  "render": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 24,
+    "duration": 13.75
+  },
+  "audio": {
+    "integratedLufs": [
+      -16,
+      -12
+    ],
+    "truePeakMax": -1,
+    "gainReductionInLog": false
+  },
+  "effects": [
+    "ghost",
+    "motion-trails",
+    "origami",
+    "heat-haze",
+    "blow-pixels",
+    "frame-tunnel",
+    "reveal-under",
+    "split-screen",
+    "smoke",
+    "rain",
+    "holo-sheen"
+  ],
+  "checks": {
+    "blowPixelsIdentityPsnr": "inf",
+    "videoDecodePsnrMin": 40,
+    "splitScreenNeitherPct": 0,
+    "determinismByteIdentical": [
+      "ghost",
+      "rain",
+      "heat-haze"
+    ],
+    "verify": "11/11"
+  },
+  "lastRun": {
+    "date": "2026-10-08",
+    "integratedLufs": -14.8,
+    "truePeakDb": -2.2,
+    "renderSeconds": 75,
+    "verify": "11/11 PASS",
+    "mixCheck": {
+      "lufs": -14.7,
+      "truePeak": -2.5
+    },
+    "fxSecondsPer1_5s": [
+      18.8,
+      26.5
+    ]
+  }
+}

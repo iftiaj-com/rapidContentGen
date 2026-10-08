@@ -8,7 +8,7 @@ not yet regression-verified), **planned** (phase in `PORTING_CHECKLIST.md`).
 
 | Command | What it does | Status |
 |---|---|---|
-| `doctor` | Checks config, ffmpeg (including the edge test for the ffmpeg HyperFrames uses), HyperFrames plugin, Python 3.11, voice venv, Kokoro weights, sources, provenance | ready |
+| `doctor` | Checks config, ffmpeg (including the edge test for the ffmpeg HyperFrames uses), HyperFrames plugin, Python 3.11, voice venv, Kokoro weights, the browser `rcg fx` will use (WebGPU needs an installed Chrome), sources, provenance | ready |
 | `new-job` | Creates `jobs/<date>-<slug>/` from a template; copies media; probe + safe-zone sheet; `JOB.md` | ready |
 | `beat-sheet validate\|md` | Validates `beat-sheet.json` (overlaps, no-text zones) and writes the approval table | ready |
 | `probe` | Streams, fps, duration, loudness, true peak, plus intake notes (no audio, low fps, hot peaks) | ready |
@@ -32,6 +32,7 @@ not yet regression-verified), **planned** (phase in `PORTING_CHECKLIST.md`).
 | `recipe list|show|plan|commands|build` | Edit recipes (`docs/recipes.md`): `plan` drafts a beat sheet from a style (sections snapped to downbeats, shots to beats, seeded source picks, camera cues, sounds, voice slots, flythrough specs with stills) and leaves placeholders for words and titles; `build` runs voice, assemble and every block, then mix-check and check | ready (R5) |
 | `assemble` | Builds index.html from the beat sheet: shots in camera wrappers (full frame or a card over a background), black cards, music with fades and a duck under the voice, voice lines, SFX by crest, white flashes, layer order; then camera cues and ramps | ready (R5) |
 | `ramp` | Speed ramp on a footage clip as a rate lane: Adits audio speed sync (`--min/--max`) or explicit points; refuses below 1x; checks the source does not run out | ready (R5) |
+| `fx` | Adits footage effects and 3D environments rendered offline over a range of a clip into a new clip, placed like any footage. The unmodified Adits code runs in headless Chrome (the installed Chrome, for WebGPU) with a frame-time clock, seeded random and the Adits render loop, so the same inputs give the same clip. Effects: `ghost`, `motion-trails`, `origami`, `heat-haze` and `blow-pixels` (WebGPU), `frame-tunnel` (30 presets), `reveal-under` (5 presets), `split-screen` (linear or 10 mask shapes); the last two take side B from `--src2`. Environments: `smoke` (presets `ambient`, `jet`, `mist`), `rain`, `holo-sheen`. `--param id=value` sets any Adits UI control, `--preset`, `--audio` (+ `--audio-offset`) drives audio-reactive controls, `--alpha` writes ProRes 4444 with alpha, `--sheet` writes a frame sheet. About 20-45 s per 1.5 s at 1080x1920. `--list` prints the names | ready (R6) |
 | Shader catalog | `node tools/shaders/catalog.mjs --find "<look>"` searches `library/shaders-catalog.json` | ready |
 | `hf` | Runs the HyperFrames CLI via the plugin launcher (`--cwd <job>`). Passes `bin.hfFfmpeg` / `bin.hfFfprobe` and a per-ffmpeg frame cache folder. Auto-handles graded footage at t=0: render gets `--browser-timeout 180`, check/snapshot run on a grade-free mirror | ready |
 | `provenance copy\|record\|check\|render` | Copies or records material from source projects with commit and sha256 | ready |
@@ -65,9 +66,10 @@ not yet regression-verified), **planned** (phase in `PORTING_CHECKLIST.md`).
 | Recipes: 6 styles, 8 sections, 4 grades | `library/recipes/styles.json`, `sections.json`, `grades.json` (schema `docs/recipes.md`) | ready (R5) |
 | flowEditor modules: motion styles, templates, audio clip utils, constants (copied), beat snap | `library/flow/` (used by `rcg flythrough`) | ready (R4) |
 | Camera runtime: 46 Adits moves + 20 Virtual Camera presets, pure functions of time | `library/runtime/camera-moves.js` (copied into each job's `lib/` by `rcg camera`) | ready (R3, R3b) |
+| Adits footage effects (8) and 3D environments (3), copied unmodified, with three.js r184 and the mask/smoke images | `library/adits-fx/` (mirrors the Adits layout); registry of UI defaults, ranges and presets `library/fx/effects.json`; harness page and host shims `library/fx/` | ready (R6) |
 
 ## Coming next (see `PORTING_CHECKLIST.md`)
 
 | Phase | Adds |
 |---|---|
-| P6 | Footage FX pre-pass (Adits GLSL effects, VJ deck), WGSL trial, 3D environments, newspaper background, `.flow` import |
+| Later (P6 remainder) | More footage effects through `rcg fx` (PixelStretch, ReversePhi, about 27 more WGSL effects, VJ deck), BlackHole, Clouds and TunnelCorridor environments, newspaper background, social frames and doodle, `.flow` import, extra TTS engines |

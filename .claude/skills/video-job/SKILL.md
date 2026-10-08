@@ -118,6 +118,13 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
   long trips; use it between nearby cards.
 - 3D: `node tools/rcg.mjs three --job jobs/<id> --scene orb|knot|crystal|rings --cue "a/0:orbit_cw" --cue "b/<downbeat>:crash_zoom_in:i=0.5" [--audio <music>] --duration <s> --id three-x --track <n> --insert`,
   then set the host's z-index in the job CSS. Cue on downbeats from the beat grid.
+- Footage effects from Adits (ghost, motion-trails, origami, heat-haze, blow-pixels, frame-tunnel,
+  reveal-under, split-screen) and 3D environments over footage (smoke, rain, holo-sheen): render the
+  range to a new clip first, then place that clip as a normal shot:
+  `node tools/rcg.mjs fx --job jobs/<id> --effect <name> --src assets/<clip> --start <s> --duration <s> [--param id=value] [--preset <name>] [--src2 assets/<b> --start2 <s>] [--audio <limited music> --audio-offset <s>] --sheet --out assets/fx/<name>.mp4`
+  (`--list` prints the names; presets and defaults are in `library/fx/effects.json`). READ the sheet
+  and any "page console" lines. Some Adits defaults are strong on 9:16 (lessons 13ag): smoke
+  ambient covers the frame (use `--preset jet`, or `anamSmokeCount=30 anamSmokeIntensity=25`).
 - Root `data-duration` must equal the plan.
 
 ## 7. Check

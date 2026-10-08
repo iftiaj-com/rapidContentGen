@@ -9,6 +9,7 @@
     "ffprobe": "ffprobe",
     "hfFfmpeg": null,
     "hfFfprobe": null,
+    "fxChrome": null,
     "python311": null
   },
   "paths": {

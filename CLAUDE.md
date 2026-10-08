@@ -62,6 +62,8 @@ node tools/rcg.mjs recipe plan --job jobs/<id> --recipe cosmic-promo --duration 
 node tools/rcg.mjs recipe build --job jobs/<id>      # after filling the <PLACEHOLDERS>
 node tools/rcg.mjs assemble --job jobs/<id>
 node tools/rcg.mjs ramp --job jobs/<id> --target v4 --audio m.wav --audio-offset 6.29 --min 1 --max 2
+node tools/rcg.mjs fx --list
+node tools/rcg.mjs fx --job jobs/<id> --effect ghost --src assets/x.mp4 --start 2 --duration 3 [--param id=v] [--preset p] [--src2 assets/y.mp4 --start2 0] [--audio m.wav] --sheet --out assets/fx/ghost.mp4
 node tools/rcg.mjs limit in.mp3 out.wav [--ceiling -2.5]
 node tools/rcg.mjs mix-check jobs/<id>/index.html
 node tools/rcg.mjs hf --cwd jobs/<id> check
@@ -74,7 +76,8 @@ node tools/rcg.mjs provenance check
 
 - `tools/`: CLIs (`rcg.mjs` is the entry point). `lib/` has config, ffmpeg, provenance.
 - `library/`: reusable pieces: `sfx/` (measured manifest), `recipes/` (grades),
-  `runtime/`, `blocks/`, `shaders/` (filled phase by phase).
+  `runtime/`, `blocks/`, `shaders/` (filled phase by phase), `adits-fx/` (Adits effects and
+  environments, copied unmodified) and `fx/` (the `rcg fx` harness and effect registry).
 - `templates/`: HyperFrames project templates (`vertical-1080x1920`).
 - `jobs/<date>-<slug>/`: one HyperFrames project per job, with `JOB.md`, `beat-sheet.*`,
   `data/`, `renders/`, `report.md`.
@@ -98,3 +101,5 @@ See `.claude/skills/video-job/references/lessons.md`. The short list:
 8. ffmpeg `-ac 1` downmix reads up to +3 dB hot; level tools average channels instead.
 9. The PATH ffmpeg 8.1 blanks the right 8 px of every 1080-wide HyperFrames render (yuv420p -> gbrp
    bug). `rcg verify` fails it; `rcg doctor` tests it. `bin.hfFfmpeg` points HyperFrames at 9.0.2.
+10. Chrome colour-manages BT.709-tagged PNGs (shadows sink) and cannot seek a `<video>` served
+   without byte ranges. `rcg fx` writes untagged frames and serves ranges (lessons 13ab, 13ac).

@@ -92,6 +92,8 @@ if (realVideo) {
 async function seekVideo(t) {
   if (Math.abs(media.currentTime - t) < 1e-4) return;
   await new Promise((resolve) => { media.addEventListener('seeked', resolve, { once: true }); media.currentTime = t; });
+  // An unseekable source (no byte ranges) still fires 'seeked', with currentTime back at 0.
+  if (Math.abs(media.currentTime - t) > 0.05) throw new Error(`seek to ${t.toFixed(3)} s landed at ${media.currentTime.toFixed(3)} s`);
 }
 const offCanvas = document.createElement('canvas');
 offCanvas.width = W; offCanvas.height = H;

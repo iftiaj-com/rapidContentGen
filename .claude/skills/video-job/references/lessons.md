@@ -121,6 +121,35 @@ Each entry cost real time on a past job. Read before building.
      reversed (and the reverse). Check the yaw sign flips at each cut. Sub-second shots need s=2.
 13aa. **Check the music length first.** The Paper Ring clip is 15.02 s; R5 had to be 14.5 s.
 
+## Footage FX harness (`rcg fx`, P6)
+
+13ab. **Tagged PNG frames are colour-managed by Chrome.** ffmpeg writes cICP, gAMA and cHRM chunks for
+     a BT.709 source, and Chrome decoded them as gamma 2.4 into sRGB: shadows sank (16 to 4, 128 to
+     121) in every fx clip. HyperFrames shows footage from untagged JPEGs, raw. `rcg fx` converts to
+     RGB first, then drops the tags (`format=rgb24,setparams=...unknown`). Blow pixels at intensity 0
+     now returns its input exactly (PSNR infinite).
+13ac. **A `<video>` needs HTTP byte ranges to seek.** Without them Chrome fires `seeked` but snaps
+     `currentTime` back to 0: FrameTunnel showed one frozen frame. The fx server answers ranges (206),
+     and the harness fails any seek that lands more than 0.05 s from its target.
+13ad. **WebGPU needs the installed Chrome.** HyperFrames' headless shell cannot create a device (no
+     `dxil.dll`). The harness launches Chrome `--headless=new` with a temporary profile,
+     `--no-sandbox` (else the GPU process crashes), ANGLE d3d11 and `--remote-allow-origins=*` (else
+     the DevTools socket closes with 1006). Pages come from localhost: `navigator.gpu` needs a secure
+     context, and ES modules do not load from `file://`.
+13ae. **Match the Adits render loop.** Clear and reset the 2D context each frame; for GPU effects
+     call `renderGPU` and draw the WebGPU canvas in the same synchronous block; use real range
+     inputs so values clamp and snap as in the UI; link shaders synchronously (hide
+     `KHR_parallel_shader_compile`), or an effect shows the plain frame for an unknown number of frames.
+13af. **Stateful effects need pre-roll.** Ghost and Motion trail build on earlier frames; `rcg fx`
+     renders `preroll` seconds before the range (ghost 2.5 s, trails 2 s) and drops them.
+13ag. **Adits defaults can be strong on 9:16.** Smoke "Ambient, Thick" at 55% covers the whole
+     frame; a 9:16 view shows about a third of the width a 16:9 view does, so a jet plume fills it
+     edge to edge. Mist at 55% is faint (alpha about 0.13). Blow pixels at 0.5 can clear the upper
+     half to black. Frame tunnel's default arch is a narrow column on 9:16 (about a third of the
+     width, black around it). Read the sheet and set `--param` before using a clip.
+13ah. **Page errors hide in the console.** A three.js shader compile error never reaches the
+     harness state. `rcg fx` prints page console errors and warnings; read them.
+
 ## Environment
 
 13. PowerShell pipes add a UTF-8 BOM; parse JSON with `utf-8-sig` or write it from Node.

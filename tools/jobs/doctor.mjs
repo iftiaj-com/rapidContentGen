@@ -9,6 +9,7 @@ import { join } from 'node:path';
 import { isMain } from '../lib/cli.mjs';
 import { loadConfig } from '../lib/config.mjs';
 import { checkLedger } from '../lib/provenance.mjs';
+import { findChrome } from '../fx/chrome.mjs';
 
 function version(bin, args = ['-version']) {
   try {
@@ -59,6 +60,11 @@ export function doctor() {
   const kokoro = existsSync(join(models, 'kokoro-v1.0.onnx')) && existsSync(join(models, 'voices.bin'));
   add('Kokoro weights', kokoro, kokoro ? models : 'not copied yet (Phase 1)', true);
   add('label font', Boolean(cfg.fonts?.label && existsSync(cfg.fonts.label)), cfg.fonts?.label || 'set fonts.label (contact sheet timestamps)', true);
+  let fxBrowser = null;
+  try { fxBrowser = findChrome(); } catch { /* none found */ }
+  add('browser for rcg fx', Boolean(fxBrowser && fxBrowser.kind !== 'headless-shell'),
+    !fxBrowser ? 'no Chrome found: set bin.fxChrome in config/workspace.local.json'
+      : fxBrowser.kind === 'headless-shell' ? `${fxBrowser.path} (no WebGPU: heat-haze and blow-pixels need an installed Chrome)` : fxBrowser.path, true);
   for (const [key, p] of Object.entries(cfg.sources || {})) add(`source: ${key}`, existsSync(p), p, true);
   const prov = checkLedger();
   add('provenance ledger', prov.problems.length === 0, `${prov.entries} entries, ${prov.problems.length} problems, ${prov.drift.length} source drift`);

@@ -40,10 +40,14 @@ function parseValue(v) {
   return v;
 }
 
+// Frames are written WITHOUT colour tags: a BT.709-tagged PNG (cICP/gAMA/cHRM) is colour-managed
+// by Chrome on decode (gamma 2.4 to sRGB, shadows 16 -> 4), while HyperFrames shows footage from
+// untagged JPEGs as raw sRGB. Convert to RGB first (BT.709 matrix), then drop the tags.
 async function extract(src, start, duration, fps, W, H, dir) {
   mkdirSync(dir, { recursive: true });
   await ff(['-ss', String(start), '-t', String(duration), '-i', src,
-    '-vf', `fps=${fps},scale=${W}:${H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${W}:${H}`, '-start_number', '1', join(dir, '%06d.png')]);
+    '-vf', `fps=${fps},scale=${W}:${H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${W}:${H},format=rgb24,setparams=color_primaries=unknown:color_trc=unknown:colorspace=unknown`,
+    '-start_number', '1', join(dir, '%06d.png')]);
   return readdirSync(dir).filter((f) => f.endsWith('.png')).length;
 }
 
@@ -111,17 +115,28 @@ export async function runFx(opts) {
         o[path[path.length - 1]] = v;
       } else params[k] = v;
     }
+    const alpha = Boolean(opts.alpha ?? def.alpha);
     const jobDoc = {
       module: `/lib/adits-fx/${def.module}`, className: def.class, width: W, height: H, fps, frames, frames2,
       sourceFile, srcStart: start - preroll, ranges: def.ranges || {},
       seed: Number(opts.seed ?? 1), params, skip, vparams, webgpu: Boolean(def.webgpu),
-      shim: def.shim ? `/lib/fx/shims/${def.shim}` : null, alpha: Boolean(opts.alpha ?? def.alpha), input: needsInput, audio,
+      shim: def.shim ? `/lib/fx/shims/${def.shim}` : null, alpha, input: needsInput, audio,
       options: def.options || {},
     };
     writeFileSync(join(work, 'job.json'), JSON.stringify(jobDoc));
 
     const srv = await startServer(work);
     const browser = await launch({ width: W, height: H });
+    // Page console errors and warnings: three.js shader compile errors land here, not in __fx.
+    const consoleLines = [];
+    browser.on((m) => {
+      if (consoleLines.length >= 20) return;
+      if (m.method === 'Runtime.consoleAPICalled' && (m.params.type === 'error' || m.params.type === 'warning')) {
+        consoleLines.push(`${m.params.type}: ${m.params.args.map((a) => a.value ?? a.description ?? '').join(' ').slice(0, 400)}`);
+      } else if (m.method === 'Runtime.exceptionThrown') {
+        consoleLines.push(`exception: ${(m.params.exceptionDetails.exception?.description || m.params.exceptionDetails.text || '').slice(0, 400)}`);
+      }
+    });
     try {
       await browser.send('Page.navigate', { url: `http://127.0.0.1:${srv.port}/lib/fx/harness.html` });
       let state = null;
@@ -135,18 +150,19 @@ export async function runFx(opts) {
         if (state.state === 'done' || state.state === 'error') break;
       }
       if (!state || state.state !== 'done') {
-        throw new Error(`fx ${opts.effect} ${state?.state || 'timed out'} at frame ${state?.frame ?? '?'}: ${state?.error || ''}\nlog: ${(state?.log || []).join(' | ')}\nchrome: ${browser.stderr().slice(-500)}`);
+        throw new Error(`fx ${opts.effect} ${state?.state || 'timed out'} at frame ${state?.frame ?? '?'}: ${state?.error || ''}\nlog: ${(state?.log || []).join(' | ')}\nconsole: ${consoleLines.join(' | ')}\nchrome: ${browser.stderr().slice(-500)}`);
       }
       if (state.log?.length && opts.onLog) opts.onLog(state.log);
+      if (consoleLines.length && opts.onConsole) opts.onConsole(consoleLines);
     } finally {
       await browser.close();
       await srv.close();
     }
 
-    const outRel = opts.out || `assets/fx/${opts.id || `${opts.effect}-${basename(opts.src || 'env').replace(/\.\w+$/, '')}-${start}`}${def.alpha ? '.mov' : '.mp4'}`;
+    const outRel = opts.out || `assets/fx/${opts.id || `${opts.effect}-${basename(opts.src || 'env').replace(/\.\w+$/, '')}-${start}`}${alpha ? '.mov' : '.mp4'}`;
     const outAbs = resolve(jobDir, outRel);
     mkdirSync(resolve(outAbs, '..'), { recursive: true });
-    const enc = def.alpha
+    const enc = alpha
       ? ['-c:v', 'prores_ks', '-profile:v', '4444', '-pix_fmt', 'yuva444p10le']
       : ['-c:v', 'libx264', '-crf', '12', '-preset', 'medium', '-pix_fmt', 'yuv420p', '-movflags', '+faststart'];
     await ff(['-framerate', String(fps), '-start_number', String(skip + 1), '-i', join(work, 'out', '%06d.png'), ...enc, outAbs]);
@@ -174,6 +190,6 @@ if (isMain(import.meta.url)) {
     console.error('Usage: fx.mjs --job <dir> --effect <name> --src <clip> [--start s] [--duration s] [--param id=v ...] [--src2 clip] [--audio music] [--out path] | --list');
     process.exit(2);
   }
-  const r = await runFx({ ...a, onProgress: (f, n) => { if (f % 24 === 0 || f === n) process.stdout.write(`  frame ${f}/${n}\n`); }, onLog: (l) => console.log(`  page log: ${l.slice(-5).join(' | ')}`) });
+  const r = await runFx({ ...a, onProgress: (f, n) => { if (f % 24 === 0 || f === n) process.stdout.write(`  frame ${f}/${n}\n`); }, onLog: (l) => console.log(`  page log: ${l.slice(-5).join(' | ')}`), onConsole: (l) => console.log(`  page console (${l.length}):\n    ${l.join('\n    ')}`) });
   console.log(`Wrote ${r.out}: ${r.frames} frames, ${r.size}, ${r.duration.toFixed(2)} s, in ${r.seconds} s (${r.browser})${r.sheet ? `\nSheet: ${r.sheet}` : ''}`);
 }
