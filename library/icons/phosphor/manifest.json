@@ -3,14 +3,29 @@
   "package": "@phosphor-icons/core",
   "version": "2.1.1",
   "files": {
+    "bold/cursor-click-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/cursor-click-bold.svg",
+      "sha256": "beef2cc0770e39e4c39ba62f776d43148947780b8e1ea4dbe6161f9ac0f1e723",
+      "added": "2026-10-08"
+    },
     "bold/film-strip-bold.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/film-strip-bold.svg",
       "sha256": "75f500a192705172ce51686fc8a9a2f62d22e91987419c3bd91448cec2760e38",
       "added": "2026-10-08"
     },
+    "bold/magnifying-glass-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/magnifying-glass-bold.svg",
+      "sha256": "b73e393b20bff0aaee96b9e325d0276fe1ab5fc81b5080633a95827bd14ebae6",
+      "added": "2026-10-08"
+    },
     "bold/microphone-bold.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/microphone-bold.svg",
       "sha256": "129f28eb3ba66fd180d860b3e46f0e794af24700d05e7cc025aac560a9469f64",
+      "added": "2026-10-08"
+    },
+    "bold/pencil-simple-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/pencil-simple-bold.svg",
+      "sha256": "163a4e787655de6b5b50bfb0dc0e6818c015ba32106eb14fe12c3daf033a892b",
       "added": "2026-10-08"
     },
     "bold/rocket-launch-bold.svg": {
@@ -26,6 +41,11 @@
     "bold/speaker-high-bold.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/speaker-high-bold.svg",
       "sha256": "f0fc825cb96958238882b98aea55afdb63da92c4c5c8b499c0e1068e9abb299e",
+      "added": "2026-10-08"
+    },
+    "fill/sparkle-fill.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/fill/sparkle-fill.svg",
+      "sha256": "9872a9255717f4ecc0f01b028b9436042e0f49391e4ce7a57f61aa466684fad1",
       "added": "2026-10-08"
     }
   }

@@ -277,7 +277,7 @@ if (isMain(import.meta.url)) {
       console.log(`${hits.length} result(s). Fetch one (after the user says yes): rcg assets fetch ${sub} --job <dir> --id <id>`);
     } else if (cmd === 'fetch') {
       const r = await fetchAsset(sub, a);
-      if (r.dryRun) console.log(`DRY RUN: would save ${r.file} (${r.mb} MB, ${r.type}) from ${r.url}\ncredit: ${JSON.stringify(r.credit)}`);
+      if (r.dryRun) console.log(`DRY RUN: would save ${r.file} (${r.mb ? `${r.mb} MB` : 'size unknown'}, ${r.type}) from ${r.url.replace(/key=[^&]+/, 'key=***')}\ncredit: ${JSON.stringify(r.credit)}`);
       else console.log(`saved ${r.file} (${r.mb} MB); credit recorded in data/credits.json: ${JSON.stringify(r.credit)}`);
     } else if (cmd === 'credit') {
       if (!a.job || !a.file || !a.source) throw new Error('Usage: assets.mjs credit --job <dir> --file assets/... --source pexels|user|... --author "..." --page <url>');

@@ -23,6 +23,10 @@ It holds the full workflow: intake, mode, beat sheet, audio, build, render, veri
 - **Look at the artifact, not the exit code.** Every render goes through `rcg render`
   (which verifies) and you read the frame sheet before reporting.
 - **Never publish or post anything.** Rendering is local; posting is the user's step.
+- **No credit or attribution text on screen.** Never put photographer, source, licence or
+  "courtesy of" text in a video. Credits for collected assets live only in the job's
+  `data/credits.json` and `report.md` (`rcg assets credits`). The approved sources do not require
+  on-screen credit (`.claude/skills/skill-info-graphics/references/assets.md`).
 
 ## Environment
 

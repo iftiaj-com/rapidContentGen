@@ -36,6 +36,19 @@ Every fetch writes the file into the job's git-ignored `assets/img|video|tex/` a
 `data/credits.json` (source, id, author, page, licence, sha256). `rcg assets credits --job <dir>`
 prints the Markdown credits table for `report.md`.
 
+**Credits never appear in the video** (user rule, 2026-10-08): no photographer, source, licence or
+"courtesy of" text on screen, no end card of credits. The credits file and the report are the
+record. None of the approved licences requires on-screen credit: Phosphor (MIT) asks for its
+licence with the code, which is `library/icons/phosphor/LICENSE`; Unsplash, Pixabay and Pexels say
+credit is optional; Poly Haven and The Met are CC0. Poly Haven's API page asks integrators to make
+clear the assets came from Poly Haven; the credits record covers that, and the user may add a
+line to a post description when posting.
+
+Pixabay photos through the API are capped at 1280 px on the long side (`largeImageURL`; full
+resolution needs Pixabay's approved full API access). That is too small for a full 1080x1920 frame,
+so use Unsplash for photos and Pixabay for video (tested 2026-10-08: clips came back up to
+3840x2160).
+
 Pixabay Music: not approved. Its licence page does not address YouTube Content ID; ask the user
 before any music from it.
 

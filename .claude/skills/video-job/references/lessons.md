@@ -260,6 +260,12 @@ Each entry cost real time on a past job. Read before building.
      stutters under seek-by-frame capture). Spread text with scaleX (and a short blur) instead.
 13bn. **A denoiser cannot remove room echo.** R11 (+23 dB of gain on a quiet phone clip): the floor
      between words stayed -26 dBFS at afftdn nr 0, 12 and 24. Report it; offer a re-record or voiceover.
+13bp. **A revealing ground needs the old scene under it, and the new scene inside it.** A ground that
+     wipes, arcs or irises in only clips itself: if the outgoing scene ends at the same moment the reveal
+     opens onto the black root (v1 of Opus 5.5 made this, 7.50 s), and the incoming parts float over the
+     outgoing scene. `rcg infographics resolve` holds the outgoing scene through the entrance (`"end":
+     "scene"` / `"#g4"`) and sets `reveal` on the incoming parts. Also: a child `z-index` escapes a style
+     host (the prompt cursor sat over the next scene); keep z-index out of components.
 13bo. **A caption block may run past the root.** Captions hold 0.35 s after the last word plus 0.1 s;
      trim 0.5 s after the last word (lint `clip_ends_past_root_duration` at 0.35 s).
 

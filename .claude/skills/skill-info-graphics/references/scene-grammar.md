@@ -23,6 +23,14 @@ hero (a word, a step, a chip, a highlight), anchored to the word that names it.
 - Alternate so cuts read: dark, then cream or paper, then dark. Light grey (`paper`) suits charts and
   timelines; cream suits calm explanation and UI; dark suits claims and punchlines.
 - `"end": "scene"` on every item of a scene keeps them in step with the next ground.
+- Scene handovers: `"end": "scene"` keeps an item until the next ground has finished entering, and
+  `"end": "#g4"` does the same for a named ground (a scene that continues past a cutaway). Items that
+  start with a revealing ground get `reveal` from `resolve`, so they appear only inside it (lesson 13bp).
+- A cutaway (a short scene over a running one, like the footage collage in v2): put its ground and
+  parts after the running scene in the plan, and hide the running hero for the cutaway window (main
+  timeline `tl.set("#o1", { opacity: 0 }, a)` / `{ opacity: 1 }` at b) so no covered text is left.
+- Footage under a scene: a plain `<video>` in a `.shot` wrapper in `index.html` (before the hosts), a
+  CSS blur for mood, and a `ground` with `opacity` 0.5-0.7 as the scrim.
 - Enter with `cut` by default. Use `arc` for a section turn, `wipe-left` / `wipe-up` for a step in
   a sequence, `iris` for the payoff.
 

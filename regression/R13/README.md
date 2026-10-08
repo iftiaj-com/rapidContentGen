@@ -31,6 +31,14 @@ Test stills copied from earlier jobs' assets (`a.png` from R0, `b`/`c` from R4, 
 Open: the gallery was not rendered to MP4, so the collage, post and counter were seen only in
 snapshots. Render it once before calling those components ready.
 
+## R13c: v2 with the approved assets (rendered)
+
+`jobs/2026-10-08-opus-5-5-made-this-v2`, 10 s, 30 fps: a Pixabay clip under a scrim, Unsplash photos
+and a Met painting in a collage cutaway, a Poly Haven grain on the light grounds, Phosphor icons in
+the orbit chips and a disc. First real fetches from all four API sources (all succeeded, credits in
+`data/credits.json`). RENDER OK: 10.000 s, -14.5 LUFS, -2.9 dBTP, contrast 35/35. Found and fixed
+lesson 13bp (black reveal frames, floating incoming parts, a cursor above the next scene).
+
 ## R13b: first real job (topic mode, rendered)
 
 `jobs/2026-10-08-opus-5-5-made-this`, 10 s, 30 fps, mode (b). Topic "Opus 5.5 made this": the agent

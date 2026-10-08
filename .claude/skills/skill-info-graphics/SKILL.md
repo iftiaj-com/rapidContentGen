@@ -12,7 +12,8 @@ owns intake, the working mode, the mix rules, render, report and the final send.
   JetBrains Mono, both bundled by HyperFrames. Captions: `rcg captions --style info-chip`.
 - Assets: `node tools/rcg.mjs assets icon | search | fetch | credit | credits` (`tools/media/assets.mjs`),
   only the approved sources in `references/assets.md` (Phosphor, Unsplash, Pixabay, Pexels by hand,
-  Poly Haven, The Met), every file credited in `data/credits.json`.
+  Poly Haven, The Met), every file credited in `data/credits.json`. Credits are records, never
+  on-screen text (user rule): no photographer, source or licence lines in the video.
 - Timing tool: `node tools/rcg.mjs infographics scaffold | place-voice | resolve`
   (`tools/blocks/infographics.mjs`). Every visual is planned against a spoken word, not a second.
 - Learned from the user's reference Short "Disney vs Midjourney" (YouTube Shorts fZIXlBGaIMs, read
@@ -39,11 +40,15 @@ If the request does not say which, it is topic mode when there is no script text
    then `node tools/rcg.mjs infographics scaffold --job jobs/<id> --duration <s>` (graphics only) and
    `node tools/rcg.mjs style apply --job jobs/<id> --style info-graphics`.
 2. **Script** (topic mode: write it; script mode: split the user's text into lines). One line per
-   sentence or two in `data/vo-lines.json`. Budget about 2.6 words a second of finished video
-   (10 s = 23-26 words). Facts: `references/script-writing.md`.
-3. **Voice:** `node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice`.
-   Read `alignment.matched_fraction` per line (a digit heard as a word, "1" for "One", is fine). Too
-   long? Raise `speed` per line (Kokoro 1.0-1.25 reads well) or cut words, then re-voice.
+   sentence or two in `data/vo-lines.json`. Budget about 3 words a second of finished video at the
+   default voice settings (10 s = 26-29 words). Facts: `references/script-writing.md`.
+3. **Voice** (TTS defaults, user rule 2026-10-08: speed **1.3x** and **skip silences on**):
+   `node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice --speed 1.3 --skip-silences`.
+   Leave `speed` out of `vo-lines.json`: a per-line `speed` overrides `--speed`, so set one only when
+   the user asks for a different pace. Skip silences cuts pauses inside a line (200 ms or longer,
+   under -40 dBFS) to about 0.2 s; pacing between lines comes from `place-voice` gaps. Word times are
+   transcribed from the final file, so anchors stay correct. Read `alignment.matched_fraction` per
+   line (a digit heard as a word, "1" for "One", is fine). Too long? Cut words, then re-voice.
    Level for style SFX: `node tools/rcg.mjs level --dir jobs/<id>/assets/voice --lufs -14 --ceiling -3.6`.
 4. **Music bed** (optional): `rcg level <bed> jobs/<id>/assets/bed-limited.wav --lufs -18 --ceiling -2.5`.
    A bed shorter than the video: loop it first with an ffmpeg `acrossfade` of itself.
@@ -82,8 +87,9 @@ If the request does not say which, it is topic mode when there is no script text
 
 Anchors: `@vo1:word` (start of the first match in line vo1), `#2` (second match), `$` (its end),
 `@vo1.4` (fifth word), `+0.1` / `-0.12` offsets. `start` and `end` are composition seconds;
-`times` and the cue params (`markAt`, `clickAt`, `typeAt`, `countAt`, `arrowAt`, `plateAt`) become
-seconds from the item's start. `"end": "scene"` ends an item where the next `ground` starts. Plain
+`times` and the cue params (`at`, `markAt`, `clickAt`, `typeAt`, `countAt`, `arrowAt`, `plateAt`) become
+seconds from the item's start. `"end": "scene"` ends an item once the next `ground` has entered
+(start plus its wipe, arc, iris or fade); `"end": "#g4"` hands over to a named ground. Plain
 numbers pass through. `x`, `y` are the item's centre (x defaults to 482, the safe-box centre). Text:
 `|` breaks a line, `*word*` is the orange accent. Every param: `node tools/rcg.mjs style show info-graphics`.
 

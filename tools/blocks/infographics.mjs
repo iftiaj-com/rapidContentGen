@@ -21,8 +21,10 @@
 // "prompt" in line vo1 starts, "@vo1:prompt#2" the second one, "@vo1:prompt$" where it ends,
 // "@vo1.4" the fifth word (0-based), "@vo1:prompt+0.1" with an offset. Starts and ends are
 // composition seconds; times and cue params become seconds from the item's start. "end"
-// replaces duration; "end": "scene" ends the item where the next ground starts (or at the
-// plan's "duration"). Plain numbers pass through unchanged.
+// replaces duration; "end": "scene" ends the item where the next ground has finished
+// entering (its start plus the wipe, arc, iris or fade time; a cut adds nothing), or at the
+// plan's "duration"; "end": "#g4" does the same for the item with id g4 (for a scene that
+// hands over to a later ground, past a cutaway). Plain numbers pass through unchanged.
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -31,7 +33,7 @@ import { isMain, parseArgs } from '../lib/cli.mjs';
 import { readJson } from '../lib/config.mjs';
 
 const f3 = (n) => +Number(n).toFixed(3);
-const CUES = ['markAt', 'clickAt', 'typeAt', 'countAt', 'arrowAt', 'plateAt'];
+const CUES = ['at', 'markAt', 'clickAt', 'typeAt', 'countAt', 'arrowAt', 'plateAt'];
 const norm = (w) => String(w).toLowerCase().replace(/[^\p{L}\p{N}.]+/gu, '').replace(/\.+$/, '');
 const stripComments = (h) => h.replace(/<!--[\s\S]*?-->/g, (m) => ' '.repeat(m.length));
 
@@ -154,6 +156,12 @@ export function makeAnchor({ meta, starts }) {
 
 const isAnchor = (v) => typeof v === 'string' && v.trim().startsWith('@');
 
+// A ground that wipes, arcs, irises or fades in reveals what is under it, so the scene it
+// replaces must stay until the entrance is done (else the reveal opens onto the black root).
+// Seconds per entrance, as in library/styles/info-graphics/components.mjs (ground).
+const ENTER = { cut: 0, fade: 0.3, 'wipe-up': 0.42, 'wipe-left': 0.42, arc: 0.62, iris: 0.5 };
+const handover = (item) => (item.component === 'ground' ? ENTER[item.enter || 'cut'] ?? 0 : 0);
+
 export function resolvePlan({ job, plan: planPath, out: outPath, meta: metaPath }) {
   const jobDir = resolve(job);
   const plan = readJson(resolve(planPath));
@@ -178,7 +186,11 @@ export function resolvePlan({ job, plan: planPath, out: outPath, meta: metaPath 
     let end;
     if (it.end === 'scene') {
       const next = items.findIndex((x, k) => k > i && x.component === 'ground');
-      end = next >= 0 ? starts[next].t : total;
+      end = next >= 0 ? Math.min(total, starts[next].t + handover(items[next])) : total;
+    } else if (typeof it.end === 'string' && it.end.startsWith('#')) {
+      const next = items.findIndex((x) => x.id === it.end.slice(1));
+      if (next < 0) throw new Error(`${where}: end "${it.end}" names no item`);
+      end = Math.min(total, starts[next].t + handover(items[next]));
     } else if (isAnchor(it.end)) end = anchor(it.end, where).t;
     else if (it.end != null) end = Number(it.end);
     if (end != null) {
@@ -193,6 +205,11 @@ export function resolvePlan({ job, plan: planPath, out: outPath, meta: metaPath 
     }
     for (const k of CUES) if (isAnchor(it[k])) o[k] = f3(anchor(it[k], where).t - s);
     if (Number.isFinite(total) && o.start + o.duration > total + 1e-3) throw new Error(`${where}: ends at ${f3(o.start + o.duration)} s, past the duration ${total} s`);
+    // Ride the reveal of a ground that enters at the same moment, earlier in the plan.
+    if (it.component !== 'ground' && it.reveal == null) {
+      const g = items.slice(0, i).reverse().find((x, k) => x.component === 'ground' && Math.abs(starts[i - 1 - k].t - s) < 1e-6);
+      if (g && g.enter && g.enter !== 'cut') o.reveal = g.enter;
+    }
     rows.push({ id: o.id || '', component: o.component, start: o.start, end: f3(o.start + o.duration), word: starts[i].word, times: o.times || '' });
     return o;
   });

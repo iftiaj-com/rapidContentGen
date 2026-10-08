@@ -1,0 +1,82 @@
+[
+  {
+    "file": "assets/video/kb-vertical.mp4",
+    "source": "pixabay",
+    "id": "180776",
+    "url": "https://cdn.pixabay.com/video/2023/09/15/180776-865216724_large.mp4",
+    "sha256": "df70a1bb86c0b1de8504e9d577b3cf5178d6c221d10a02cde1746e217e9011b8",
+    "author": "Darioguzben",
+    "page": "https://pixabay.com/videos/id-180776/",
+    "note": "2160x4096, 13 s",
+    "licence": "Pixabay Content License (free, no attribution required; no standalone resale)",
+    "recorded": "2026-10-08"
+  },
+  {
+    "file": "assets/img/camera.jpg",
+    "source": "unsplash",
+    "id": "soLEw77Napo",
+    "url": "https://images.unsplash.com/photo-1495121553079-4c61bcce1894?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=alexander-andrews-soLEw77Napo-unsplash.jpg&w=1600",
+    "sha256": "42cbd46842a61636ec85572881e5ed16b52b593fe462af2baa118ca35e65185a",
+    "author": "Alexander Andrews",
+    "page": "https://unsplash.com/photos/soLEw77Napo",
+    "licence": "Unsplash License (free, no attribution required; no resale without significant modification)",
+    "recorded": "2026-10-08"
+  },
+  {
+    "file": "assets/img/mic.jpg",
+    "source": "unsplash",
+    "id": "bG8U3kaZltE",
+    "url": "https://images.unsplash.com/photo-1531651008558-ed1740375b39?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=leo-wieling-bG8U3kaZltE-unsplash.jpg&w=1600",
+    "sha256": "11e4c9aa688ff2aeba0405d5fff99566325b091876f15b8f212bdcaac92f0de7",
+    "author": "Leo Wieling",
+    "page": "https://unsplash.com/photos/bG8U3kaZltE",
+    "licence": "Unsplash License (free, no attribution required; no resale without significant modification)",
+    "recorded": "2026-10-08"
+  },
+  {
+    "file": "assets/img/city.jpg",
+    "source": "unsplash",
+    "id": "AaceTp_LRAM",
+    "url": "https://images.unsplash.com/photo-1577450775949-58ec8d02cad9?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=dominik-hofbauer-AaceTp_LRAM-unsplash.jpg&w=1600",
+    "sha256": "22350987a5d635d0d2e3482866cd6ad9fa288a33c4c416558fd1816a00d23742",
+    "author": "dominik hofbauer",
+    "page": "https://unsplash.com/photos/AaceTp_LRAM",
+    "licence": "Unsplash License (free, no attribution required; no resale without significant modification)",
+    "recorded": "2026-10-08"
+  },
+  {
+    "file": "assets/img/summit.jpg",
+    "source": "unsplash",
+    "id": "eUFfY6cwjSU",
+    "url": "https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=boris-baldinger-eUFfY6cwjSU-unsplash.jpg&w=1600",
+    "sha256": "1bf0638325685ee32edb24b15f719e4f25703e2460873c28a4180baf74dd0986",
+    "author": "Boris Baldinger",
+    "page": "https://unsplash.com/photos/eUFfY6cwjSU",
+    "licence": "Unsplash License (free, no attribution required; no resale without significant modification)",
+    "recorded": "2026-10-08"
+  },
+  {
+    "file": "assets/img/sunflowers.jpg",
+    "source": "met",
+    "id": "436524",
+    "url": "https://images.metmuseum.org/CRDImages/ep/original/DP-41223-001.jpg",
+    "sha256": "ba7160774025633fab2891c33840d8316af28e5c1eba8f79a48115a065391f3c",
+    "author": "Vincent van Gogh",
+    "page": "https://www.metmuseum.org/art/collection/search/436524",
+    "note": "Sunflowers, 1887 (Rogers Fund, 1949)",
+    "licence": "CC0 (The Metropolitan Museum of Art Open Access, public domain)",
+    "recorded": "2026-10-08"
+  },
+  {
+    "file": "assets/tex/wall.jpg",
+    "source": "polyhaven",
+    "id": "beige_wall_001",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/beige_wall_001/beige_wall_001_diff_2k.jpg",
+    "sha256": "222d4d2e7d5c425c97e5a66790852388cec7706714d773f769fba6bfe08cea4e",
+    "author": "Dimitrios Savva, Rico Cilliers",
+    "page": "https://polyhaven.com/a/beige_wall_001",
+    "note": "Beige Wall 001",
+    "licence": "CC0 (Poly Haven; credit Poly Haven as their API asks)",
+    "recorded": "2026-10-08"
+  }
+]

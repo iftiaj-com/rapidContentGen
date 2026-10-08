@@ -18,6 +18,13 @@ import { fileURLToPath } from 'node:url';
 // Phosphor icons copied one at a time by `rcg assets icon add` (MIT, library/icons/phosphor/LICENSE).
 const ICONS = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'icons', 'phosphor');
 
+/** A Phosphor SVG from the library (fill="currentColor"), or a clear error naming the fix. */
+function loadIcon(name, weight, what) {
+  const file = join(ICONS, weight, weight === 'regular' ? `${name}.svg` : `${name}-${weight}.svg`);
+  if (!existsSync(file)) throw new Error(`${what}: icon "${name}" (${weight}) is not in library/icons/phosphor. Find it: rcg assets icon find ${name}; add it: rcg assets icon add ${name} --weight ${weight}`);
+  return readFileSync(file, 'utf8').replace(/<script[\s\S]*?<\/script>/gi, '').trim();
+}
+
 const r1 = (n) => Math.round(n * 10) / 10;
 const r2 = (n) => Math.round(n * 100) / 100;
 
@@ -170,10 +177,11 @@ const OPS = {
 
 export const components = {
   'ground': {
-    summary: 'The ground of a scene: dark (vignette), cream, paper (light grey), orange or white. Enter cut, fade, wipe-up, wipe-left, arc (a curved edge sweeps in from the bottom left) or iris; exit cut, fade or arc. Put it first in the scene.',
+    summary: 'The ground of a scene: dark (vignette), cream, paper (light grey), orange or white. Enter cut, fade, wipe-up, wipe-left, arc (a curved edge sweeps in from the bottom left) or iris; exit cut, fade or arc. opacity < 1 makes it a scrim over footage below; texture (a job image, e.g. a Poly Haven wall) blends in at textureOpacity. Put it first in the scene.',
     fullFrame: true,
     sfx: (p) => (['cut', 'fade'].includes(p.enter) ? [] : [{ role: 'swipe', at: 0.18 }]),
-    params: { tone: 'dark', enter: 'cut', exit: 'cut', vignette: 0.45 },
+    params: { tone: 'dark', enter: 'cut', exit: 'cut', vignette: 0.45, opacity: 1, texture: '', textureOpacity: 0.35, blend: 'multiply' },
+    prepare(p, { jobDir }) { if (p.texture) needSrc(p.texture, jobDir, 'ground'); },
     render(p, ctx) {
       oneOf(p.tone, ['dark', 'cream', 'paper', 'orange', 'white'], 'ground: tone');
       oneOf(p.enter, ['cut', 'fade', 'wipe-up', 'wipe-left', 'arc', 'iris'], 'ground: enter');
@@ -181,10 +189,13 @@ export const components = {
       const bg = `var(--${p.tone})`;
       const vig = p.tone === 'dark' && p.vignette > 0
         ? `radial-gradient(ellipse 75% 60% at 50% 45%, rgba(0,0,0,0) 40%, rgba(0,0,0,${r2(p.vignette)}) 100%), ` : '';
+      oneOf(p.blend, ['multiply', 'overlay', 'soft-light', 'screen', 'normal'], 'ground: blend');
       const css = `
-      ${ctx.sel('g')} { position: absolute; inset: 0; background: ${vig}${bg}; }`;
+      ${ctx.sel('g')} { position: absolute; inset: 0; }
+      ${ctx.sel('fill')} { position: absolute; inset: 0; background: ${vig}${bg}; opacity: ${r2(p.opacity)}; }${p.texture ? `
+      ${ctx.sel('tx')} { position: absolute; inset: 0; background: url("${ctx.esc(p.texture)}") center / cover no-repeat; mix-blend-mode: ${p.blend}; opacity: ${r2(p.textureOpacity)}; }` : ''}`;
       const html = `
-          <div id="${ctx.idf('g')}"></div>`;
+          <div id="${ctx.idf('g')}"><div id="${ctx.idf('fill')}"></div>${p.texture ? `<div id="${ctx.idf('tx')}"></div>` : ''}</div>`;
       const enter = {
         'fade': `tl.fromTo($("g"), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, 0);`,
         'wipe-up': `tl.fromTo($("g"), { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.42, ease: "power3.inOut" }, 0);`,
@@ -625,7 +636,7 @@ export const components = {
         display: flex; align-items: center; background: var(--orange); color: var(--ink);
         ${ctx.family('display')} font-size: ${Math.round(p.size * 0.9)}px; white-space: nowrap;
       }
-      ${ctx.sel('cur')} { position: absolute; left: 0; top: 0; z-index: 3; }
+      ${ctx.sel("cur")} { position: absolute; left: 0; top: 0; }
       ${p.result ? `${ctx.sel('res')} {
         position: absolute; left: ${r1((p.w - p.resultW) / 2)}px; top: 0; width: ${p.resultW}px; height: ${resH}px;
         background: #999 url("${ctx.esc(p.result)}") center / cover no-repeat; border-radius: 22px;
@@ -668,8 +679,13 @@ export const components = {
   'orbit': {
     summary: 'A central idea with satellites: an orange disc, a dark core with the label (oblique), and chips "A|B|C" that pop on at times and orbit slowly (turn degrees over the item). Use for "everything revolves around X" or "one tool, many jobs".',
     sfx: (p) => [{ role: 'pop', at: 0.2 }, ...fillTimes(nums(p.times, 'orbit'), splitList(p.items).length, 0.5, 0.25).map((at) => ({ role: 'tick', at: at + 0.12 }))],
-    params: { label: 'Imagination', items: 'Script|Voice|Motion|Sound', on: 'dark', x: null, y: 860, size: 560, chip: 30, turn: 30, times: '', out: 'fade' },
-    prepare(p) { p.w = p.size + 260; p.h = p.size + 140; },
+    params: { label: 'Imagination', items: 'Script|Voice|Motion|Sound', icons: '', iconWeight: 'bold', on: 'dark', x: null, y: 860, size: 560, chip: 30, turn: 30, times: '', out: 'fade' },
+    prepare(p) {
+      p.w = p.size + 260; p.h = p.size + 140;
+      const names = splitList(p.icons);
+      if (names.length && names.length !== splitList(p.items).length) throw new Error('orbit: give one icon per item ("pencil-simple|microphone|...")');
+      p._icons = names.map((n) => loadIcon(n, p.iconWeight, 'orbit'));
+    },
     render(p, ctx) {
       oneOf(p.out, ['fade', 'blur', 'cut'], 'orbit: out');
       inks(p.on);
@@ -684,7 +700,8 @@ export const components = {
       ${ctx.sel('lab')} { display: block; ${ctx.family('display')} font-style: italic; color: var(--white); text-align: center; line-height: 1.02; }
       ${ctx.sel('ring')} { position: absolute; left: ${r1(cx)}px; top: ${r1(cy)}px; width: 0; height: 0; }
       #${ctx.id}-layer .sat { position: absolute; left: 0; top: 0; width: max-content; }
-      #${ctx.id}-layer .sat b { display: block; white-space: nowrap; ${ctx.family('display')} font-size: ${p.chip}px; line-height: 1; color: var(--ink);
+      #${ctx.id}-layer .sat b svg { width: 1.15em; height: 1.15em; flex: none; color: var(--orange-deep); }
+      #${ctx.id}-layer .sat b { display: flex; width: max-content; align-items: center; gap: 0.35em; white-space: nowrap; ${ctx.family('display')} font-size: ${p.chip}px; line-height: 1; color: var(--ink);
         background: var(--white); padding: 0.4em 0.7em; border-radius: 999px; box-shadow: 0 10px 22px rgba(0,0,0,0.3); }`;
       const html = `
           <div id="${ctx.idf('slot')}">
@@ -693,7 +710,7 @@ export const components = {
             <div id="${ctx.idf('ring')}">${items.map((t, i) => {
               const a = (-90 + i * 360 / items.length) * Math.PI / 180;
               return `
-              <div class="sat" id="${ctx.idf('s' + i)}" style="left:${r1(Math.cos(a) * (R + 14))}px;top:${r1(Math.sin(a) * (R + 14))}px;"><b id="${ctx.idf('c' + i)}">${ctx.esc(t)}</b></div>`;
+              <div class="sat" id="${ctx.idf('s' + i)}" style="left:${r1(Math.cos(a) * (R + 14))}px;top:${r1(Math.sin(a) * (R + 14))}px;"><b id="${ctx.idf('c' + i)}">${p._icons[i] || ''}${ctx.esc(t)}</b></div>`;
             }).join('')}
             </div>
           </div>`;
@@ -754,9 +771,7 @@ export const components = {
     sfx: (p) => soundAt(p, p.at + 0.1),
     params: { name: 'sparkle', weight: 'bold', tone: 'accent', on: 'dark', badge: 'none', label: '', x: null, y: 760, size: 180, at: 0.05, enter: 'pop', sound: 'pop', out: 'fade' },
     prepare(p) {
-      const file = join(ICONS, p.weight, p.weight === 'regular' ? `${p.name}.svg` : `${p.name}-${p.weight}.svg`);
-      if (!existsSync(file)) throw new Error(`icon: "${p.name}" (${p.weight}) is not in library/icons/phosphor. Find it: rcg assets icon find ${p.name}; add it: rcg assets icon add ${p.name} --weight ${p.weight}`);
-      p._svg = readFileSync(file, 'utf8').replace(/<script[\s\S]*?<\/script>/gi, '').trim();
+      p._svg = loadIcon(p.name, p.weight, 'icon');
       const box = p.badge === 'none' ? p.size : Math.round(p.size * 1.55);
       p._box = box;
       p.w = Math.max(box, p.label ? Math.round(p.size * 2.4) : 0);
@@ -799,3 +814,27 @@ export const components = {
     },
   },
 };
+
+// Scene reveal: a part that enters with a ground's wipe, arc, iris or fade rides the same
+// clip on its own layer, so it shows only where the new ground already is (else it floats
+// over the outgoing scene). rcg infographics resolve sets `reveal` for items that start with
+// a revealing ground. Times and shapes match the ground's entrances above.
+const REVEALS = {
+  fade: (m) => `tl.fromTo(${m}, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, 0);`,
+  'wipe-up': (m) => `tl.fromTo(${m}, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.42, ease: "power3.inOut" }, 0); tl.set(${m}, { clipPath: "none" }, 0.42);`,
+  'wipe-left': (m) => `tl.fromTo(${m}, { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.42, ease: "power3.inOut" }, 0); tl.set(${m}, { clipPath: "none" }, 0.42);`,
+  arc: (m) => `tl.fromTo(${m}, { clipPath: "circle(0% at -30% 120%)" }, { clipPath: "circle(190% at -30% 120%)", duration: 0.62, ease: "power2.inOut" }, 0); tl.set(${m}, { clipPath: "none" }, 0.62);`,
+  iris: (m) => `tl.fromTo(${m}, { clipPath: "circle(0% at 50% 45%)" }, { clipPath: "circle(120% at 50% 45%)", duration: 0.5, ease: "power3.inOut" }, 0); tl.set(${m}, { clipPath: "none" }, 0.5);`,
+};
+for (const [name, comp] of Object.entries(components)) {
+  if (name === 'ground') continue;
+  comp.params.reveal = 'none';
+  const render = comp.render;
+  comp.render = (p, ctx) => {
+    oneOf(p.reveal, ['none', ...Object.keys(REVEALS)], `${name}: reveal`);
+    const out = render(p, ctx);
+    if (p.reveal === 'none') return out;
+    return { ...out, js: `${out.js}
+            ${REVEALS[p.reveal]('$("layer")')}` };
+  };
+}

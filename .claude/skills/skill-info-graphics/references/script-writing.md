@@ -4,10 +4,13 @@ The script is the edit: every scene is a sentence. Write it first, read it as a 
 
 ## Length
 
-- About 2.6 words a second of finished video, with gaps between lines included (the reference
-  ran 2.75 with no gaps). 10 s = 23-26 words, 30 s = 70-80, 60 s = 140-160.
-- Kokoro at speed 1.0 runs a little slow for this style; 1.05-1.22 per line reads well. Measure
-  after voicing: `place-voice` prints where speech ends.
+- Voices are made at speed 1.3x with skip silences on (the default, user rule 2026-10-08). At those
+  settings Kokoro `af_heart` spoke 3.6 words a second of speech (measured on the 25-word "Opus 5.5
+  made this" v2 script; 3.26 at 1.05-1.22 without skipping). With a 0.25 s lead, gaps between lines
+  and a closing tail, budget about 3 words a second of finished video: 10 s = 26-29 words,
+  30 s = 85-95, 60 s = 175-190. These are estimates from one script; measure after voicing
+  (`place-voice` prints where speech ends) and cut words if it runs long.
+- The reference ran 2.75 words a second with a human narrator; this style now runs faster.
 
 ## Shape
 
