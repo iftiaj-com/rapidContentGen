@@ -1,0 +1,2012 @@
+{
+  "$comment": "Adits effects run unmodified by tools/fx/fx.mjs (rcg fx). params: Adits UI inputs (DOM ids) with their UI defaults; ranges: [min, max, step] so the harness makes real range inputs that clamp and snap as the Adits UI does; vparams: videoEngine.params; presets: Adits preset tables (core/main.js) applied over the defaults; needs/optional: src2 = a second media (side B); webgpu: needs a WebGPU device; options: harness behaviour (media \"video\" = a real seeked <video>; ready/settle = properties to wait for; bSpeedParam).",
+  "ghost": {
+    "label": "Ghost trails (AdvGhost): delayed copies screened in magenta and cyan; lag and offset follow the music",
+    "kind": "footage",
+    "module": "effects/video/AdvGhost.js",
+    "class": "AdvGhost",
+    "preroll": 2.5,
+    "params": {
+      "advGhostLag": 10,
+      "advGhostAlpha": 0.5
+    },
+    "ranges": {
+      "advGhostLag": [
+        1,
+        60,
+        1
+      ],
+      "advGhostAlpha": [
+        0.1,
+        1,
+        0.1
+      ]
+    }
+  },
+  "motion-trails": {
+    "label": "Motion trails (MotionTrails, ICM): long-exposure smear of the last frames; darken, lighten or smear; can isolate trails",
+    "kind": "footage",
+    "module": "effects/video/MotionTrails.js",
+    "class": "MotionTrails",
+    "preroll": 2,
+    "params": {},
+    "vparams": {
+      "motionTrails": {
+        "blendMode": "darken",
+        "trailLength": 20,
+        "persistence": 0.85,
+        "trailStrength": 0.9,
+        "frameStep": 1,
+        "preSmooth": 1,
+        "colorMode": "normal",
+        "customColor": "#ff00ff",
+        "bgColor": "#000000",
+        "trailsOnly": false,
+        "isolTrailDuration": 50,
+        "isolStrokeBrightness": 70,
+        "isolMotionSensitivity": 100,
+        "isolStrokeWeight": 30,
+        "isolDetailLevel": 60,
+        "isolFlowTurbulence": 20,
+        "audioReactive": true,
+        "targetFreq": "bass",
+        "trailOnBeat": false,
+        "trailHold": false,
+        "liveHold": false,
+        "autoCycle": false,
+        "cycleSpeed": 2,
+        "surgeDepth": 0.6
+      }
+    }
+  },
+  "origami": {
+    "label": "Origami (Origami): the frame folds into paper shapes (crumple, crane, heart, mandala...) over the transform time",
+    "kind": "footage",
+    "module": "effects/video/Origami.js",
+    "class": "Origami",
+    "params": {
+      "origamiShape": "crumple",
+      "origamiFold": 0,
+      "origamiSize": 1,
+      "origamiCrease": 0.5,
+      "origamiColorMode": "normal",
+      "origamiCustomColor": "#ffffff",
+      "origamiAudioReact": true,
+      "origamiBackground": "black",
+      "origamiBgCustomColor": "#000011",
+      "origamiBgReverse": false,
+      "origamiMultiCrease": false,
+      "origamiMultiCreaseCount": 4,
+      "origamiCrumpleDetail": 12,
+      "origamiPaperTex": 0.5,
+      "origamiShade": 0.85,
+      "origamiTumble": true,
+      "origamiTextureMode": "normal",
+      "origamiStripCount": 5,
+      "origamiStripAxis": "vertical",
+      "origamiTransformEnabled": true,
+      "origamiTransform": 5,
+      "origamiTransformMatchAudio": false,
+      "origamiTransformReset": "",
+      "valOrigamiFold": ""
+    },
+    "ranges": {
+      "origamiFold": [
+        0,
+        1,
+        0.01
+      ],
+      "origamiTransform": [
+        0,
+        15,
+        0.5
+      ],
+      "origamiPaperTex": [
+        0,
+        1,
+        0.05
+      ],
+      "origamiMultiCreaseCount": [
+        2,
+        8,
+        1
+      ],
+      "origamiCrumpleDetail": [
+        6,
+        20,
+        1
+      ],
+      "origamiStripCount": [
+        2,
+        10,
+        1
+      ]
+    },
+    "shapes": [
+      "crumple",
+      "sculpt",
+      "paperball",
+      "football",
+      "flower",
+      "mandala",
+      "bird",
+      "bird2",
+      "crane",
+      "cat",
+      "dog",
+      "fox",
+      "heart",
+      "unicorn",
+      "accordion"
+    ]
+  },
+  "heat-haze": {
+    "label": "Heat haze (HeatHaze, WebGPU): rising shimmer with grain and chroma split; desert, stove, jet exhaust, underwater",
+    "kind": "footage",
+    "module": "effects/video/HeatHaze.js",
+    "class": "HeatHaze",
+    "webgpu": true,
+    "params": {
+      "advHeatHazePreset": "desert_mirage",
+      "advHeatHazeAmount": 1,
+      "advHeatHazeSpeed": 1,
+      "advHeatHazeFreq": 1,
+      "advHeatHazeGrain": 0.08,
+      "advHeatHazeMask": "auto",
+      "advHeatHazeAudio": true
+    },
+    "ranges": {
+      "advHeatHazeAmount": [
+        0,
+        3,
+        0.05
+      ],
+      "advHeatHazeSpeed": [
+        0,
+        4,
+        0.05
+      ],
+      "advHeatHazeFreq": [
+        0.2,
+        3,
+        0.05
+      ],
+      "advHeatHazeGrain": [
+        0,
+        0.4,
+        0.01
+      ]
+    },
+    "presets": {
+      "desert_mirage": {
+        "advHeatHazePreset": "desert_mirage"
+      },
+      "stove_top": {
+        "advHeatHazePreset": "stove_top"
+      },
+      "jet_exhaust": {
+        "advHeatHazePreset": "jet_exhaust"
+      },
+      "underwater": {
+        "advHeatHazePreset": "underwater"
+      }
+    }
+  },
+  "blow-pixels": {
+    "label": "Blow pixels (BlowPixels, WebGPU): pixels blow away in the wind; holes show black",
+    "kind": "footage",
+    "module": "effects/video/BlowPixels.js",
+    "class": "BlowPixels",
+    "webgpu": true,
+    "params": {
+      "advBlowIntensity": 0.5,
+      "advBlowStrength": 0.1,
+      "advBlowTurbulence": 10,
+      "advBlowAngle": 90,
+      "advBlowSpeed": 1,
+      "advBlowSize": 0,
+      "advBlowColorMode": "0",
+      "advBlowAudio": true,
+      "speedSyncToggle": false
+    },
+    "ranges": {
+      "advBlowIntensity": [
+        0,
+        1,
+        0.05
+      ],
+      "advBlowStrength": [
+        0,
+        0.5,
+        0.01
+      ],
+      "advBlowTurbulence": [
+        1,
+        20,
+        0.5
+      ],
+      "advBlowAngle": [
+        0,
+        360,
+        1
+      ],
+      "advBlowSpeed": [
+        0,
+        5,
+        0.1
+      ],
+      "advBlowSize": [
+        0,
+        0.1,
+        0.001
+      ]
+    }
+  },
+  "frame-tunnel": {
+    "label": "Frame tunnel (FrameTunnel): frames sampled from the whole clip flown as a tunnel, rain, dominoes, globe, wormhole, flipbook, burn, shred or 3D gallery",
+    "kind": "footage",
+    "module": "effects/video/FrameTunnel.js",
+    "class": "FrameTunnel",
+    "options": {
+      "media": "video",
+      "settle": [
+        "_sampling"
+      ]
+    },
+    "params": {
+      "mlTunnelMode": "tunnel",
+      "mlBackground": "black",
+      "mlColorMode": "normal",
+      "mlTexture": "none",
+      "mlFlipDirection": "up",
+      "mlStartAnim": "none",
+      "mlFinishAnim": "none",
+      "mlGlobeStyle": "orbit",
+      "mlGalleryPreset": "tube",
+      "mlTunnelDepth": 20,
+      "mlFrameDistance": 8,
+      "mlMasterZoom": 0.4,
+      "mlMotionSpeed": 6,
+      "mlWormholeForwardSpeed": 6,
+      "mlTextureAmount": 0.5,
+      "mlVignette": 0,
+      "mlEnterTime": 0.3,
+      "mlExitTime": 0.3,
+      "mlFrameOpacity": 1,
+      "mlTrailIntensity": 0.5,
+      "mlBurnCharWidth": 0.12,
+      "mlBurnEmberWidth": 0.04,
+      "mlStartX": 20,
+      "mlStartY": -35,
+      "mlStartZoom": 0.4,
+      "mlStartRot": 0,
+      "mlStartPerspH": 0,
+      "mlStartPerspV": 0,
+      "mlStartPerspSX": 0,
+      "mlStartPerspSY": 0,
+      "mlFinishX": 0,
+      "mlFinishY": 20,
+      "mlFinishZoom": 1,
+      "mlFinishRot": 0,
+      "mlFinishPerspH": 0,
+      "mlFinishPerspV": 0,
+      "mlFinishPerspSX": 0,
+      "mlFinishPerspSY": 0,
+      "mlCurve": 120,
+      "mlZigZag": 0,
+      "mlJitter": 0,
+      "mlFocusBlur": 2,
+      "mlCurveEnabled": true,
+      "mlBgReverse": false,
+      "mlFlipbook3D": false,
+      "mlFlipMotionBlur": false,
+      "mlFlipVibration": false,
+      "mlTrailEnabled": false,
+      "mlZigZagEnabled": false,
+      "mlJitterEnabled": false,
+      "mlFocusBlurEnabled": false,
+      "speedSyncToggle": false,
+      "anamEnabled": false,
+      "mlBgCustomColor": "#000011",
+      "mlColorCustom": "#ffffff",
+      "mlBurnEmberColor": "#ff6a00",
+      "mlBurnCharColor": "#140a05"
+    },
+    "ranges": {
+      "mlTunnelDepth": [
+        4,
+        120,
+        1
+      ],
+      "mlFrameDistance": [
+        2,
+        20,
+        0.5
+      ],
+      "mlMasterZoom": [
+        0.1,
+        3,
+        0.05
+      ],
+      "mlMotionSpeed": [
+        0,
+        50,
+        0.1
+      ],
+      "mlWormholeForwardSpeed": [
+        0,
+        50,
+        0.1
+      ],
+      "mlTextureAmount": [
+        0,
+        1,
+        0.05
+      ],
+      "mlVignette": [
+        0,
+        3,
+        0.05
+      ],
+      "mlEnterTime": [
+        0.01,
+        1,
+        0.01
+      ],
+      "mlExitTime": [
+        0.01,
+        1,
+        0.01
+      ],
+      "mlFrameOpacity": [
+        0,
+        1,
+        0.01
+      ],
+      "mlTrailIntensity": [
+        0,
+        1,
+        0.01
+      ],
+      "mlBurnCharWidth": [
+        0.02,
+        0.4,
+        0.01
+      ],
+      "mlBurnEmberWidth": [
+        0.005,
+        0.15,
+        0.005
+      ],
+      "mlStartX": [
+        -100,
+        100,
+        1
+      ],
+      "mlStartY": [
+        -100,
+        100,
+        1
+      ],
+      "mlStartZoom": [
+        0.05,
+        2,
+        0.05
+      ],
+      "mlStartRot": [
+        -360,
+        360,
+        5
+      ],
+      "mlStartPerspH": [
+        -90,
+        90,
+        2
+      ],
+      "mlStartPerspV": [
+        -90,
+        90,
+        2
+      ],
+      "mlStartPerspSX": [
+        -80,
+        80,
+        2
+      ],
+      "mlStartPerspSY": [
+        -80,
+        80,
+        2
+      ],
+      "mlFinishX": [
+        -100,
+        100,
+        1
+      ],
+      "mlFinishY": [
+        -100,
+        100,
+        1
+      ],
+      "mlFinishZoom": [
+        0.3,
+        3,
+        0.1
+      ],
+      "mlFinishRot": [
+        -360,
+        360,
+        5
+      ],
+      "mlFinishPerspH": [
+        -90,
+        90,
+        2
+      ],
+      "mlFinishPerspV": [
+        -90,
+        90,
+        2
+      ],
+      "mlFinishPerspSX": [
+        -80,
+        80,
+        2
+      ],
+      "mlFinishPerspSY": [
+        -80,
+        80,
+        2
+      ],
+      "mlCurve": [
+        -300,
+        300,
+        1
+      ],
+      "mlZigZag": [
+        -300,
+        300,
+        1
+      ],
+      "mlJitter": [
+        0,
+        20,
+        0.5
+      ],
+      "mlFocusBlur": [
+        0,
+        30,
+        0.5
+      ]
+    },
+    "presets": {
+      "frame_rain": {
+        "mlTunnelMode": "rain",
+        "mlTunnelDepth": 30,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartRot": 0,
+        "mlStartPerspH": 45,
+        "mlStartPerspV": 0,
+        "mlStartZoom": 0.12,
+        "mlFinishZoom": 0.62,
+        "mlMasterZoom": 0.55,
+        "mlMotionSpeed": 5,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": true,
+        "mlZigZag": 200,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "rain_bubble_blow": {
+        "mlTunnelMode": "rain",
+        "mlTunnelDepth": 20,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartRot": 90,
+        "mlStartPerspH": 45,
+        "mlStartPerspV": 12,
+        "mlStartZoom": 0.2,
+        "mlFinishZoom": 0.75,
+        "mlMasterZoom": 0.55,
+        "mlMotionSpeed": 3,
+        "mlCurveEnabled": true,
+        "mlCurve": 120,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 15,
+        "mlBackground": "space",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 0.9,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "rain_water_bubble": {
+        "mlTunnelMode": "rain",
+        "mlTunnelDepth": 22,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartRot": 180,
+        "mlStartPerspH": 42,
+        "mlStartPerspV": 8,
+        "mlStartZoom": 0.15,
+        "mlFinishZoom": 0.6,
+        "mlMasterZoom": 0.55,
+        "mlMotionSpeed": 2,
+        "mlCurveEnabled": true,
+        "mlCurve": 90,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 10,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 0.85,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "rain_meteor": {
+        "mlTunnelMode": "rain",
+        "mlTunnelDepth": 25,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartRot": -45,
+        "mlStartPerspH": 30,
+        "mlStartPerspV": 0,
+        "mlStartZoom": 0.08,
+        "mlFinishZoom": 0.38,
+        "mlMasterZoom": 0.55,
+        "mlMotionSpeed": 9,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": true,
+        "mlZigZag": 60,
+        "mlBackground": "space",
+        "mlBgReverse": true,
+        "mlFrameOpacity": 0.9,
+        "mlTrailEnabled": true,
+        "mlTrailIntensity": 0.55,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "rain_vortex": {
+        "mlTunnelMode": "rain",
+        "mlTunnelDepth": 18,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartRot": 360,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartZoom": 0.18,
+        "mlFinishZoom": 0.65,
+        "mlMasterZoom": 0.55,
+        "mlMotionSpeed": 4,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": true,
+        "mlZigZag": 80,
+        "mlBackground": "blackhole",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "domino_chain": {
+        "mlTunnelMode": "domino",
+        "mlTunnelDepth": 14,
+        "mlStartX": 0,
+        "mlStartY": 38,
+        "mlStartZoom": 0.5,
+        "mlStartRot": 0,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartPerspSX": 0,
+        "mlStartPerspSY": 0,
+        "mlFinishX": 0,
+        "mlFinishY": -26,
+        "mlFinishZoom": 0.1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlFinishPerspSX": 0,
+        "mlFinishPerspSY": 0,
+        "mlMasterZoom": 0.5,
+        "mlMotionSpeed": 5,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlFocusBlurEnabled": false,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "domino_arch": {
+        "mlTunnelMode": "domino",
+        "mlTunnelDepth": 14,
+        "mlStartX": -28,
+        "mlStartY": 34,
+        "mlStartZoom": 0.46,
+        "mlStartRot": 0,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartPerspSX": 0,
+        "mlStartPerspSY": 0,
+        "mlFinishX": 28,
+        "mlFinishY": -22,
+        "mlFinishZoom": 0.1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlFinishPerspSX": 0,
+        "mlFinishPerspSY": 0,
+        "mlMasterZoom": 0.5,
+        "mlMotionSpeed": 4,
+        "mlCurveEnabled": true,
+        "mlCurve": 220,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlFocusBlurEnabled": false,
+        "mlBackground": "space",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "domino_deep_hall": {
+        "mlTunnelMode": "domino",
+        "mlTunnelDepth": 16,
+        "mlStartX": 0,
+        "mlStartY": 44,
+        "mlStartZoom": 0.62,
+        "mlStartRot": 0,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartPerspSX": 0,
+        "mlStartPerspSY": 0,
+        "mlFinishX": 0,
+        "mlFinishY": -34,
+        "mlFinishZoom": 0.05,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlFinishPerspSX": 0,
+        "mlFinishPerspSY": 0,
+        "mlMasterZoom": 0.5,
+        "mlMotionSpeed": 5,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlFocusBlurEnabled": false,
+        "mlBackground": "light_travel",
+        "mlBgReverse": true,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "domino_wave": {
+        "mlTunnelMode": "domino",
+        "mlTunnelDepth": 16,
+        "mlStartX": -8,
+        "mlStartY": 36,
+        "mlStartZoom": 0.48,
+        "mlStartRot": 0,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartPerspSX": 0,
+        "mlStartPerspSY": 0,
+        "mlFinishX": 8,
+        "mlFinishY": -24,
+        "mlFinishZoom": 0.1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlFinishPerspSX": 0,
+        "mlFinishPerspSY": 0,
+        "mlMasterZoom": 0.5,
+        "mlMotionSpeed": 5,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": true,
+        "mlZigZag": 220,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlFocusBlurEnabled": false,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "arch_curve": {
+        "mlTunnelMode": "tunnel",
+        "mlStartX": 20,
+        "mlStartY": -35,
+        "mlStartZoom": 0.3,
+        "mlStartRot": 0,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlFinishX": -10,
+        "mlFinishY": 20,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlMasterZoom": 0.4,
+        "mlMotionSpeed": 5,
+        "mlCurveEnabled": true,
+        "mlCurve": 150,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0
+      },
+      "straight_dive": {
+        "mlTunnelMode": "tunnel",
+        "mlStartX": 0,
+        "mlStartY": -40,
+        "mlStartZoom": 0.25,
+        "mlStartRot": 0,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 25,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlMasterZoom": 0.4,
+        "mlMotionSpeed": 4,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0
+      },
+      "helix_spin": {
+        "mlTunnelMode": "tunnel",
+        "mlStartX": 0,
+        "mlStartY": -30,
+        "mlStartZoom": 0.3,
+        "mlStartRot": -180,
+        "mlStartPerspH": -30,
+        "mlStartPerspV": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 20,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlMasterZoom": 0.4,
+        "mlMotionSpeed": 6,
+        "mlCurveEnabled": true,
+        "mlCurve": 80,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0
+      },
+      "zigzag_wobble": {
+        "mlTunnelMode": "tunnel",
+        "mlStartX": 0,
+        "mlStartY": -35,
+        "mlStartZoom": 0.3,
+        "mlStartRot": 0,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 20,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlMasterZoom": 0.4,
+        "mlMotionSpeed": 5,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": true,
+        "mlZigZag": 200
+      },
+      "pan_sweep": {
+        "mlTunnelMode": "tunnel",
+        "mlStartX": -40,
+        "mlStartY": 0,
+        "mlStartZoom": 0.3,
+        "mlStartRot": 0,
+        "mlStartPerspH": -30,
+        "mlStartPerspV": 0,
+        "mlFinishX": 40,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 30,
+        "mlFinishPerspV": 0,
+        "mlMasterZoom": 0.4,
+        "mlMotionSpeed": 4,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0
+      },
+      "vortex_dive": {
+        "mlTunnelMode": "tunnel",
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartZoom": 0.1,
+        "mlStartRot": 360,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlMasterZoom": 0.4,
+        "mlMotionSpeed": 3,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0
+      },
+      "cinematic_pull": {
+        "mlTunnelMode": "tunnel",
+        "mlStartX": -10,
+        "mlStartY": -30,
+        "mlStartZoom": 0.3,
+        "mlStartRot": -5,
+        "mlStartPerspH": -15,
+        "mlStartPerspV": 10,
+        "mlFinishX": 5,
+        "mlFinishY": 15,
+        "mlFinishZoom": 1.1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlMasterZoom": 0.4,
+        "mlMotionSpeed": 7,
+        "mlCurveEnabled": true,
+        "mlCurve": 80,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0
+      },
+      "full_frame": {
+        "mlTunnelMode": "tunnel",
+        "mlTunnelDepth": 20,
+        "mlFrameDistance": 8,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartZoom": 1,
+        "mlStartRot": 0,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartPerspSX": 0,
+        "mlStartPerspSY": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1.1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlFinishPerspSX": 0,
+        "mlFinishPerspSY": 0,
+        "mlMasterZoom": 1,
+        "mlMotionSpeed": 5,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlFocusBlurEnabled": false,
+        "mlFocusBlur": 2,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "wormhole": {
+        "mlTunnelMode": "wormhole",
+        "mlTunnelDepth": 64,
+        "mlFrameDistance": 8,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartZoom": 0.14,
+        "mlStartRot": 60,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartPerspSX": 0,
+        "mlStartPerspSY": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlFinishPerspSX": 0,
+        "mlFinishPerspSY": 0,
+        "mlMasterZoom": 0.6,
+        "mlMotionSpeed": 3,
+        "mlWormholeForwardSpeed": 3,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlFocusBlurEnabled": false,
+        "mlFocusBlur": 2,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "wormhole_hyperdive": {
+        "mlTunnelMode": "wormhole",
+        "mlTunnelDepth": 80,
+        "mlFrameDistance": 8,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartZoom": 0.12,
+        "mlStartRot": 90,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartPerspSX": 0,
+        "mlStartPerspSY": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlFinishPerspSX": 0,
+        "mlFinishPerspSY": 0,
+        "mlMasterZoom": 0.7,
+        "mlMotionSpeed": 4.5,
+        "mlWormholeForwardSpeed": 4.5,
+        "mlCurveEnabled": true,
+        "mlCurve": 180,
+        "mlZigZagEnabled": true,
+        "mlZigZag": 80,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlFocusBlurEnabled": false,
+        "mlFocusBlur": 2,
+        "mlBackground": "space",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": true,
+        "mlTrailIntensity": 0.45,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "wormhole_warp": {
+        "mlTunnelMode": "wormhole",
+        "mlTunnelDepth": 80,
+        "mlFrameDistance": 8,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartZoom": 0.04,
+        "mlStartRot": 180,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartPerspSX": 0,
+        "mlStartPerspSY": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlFinishPerspSX": 0,
+        "mlFinishPerspSY": 0,
+        "mlMasterZoom": 1.4,
+        "mlMotionSpeed": 8.5,
+        "mlWormholeForwardSpeed": 8.5,
+        "mlCurveEnabled": true,
+        "mlCurve": 220,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlFocusBlurEnabled": false,
+        "mlFocusBlur": 2,
+        "mlBackground": "light_travel",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": true,
+        "mlTrailIntensity": 0.6,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "wormhole_light_travel": {
+        "mlTunnelMode": "wormhole",
+        "mlTunnelDepth": 80,
+        "mlFrameDistance": 8,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartZoom": 0.04,
+        "mlStartRot": 0,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartPerspSX": 0,
+        "mlStartPerspSY": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlFinishPerspSX": 0,
+        "mlFinishPerspSY": 0,
+        "mlMasterZoom": 1.4,
+        "mlMotionSpeed": 12,
+        "mlWormholeForwardSpeed": 12,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlFocusBlurEnabled": false,
+        "mlFocusBlur": 2,
+        "mlBackground": "light_travel",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": true,
+        "mlTrailIntensity": 0.6,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "flipbook": {
+        "mlTunnelMode": "flipbook",
+        "mlFlipbook3D": false,
+        "mlFlipMotionBlur": false,
+        "mlFlipVibration": false,
+        "mlFlipDirection": "up",
+        "mlTunnelDepth": 24,
+        "mlFrameDistance": 8,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartZoom": 0.4,
+        "mlStartRot": 0,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartPerspSX": 0,
+        "mlStartPerspSY": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlFinishPerspSX": 0,
+        "mlFinishPerspSY": 0,
+        "mlMasterZoom": 0.8,
+        "mlMotionSpeed": 4,
+        "mlCurveEnabled": true,
+        "mlCurve": 130,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlFocusBlurEnabled": false,
+        "mlFocusBlur": 2,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "flipbook_3d": {
+        "mlTunnelMode": "flipbook",
+        "mlFlipbook3D": true,
+        "mlFlipMotionBlur": true,
+        "mlFlipVibration": true,
+        "mlFlipDirection": "left",
+        "mlTunnelDepth": 40,
+        "mlFrameDistance": 8,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartZoom": 0.4,
+        "mlStartRot": 0,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartPerspSX": 0,
+        "mlStartPerspSY": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlFinishPerspSX": 0,
+        "mlFinishPerspSY": 0,
+        "mlMasterZoom": 0.75,
+        "mlMotionSpeed": 3,
+        "mlCurveEnabled": true,
+        "mlCurve": 160,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlFocusBlurEnabled": false,
+        "mlFocusBlur": 2,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "burn_frames": {
+        "mlTunnelMode": "burn",
+        "mlTunnelDepth": 24,
+        "mlStartRot": 0,
+        "mlStartZoom": 0.5,
+        "mlMasterZoom": 0.9,
+        "mlMotionSpeed": 7,
+        "mlCurveEnabled": true,
+        "mlCurve": 90,
+        "mlZigZagEnabled": true,
+        "mlZigZag": 60,
+        "mlJitterEnabled": true,
+        "mlJitter": 8,
+        "mlBurnCharWidth": 0.12,
+        "mlBurnEmberWidth": 0.045,
+        "mlBurnEmberColor": "#ff6a00",
+        "mlBurnCharColor": "#140a05",
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlColorMode": "normal",
+        "mlTexture": "none",
+        "mlTextureAmount": 0.35,
+        "mlVignette": 0.4,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "shred_frames": {
+        "mlTunnelMode": "shred",
+        "mlTunnelDepth": 24,
+        "mlStartRot": 0,
+        "mlStartZoom": 0.5,
+        "mlMasterZoom": 0.9,
+        "mlMotionSpeed": 6,
+        "mlCurveEnabled": true,
+        "mlCurve": 120,
+        "mlZigZagEnabled": true,
+        "mlZigZag": 90,
+        "mlJitterEnabled": false,
+        "mlJitter": 0,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlColorMode": "normal",
+        "mlTexture": "none",
+        "mlTextureAmount": 0.35,
+        "mlVignette": 0,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "gallery_tube": {
+        "mlTunnelMode": "gallery3d",
+        "mlGalleryPreset": "tube",
+        "mlTunnelDepth": 24,
+        "mlMasterZoom": 0.5,
+        "mlMotionSpeed": 4,
+        "mlStartZoom": 0.4,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartRot": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlColorMode": "normal",
+        "mlVignette": 0,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "gallery_sphere": {
+        "mlTunnelMode": "gallery3d",
+        "mlGalleryPreset": "sphere",
+        "mlTunnelDepth": 24,
+        "mlMasterZoom": 0.5,
+        "mlMotionSpeed": 3,
+        "mlStartZoom": 0.4,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartRot": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlColorMode": "normal",
+        "mlVignette": 0,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "gallery_ruben": {
+        "mlTunnelMode": "gallery3d",
+        "mlGalleryPreset": "ruben",
+        "mlTunnelDepth": 18,
+        "mlMasterZoom": 0.5,
+        "mlMotionSpeed": 4,
+        "mlStartZoom": 0.4,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartRot": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlColorMode": "normal",
+        "mlVignette": 0,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "globe_gallery_orbit": {
+        "mlTunnelMode": "globe",
+        "mlGlobeStyle": "orbit",
+        "mlTunnelDepth": 48,
+        "mlMasterZoom": 1,
+        "mlMotionSpeed": 1.8,
+        "mlStartZoom": 0.5,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": -12,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartRot": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlColorMode": "normal",
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      },
+      "globe_lens_pulse": {
+        "mlTunnelMode": "globe",
+        "mlGlobeStyle": "lens",
+        "mlTunnelDepth": 48,
+        "mlFrameDistance": 6,
+        "mlMasterZoom": 0.72,
+        "mlMotionSpeed": 0,
+        "mlStartZoom": 0.4,
+        "mlStartPerspH": 0,
+        "mlStartPerspV": 0,
+        "mlStartX": 0,
+        "mlStartY": 0,
+        "mlStartRot": 0,
+        "mlFinishX": 0,
+        "mlFinishY": 0,
+        "mlFinishZoom": 1,
+        "mlFinishRot": 0,
+        "mlFinishPerspH": 0,
+        "mlFinishPerspV": 0,
+        "mlBackground": "black",
+        "mlBgReverse": false,
+        "mlFrameOpacity": 1,
+        "mlTrailEnabled": false,
+        "mlTrailIntensity": 0.5,
+        "mlColorMode": "normal",
+        "mlVignette": 0.85,
+        "mlCurveEnabled": false,
+        "mlCurve": 0,
+        "mlZigZagEnabled": false,
+        "mlZigZag": 0,
+        "mlStartAnim": "none",
+        "mlFinishAnim": "none"
+      }
+    },
+    "presetResets": {
+      "mlVignette": 0
+    }
+  },
+  "reveal-under": {
+    "label": "Reveal under (RevealUnder, WebGL2): a lattice of cells reveals a second layer (side B, or an echo / freeze / zoom of the clip)",
+    "kind": "footage",
+    "module": "effects/video/RevealUnder.js",
+    "class": "RevealUnder",
+    "optional": [
+      "src2"
+    ],
+    "shim": "side-b.js",
+    "options": {
+      "ready": [
+        "_program"
+      ],
+      "bSpeedParam": "ruBSpeed"
+    },
+    "params": {
+      "ruSource": "upload",
+      "ruEchoDelay": 1.5,
+      "ruBSpeed": 1,
+      "ruBMirrorH": false,
+      "ruBMirrorV": false,
+      "ruInvertLayers": false,
+      "ruLinkAspect": false,
+      "ruBeatSnap": false,
+      "ruInvertReveal": false,
+      "ruOffsetGesture": false,
+      "ruBlendMode": "replace",
+      "ruLayout": "grid",
+      "ruCellShape": "fill",
+      "ruCols": 3,
+      "ruRows": 3,
+      "ruCellSize": 1,
+      "ruGap": 0,
+      "ruLatticeRot": 0,
+      "ruRevealStyle": "random",
+      "ruDrive": "auto",
+      "ruThreshold": 0.35,
+      "ruHold": 0.4,
+      "ruAmount": 0.5,
+      "ruRate": 1,
+      "ruCycle": "build_collapse",
+      "ruAudioBand": "bass",
+      "ruAudioSens": 1,
+      "ruTransition": 0,
+      "ruSweepDir": "lr",
+      "ruFocalX": 0.5,
+      "ruFocalY": 0.5,
+      "ruNoiseScale": 3,
+      "ruNoiseDrift": 0.3,
+      "ruGestureRadius": 0.3,
+      "ruColorMode": "normal",
+      "ruColorTarget": "revealed",
+      "ruCustomColor": "#ff00ff",
+      "ruColorMix": 1,
+      "ruPop": 0,
+      "ruOffset": 0,
+      "ruHueJitter": 0,
+      "ruGridEnabled": true,
+      "ruGridColor": "#ffffff",
+      "ruGridWidth": 1.5,
+      "ruGridOpacity": 0.45,
+      "ruGapFill": "layer1",
+      "ruGapColor": "#000000"
+    },
+    "ranges": {
+      "ruEchoDelay": [
+        0.1,
+        3,
+        0.1
+      ],
+      "ruBSpeed": [
+        0.25,
+        4,
+        0.05
+      ],
+      "ruCols": [
+        1,
+        40,
+        1
+      ],
+      "ruRows": [
+        1,
+        40,
+        1
+      ],
+      "ruCellSize": [
+        0.05,
+        1,
+        0.01
+      ],
+      "ruGap": [
+        0,
+        20,
+        0.5
+      ],
+      "ruLatticeRot": [
+        -45,
+        45,
+        1
+      ],
+      "ruThreshold": [
+        0,
+        1,
+        0.01
+      ],
+      "ruHold": [
+        0.02,
+        3,
+        0.02
+      ],
+      "ruAmount": [
+        0,
+        1,
+        0.01
+      ],
+      "ruRate": [
+        0.05,
+        4,
+        0.05
+      ],
+      "ruAudioSens": [
+        0.2,
+        3,
+        0.1
+      ],
+      "ruTransition": [
+        0,
+        1,
+        0.01
+      ],
+      "ruFocalX": [
+        0,
+        1,
+        0.01
+      ],
+      "ruFocalY": [
+        0,
+        1,
+        0.01
+      ],
+      "ruNoiseScale": [
+        0.5,
+        12,
+        0.1
+      ],
+      "ruNoiseDrift": [
+        0,
+        2,
+        0.01
+      ],
+      "ruGestureRadius": [
+        0.05,
+        1,
+        0.01
+      ],
+      "ruColorMix": [
+        0,
+        1,
+        0.01
+      ],
+      "ruPop": [
+        0,
+        0.4,
+        0.01
+      ],
+      "ruOffset": [
+        0,
+        0.15,
+        0.005
+      ],
+      "ruHueJitter": [
+        0,
+        0.5,
+        0.01
+      ],
+      "ruGridWidth": [
+        0.5,
+        8,
+        0.1
+      ],
+      "ruGridOpacity": [
+        0,
+        1,
+        0.01
+      ]
+    },
+    "presets": {
+      "take_two": {
+        "ruLayout": "grid",
+        "ruCellShape": "fill",
+        "ruCols": 3,
+        "ruRows": 3,
+        "ruCellSize": 1,
+        "ruGap": 0,
+        "ruLatticeRot": 0,
+        "ruRevealStyle": "random",
+        "ruDrive": "auto",
+        "ruRate": 0.35,
+        "ruCycle": "build_collapse",
+        "ruTransition": 0,
+        "ruGridEnabled": true,
+        "ruGridWidth": 1.5,
+        "ruGridOpacity": 0.45,
+        "ruGridColor": "#ffffff",
+        "ruGapFill": "layer1",
+        "ruPop": 0,
+        "ruOffset": 0,
+        "ruHueJitter": 0,
+        "ruColorMode": "normal"
+      },
+      "hex_bloom": {
+        "ruLayout": "hex",
+        "ruCellShape": "circle",
+        "ruCols": 10,
+        "ruRows": 8,
+        "ruCellSize": 0.86,
+        "ruGap": 4,
+        "ruLatticeRot": 0,
+        "ruRevealStyle": "center",
+        "ruDrive": "auto",
+        "ruRate": 0.5,
+        "ruCycle": "pingpong",
+        "ruTransition": 0.35,
+        "ruGridEnabled": false,
+        "ruGapFill": "layer1",
+        "ruPop": 0.12,
+        "ruOffset": 0,
+        "ruHueJitter": 0,
+        "ruColorMode": "normal"
+      },
+      "shatter": {
+        "ruLayout": "brick",
+        "ruCellShape": "fill",
+        "ruCols": 16,
+        "ruRows": 9,
+        "ruCellSize": 1,
+        "ruGap": 2,
+        "ruLatticeRot": 0,
+        "ruRevealStyle": "random",
+        "ruDrive": "audio",
+        "ruAudioBand": "bass",
+        "ruAudioSens": 1.4,
+        "ruTransition": 0,
+        "ruGridEnabled": true,
+        "ruGridWidth": 1,
+        "ruGridOpacity": 0.3,
+        "ruGridColor": "#000000",
+        "ruGapFill": "solid",
+        "ruGapColor": "#000000",
+        "ruPop": 0.15,
+        "ruOffset": 0.08,
+        "ruHueJitter": 0.2,
+        "ruColorMode": "normal"
+      },
+      "curtain": {
+        "ruLayout": "columns",
+        "ruCellShape": "fill",
+        "ruCols": 14,
+        "ruRows": 1,
+        "ruCellSize": 1,
+        "ruGap": 0,
+        "ruLatticeRot": 0,
+        "ruRevealStyle": "sweep",
+        "ruSweepDir": "lr",
+        "ruDrive": "auto",
+        "ruRate": 0.3,
+        "ruCycle": "pingpong",
+        "ruTransition": 0.2,
+        "ruGridEnabled": true,
+        "ruGridWidth": 1,
+        "ruGridOpacity": 0.25,
+        "ruGridColor": "#ffffff",
+        "ruGapFill": "layer1",
+        "ruPop": 0,
+        "ruOffset": 0,
+        "ruHueJitter": 0,
+        "ruColorMode": "normal"
+      },
+      "drift": {
+        "ruLayout": "grid",
+        "ruCellShape": "fill",
+        "ruCols": 20,
+        "ruRows": 12,
+        "ruCellSize": 1,
+        "ruGap": 0,
+        "ruLatticeRot": 0,
+        "ruRevealStyle": "noise",
+        "ruNoiseScale": 4,
+        "ruNoiseDrift": 0.25,
+        "ruDrive": "auto",
+        "ruRate": 0.25,
+        "ruCycle": "pingpong",
+        "ruTransition": 0.4,
+        "ruGridEnabled": false,
+        "ruGapFill": "layer1",
+        "ruPop": 0,
+        "ruOffset": 0,
+        "ruHueJitter": 0,
+        "ruColorMode": "normal"
+      }
+    }
+  },
+  "split-screen": {
+    "label": "Split screen (SplitScreen, WebGL2): linear split or shape mask (circle, star, heart, blob, bird, flower, leaf, smoke) between the clip and side B",
+    "kind": "footage",
+    "module": "effects/video/SplitScreen.js",
+    "class": "SplitScreen",
+    "optional": [
+      "src2"
+    ],
+    "shim": "side-b.js",
+    "options": {
+      "ready": [
+        "_program"
+      ],
+      "bSpeedParam": "splitBSpeed",
+      "masks": true
+    },
+    "params": {
+      "splitMode": "linear",
+      "splitOrientation": "vertical",
+      "splitPosition": 0.5,
+      "splitAngle": 0,
+      "splitFeather": 0.02,
+      "splitShadowIntensity": 0.5,
+      "splitShadowWidth": 0.03,
+      "splitBlendMode": "replace",
+      "splitMaskShape": "rectangle",
+      "splitMaskSize": 0.5,
+      "splitMaskRotation": 0,
+      "splitMaskX": 0.5,
+      "splitMaskY": 0.5,
+      "splitInvertMask": false,
+      "splitStrokeEnabled": false,
+      "splitEdgeChromaEnabled": false,
+      "splitAudioSize": false,
+      "splitAudioShape": false,
+      "splitGestureEnabled": false,
+      "splitBMirrorH": false,
+      "splitBMirrorV": false,
+      "splitStrokeWidth": 0.012,
+      "splitStrokeColor": "#ffffff",
+      "splitEdgeChroma": 0.5,
+      "splitMaskMotion": "none",
+      "splitMaskMotionSpeed": 1,
+      "splitAudioBand": "bass",
+      "splitAudioSens": 1,
+      "splitBSpeed": 1
+    },
+    "ranges": {
+      "splitPosition": [
+        0,
+        1,
+        0.01
+      ],
+      "splitAngle": [
+        -90,
+        90,
+        1
+      ],
+      "splitFeather": [
+        0,
+        0.5,
+        0.005
+      ],
+      "splitShadowIntensity": [
+        0,
+        1,
+        0.05
+      ],
+      "splitShadowWidth": [
+        0.005,
+        0.1,
+        0.005
+      ],
+      "splitMaskSize": [
+        0,
+        1.5,
+        0.05
+      ],
+      "splitMaskRotation": [
+        0,
+        360,
+        1
+      ],
+      "splitMaskX": [
+        0,
+        1,
+        0.01
+      ],
+      "splitMaskY": [
+        0,
+        1,
+        0.01
+      ],
+      "splitStrokeWidth": [
+        0.002,
+        0.05,
+        0.002
+      ],
+      "splitEdgeChroma": [
+        0,
+        1,
+        0.05
+      ],
+      "splitMaskMotionSpeed": [
+        0.1,
+        3,
+        0.1
+      ],
+      "splitAudioSens": [
+        0,
+        2,
+        0.1
+      ],
+      "splitBSpeed": [
+        0.25,
+        4,
+        0.05
+      ]
+    }
+  },
+  "smoke": {
+    "label": "Smoke (SmokeEnv, three.js): drifting smoke or jet plumes and low mist over the footage, optional text in the fog; --alpha renders the smoke alone",
+    "kind": "environment",
+    "module": "core/anam/SmokeEnv.js",
+    "class": "SmokeEnv",
+    "shim": "env-smoke.js",
+    "params": {
+      "anamSmokeSource": "ambient",
+      "anamSmokeCount": 120,
+      "anamSmokeJetX": 0,
+      "anamSmokeJetY": -125,
+      "anamSmokeJetPower": 100,
+      "anamSmokeBloom": 100,
+      "anamSmokeHaze": 20,
+      "anamSmokeIntensity": 55,
+      "anamSmokeSpeed": 100,
+      "anamSmokeSize": 100,
+      "anamSmokeSpread": 100,
+      "anamSmokeSwirl": 100,
+      "anamSmokeWind": 0,
+      "anamSmokeColor": "#faf4f4",
+      "anamSmokeColor2": "#6d7378",
+      "anamSmokeBlend": "normal",
+      "anamSmokeAudio": false,
+      "anamSmokeAudioBand": "bass",
+      "anamSmokeText": "",
+      "anamSmokeTextColor": "#ffffff",
+      "anamSmokeTextOpacity": 15,
+      "anamSmokeTextGlow": 30,
+      "anamSmokeTextDepth": -20
+    },
+    "ranges": {
+      "anamSmokeJetX": [
+        -150,
+        150,
+        1
+      ],
+      "anamSmokeJetY": [
+        -150,
+        150,
+        1
+      ],
+      "anamSmokeJetPower": [
+        20,
+        220,
+        5
+      ],
+      "anamSmokeBloom": [
+        20,
+        200,
+        5
+      ],
+      "anamSmokeHaze": [
+        0,
+        100,
+        1
+      ],
+      "anamSmokeIntensity": [
+        0,
+        100,
+        1
+      ],
+      "anamSmokeSpeed": [
+        0,
+        400,
+        5
+      ],
+      "anamSmokeSize": [
+        30,
+        250,
+        1
+      ],
+      "anamSmokeSpread": [
+        0,
+        200,
+        1
+      ],
+      "anamSmokeSwirl": [
+        0,
+        300,
+        1
+      ],
+      "anamSmokeWind": [
+        -100,
+        100,
+        1
+      ],
+      "anamSmokeTextOpacity": [
+        0,
+        100,
+        1
+      ],
+      "anamSmokeTextGlow": [
+        0,
+        100,
+        1
+      ],
+      "anamSmokeTextDepth": [
+        -100,
+        100,
+        1
+      ]
+    },
+    "presets": {
+      "jet": {
+        "anamSmokeSource": "jet",
+        "anamSmokeSpeed": 20
+      },
+      "ambient": {
+        "anamSmokeSource": "ambient"
+      },
+      "mist": {
+        "anamSmokeSource": "mist"
+      }
+    }
+  },
+  "rain": {
+    "label": "Rain (RainSystem, three.js): streaks that refract the footage, wind, motion blur, colour modes, optional splashes on bright areas",
+    "kind": "environment",
+    "module": "core/anam/RainSystem.js",
+    "class": "RainSystem",
+    "shim": "env-rain.js",
+    "params": {
+      "rainTrigger": "manual",
+      "rainDuration": 4,
+      "rainBand": "all",
+      "rainDensity": 20,
+      "rainFall": 50,
+      "rainWind": 0,
+      "rainSize": 18,
+      "rainTrails": 35,
+      "rainRefraction": 50,
+      "rainHaze": 30,
+      "rainColorMode": "0",
+      "rainCustomColor": "#9ec5ff",
+      "rainCollision": false,
+      "rainCollisionMode": "through",
+      "rainSplashSize": 13,
+      "rainSurfaceLevel": 55,
+      "rcgRainEaseIn": false
+    },
+    "ranges": {
+      "rainDensity": [
+        1,
+        100,
+        1
+      ],
+      "rainFall": [
+        10,
+        100,
+        1
+      ],
+      "rainWind": [
+        -100,
+        100,
+        1
+      ],
+      "rainSize": [
+        5,
+        60,
+        1
+      ],
+      "rainSplashSize": [
+        5,
+        40,
+        1
+      ],
+      "rainSurfaceLevel": [
+        5,
+        95,
+        1
+      ]
+    },
+    "colorModes": {
+      "0": "natural",
+      "1": "white",
+      "2": "cyan",
+      "3": "rainbow",
+      "4": "neon",
+      "5": "thermal",
+      "6": "custom",
+      "7": "rain blue"
+    }
+  },
+  "holo-sheen": {
+    "label": "Holo sheen (HoloSheen, three.js): holographic foil (cyan/magenta band, rainbow, glitter) over the footage on a gently tilting plane",
+    "kind": "environment",
+    "module": "core/anam/HoloSheen.js",
+    "class": "HoloSheen",
+    "shim": "env-holo.js",
+    "params": {
+      "anamHologram": true,
+      "anamHoloIntensity": 70,
+      "rcgHoloMotion": "tilt",
+      "rcgHoloTilt": 9,
+      "rcgHoloScale": 1.12
+    },
+    "ranges": {
+      "anamHoloIntensity": [
+        0,
+        100,
+        1
+      ]
+    }
+  }
+}

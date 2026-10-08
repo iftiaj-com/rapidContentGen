@@ -26,6 +26,7 @@ const COMMANDS = {
   'beatflash': ['tools/blocks/beatflash.mjs', 'Adits beat-flash words (bass/mid/treble or kick/snare/hat) -> HyperFrames sub-composition'],
   'camera': ['tools/blocks/camera.mjs', '46 Adits camera moves on footage (layered cues, whip transitions, kick shake); --list'],
   'three': ['tools/blocks/three.mjs', 'Procedural 3D scene (orb/knot/crystal/rings) with camera-move cues and music reactivity'],
+  'fx': ['tools/fx/fx.mjs', 'Adits footage effects and 3D environments rendered offline into a clip (unmodified code in a headless-Chrome harness); --list'],
   'ramp': ['tools/blocks/ramp.mjs', 'Speed ramp on a footage clip as a rate lane: Adits audio speed sync (min/max) or explicit points; refuses < 1x'],
   'recipe': ['tools/recipes/recipe.mjs', 'Edit recipes: list | show | plan (beat-sheet draft locked to the beat grid) | commands | build'],
   'assemble': ['tools/jobs/assemble.mjs', 'Build index.html from the beat sheet: shots, card frames, black cards, music + duck, voice, SFX, flashes, cameras, ramps'],

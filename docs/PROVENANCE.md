@@ -17,8 +17,29 @@ Source root: `E:/Develop/Antigravity_testing/Adits_Modular`
 | Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
 |---|---|---|---|---|---|---|
 | learn | `Adits/effects/auto/advance/timeline.js` | `docs/job-spec.md` | 78bea0ce | no | 2026-10-07 | segment rules: absolute seconds, no overlaps per track, report-not-throw validation |
+| copy | `Adits/assets/visuals/bird.gif` | `library/adits-fx/assets/visuals/bird.gif` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits |
+| copy | `Adits/assets/visuals/flower.png` | `library/adits-fx/assets/visuals/flower.png` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits |
+| copy | `Adits/assets/visuals/leaf.png` | `library/adits-fx/assets/visuals/leaf.png` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits |
+| copy | `Adits/assets/visuals/smoke.png` | `library/adits-fx/assets/visuals/smoke.png` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits |
+| copy | `Adits/core/anam/HoloSheen.js` | `library/adits-fx/core/anam/HoloSheen.js` | 78bea0ce | no | 2026-10-08 | 3D environment, run in the fx harness |
+| copy | `Adits/core/anam/RainSystem.js` | `library/adits-fx/core/anam/RainSystem.js` | 78bea0ce | no | 2026-10-08 | 3D environment, run in the fx harness |
+| copy | `Adits/core/anam/SmokeEnv.js` | `library/adits-fx/core/anam/SmokeEnv.js` | 78bea0ce | no | 2026-10-08 | 3D environment, run in the fx harness |
+| copy | `Adits/core/anam/anam-utils.js` | `library/adits-fx/core/anam/anam-utils.js` | 78bea0ce | no | 2026-10-08 | 3D environment, run in the fx harness |
+| copy | `Adits/core/lib/three/three.core.min.js` | `library/adits-fx/core/lib/three/three.core.min.js` | 78bea0ce | no | 2026-10-08 | three.js r184 core (MIT) |
+| copy | `Adits/core/lib/three/three.module.min.js` | `library/adits-fx/core/lib/three/three.module.min.js` | 78bea0ce | no | 2026-10-08 | three.js r184 (MIT), the build Adits vendors; mapped as 'three' by the harness import map |
+| copy | `Adits/effects/video/AdvGhost.js` | `library/adits-fx/effects/video/AdvGhost.js` | 78bea0ce | no | 2026-10-08 | run unmodified in the fx harness (tools/fx) |
+| copy | `Adits/effects/video/BlowPixels.js` | `library/adits-fx/effects/video/BlowPixels.js` | 78bea0ce | no | 2026-10-08 | run unmodified in the fx harness (tools/fx) |
+| copy | `Adits/effects/video/FrameTunnel.js` | `library/adits-fx/effects/video/FrameTunnel.js` | 78bea0ce | no | 2026-10-08 | run unmodified in the fx harness (tools/fx) |
+| copy | `Adits/effects/video/HeatHaze.js` | `library/adits-fx/effects/video/HeatHaze.js` | 78bea0ce | no | 2026-10-08 | run unmodified in the fx harness (tools/fx) |
+| copy | `Adits/effects/video/MotionTrails.js` | `library/adits-fx/effects/video/MotionTrails.js` | 78bea0ce | no | 2026-10-08 | run unmodified in the fx harness (tools/fx) |
+| copy | `Adits/effects/video/Origami.js` | `library/adits-fx/effects/video/Origami.js` | 78bea0ce | no | 2026-10-08 | run unmodified in the fx harness (tools/fx) |
+| copy | `Adits/effects/video/RevealUnder.js` | `library/adits-fx/effects/video/RevealUnder.js` | 78bea0ce | no | 2026-10-08 | run unmodified in the fx harness (tools/fx) |
+| copy | `Adits/effects/video/SplitScreen.js` | `library/adits-fx/effects/video/SplitScreen.js` | 78bea0ce | no | 2026-10-08 | run unmodified in the fx harness (tools/fx) |
+| copy | `Adits/shared/BaseEffect.js` | `library/adits-fx/shared/BaseEffect.js` | 78bea0ce | no | 2026-10-08 | effect base class |
+| copy | `Adits/shared/gl-link.js` | `library/adits-fx/shared/gl-link.js` | 78bea0ce | no | 2026-10-08 | deferred WebGL program linking |
 | port | `Adits/shared/smart-captions.js` | `library/caption-styles.json` | 78bea0ce | no | 2026-10-07 | _renderStyled presets (font, color, stroke, pill, glow) + flash decay; kinetic scatter params |
 | learn | `Adits/shared/active-tracking-captions.js` | `library/caption-styles.json` | 78bea0ce | no | 2026-10-07 | style switch near line 1737 (same presets); lyric styles deferred |
+| port | `Adits/core/main.js` | `library/fx/effects.json` | 78bea0ce | no | 2026-10-08 | Frame Tunnel (mlPresets) and Reveal Under preset tables extracted as data; defaults and ranges from Adits/index.html; the render-loop dispatch (clear, reset, renderGPU + drawImage) mirrored in library/fx/harness.js |
 | learn | `Adits/effects/auto/advance/recipes.js` | `library/recipes/sections.json` | 78bea0ce | no | 2026-10-08 | the six Advance recipes (when/note/segments) mapped to rapidContentGen tools; footage effects replaced until P6 |
 | learn | `Adits/effects/auto/auto-presets.js` | `library/recipes/styles.json` | 78bea0ce | no | 2026-10-08 | preset categories and Mix & Match idea; their footage effects wait for P6 |
 | port | `Adits/core/anam/CameraMovements.js` | `library/runtime/camera-moves.js` | 78bea0ce | no | 2026-10-07 | 46 MOVES table and pose math verbatim; performance.now clock replaced by timeline time; DOM slider reads became arguments; compositeBackground redraw became poseToCss; layering, from/rev, bars beat sync added |
