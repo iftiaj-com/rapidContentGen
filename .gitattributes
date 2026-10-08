@@ -1,0 +1,7 @@
+# Keep every file byte-for-byte as committed: no line-ending conversion on
+# commit or checkout, whatever core.autocrlf is set to.
+#
+# Files copied from the source projects are checked against their recorded
+# sha256 (docs/provenance.json, `rcg provenance check`). With conversion on,
+# a fresh clone rewrote LF/CRLF and failed 143 of 205 entries (2026-10-08).
+* -text

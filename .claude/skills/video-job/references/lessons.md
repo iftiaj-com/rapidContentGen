@@ -121,6 +121,9 @@ Each entry cost real time on a past job. Read before building.
      HyperFrames also caches extracted frames without the ffmpeg build in the key, so the first
      re-render reused the bad frames. `rcg hf` now gives each ffmpeg binary its own cache folder
      (HYPERFRAMES_EXTRACT_CACHE_DIR). The old cache (`%TEMP%/hyperframes-extract-cache-u`) is unused.
+16c. **Line endings are frozen.** `.gitattributes` sets `* -text`: git never converts LF/CRLF.
+     With `core.autocrlf=true` a fresh clone failed 143 of 205 provenance hashes. New files keep the
+     endings they are written with (the tools write LF).
 17. Renders take about 2-3 minutes for 17 s at 1080x1920 with 3 workers on this laptop
     (screenshot capture mode). Low free RAM (< 2.5 GB) risks failures; close apps first.
 
