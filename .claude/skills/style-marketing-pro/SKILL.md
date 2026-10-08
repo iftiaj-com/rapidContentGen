@@ -11,7 +11,8 @@ mode, the report and the final send; use this skill from its analysis step on.
 - Planner: `node tools/rcg.mjs marketing-pro prep | plan | commands | build` (`tools/recipes/marketing-pro.mjs`).
 - Pack: `library/styles/marketing-pro/` (`hero`, `tag`, `logo`, `cta`; Playfair Display Italic downloaded, OFL).
 - Captions: `mp-body` / `mp-body-dark` (two-tier, blur in and out). Transition: `flash_bloom`.
-- Learned from the user's reference ad Video-2306 (measured, nothing copied). Regression: `regression/R11/README.md`.
+- Learned from the user's reference ad Video-2306 (measured, nothing copied). Regression: `regression/R11/README.md`
+  (R11b there: the caption text controls and a negative hero).
 - Scope: ONE person in frame. Two people (active-speaker focus) is a later phase (`references/camera-rules.md`).
 
 Read `references/camera-rules.md` before changing any camera number, `references/captions-heroes.md`
@@ -30,7 +31,16 @@ before editing heroes or captions, and `references/source-quality.md` for phone 
 3. **Plan**:
    ```
    node tools/rcg.mjs marketing-pro plan --job jobs/<id> [--bloom 1] [--max-punch 1.45] [--behind false]
+        [--caption-fx shadow[,rgb,hollow] [--caption-shadow-angle 90] [--caption-shadow-dist 6]]
+        [--negative-heroes 1]
    ```
+   Caption text controls (off by default, so the reference look is unchanged; details in
+   `references/captions-heroes.md`, "Caption text controls"):
+   - `--caption-fx` passes `--shadow`, `--rgb` or `--hollow` to the body caption. `negative` is
+     refused there (the body caption sits in front of the chest).
+   - `--negative-heroes N` turns up to N heroes into inverted keyword captions (white, heavy, caps,
+     no background) behind the head. Only heroes already behind the head, on a background far from
+     mid-grey (|luminance - 128| >= 60), and never two in a row. The report marks them `negative`.
    It tracks the face once (`data/track-main.json`), splits speech into beats, writes the face-cue
    camera, picks heroes and their tone, and writes `beat-sheet.md`. READ its report:
    - events and levels (1.0 / 1.3 / 1.6, plus reach-fixed values);
@@ -68,6 +78,10 @@ CTA by itself when the last beat says link / bio / follow / call / book.
   `--behind false` puts them all in front.
 - Contrast: tone comes from the sampled background; `hf check` measures every text node. Do not
   override the tone to white on a light wall.
+- Negative text only behind the head (user rule): never `--negative` on the body caption or on a
+  hero in front. Snapshot every negative hero; over a busy or mid-grey patch it reads weakly.
+- Re-plan with the same `--bloom` the job was built with: a bloom left in index.html by an earlier
+  build breaks hf check (`page_error ... reading 'style'`) when the new plan has none.
 - No copying the reference's people, copy, logos or brand colours.
 
 ## Known gaps

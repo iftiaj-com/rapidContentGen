@@ -1,0 +1,132 @@
+{
+  "video": "jobs/2026-10-08-r11-marketing-pro/renders/final.mp4",
+  "size": [
+    1080,
+    1920
+  ],
+  "fps": 30.0,
+  "duration": 12.2,
+  "events": [
+    {
+      "kind": "zoom",
+      "t": 0.133,
+      "end": 0.2,
+      "ratio": 1.113,
+      "dur": 0.067
+    },
+    {
+      "kind": "cut",
+      "t": 0.267,
+      "ratio": 1.188
+    },
+    {
+      "kind": "zoom",
+      "t": 0.267,
+      "end": 0.333,
+      "ratio": 1.08,
+      "dur": 0.067
+    },
+    {
+      "kind": "zoom",
+      "t": 1.6,
+      "end": 1.8,
+      "ratio": 0.709,
+      "dur": 0.267
+    },
+    {
+      "kind": "zoom",
+      "t": 3.8,
+      "end": 4.0,
+      "ratio": 1.241,
+      "dur": 0.267
+    },
+    {
+      "kind": "cut",
+      "t": 6.267,
+      "ratio": 1.089
+    },
+    {
+      "kind": "cut",
+      "t": 6.333,
+      "ratio": 1.0
+    },
+    {
+      "kind": "cut",
+      "t": 6.467,
+      "ratio": 1.0
+    },
+    {
+      "kind": "cut",
+      "t": 6.533,
+      "ratio": 1.0
+    },
+    {
+      "kind": "cut",
+      "t": 6.6,
+      "ratio": 1.0
+    },
+    {
+      "kind": "zoom",
+      "t": 9.067,
+      "end": 9.133,
+      "ratio": 0.897,
+      "dur": 0.067
+    }
+  ],
+  "segments": [
+    {
+      "start": 0.33,
+      "dur": 1.47,
+      "zoomPctPerS": -13.78,
+      "panX": 205.0,
+      "panY": 12.0,
+      "face": 0.172
+    },
+    {
+      "start": 1.8,
+      "dur": 2.2,
+      "zoomPctPerS": 17.71,
+      "panX": -38.7,
+      "panY": -39.3,
+      "face": 0.177
+    },
+    {
+      "start": 4.0,
+      "dur": 2.27,
+      "zoomPctPerS": 1.14,
+      "panX": 2.9,
+      "panY": -8.8,
+      "face": 0.177
+    },
+    {
+      "start": 6.6,
+      "dur": 2.53,
+      "zoomPctPerS": -5.01,
+      "panX": 56.9,
+      "panY": 23.7,
+      "face": 0.204
+    },
+    {
+      "start": 9.13,
+      "dur": 3.07,
+      "zoomPctPerS": 3.62,
+      "panX": -17.9,
+      "panY": -44.8,
+      "face": 0.177
+    }
+  ],
+  "summary": {
+    "cuts": 6,
+    "zooms": 5,
+    "zoomIn": [
+      1.113,
+      1.08,
+      1.241
+    ],
+    "zoomOut": [
+      0.709,
+      0.897
+    ],
+    "meanZoomDur": 0.147
+  }
+}

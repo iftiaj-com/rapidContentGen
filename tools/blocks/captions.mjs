@@ -14,7 +14,7 @@
 //        [--voice <id>] --style tiktok|karaoke|neon|kinetic|modern|subtitle|glitch|retro|earthquake|vertical_ghost|collage|editorial|editorial-clean
 //        [--mode word|2word|phrase] [--position captions|center|top-band] [--y <px>] [--size <px>]
 //        [--id captions-vo] [--start <sec>] [--track 30] [--seed 1] [--emphasis "word,word"]
-//        [--hollow] [--rgb] [--negative] [--shadow [--shadow-angle 45] [--shadow-dist 4]] [--insert]
+//        [--hollow] [--rgb] [--negative] [--shadow [--shadow-angle 45] [--shadow-dist 4]] [--insert [--behind p1]]
 //
 // --start is where the words' t=0 sits on the main timeline (the voice clip's data-start).
 // --insert adds the host <div> to the job's index.html (before the root's closing tag).
@@ -23,7 +23,10 @@
 //   --hollow    outline only (atcHollowText): no fill, a stroke of 5% of the font size in the text colour
 //   --rgb       RGB Highlight (atcRgbHighlight): the text colour cycles r/g/b = sin(2t + 0|2|4) * 127 + 128,
 //               t in main-timeline seconds (Adits reads media time), keyed every 0.2 s so it seeks
-//   --negative  Negative FX (atcNegative): the captions blend with "difference" over the footage
+//   --negative  Negative FX (atcNegative): the captions blend with "difference" over the footage, in
+//               the readable look of caption-styles.json "negative" (user rule): pure white, a heavy
+//               face, 1.3x the size, no pill, stroke, glow or shadow. Use it behind the subject:
+//   --behind p1 (with --insert) layers the block between the footage and PNP p1 (rcg layer --behind)
 //   --shadow    Text Shadow (atcShadowEnabled): offset cos/sin(angle) * dist, blur 4, rgba(0,0,0,0.8);
 //               it replaces the preset's glow, as in Adits. Angle 0-360 (default 45), dist 0-50 px (4)
 
@@ -32,6 +35,7 @@ import { basename, dirname, join, resolve } from 'node:path';
 import vm from 'node:vm';
 import { isMain, parseArgs } from '../lib/cli.mjs';
 import { readJson, ROOT } from '../lib/config.mjs';
+import { applyLayer } from './layer.mjs';
 
 const STYLES_FILE = join(ROOT, 'library', 'caption-styles.json');
 
@@ -142,6 +146,25 @@ export function textFx({ hollow = false, rgb = false, negative = false, shadow =
     pill = `${dx}px ${dy}px 10px rgba(0,0,0,0.5)`;
   }
   return { hollow: Boolean(hollow), rgb: Boolean(rgb), negative: Boolean(negative), shadow: text, pillShadow: pill };
+}
+
+/**
+ * The look --negative forces on a preset (caption-styles.json "negative"): pure white, a heavy face,
+ * no pill, stroke, glow or shadow. Under a difference blend those turn into a tinted box or a smear.
+ */
+export function negativeLook(style, neg) {
+  const keep = neg.heavyFonts?.[style.font];
+  const s = {
+    ...style,
+    color: neg.color, pill: null, stroke: null, border: null, boxShadow: null, textShadow: null,
+    glow: { color: 'transparent', blur: 0, flashBlur: 0 }, activeWord: null,
+    font: keep != null ? style.font : neg.font,
+    weight: keep ?? neg.weight,
+    fontFace: keep != null ? style.fontFace : undefined,
+  };
+  if (s.emphasis) s.emphasis = { ...s.emphasis, color: neg.color };
+  if (s.tier) s.tier = { ...s.tier, leadColor: neg.color };
+  return s;
 }
 
 /** RGB Highlight colour at main-timeline time t (Adits _getRgbHighlightColor: time = ms * 0.002). */
@@ -256,7 +279,8 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
         -webkit-background-clip: text;
         background-clip: text;
       }` : ''}${fx.shadow && !fx.hollow ? `
-      #${id}-layer .kw, #${id}-layer .tier { text-shadow: ${fx.shadow}; }` : ''}`;
+      #${id}-layer .kw, #${id}-layer .tier { text-shadow: ${fx.shadow}; }` : ''}${fx.negative ? `
+      #${id}-layer .kw, #${id}-layer .tier { text-shadow: none; }` : ''}`;
   const kin = style.kinetic || null;
   const flashScale = style.flashScale ?? flash.scale;
   const em = style.emphasis && emphasis.length ? style.emphasis : null;
@@ -601,16 +625,20 @@ function jobGeometry(jobDir) {
 export function generateCaptions(opts) {
   const jobDir = resolve(opts.job);
   const styles = readJson(STYLES_FILE);
-  const style = styles.styles[opts.style];
-  if (!style) throw new Error(`Unknown style "${opts.style}". Styles: ${Object.keys(styles.styles).join(', ')}`);
+  const preset = styles.styles[opts.style];
+  if (!preset) throw new Error(`Unknown style "${opts.style}". Styles: ${Object.keys(styles.styles).join(', ')}`);
+  // --negative: white, heavy, bigger, no background (caption-styles.json "negative").
+  const neg = opts.negative ? styles.negative : null;
+  const style = neg ? negativeLook(preset, neg) : preset;
   const mode = style.kinetic ? 'word' : (opts.mode || style.defaultMode || 'phrase');
   const words = loadWords(resolve(opts.words), opts.voice);
   if (!words.length) throw new Error('No words to caption.');
   const geo = jobGeometry(jobDir);
   ensureFonts(jobDir, style);
-  const scale = geo.width / 1080;
+  const scale = (geo.width / 1080) * (neg ? neg.sizeScale : 1);
   const defaults = { word: 120, '2word': 104, phrase: 78, ...(style.sizes || {}) };
   const size = Number(opts.size) || Math.round((style.kinetic ? 110 : defaults[mode] || 78) * scale);
+  if (opts.behind && !opts.insert) throw new Error('--behind needs --insert (the host must be in index.html to layer it)');
   const positions = { captions: geo.height * 0.7, center: geo.height * 0.45, 'top-band': geo.height * 0.1667 };
   const centerY = Number(opts.y) || positions[opts.position || 'captions'];
   if (!centerY) throw new Error(`Unknown --position ${opts.position}`);
@@ -626,10 +654,14 @@ export function generateCaptions(opts) {
   const tail = style.kinetic ? (style.kinetic.exit + 0.4) : 0.1;
   const lastEnd = Math.max(...groups.map((g) => g.end), ...words.map((w) => +w.end + (style.kinetic ? Math.max(style.kinetic.minHold, 0) : 0)));
   const duration = +(lastEnd + tail).toFixed(3);
+  const warnings = [];
   const wantShadow = opts.shadow || opts['shadow-angle'] != null || opts['shadow-dist'] != null;
+  if (neg && wantShadow) warnings.push('--shadow is ignored with --negative (a shadow under the blend muddies the letters).');
+  if (neg && opts.hollow) warnings.push('--hollow with --negative inverts only a thin outline and reads weakly; drop --hollow for a readable negative.');
+  if (neg && !opts.behind) warnings.push('Negative reads best behind the subject, so only the background inverts: add --behind <pnp> (after rcg matte and rcg pnp).');
   const fx = textFx({
     hollow: opts.hollow, rgb: opts.rgb, negative: opts.negative,
-    shadow: wantShadow ? { angle: opts['shadow-angle'] ?? 45, dist: opts['shadow-dist'] ?? 4 } : null,
+    shadow: wantShadow && !neg ? { angle: opts['shadow-angle'] ?? 45, dist: opts['shadow-dist'] ?? 4 } : null,
   });
   if (fx.shadow) {
     const ang = Number(opts['shadow-angle'] ?? 45); const dist = Number(opts['shadow-dist'] ?? 4);
@@ -649,7 +681,6 @@ export function generateCaptions(opts) {
   // stacking context (the host gets a z-index), not with the footage under it.
   const blend = fx.negative ? ' style="mix-blend-mode: difference"' : '';
   const host = `<div id="${id}" data-composition-id="${id}" data-composition-src="compositions/${id}.html" data-start="${start}" data-duration="${duration}" data-track-index="${opts.track || 30}" data-width="${geo.width}" data-height="${geo.height}"${blend}></div>`;
-  const warnings = [];
   if (geo.rootDuration && start + duration > geo.rootDuration + 1e-3) {
     warnings.push(`Captions end at ${(start + duration).toFixed(2)} s, past the root duration ${geo.rootDuration} s; extend the root or trim the words.`);
   }
@@ -663,13 +694,15 @@ export function generateCaptions(opts) {
       writeFileSync(join(jobDir, 'index.html'), `${html0.slice(0, idx)}  ${host}\n    ${html0.slice(idx)}`);
     }
   }
-  return { out, host, groups: groups.length, words: words.length, mode, size, centerY, duration, warnings, fx };
+  // --behind <pnp>: between the footage and the cut-out subject (rcg layer --behind).
+  const layered = opts.behind ? applyLayer({ job: jobDir, id, behind: String(opts.behind) }) : null;
+  return { out, host, groups: groups.length, words: words.length, mode, size, centerY, duration, warnings, fx, layered };
 }
 
 if (isMain(import.meta.url)) {
   const a = parseArgs();
   if (!a.job || !a.words || !a.style) {
-    console.error('Usage: captions.mjs --job <dir> --words <file> --style <name> [--voice id] [--mode word|2word|phrase] [--position captions|center|top-band] [--y px] [--size px] [--id x] [--start s] [--track n] [--seed n] [--emphasis "word,word"] [--hollow] [--rgb] [--negative] [--shadow] [--shadow-angle 0-360] [--shadow-dist 0-50] [--insert]');
+    console.error('Usage: captions.mjs --job <dir> --words <file> --style <name> [--voice id] [--mode word|2word|phrase] [--position captions|center|top-band] [--y px] [--size px] [--id x] [--start s] [--track n] [--seed n] [--emphasis "word,word"] [--hollow] [--rgb] [--negative] [--shadow] [--shadow-angle 0-360] [--shadow-dist 0-50] [--insert [--behind <pnp>]]');
     process.exit(2);
   }
   const res = generateCaptions({ ...a, insert: Boolean(a.insert) });
@@ -678,5 +711,6 @@ if (isMain(import.meta.url)) {
   if (on.length) console.log(`Text controls: ${on.join(', ')}${res.fx.shadow ? ` (shadow ${res.fx.shadow})` : ''}`);
   console.log(`${res.words} words in ${res.groups} groups, mode ${res.mode}, ${res.size}px at y=${Math.round(res.centerY)}, duration ${res.duration} s`);
   console.log(a.insert ? 'Host inserted into index.html' : `Host element:\n${res.host}`);
+  if (res.layered) console.log(`Behind ${a.behind}: z-index ${res.layered.z} (PNP at ${res.layered.pnpZ})`);
   for (const w of res.warnings) console.log(`WARNING: ${w}`);
 }

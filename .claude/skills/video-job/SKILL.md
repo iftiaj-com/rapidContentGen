@@ -90,6 +90,10 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
   4. Place each line as `<audio id="vo1" src="assets/voice/vo1.wav" data-start=".." data-duration="<duration_s>">`.
      Give voice clips their real `data-duration` (lint treats open-ended clips as overlapping).
   5. Duck music under speech with its volume lane (about 0.3 under voice, 0.7 in gaps over 1 s).
+- Negative captions (`--negative`, inverted text) always go behind the subject: `rcg matte` and
+  `rcg pnp` first, then `--negative --insert --behind p1`, at a height where the background shows
+  around the subject (beside the head, not across a body that fills the width). The tool forces
+  white, heavy, 1.3x and no pill, stroke, glow or shadow (user rule, R14).
 - Captions from voiceover or transcript words (Adits styles: tiktok, karaoke, neon, kinetic,
   modern, subtitle, glitch, retro, earthquake, vertical_ghost):
   `node tools/rcg.mjs captions --job jobs/<id> --words jobs/<id>/assets/voice/audio_meta.json --voice vo1 --style tiktok --mode word|2word|phrase --start <voice data-start> --id cap-vo1 --insert`

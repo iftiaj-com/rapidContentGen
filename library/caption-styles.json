@@ -146,6 +146,11 @@
       "sizes": { "word": 46, "2word": 44, "phrase": 40 }
     }
   },
+  "negative": {
+    "$comment": "The look --negative forces on any preset (user rule, 2026-10-09: the inverted text must be easy to read). A difference blend inverts by the text colour, so pure white gives the strongest inversion. Pills, strokes, glows and shadows are dropped: under the blend they become a tinted box or a smear. The preset's face is kept when it has a heavy cut (heavyFonts: family -> the weight to use), otherwise the text is set in font/weight. Sizes grow by sizeScale unless --size is given. Place it behind the subject (--behind <pnp>), so only the background inverts.",
+    "color": "#ffffff", "font": "Inter", "weight": 900, "sizeScale": 1.3,
+    "heavyFonts": { "Inter": 900, "Montserrat": 900, "Archivo Black": 400 }
+  },
   "deferred": {
     "motion3d": "Adits _handleMotion3DCanvas: 3D canvas transform per phrase (Phase 3, with camera moves)",
     "flying3d": "Adits _handleFlying3D: words fly in 3D space (Phase 3)",

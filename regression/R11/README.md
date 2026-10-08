@@ -36,3 +36,23 @@ learned from the user's reference ad Video-2306 (measured with `tools/media/came
   already framed close and the 1.3 base adds to it. A framing-aware base (aim for a face height
   rather than a fixed zoom) would match the reference better; the user chose the fixed ladder.
 - Two people in frame: not built (camera-rules.md, later phase).
+
+## R11b: caption text controls and a negative hero (2026-10-09)
+
+`jobs/2026-10-09-r11b-mp-caption-fx`: a copy of the R11 job (renders and snapshots left out),
+re-planned and rebuilt in place:
+
+```
+rcg marketing-pro plan --job $J --bloom 1 --negative-heroes 1 --caption-fx shadow --caption-shadow-angle 90 --caption-shadow-dist 6
+rcg marketing-pro build --job $J
+```
+
+- Heroes: "work" (serif-caps, bg 197) and "engineer" (wide, bg 187) as before; "system" (bg 208,
+  the brightest) became the negative hero: `rcg captions --negative --behind p1`, Inter 900 caps,
+  8.71-11.41 s. It inverts the light wall to near-black (32-48 of 255 measured in the render).
+- Body caption: `mp-body` with `--shadow` at 90°/6 px. On the black shirt the shadow does not show,
+  as expected (use it on pale or busy chests).
+- hf check passed; render 1080x1920, 30 fps, 12.267 s, 11/11 verify, -14.2 LUFS, -2.7 dBTP.
+- Found on the way: re-planning an R11 copy without `--bloom 1` left the old bloom script in
+  index.html, pointing at a wrapper the PNP rebuild removes (`page_error ... reading 'style'`).
+  Re-plan with the same `--bloom`; the stale block itself is not cleaned up by build yet.

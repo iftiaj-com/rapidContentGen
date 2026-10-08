@@ -7,6 +7,7 @@
 //   node tools/recipes/marketing-pro.mjs prep  --job <dir> --src <clip> [--name main] [--trim] [--denoise 12] [--lufs -14]
 //   node tools/recipes/marketing-pro.mjs plan  --job <dir> [--name main] [--seed 1] [--max-punch 1.6]
 //        [--behind true|false] [--bloom 0|1|2] [--caption-y px]
+//        [--caption-fx hollow,rgb,shadow [--caption-shadow-angle 45] [--caption-shadow-dist 4]] [--negative-heroes n]
 //   node tools/recipes/marketing-pro.mjs commands|build --job <dir> [--dry-run]
 //
 // prep (--trim keeps 0.2 s before the first word and 0.5 s after the last): CFR 30 video (lanczos upscale + light denoise/sharpen when smaller than the output),
@@ -585,6 +586,33 @@ export async function plan(opts) {
     h.tone = h.bg > 140 ? 'dark' : 'light';
   }
 
+  // Negative heroes (opt-in, --negative-heroes N): up to N heroes already behind the head become
+  // inverted keyword captions (rcg captions --negative --behind p1). Only where the background is far
+  // from mid-grey (|luminance - 128| >= 60): a difference blend over mid-grey all but vanishes. The
+  // strongest backgrounds first, never two in a row.
+  const nNeg = Math.max(0, Number(opts['negative-heroes'] ?? 0));
+  if (nNeg) {
+    const cands = heroes.map((h, i) => ({ h, i, d: Math.abs(h.bg - 128) })).filter((c) => c.h.behind && c.d >= 60).sort((a, b) => b.d - a.d);
+    for (const c of cands) {
+      if (heroes.filter((h) => h.negative).length >= nNeg) break;
+      if (heroes[c.i - 1]?.negative || heroes[c.i + 1]?.negative) continue;
+      c.h.negative = true;
+    }
+    const got = heroes.filter((h) => h.negative).length;
+    if (got < nNeg) warnings.push(`--negative-heroes ${nNeg}: only ${got} hero(es) sit behind the head on a background far enough from mid-grey (and not next to another negative one).`);
+  }
+
+  // Body caption text controls (rcg captions --hollow / --rgb / --shadow). Negative is refused here:
+  // the body caption sits in front of the chest, and negative text goes behind the subject.
+  const fxList = String(opts['caption-fx'] || '').split(',').map((s) => s.trim()).filter(Boolean);
+  const badFx = fxList.filter((f) => !['hollow', 'rgb', 'shadow'].includes(f));
+  if (badFx.includes('negative')) throw new Error('--caption-fx negative is not allowed: body captions sit in front of the body. Use --negative-heroes N for inverted words behind the head.');
+  if (badFx.length) throw new Error(`--caption-fx takes hollow, rgb, shadow (got ${badFx.join(', ')})`);
+  const capFx = fxList.length ? {
+    hollow: fxList.includes('hollow'), rgb: fxList.includes('rgb'),
+    shadow: fxList.includes('shadow') ? { angle: Number(opts['caption-shadow-angle'] ?? 45), dist: Number(opts['caption-shadow-dist'] ?? 4) } : null,
+  } : null;
+
   // Body caption: chest height below the chin at the tightest framing; tone from the chest area.
   const capY = Number(opts['caption-y']) || Math.round(0.56 * H);
   const lums = [];
@@ -605,12 +633,19 @@ export async function plan(opts) {
     if (e.sentence > 0) blooms.push(e.at);
   }
 
-  // Style plan (one host per hero, so each can be layered on its own).
-  const items = heroes.map((h, i) => ({
+  // Style plan (one host per hero, so each can be layered on its own). Negative heroes are caption
+  // blocks instead (build), with one words file each: the keyword as a single entry, held for the
+  // hero window (the caption group adds a 0.35 s hold). Word times are relative to the hero start.
+  const items = heroes.map((h, i) => (h.negative ? null : {
     component: 'hero', id: `hero${i + 1}`, start: h.start, duration: f3(h.end - h.start),
     text: h.text, lead: h.lead, look: h.look, tone: h.tone, accent: i % 2 ? 'teal' : 'purple',
     x: h.x, y: h.y, w: h.w, h: h.h, ...(h.times ? { times: h.times } : {}),
-  }));
+  })).filter(Boolean);
+  heroes.forEach((h, i) => {
+    if (!h.negative) return;
+    const text = h.text.replace(/\*/g, '').toUpperCase();
+    writeFileSync(join(jobDir, 'data', `words-hero${i + 1}.json`), `${JSON.stringify({ words: [{ text, start: 0, end: f3(Math.max(0.3, h.end - h.start - 0.35)) }] }, null, 2)}\n`);
+  });
   const last = sentences[sentences.length - 1];
   if (heroes[heroes.length - 1]?.cta) {
     const ctaText = last.words.map((w) => w.text).join(' ').replace(/[.!?]+$/, '');
@@ -629,7 +664,7 @@ export async function plan(opts) {
       return {
         start: f3(si === 0 ? 0 : s.start - RULES.lead), end: f3(si + 1 < sentences.length ? sentences[si + 1].start - RULES.lead : D),
         words: s.words.map((w) => w.text).join(' '),
-        onScreen: `Camera: ${evIn.join(', ') || 'drift'}. ${h ? `Hero "${h.text.replace(/\*/g, '')}" (${h.look}, ${h.tone} text, ${h.behind ? 'behind the head' : 'in front'}).` : 'No hero (weak beat).'}`,
+        onScreen: `Camera: ${evIn.join(', ') || 'drift'}. ${h ? `Hero "${h.text.replace(/\*/g, '')}" (${h.negative ? 'negative, inverted' : `${h.look}, ${h.tone} text`}, ${h.behind ? 'behind the head' : 'in front'}).` : 'No hero (weak beat).'}`,
         text: h ? [{ content: h.text.replace(/\*/g, ''), position: 'custom', at: h.start, box: { x: Math.round(h.x - h.w / 2), y: Math.round(h.y - h.h / 2), w: h.w, h: h.h } }] : [],
         sound: 'voice',
       };
@@ -647,7 +682,7 @@ export async function plan(opts) {
   const mp = {
     version: 1, name, seed, rules: { ...RULES, punch: maxPunch }, duration: D,
     clauses: clauses.map((c) => ({ start: c.start, onset: c.onset, snapped: c.snapped, end: c.end, text: c.words.map((w) => w.text).join(' ') })),
-    events, cues: cues.map(cueSpec), heroes, caption: { style: captionStyle, y: capY, luminance: capLum },
+    events, cues: cues.map(cueSpec), heroes, caption: { style: captionStyle, y: capY, luminance: capLum, ...(capFx ? { fx: capFx } : {}) },
     blooms, behind: behind && heroes.some((h) => h.behind), reach, reachFixes: fixes, upscale, warnings,
   };
   writeFileSync(join(jobDir, 'data', 'mp-plan.json'), `${JSON.stringify(mp, null, 2)}\n`);
@@ -674,9 +709,18 @@ export function buildCommands(jobDir) {
     cmds.push(rcg('pnp', '--job', J, '--base', '#v1', '--cutout', `assets/matte/${mp.name}-fg.webm`, '--id', 'p1', '--enter', 'none', '--exit', 'none'));
   }
   cmds.push(rcg('style', 'build', '--job', J, '--spec', `${J}/data/style-plan.json`, '--sfx', '--insert'));
-  cmds.push(rcg('captions', '--job', J, '--words', `${J}/data/words-captions.json`, '--style', mp.caption.style, '--mode', '2word', '--y', mp.caption.y, '--id', 'cap-body', '--insert'));
+  const fx = mp.caption.fx;
+  const fxArgs = fx ? [
+    ...(fx.hollow ? ['--hollow'] : []), ...(fx.rgb ? ['--rgb'] : []),
+    ...(fx.shadow ? ['--shadow', '--shadow-angle', fx.shadow.angle, '--shadow-dist', fx.shadow.dist] : []),
+  ] : [];
+  cmds.push(rcg('captions', '--job', J, '--words', `${J}/data/words-captions.json`, '--style', mp.caption.style, '--mode', '2word', '--y', mp.caption.y, '--id', 'cap-body', ...fxArgs, '--insert'));
+  // Negative heroes: inverted keyword captions behind the cut-out (white, heavy, no background).
+  mp.heroes.forEach((h, i) => {
+    if (h.negative) cmds.push(rcg('captions', '--job', J, '--words', `${J}/data/words-hero${i + 1}.json`, '--style', 'modern', '--mode', 'phrase', '--y', h.y, '--size', 150, '--id', `hero${i + 1}`, '--start', h.start, '--track', 31, '--negative', '--insert', '--behind', 'p1'));
+  });
   if (mp.behind) {
-    mp.heroes.forEach((h, i) => { if (h.behind) cmds.push(rcg('layer', '--job', J, '--id', `hero${i + 1}`, '--behind', 'p1')); });
+    mp.heroes.forEach((h, i) => { if (h.behind && !h.negative) cmds.push(rcg('layer', '--job', J, '--id', `hero${i + 1}`, '--behind', 'p1')); });
     cmds.push(rcg('layer', '--job', J, '--id', 'cap-body', '--z', 40));
     if (mp.heroes[mp.heroes.length - 1]?.cta) cmds.push(rcg('layer', '--job', J, '--id', 'cta1', '--z', 40));
   }
@@ -700,13 +744,14 @@ if (isMain(import.meta.url)) {
       console.log(`Transcript (${words.length} words): ${words.map((w) => w.text).join(' ')}`);
       console.log('Next: correct data/words.json, then rcg marketing-pro plan');
     } else if (cmd === 'plan') {
-      if (!a.job) fail('Usage: marketing-pro.mjs plan --job <dir> [--name main] [--seed 1] [--max-punch 1.6] [--behind true|false] [--bloom n] [--caption-y px]');
+      if (!a.job) fail('Usage: marketing-pro.mjs plan --job <dir> [--name main] [--seed 1] [--max-punch 1.6] [--behind true|false] [--bloom n] [--caption-y px] [--caption-fx hollow,rgb,shadow [--caption-shadow-angle 45] [--caption-shadow-dist 4]] [--negative-heroes n]');
       const { mp, problems } = await plan(a);
       execFileSync(process.execPath, [join(ROOT, 'tools', 'jobs', 'beat-sheet.mjs'), 'md', join(resolve(a.job), 'beat-sheet.json'), join(resolve(a.job), 'beat-sheet.md')], { stdio: 'inherit' });
       console.log(`Camera: ${mp.events.length} events (${mp.events.filter((e) => e.kind === 'punch').length} punches), ${mp.cues.length} cues; clause onsets snapped: ${mp.clauses.filter((c) => c.snapped).length}/${mp.clauses.length}`);
       for (const e of mp.events) console.log(`  ${String(e.at).padStart(6)} s  ${e.kind.padEnd(5)} ${e.z}x${e.mid ? ' (mid-sentence)' : ''}`);
-      console.log(`Heroes: ${mp.heroes.map((h) => `"${h.text.replace(/\*/g, '')}" ${h.look}/${h.tone}${h.behind ? '/behind' : ''} ${h.start}-${h.end}`).join('; ')}`);
-      console.log(`Captions: ${mp.caption.style} at y ${mp.caption.y} (chest luminance ${mp.caption.luminance}); blooms: ${mp.blooms.join(', ') || 'none'}`);
+      console.log(`Heroes: ${mp.heroes.map((h) => `"${h.text.replace(/\*/g, '')}" ${h.negative ? 'negative' : `${h.look}/${h.tone}`}${h.behind ? '/behind' : ''} ${h.start}-${h.end} (bg ${h.bg})`).join('; ')}`);
+      const cfx = mp.caption.fx ? ['hollow', 'rgb'].filter((k) => mp.caption.fx[k]).concat(mp.caption.fx.shadow ? [`shadow ${mp.caption.fx.shadow.angle}deg/${mp.caption.fx.shadow.dist}px`] : []) : [];
+      console.log(`Captions: ${mp.caption.style} at y ${mp.caption.y} (chest luminance ${mp.caption.luminance})${cfx.length ? `, ${cfx.join(', ')}` : ''}; blooms: ${mp.blooms.join(', ') || 'none'}`);
       console.log(`Reach: ${mp.reach.off}/${mp.reach.frames} base/punch speech frames off target (worst ${mp.reach.worst} of H); upscale ${mp.upscale.wide}/${mp.upscale.base}/${mp.upscale.punch}x`);
       for (const x of mp.reachFixes) console.log(`  reach fix at ${x.at} s: zoom ${x.from} -> ${x.to} (off-target ${x.offBefore} -> ${x.offAfter})`);
       for (const w of mp.warnings) console.log(`WARNING: ${w}`);
