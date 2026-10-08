@@ -55,6 +55,8 @@ node tools/rcg.mjs analyze music.wav data/audio.json --fps 24 [--clock pulse]
 node tools/rcg.mjs camera --list
 node tools/rcg.mjs camera --job jobs/<id> --target "#w1" --cue "a/0:handheld" --cue "b/5.5:whip_pan_right" --cue "0:vc.ken_burns:hh=30" [--kick m.wav] [--audio m.wav] [--fill blur|cover|none]
 node tools/rcg.mjs three --job jobs/<id> --scene orb --cue "a/0:orbit_cw" --cue "b/2.39:crash_zoom_in:i=0.5" --audio m.wav --duration 6 --id three-orb --track 3 --insert
+node tools/rcg.mjs flythrough --list
+node tools/rcg.mjs flythrough --job jobs/<id> [--spec jobs/<id>/data/flythrough.json] --insert --fit-root
 node tools/rcg.mjs limit in.mp3 out.wav [--ceiling -2.5]
 node tools/rcg.mjs mix-check jobs/<id>/index.html
 node tools/rcg.mjs hf --cwd jobs/<id> check

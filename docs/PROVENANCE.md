@@ -221,6 +221,24 @@ Source root: `E:/Develop/Antigravity_testing/AditsStudio`
 | port | `server/lib/audio-analysis.mjs` | `tools/audio/analyze.mjs` | 97907a6d | no | 2026-10-07 | analyseTrack ported; decode averages channels (AnalyserNode downmix) instead of ffmpeg -ac 1; added offset |
 | port | `server/lib/ffmpeg.mjs` | `tools/lib/ffmpeg.mjs` | 97907a6d | no | 2026-10-07 | probe + loudnorm/faststart; binaries from config; added loudness, section levels, limiter, contact sheet |
 
+## flowEditor
+
+Source root: `E:/Develop/Antigravity_testing/flowEditor`
+
+| Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
+|---|---|---|---|---|---|---|
+| copy | `src/features/audio/audioClipUtils.js` | `library/flow/audioClipUtils.js` | 29f1f8e4 | no | 2026-10-08 | clip windows, fades and envelope; rcg flythrough turns the envelope into a HyperFrames volume lane |
+| port | `src/features/audio/useSoundtrackAnalysis.js` | `library/flow/beatSnap.js` | 29f1f8e4 | no | 2026-10-08 | snapArrivalsToBeats copied verbatim (lines from the docblock to the end); detectBeats not ported (librosa beat grid instead) |
+| copy | `src/core/constants.js` | `library/flow/constants.js` | 29f1f8e4 | no | 2026-10-08 | RATIOS, BASE_WIDTH 360, GAP, layout() |
+| copy | `src/features/sequence/motionStyles.js` | `library/flow/motionStyles.js` | 29f1f8e4 | no | 2026-10-08 | 6 path styles, 8 entrances, Ken Burns dwell; inlined into flythrough sub-compositions with export keywords stripped |
+| copy | `src/features/templates/templateRegistry.js` | `library/flow/templateRegistry.js` | 29f1f8e4 | no | 2026-10-08 | 9 layouts + stack/spacing arrangements; used by rcg flythrough at build time |
+| port | `src/features/recording/useOfflineRender.js` | `tools/blocks/flythrough.mjs` | 29f1f8e4 | no | 2026-10-08 | computeSegments, the board/cards choreography on proxies, entrance FX, and renderAudioMix's transition clip timing and auto-duck (0.25, -0.15/+0.45 s ramps) as a volume lane |
+| port | `src/features/recording/renderFrame.js` | `tools/blocks/flythrough.mjs` | 29f1f8e4 | no | 2026-10-08 | drawFrame camera/card/FX math ported to DOM transforms; fix: media uses object-fit cover (drawImage stretched it); newspaper layer not ported (P6) |
+| port | `src/features/board/boardModes.js` | `tools/blocks/flythrough.mjs` | 29f1f8e4 | no | 2026-10-08 | TEXTURE_BG_COLORS for board backgrounds |
+| port | `src/features/audio/useTransitionAudio.js` | `tools/blocks/flythrough.mjs` | 29f1f8e4 | no | 2026-10-08 | per-card transition clip with volume (default 0.5) as timed audio elements |
+| port | `src/features/cards/cardTypes.js` | `tools/blocks/flythrough.mjs` | 29f1f8e4 | no | 2026-10-08 | createCard defaults: duration 2, arrivalTime 1, zoom 1, smooth, no entrance |
+| learn | `src/features/sequence/useSequence.js` | `tools/blocks/flythrough.mjs` | 29f1f8e4 | no | 2026-10-08 | live pipeline; the offline renderer (same motionStyles calls) is what was ported |
+
 ## tts
 
 Source root: `E:/Develop/Antigravity_testing/tts_app modular`

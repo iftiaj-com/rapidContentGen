@@ -26,6 +26,7 @@ const COMMANDS = {
   'beatflash': ['tools/blocks/beatflash.mjs', 'Adits beat-flash words (bass/mid/treble or kick/snare/hat) -> HyperFrames sub-composition'],
   'camera': ['tools/blocks/camera.mjs', '46 Adits camera moves on footage (layered cues, whip transitions, kick shake); --list'],
   'three': ['tools/blocks/three.mjs', 'Procedural 3D scene (orb/knot/crystal/rings) with camera-move cues and music reactivity'],
+  'flythrough': ['tools/blocks/flythrough.mjs', 'flowEditor camera flythrough over image/video cards (layouts, path styles, entrances, beat snap, transition sounds); --list'],
   'analyze': ['tools/audio/analyze.mjs', 'Music -> per-frame audio table (bands, onsets, kicks) + seekable shader clock'],
   'mix-check': ['tools/audio/mix-check.mjs', 'Rebuild a composition mix offline and predict HyperFrames gain reduction'],
   'measure-sfx': ['tools/audio/measure-sfx.mjs', 'Re-measure library/sfx onsets, crests, loudness'],

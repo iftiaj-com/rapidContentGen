@@ -61,12 +61,12 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 
 | ☐ | Feature | Source | Decision | Target | Phase |
 |---|---|---|---|---|---|
-| ☐ | 6 path styles, 8 entrances, Ken Burns dwell (pure GSAP, no imports) | `src/features/sequence/motionStyles.js` | Copy | `library/runtime/motion-styles.js` | P4 |
-| ☐ | 9 layouts + 3 arrangements | `src/features/templates/templateRegistry.js` | Copy | `library/runtime/templates.js` | P4 |
-| ☐ | Trim, fades, auto-duck, clip windows | `src/features/audio/audioClipUtils.js` | Copy → HF automation lanes | `library/runtime/audio-clip-utils.js` | P4 |
-| ☐ | Camera flythrough over cards (`board` and `cards` modes) | `useSequence.js` (pattern) | Port as an HF block, with the fix: `object-fit: cover`, not stretch (`renderFrame.js:343`) | `library/blocks/flythrough/` | P4 |
-| ☐ | Snap arrivals to beats | `useSoundtrackAnalysis.js` `snapArrivalsToBeats` line 142 | Copy (pure function). Beats come from `hyperframes beats` / `analyze-beatgrid.py`; `detectBeats` is Learn only. | `library/runtime/beat-snap.js` | P4 |
-| ☐ | Per-card transition sounds | `transitionAudios` | Port (concept) | flythrough block | P4 |
+| ☑ | 6 path styles, 8 entrances, Ken Burns dwell (pure GSAP, no imports) | `src/features/sequence/motionStyles.js` | Copy; inlined into each flythrough composition with the `export` keywords stripped | `library/flow/motionStyles.js` | P4 |
+| ☑ | 9 layouts + 3 arrangements | `src/features/templates/templateRegistry.js` | Copy (plus `core/constants.js`: ratios, base width, even spread) | `library/flow/templateRegistry.js`, `library/flow/constants.js` | P4 |
+| ☑ | Trim, fades, auto-duck, clip windows | `src/features/audio/audioClipUtils.js` | Copy → HF volume lane (envelope × duck × volume); duck depth optional (`"duck": 0.5`) | `library/flow/audioClipUtils.js`, `tools/blocks/flythrough.mjs` | P4 |
+| ☑ | Camera flythrough over cards (`board` and `cards` modes, stack arrangement) | `useOfflineRender.js` + `renderFrame.js` (`useSequence.js` learn) | Port as an HF sub-composition, with the fix: `object-fit: cover`, not stretch (`renderFrame.js:343`); video cards show their first frame until arrival | `tools/blocks/flythrough.mjs` (`rcg flythrough`) | P4 |
+| ☑ | Snap arrivals to beats | `useSoundtrackAnalysis.js` `snapArrivalsToBeats` line 142 | Copy (pure function, verbatim). Beats come from `analyze-beatgrid.py`; `detectBeats` is Learn only. R4 landings within 6 ms of the downbeats | `library/flow/beatSnap.js` | P4 |
+| ☑ | Per-card transition sounds | `transitionAudios`, `renderAudioMix` | Port: library SFX by name, crest on the landing (`"align": "flow"` fires 0.1 s before, as flowEditor) | `tools/blocks/flythrough.mjs` | P4 |
 | ☐ | Newspaper background | `src/features/board/renderNewspaper.js` (+2 imports) | Port | `library/blocks/newspaper-bg/` | P6 |
 | ☐ | `.flow` import | `src/features/project/projectIO.js` | Port (optional) | `tools/import/flow-to-hf.mjs` | P6 |
 | — | Live music-reactive speed, recorders, React UI, IndexedDB, analytics | various | Skip | — | — |
@@ -102,7 +102,7 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | P1 Voice + captions | voice venv, voice CLI, caption blocks, title cards | R1 + R1b | ☑ done 2026-10-08: R1 -14.5 LUFS (mix-check -14.4), 4 caption styles; R1b 4 title presets |
 | P2 Shaders + audio | audio table, shader-layer block, 166 shaders, beat-flash | R2 + smoke | ☑ done 2026-10-08: 166/166 validate + compile; shader snapshots identical across runs; music vs silence 15-18 dB |
 | P3 3D + camera | camera moves, three-scene, camera-move | R3 + R3b | ☑ done 2026-10-08: 46 moves and 20 presets pass unit and fidelity tests (1440 poses match Adits); 3D snapshots identical across runs; R3 -14.6 LUFS, R3b -14.7 LUFS, all 11 verify checks pass |
-| P4 Flythrough | flowEditor modules, flythrough block | R4 | not started |
+| P4 Flythrough | flowEditor modules, flythrough block | R4 + R4b | ☑ done 2026-10-08: R4 8 cards (board, star) snapped to downbeats within 6 ms, -15.8 LUFS, 11/11 verify; R4b cards motion, silent, 8/8; stack arrangement checked by snapshot |
 | P5 Integration | recipes, all-in-one job | R5 | not started |
 | P6 Optional | footage FX pre-pass, WGSL, extras | — | not started |
 

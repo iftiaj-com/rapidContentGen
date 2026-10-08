@@ -99,6 +99,14 @@ Each entry cost real time on a past job. Read before building.
      `duplicate_media_discovery_risk` warning, which its docs call benign; R3b renders both layers.
 13s. **CSS blur fades an element's own edges** over about 3x the radius. The blurred fill needs
      72 px overscan per side at blur(22px); at 28 px (the Adits value) the frame border went dark.
+13t. **Media inside a sub-composition uses local time.** HyperFrames rebases a nested video's
+     `data-start` by its host's start; mark it `data-hf-media-start-basis="local"` to say so
+     (otherwise check warns `nested_media_start_basis_ambiguous`). A timed video is hidden before
+     its start, so flythrough video cards show an extracted first-frame still until they arrive.
+13u. **Ducking costs loudness.** flowEditor's duck (music to 0.25 for each transition sound plus
+     ramps) under four whooshes in 14 s took R4 to -16.1 LUFS. A 0.5 duck gave -15.8.
+13v. **Forward and backward seeks can differ by a pixel level.** R4 at 1.9 s reached by a forward
+     jump vs a backward seek: 75 dB PSNR (invisible float rounding), all other times identical.
 
 ## Environment
 

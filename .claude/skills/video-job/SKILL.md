@@ -101,6 +101,13 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
   cue on its layer, so end it with a cue such as `<cut>:static_shot`. Perspective, spin and whip
   presets reveal edges on 9:16: keep the default `--fill blur` there (`cover` zooms 1.5-2.3x).
   Audio-react presets (`:react=bass_zoom`) need `--audio <limited music>`.
+- Card flythrough (photos or clips flown through on a board, flowEditor style): write
+  `jobs/<id>/data/flythrough.json` (shape: `regression/R4/README.md`), then
+  `node tools/rcg.mjs flythrough --job jobs/<id> --insert --fit-root`. Snap arrivals to the beat grid
+  (`"snap": {"beats": "data/audiomap.json", "grid": "downbeats"}`) and read the landing report (beat
+  error per card). Whoosh sounds land their crest on the arrival. Duck the music at 0.5, not
+  flowEditor's 0.25, when sounds are frequent (R4 hit -16 LUFS at 0.25). `punch` overshoots far on
+  long trips; use it between nearby cards.
 - 3D: `node tools/rcg.mjs three --job jobs/<id> --scene orb|knot|crystal|rings --cue "a/0:orbit_cw" --cue "b/<downbeat>:crash_zoom_in:i=0.5" [--audio <music>] --duration <s> --id three-x --track <n> --insert`,
   then set the host's z-index in the job CSS. Cue on downbeats from the beat grid.
 - Root `data-duration` must equal the plan.
