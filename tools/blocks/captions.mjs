@@ -69,8 +69,9 @@ export function loadWords(file, voiceId) {
 
 // ── Grouping ────────────────────────────────────────────────────────────────
 
-export function groupWords(words, mode = 'word', { maxChars = 22, maxSeconds = 3, gap = 0.5, hold = 0.35 } = {}) {
-  const ws = words.filter((w) => String(w.text).trim()).map((w) => ({ text: String(w.text).trim(), start: +w.start, end: +w.end }));
+export function groupWords(words, mode = 'word', { maxChars = 22, maxSeconds = 3, gap = 0.5, hold = 0.35, breakOn = /[.?!]$/ } = {}) {
+  // brk: true on a word ends a phrase after it (planners pass their clause breaks this way).
+  const ws = words.filter((w) => String(w.text).trim()).map((w) => ({ text: String(w.text).trim(), start: +w.start, end: +w.end, ...(w.brk ? { brk: true } : {}) }));
   const groups = [];
   if (mode === 'word' || mode === '2word') {
     const n = mode === 'word' ? 1 : 2;
@@ -84,7 +85,7 @@ export function groupWords(words, mode = 'word', { maxChars = 22, maxSeconds = 3
       if (cur.length) {
         const last = cur[cur.length - 1];
         const text = cur.map((x) => x.text).join(' ');
-        const natural = /[.?!]$/.test(last.text) || w.start - last.end > gap;
+        const natural = breakOn.test(last.text) || last.brk || w.start - last.end > gap;
         if (natural || text.length + 1 + w.text.length > maxChars || w.end - cur[0].start > maxSeconds) {
           const carry = [];
           if (!natural) {
@@ -173,6 +174,8 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
   const kin = style.kinetic || null;
   const flashScale = style.flashScale ?? flash.scale;
   const em = style.emphasis && emphasis.length ? style.emphasis : null;
+  // Two-tier layout (style-pack presets): a clause's lead words small above, the rest rolling bold below.
+  const tier = style.layout === 'tier' ? (style.tier || {}) : null;
   const emCss = em ? `
       #${id}-layer .em {
         font-family: "${em.font}", serif;
@@ -220,7 +223,11 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
         white-space: nowrap;
         opacity: 0;
         text-shadow: 0 0 ${style.glow?.blur || 0}px ${style.glow?.color || 'transparent'}, 0 3px 10px rgba(0,0,0,0.6);
-      }`;
+      }${tier ? `
+      #${id}-layer .tier { display: flex; flex-direction: column; align-items: center; width: 100%; text-shadow: ${style.textShadow || 'none'}; }
+      #${id}-layer .lead { display: block; white-space: nowrap; font-weight: ${tier.leadWeight || 400}; ${tier.leadColor ? `color: ${tier.leadColor};` : ''} opacity: 0; line-height: 1.05; }
+      #${id}-layer .cw { position: relative; width: 100%; }
+      #${id}-layer .cur { position: absolute; left: 0; right: 0; top: 0; white-space: nowrap; text-align: center; opacity: 0; line-height: 1.08; }` : ''}`;
 
   const script = `
       (function () {
@@ -234,7 +241,8 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
         var ACTIVE = ${JSON.stringify(style.activeWord?.color || null)};
         var FLASH_S = ${flash.seconds};
         var FLASH_SCALE = ${flashScale};
-        var SEED = ${Number(seed) >>> 0};${em ? `
+        var SEED = ${Number(seed) >>> 0};${tier ? `
+        var TIER = ${JSON.stringify(tier)};` : ''}${em ? `
         var EMPH = ${JSON.stringify(emphasis.map((w) => String(w).toLowerCase()))};
         function isEmph(t) { return EMPH.indexOf(String(t).toLowerCase().replace(/[^\\p{L}\\p{N}'-]+/gu, "")) >= 0; }` : ''}
 
@@ -319,7 +327,80 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
                 tl.set(el, { filter: "none" }, s + KIN.popIn);
                 tl.fromTo(el, { filter: "blur(0px)" }, { opacity: 0, scale: exitScale, filter: "blur(" + KIN.exitBlur + "px)", duration: KIN.exit, ease: "power1.in", immediateRender: false }, s + hold);
               });
-            });
+            });${tier ? `
+          } else if (TIER) {
+            // Two-tier: the clause's lead words small and light above (shown for the whole clause),
+            // the rest in bold chunks below, one chunk at a time, each blurring in and out.
+            var CH = MODE === "word" ? 1 : 2;
+            var LEADF = TIER.leadScale || 0.55, BLUR = TIER.blur || 8;
+            var LEADW = String(TIER.leadWeight || 400);
+            function leadWidth(text, fs) {
+              ctx.font = LEADW + " " + fs + "px '" + FONT + "', sans-serif";
+              return ctx.measureText(UPPER ? text.toUpperCase() : text).width;
+            }
+            function blurIn(el, at, dur) {
+              tl.fromTo(el, { opacity: 0, filter: "blur(" + BLUR + "px)", scale: 0.96 }, { opacity: 1, filter: "blur(0px)", scale: 1, duration: dur, ease: "power2.out", immediateRender: false }, at);
+              // No filter while held: an idle blur(0px) layer still clips.
+              tl.set(el, { filter: "none" }, at + dur);
+            }
+            function blurOut(el, at, dur) {
+              tl.fromTo(el, { filter: "blur(0px)" }, { opacity: 0, filter: "blur(" + (BLUR * 0.75) + "px)", duration: dur, ease: "power1.in", immediateRender: false }, at);
+            }
+            GROUPS.forEach(function (g, gi) {
+              var n = g.w.length;
+              var lead = n <= 2 ? 0 : Math.min(3, Math.max(1, Math.round(n / 3)));
+              var chunks = [], cur = [];
+              for (var i = lead; i < n; i++) {
+                cur.push(g.w[i]);
+                if (cur.length >= CH || /[.,!?;:]$/.test(g.w[i][0]) || i === n - 1) { chunks.push(cur); cur = []; }
+              }
+              var words = function (c) { return c.map(function (w) { return w[0]; }).join(" "); };
+              var fs = SIZE;
+              chunks.forEach(function (c) { for (var k = 0; k < 20 && textWidth(words(c), fs) > SAFE.width * 0.92; k++) fs = fs * 0.94; });
+              var lf = fs * LEADF;
+              var leadText = words(g.w.slice(0, lead));
+              for (var k2 = 0; lead && k2 < 20 && leadWidth(leadText, lf) > SAFE.width * 0.92; k2++) lf = lf * 0.94;
+              var grp = document.createElement("div");
+              grp.className = "grp";
+              grp.id = ID + "-g" + gi;
+              var col = document.createElement("div");
+              col.className = "tier";
+              var le = null;
+              if (lead) {
+                le = document.createElement("span");
+                le.className = "lead";
+                le.id = ID + "-g" + gi + "-lead";
+                le.textContent = leadText;
+                le.style.fontSize = lf.toFixed(1) + "px";
+                col.appendChild(le);
+              }
+              var cw = document.createElement("div");
+              cw.className = "cw";
+              cw.style.height = (fs * 1.12).toFixed(1) + "px";
+              var els = chunks.map(function (c, ci) {
+                var el = document.createElement("span");
+                el.className = "cur";
+                el.id = ID + "-g" + gi + "-c" + ci;
+                el.textContent = words(c);
+                el.style.fontSize = fs.toFixed(1) + "px";
+                cw.appendChild(el);
+                return el;
+              });
+              col.appendChild(cw);
+              grp.appendChild(col);
+              layer.appendChild(grp);
+              tl.set(grp, { opacity: 1 }, g.s);
+              tl.set(grp, { opacity: 0 }, g.e);
+              var IN = 0.18, OUT = 0.12;
+              if (le) { blurIn(le, g.s, Math.min(IN, (g.e - g.s) * 0.3)); blurOut(le, Math.max(g.s + IN, g.e - OUT), Math.min(OUT, (g.e - g.s) * 0.2)); }
+              els.forEach(function (el, ci) {
+                var s = Math.max(g.s, chunks[ci][0][1]);
+                var e = ci < els.length - 1 ? Math.max(s + 0.05, chunks[ci + 1][0][1]) : g.e;
+                var inD = Math.min(IN, (e - s) * 0.4), outD = Math.min(OUT, (e - s) * 0.3);
+                blurIn(el, s, inD);
+                blurOut(el, Math.max(s + inD, e - outD), outD);
+              });
+            });` : ''}
           } else {
             GROUPS.forEach(function (g, gi) {
               var grp = document.createElement("div");
@@ -351,6 +432,12 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
               var inDur = Math.min(0.28, (g.e - g.s) * 0.35), outDur = Math.min(0.12, (g.e - g.s) * 0.2);
               tl.fromTo(grp, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: inDur, ease: "power3.out", immediateRender: false }, g.s);
               tl.to(grp, { opacity: 0, y: -8, duration: outDur, ease: "power2.in" }, g.e - outDur);
+              tl.set(grp, { opacity: 0 }, g.e);` : style.enter === 'blur' ? `
+              // Blur in, blur out (style-pack "blur" entrance); no filter while held.
+              var inB = Math.min(0.2, (g.e - g.s) * 0.35), outB = Math.min(0.12, (g.e - g.s) * 0.2);
+              tl.fromTo(grp, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: inB, ease: "power2.out", immediateRender: false }, g.s);
+              tl.set(grp, { filter: "none" }, g.s + inB);
+              tl.fromTo(grp, { filter: "blur(0px)" }, { opacity: 0, filter: "blur(6px)", duration: outB, ease: "power1.in", immediateRender: false }, g.e - outB);
               tl.set(grp, { opacity: 0 }, g.e);` : `
               tl.set(grp, { opacity: 1 }, g.s);
               tl.set(grp, { opacity: 0 }, g.e);`}
@@ -440,7 +527,10 @@ export function generateCaptions(opts) {
   if (!style.kinetic && centerY + size * 1.6 > geo.safe.bottom) {
     throw new Error(`Captions at y=${centerY} with size ${size}px would reach the bottom no-text zone (from y=${geo.safe.bottom}).`);
   }
-  const groups = groupWords(words, mode, { maxChars: Math.round(22 * (geo.width / 1080) * (78 / size) * 1.1) || 22 });
+  // Tier presets group whole clauses (the mode then sets the size of the rolling bold chunks).
+  const groups = style.layout === 'tier'
+    ? groupWords(words, 'phrase', { maxChars: 44, maxSeconds: 3.4, gap: 0.3, breakOn: /[.?!,;:]$/ })
+    : groupWords(words, mode, { maxChars: Math.round(22 * (geo.width / 1080) * (78 / size) * 1.1) || 22 });
   const id = opts.id || `captions-${opts.style}`;
   const html = buildCaptionHtml({
     id, groups, style, styleName: opts.style, mode, width: geo.width, height: geo.height,

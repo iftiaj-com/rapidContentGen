@@ -10,18 +10,25 @@
 //     washes cover the frame, while the zoom punch and glitch bands move the footage layers
 //     (the shot and any PNP cut-out following it) and leave text steady
 //
-// Styles (Adits names): flash_white, flash_black, glitch_punch, zoom_punch, crossfade.
+// Styles (Adits names): flash_white, flash_black, glitch_punch, zoom_punch, crossfade; plus flash_bloom
+// (new, from the user's marketing reference: a soft overexposed white bloom over the shot).
 //   flash:   full-frame white/black, alpha (1 - t)^2
 //   glitch:  alpha (1 - t)^1.5; 3 + floor((1 - t) * 4) bands re-rolled 20 times per punch,
 //            each 4 px + up to 6% of the height, shifted up to +/-6% of the width;
 //            #ff2b6f / #2bd4ff washes ('lighter') at alpha * 0.25, offset -2 / +2 px
 //   zoom:    ease = 1 - (1 - t)^3; scale 1 + 0.18 * (1 - ease); blur 10 * (1 - ease) px
 //   crossfade: linear
+//   bloom:   alpha rises over the first 30% then falls, (u / 0.3) and ((1 - u) / 0.7)^1.5, peak 0.85;
+//            the shot (and its PNP followers) brightens and blurs with it on the inner .rcg-tx
+//            wrapper, never on the camera's own element (rcg camera rewrites its filter each frame)
+//   light_leak (new, from the split-screen reference Video-94146): a warm screen-blended wash from
+//            0.6 D before the cut to 0.4 D after it, peak 0.9, hue drifting yellow -> pink -> orange;
+//            needs no --to (it covers the whole frame)
 //
 // Usage:
-//   node tools/blocks/transition.mjs --job <dir> --at 4.0 --style zoom_punch --to "#w2" [--from "#w1"]
+//   node tools/blocks/transition.mjs --job <dir> --at 4.0 --style zoom_punch|flash_bloom --to "#w2" [--from "#w1"]
 //        [--d 0.25] [--seed 1] [--id tx1]
-//   --to   the incoming shot wrapper (zoom, glitch, crossfade); --from the outgoing one (crossfade)
+//   --to   the incoming shot wrapper (zoom, glitch, crossfade, bloom); --from the outgoing one (crossfade)
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -29,7 +36,7 @@ import vm from 'node:vm';
 import { isMain, parseArgs } from '../lib/cli.mjs';
 import { elementSpan, rootAttrs } from './camera.mjs';
 
-export const STYLES = ['flash_white', 'flash_black', 'glitch_punch', 'zoom_punch', 'crossfade'];
+export const STYLES = ['flash_white', 'flash_black', 'glitch_punch', 'zoom_punch', 'crossfade', 'flash_bloom', 'light_leak'];
 const f3 = (n) => +Number(n).toFixed(3);
 const MAX_BANDS = 7;
 
@@ -85,7 +92,7 @@ export function applyTransition(opts) {
   const id = opts.id || `tx-${String(at).replace('.', '_')}`;
   const toId = opts.to ? String(opts.to).replace(/^#/, '') : null;
   const fromId = opts.from ? String(opts.from).replace(/^#/, '') : null;
-  if (style !== 'flash_white' && style !== 'flash_black' && !toId) throw new Error(`${style} needs --to "#<incoming shot wrapper>"`);
+  if (!['flash_white', 'flash_black', 'light_leak'].includes(style) && !toId) throw new Error(`${style} needs --to "#<incoming shot wrapper>"`);
   if (style === 'crossfade' && !fromId) throw new Error('crossfade needs --from "#<outgoing shot wrapper>"');
   const seedVal = mulberry32(Number(opts.seed ?? 1))() * 1000;
   const W = root.width;
@@ -111,6 +118,32 @@ export function applyTransition(opts) {
     insertTop(`\n      <div id="${id}" class="rcg-txflash" aria-hidden="true" style="position: absolute; inset: 0; z-index: 95; pointer-events: none; opacity: 0; background: ${style === 'flash_white' ? '#ffffff' : '#000000'};"></div>`);
     script = `        var el = document.getElementById(${JSON.stringify(id)});
         function apply(t) { var u = (t - AT) / D; el.style.opacity = u >= 0 && u < 1 ? Math.pow(1 - u, 2).toFixed(4) : "0"; }`;
+  } else if (style === 'flash_bloom') {
+    insertTop(`
+      <div id="${id}" class="rcg-txflash" aria-hidden="true" style="position: absolute; inset: 0; z-index: 95; pointer-events: none; opacity: 0; background: radial-gradient(ellipse 70% 60% at 50% 42%, #ffffff 0%, rgba(255,250,242,0.92) 55%, rgba(255,255,255,0.8) 100%);"></div>`);
+    const layers = [toId, ...followers(html, `#${toId}`).map((p) => `${p}-wrap`)];
+    for (const l of layers) html = ensureInner(html, l);
+    script = `        var el = document.getElementById(${JSON.stringify(id)});
+        var els = ${JSON.stringify(layers.map((l) => `${l}-tx`))}.map(function (i) { return document.getElementById(i); });
+        function bloom(u) { return u < 0 || u >= 1 ? 0 : 0.85 * (u < 0.3 ? u / 0.3 : Math.pow((1 - u) / 0.7, 1.5)); }
+        function apply(t) {
+          var o = bloom((t - AT) / D);
+          el.style.opacity = o.toFixed(4);
+          els.forEach(function (e) { e.style.filter = o > 0.001 ? "brightness(" + (1 + 1.1 * o).toFixed(3) + ") blur(" + (7 * o * (W / 1080)).toFixed(2) + "px)" : ""; });
+        }`;
+  } else if (style === 'light_leak') {
+    // A warm tinted wash (screen blend) that starts 60% of D before the cut and fades out after it,
+    // its hue drifting yellow -> pink -> orange (measured: 2-3 frames of tint over the outgoing shot).
+    insertTop(`
+      <div id="${id}" class="rcg-txflash" aria-hidden="true" style="position: absolute; inset: 0; z-index: 95; pointer-events: none; opacity: 0; mix-blend-mode: screen; background: linear-gradient(160deg, #ffd36b 0%, #ff7aa8 52%, #ff8a3d 100%);"></div>`);
+    script = `        var el = document.getElementById(${JSON.stringify(id)});
+        var T0 = AT - 0.6 * D;
+        function leak(u) { return u < 0 || u >= 1 ? 0 : 0.9 * (u < 0.45 ? u / 0.45 : Math.pow((1 - u) / 0.55, 1.6)); }
+        function apply(t) {
+          var u = (t - T0) / D, o = leak(u);
+          el.style.opacity = o.toFixed(4);
+          el.style.filter = o > 0.001 ? "hue-rotate(" + (-28 + 56 * Math.max(0, Math.min(1, u))).toFixed(1) + "deg)" : "";
+        }`;
   } else if (style === 'zoom_punch') {
     const layers = [toId, ...followers(html, `#${toId}`).map((p) => `${p}-wrap`)];
     for (const l of layers) html = ensureInner(html, l);

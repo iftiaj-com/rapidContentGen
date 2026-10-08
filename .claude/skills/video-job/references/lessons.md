@@ -247,6 +247,22 @@ Each entry cost real time on a past job. Read before building.
      projects by P / (P + z), so layers at different depths drifted apart at rest. Scale every in-plane
      offset by (P + z) / P (the parallax component does).
 
+13bj. **Continuous speech has no silences to cut on.** R11's 12 s clip had no gap of 0.15 s, 15 dB under
+     the median: beats came from punctuation, conjunctions (split once a clause is >= 1.0 s) and a
+     long-clause split at the best word gap, never right after "a / the / this".
+13bk. **Face cues: drift starts when the zoom ends, and the first cue sets k.** face-reframe.js eases each
+     cue from wherever the previous one got to, so a drift cue that starts mid-zoom cuts the zoom
+     short; the runtime's identity is k 0 / y 0.4, so the opening cue must set z, x, y and k.
+13bl. **Simulate the clamp before trusting a framing target.** A face high in a 9:16 source cannot reach
+     y 0.37 at 1.3 when he moves; R11's plan measured 42% of base speech frames off target and the
+     reach fix (zoom +0.05 steps, at most +0.2) brought one segment from 38% to 7%.
+13bm. **hf lint refuses animated letter-spacing** (`gsap_non_transform_motion`: it snaps to pixels and
+     stutters under seek-by-frame capture). Spread text with scaleX (and a short blur) instead.
+13bn. **A denoiser cannot remove room echo.** R11 (+23 dB of gain on a quiet phone clip): the floor
+     between words stayed -26 dBFS at afftdn nr 0, 12 and 24. Report it; offer a re-record or voiceover.
+13bo. **A caption block may run past the root.** Captions hold 0.35 s after the last word plus 0.1 s;
+     trim 0.5 s after the last word (lint `clip_ends_past_root_duration` at 0.35 s).
+
 ## Environment
 
 13. PowerShell pipes add a UTF-8 BOM; parse JSON with `utf-8-sig` or write it from Node.

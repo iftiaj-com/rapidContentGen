@@ -87,6 +87,26 @@
       "flashScale": 0, "defaultMode": "2word",
       "sizes": { "word": 64, "2word": 58, "phrase": 52 }
     },
+    "mp-body": {
+      "$note": "Style pack marketing-pro. From the user's reference ad (Video-2306): a two-tier body caption at chest height, the clause's lead words small and light above, bold rolling 1-2 word chunks below, each blurring in and out. Inter (bundled).",
+      "font": "Inter", "weight": 700, "uppercase": false,
+      "color": "#ffffff", "stroke": null, "pill": null,
+      "textShadow": "0 2px 14px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.45)",
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0, "defaultMode": "2word", "layout": "tier",
+      "tier": { "leadWeight": 400, "leadScale": 0.56, "leadColor": "rgba(255,255,255,0.9)", "blur": 8 },
+      "sizes": { "word": 74, "2word": 70, "phrase": 70 }
+    },
+    "mp-body-dark": {
+      "$note": "mp-body for light backgrounds (a white wall or shirt behind the chest): dark text with a soft light halo. The marketing-pro planner picks it from the sampled background.",
+      "font": "Inter", "weight": 700, "uppercase": false,
+      "color": "#141414", "stroke": null, "pill": null,
+      "textShadow": "0 1px 12px rgba(255,255,255,0.6)",
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0, "defaultMode": "2word", "layout": "tier",
+      "tier": { "leadWeight": 400, "leadScale": 0.56, "leadColor": "#2b2b2b", "blur": 8 },
+      "sizes": { "word": 74, "2word": 70, "phrase": 70 }
+    },
     "editorial-clean": {
       "$note": "quiet-editorial clean mode: unboxed ink on a quiet, high-contrast ground (the warm canvas or a clean wall). Use 'editorial' over busy footage.",
       "font": "Inter", "weight": 700, "uppercase": false,
@@ -95,6 +115,25 @@
       "flashScale": 0, "enter": "rise", "defaultMode": "2word",
       "sizes": { "word": 104, "2word": 96, "phrase": 76 },
       "emphasis": { "font": "EB Garamond", "weight": 400, "letterSpacing": "-0.02em" }
+    },
+    "split-seam": {
+      "$note": "skill-split-screen-edit: the small caption on the seam between the B-roll panel and the presenter panel (reference Video-94146, measured: about 26 px on 720 wide, centred near 64% of the height). 1-3 words, white, soft shadow; the seam is kept dark by the fade and shade, so no box.",
+      "font": "Inter", "weight": 600, "uppercase": false,
+      "color": "#ffffff", "stroke": null, "pill": null,
+      "textShadow": "0 2px 10px rgba(0,0,0,0.7), 0 1px 2px rgba(0,0,0,0.6)",
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0, "defaultMode": "2word",
+      "sizes": { "word": 48, "2word": 44, "phrase": 40 }
+    },
+    "split-pill": {
+      "$note": "skill-split-screen-edit: the seam caption over full-frame B-roll and white cards, on a dark rounded pill (the reference switches to the pill over light backgrounds).",
+      "font": "Inter", "weight": 600, "uppercase": false,
+      "color": "#ffffff", "stroke": null,
+      "pill": { "bg": "rgba(22,22,22,0.86)", "radius": 10 },
+      "textShadow": null,
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0, "defaultMode": "2word",
+      "sizes": { "word": 46, "2word": 42, "phrase": 38 }
     }
   },
   "deferred": {

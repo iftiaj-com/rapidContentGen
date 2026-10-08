@@ -1,0 +1,43 @@
+{
+  "$comment": "Style pack: Marketing Pro. Learned from the user's reference ad Video-2306 (a real-estate agent promo; measured, nothing copied) and the user's brief. Colours sampled from its frames (purple, neon ends, strike red); teal is a close default. Camera rules and planner: tools/recipes/marketing-pro.mjs. Workflow: .claude/skills/style-marketing-pro/SKILL.md.",
+  "label": "Marketing Pro",
+  "use": "Promo talking-head edits from ordinary footage: a camera that always moves (1.3x base, eased zoom-outs to 1.0x, 1.6x punches on sentence starts), two-tier body captions and one hero keyword per sentence behind the head, styled by meaning.",
+  "keywords": ["marketing", "promo", "ad", "talking head", "real estate", "agent", "coach", "personal brand", "reel", "ugc", "testimonial", "sales"],
+  "from": "user reference Video-2306 (measured) + user brief, 2026-10-08",
+  "skill": ".claude/skills/style-marketing-pro/SKILL.md",
+  "components": "components.mjs",
+  "tokens": {
+    "purple": "#7f51b6",
+    "teal": "#3aa6bd",
+    "neon-a": "#ff7bf5",
+    "neon-b": "#9ef9ff",
+    "neon-glow": "#ff3fd8",
+    "strike": "#ed4940",
+    "white": "#ffffff",
+    "ink": "#111111",
+    "pill": "rgba(17,17,17,0.82)",
+    "ring": "#f2c230"
+  },
+  "type": {
+    "serif": { "family": "Playfair Display", "weight": 700, "$note": "bundled; serif caps and the upright parts of italic heroes" },
+    "italic": { "family": "MP Playfair Italic", "weight": 400, "file": "fonts/playfair-display-latin-400-italic.woff2", "$note": "Playfair Display Italic 400 (OFL, downloaded, fonts/README.md)" },
+    "italic-bold": { "family": "MP Playfair Italic Bold", "weight": 700, "file": "fonts/playfair-display-latin-700-italic.woff2", "$note": "Playfair Display Italic 700" },
+    "sans": { "family": "Montserrat", "weight": 900, "$note": "bundled; neon and strike heroes" },
+    "sans-mid": { "family": "Montserrat", "weight": 700, "$note": "bundled; wide-tracked caps" },
+    "ui": { "family": "Inter", "weight": 700, "$note": "bundled; focus-pull hero, tags, CTA" },
+    "ui-light": { "family": "Inter", "weight": 400, "$note": "bundled; lead lines" }
+  },
+  "captions": { "style": "mp-body", "mode": "2word", "$note": "two-tier body caption at chest height (about 0.47 H); one clause per group" },
+  "motion": {
+    "pop": 0.32, "popEase": "back.out(1.6)",
+    "blur": 0.3, "blurEase": "power2.out",
+    "exit": 0.2, "exitEase": "power2.in"
+  },
+  "sfx": {
+    "$note": "Sparse: a soft whoosh on a hero, a pop on tags and logos, a shine on stats.",
+    "hero": { "name": "whoosh-short", "volume": 0.12 },
+    "stat": { "name": "sparkle", "volume": 0.14 },
+    "pop": { "name": "pop", "volume": 0.18 }
+  },
+  "status": "ready"
+}

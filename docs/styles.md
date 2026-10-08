@@ -1,13 +1,14 @@
 # Style packs
 
 A style pack is one reusable visual language: drop a new video, name the style, and the edit is
-built from ready parts instead of hand-written HTML. Three packs exist: two ported from public
-HyperFrames style skills, one learned from a reference video (Vox-style parallax):
+built from ready parts instead of hand-written HTML. Four packs exist: two ported from public HyperFrames style skills, two learned from reference
+videos (Vox-style parallax, a promo talking-head ad):
 
 | Pack | Skill | Look | Regression |
 |---|---|---|---|
 | `tactile-collage` | `.claude/skills/style-tactile-collage` | paper, ink edges, tape, stamps, routes, checklists, marker emphasis | R9a |
 | `quiet-editorial` | `.claude/skills/style-quiet-editorial` | serif headline, Inter labels, warm canvas, cards, cursor selection, one green state | R9b |
+| `marketing-pro` | `.claude/skills/style-marketing-pro` | promo talking-head: a planner (`rcg marketing-pro`) turns speech into a moving camera (1.3 base / 1.0 wide / 1.6 punch, drift), hero keywords behind the head styled by meaning, two-tier captions | R11 |
 | `vox-parallax` | `.claude/skills/style-vox-parallax` | photos cut into depth layers (`rcg layers`) on a virtual multiplane camera; depth blur, haze, grain, 12 fps steps, orange highlighter labels, serif titles, photo cards, archival plates | R10 |
 
 ## How a pack is built

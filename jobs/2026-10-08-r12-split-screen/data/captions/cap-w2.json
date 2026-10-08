@@ -1,0 +1,69 @@
+{
+  "words": [
+    {
+      "text": "so",
+      "start": 0.05,
+      "end": 0.17
+    },
+    {
+      "text": "I",
+      "start": 0.17,
+      "end": 0.25
+    },
+    {
+      "text": "can",
+      "start": 0.25,
+      "end": 0.37
+    },
+    {
+      "text": "do",
+      "start": 0.37,
+      "end": 0.55
+    },
+    {
+      "text": "whatever",
+      "start": 0.55,
+      "end": 0.81
+    },
+    {
+      "text": "I",
+      "start": 0.81,
+      "end": 1.03
+    },
+    {
+      "text": "want",
+      "start": 1.03,
+      "end": 1.23
+    },
+    {
+      "text": "and",
+      "start": 1.23,
+      "end": 1.47
+    },
+    {
+      "text": "I",
+      "start": 1.47,
+      "end": 1.67
+    },
+    {
+      "text": "have",
+      "start": 1.67,
+      "end": 1.97
+    },
+    {
+      "text": "really",
+      "start": 1.97,
+      "end": 2.29
+    },
+    {
+      "text": "this",
+      "start": 2.29,
+      "end": 2.53
+    },
+    {
+      "text": "system",
+      "start": 2.53,
+      "end": 2.73
+    }
+  ]
+}

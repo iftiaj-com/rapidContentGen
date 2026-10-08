@@ -52,7 +52,9 @@ that gate is overridden by the user's mode choice (state this in `JOB.md`).
 (`rcg style list` prints keywords), load its skill and follow its fast path for steps 4-8:
 paper collage, scrapbook, notebook, cut-out, handmade -> `style-tactile-collage`; quiet, editorial,
 minimal, premium, product UI -> `style-quiet-editorial`; Vox, parallax, 2.5D, "make photos move",
-documentary or archival explainer -> `style-vox-parallax`. Style packs are built for speech-led edits
+documentary or archival explainer -> `style-vox-parallax`; promo, ad, personal-brand or testimonial
+talking head (one person) -> `style-marketing-pro`; split screen, presenter plus B-roll or an info
+video, "two videos", top and bottom -> `skill-split-screen-edit`. Style packs are built for speech-led edits
 (talking heads, voiceover explainers); recipes below cut to music. Using both in one job is untested.
 
 For a styled edit, start from a recipe (`docs/recipes.md`): `rcg recipe list`, pick the style that

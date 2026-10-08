@@ -48,8 +48,12 @@ node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs
 node tools/rcg.mjs level --dir jobs/<id>/assets/voice --lufs -13.5 --ceiling -1.5
 node tools/rcg.mjs captions --job jobs/<id> --words <audio_meta.json|words.json|.srt> --voice vo1 --style tiktok --mode word --start 0.4 --id cap-vo1 --insert
 node tools/rcg.mjs title --job jobs/<id> --text "LINE ONE|LINE TWO" --preset slam --style trailer --start 11 --duration 1.5 --id title-main --insert
-node tools/rcg.mjs style list                          # style packs; skills style-tactile-collage, style-quiet-editorial, style-vox-parallax
+node tools/rcg.mjs style list                          # style packs; skills style-tactile-collage, style-quiet-editorial, style-vox-parallax, style-marketing-pro
 node tools/rcg.mjs layers --job jobs/<id> --src assets/photo.jpg --name s1 --layer "mid:person" --layer "fg:chair"   # depth layers for parallax
+node tools/rcg.mjs marketing-pro prep --job jobs/<id> --src assets/clip.mp4 --trim     # then plan, then build (skill style-marketing-pro)
+python -I tools/media/camera_motion.py <video>                   # measure a video's zooms, cuts and drift
+node tools/rcg.mjs split-screen prep --job jobs/<id> --presenter assets/p.mp4 --info assets/b.mp4 --trim   # then plan, then build (skill skill-split-screen-edit)
+node tools/rcg.mjs broll --job jobs/<id> --src assets/b1-prep.mp4    # info-video shots scored card/ui/footage + sheet
 node tools/rcg.mjs style apply --job jobs/<id> --style tactile-collage
 node tools/rcg.mjs style build --job jobs/<id> --spec jobs/<id>/data/style-plan.json --sfx --insert
 node tools/shaders/catalog.mjs --find "nebula gold"

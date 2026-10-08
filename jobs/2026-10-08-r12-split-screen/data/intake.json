@@ -1,0 +1,85 @@
+[
+  {
+    "kind": "video",
+    "source": "jobs/2026-10-08-r11-marketing-pro/assets/WhatsApp_Video_2026-10-08_at_19.27.12.mp4",
+    "asset": "assets/WhatsApp_Video_2026-10-08_at_19.27.12.mp4",
+    "probe": {
+      "file": "E:\\Develop\\Antigravity_testing\\rapidContentGen\\jobs\\2026-10-08-r12-split-screen\\assets\\WhatsApp_Video_2026-10-08_at_19.27.12.mp4",
+      "duration": 15.731333,
+      "sizeBytes": 3595013,
+      "video": {
+        "codec": "h264",
+        "width": 478,
+        "height": 850,
+        "fps": 29.304572615162943,
+        "pixFmt": "yuv420p",
+        "aspect": 0.5624
+      },
+      "audio": [
+        {
+          "index": 1,
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 2
+        }
+      ],
+      "loudness": {
+        "integratedLufs": -36.6,
+        "lra": 3.3,
+        "truePeakDb": -18.4
+      },
+      "notes": [
+        "Source is 29.305 fps: slowing it below 1x will stutter. Use a freeze frame or interpolation instead."
+      ]
+    },
+    "sheet": "data/intake-WhatsApp_Video_2026-10-08_at_19.27.12.png"
+  },
+  {
+    "kind": "video",
+    "source": "videos/Video_for_testing.mp4",
+    "asset": "assets/Video_for_testing.mp4",
+    "probe": {
+      "file": "E:\\Develop\\Antigravity_testing\\rapidContentGen\\jobs\\2026-10-08-r12-split-screen\\assets\\Video_for_testing.mp4",
+      "duration": 14.431098,
+      "sizeBytes": 39875678,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "fps": 23.976,
+        "pixFmt": "yuv420p",
+        "aspect": 1.7778
+      },
+      "audio": [],
+      "notes": [
+        "No audio track: there are no spoken words to transcribe.",
+        "Source is 23.976 fps: slowing it below 1x will stutter. Use a freeze frame or interpolation instead."
+      ]
+    },
+    "sheet": "data/intake-Video_for_testing.png"
+  },
+  {
+    "kind": "video",
+    "source": "videos/mop-star-trailer/assets/dance.mp4",
+    "asset": "assets/dance.mp4",
+    "probe": {
+      "file": "E:\\Develop\\Antigravity_testing\\rapidContentGen\\jobs\\2026-10-08-r12-split-screen\\assets\\dance.mp4",
+      "duration": 12.804458,
+      "sizeBytes": 48628917,
+      "video": {
+        "codec": "h264",
+        "width": 1080,
+        "height": 1920,
+        "fps": 23.976023976023978,
+        "pixFmt": "yuv420p",
+        "aspect": 0.5625
+      },
+      "audio": [],
+      "notes": [
+        "No audio track: there are no spoken words to transcribe.",
+        "Source is 23.976 fps: slowing it below 1x will stutter. Use a freeze frame or interpolation instead."
+      ]
+    },
+    "sheet": "data/intake-dance.png"
+  }
+]

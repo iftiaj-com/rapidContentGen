@@ -1,0 +1,64 @@
+{
+  "$comment": "skill-split-screen-edit geometry and pacing (1080x1920). Measured from the reference Video-94146 (720x1280, scaled; about +-1-2% of height) and the planning rules in docs/plans/skill-split-screen-edit.md. Tools: tools/recipes/split-screen.mjs (planner), tools/blocks/split.mjs (layout writer), tools/jobs/split-check.mjs. Change numbers here, not in the tools.",
+  "W": 1080,
+  "H": 1920,
+  "seam": {
+    "$note": "B panel y 0..bBottom with a fade to black from fadeFrom; presenter panel aTop..H with a shade from aTop (dark) to shadeTo (clear); the caption sits on the dark band at captionY.",
+    "bBottom": 1190,
+    "fadeFrom": 1000,
+    "aTop": 1190,
+    "shadeTo": 1330,
+    "shadeAlpha": 0.92,
+    "captionY": 1236
+  },
+  "presenter": {
+    "$note": "Static face-safe crop per split window. Hard: the face box (sides of face width each side, chin extended by chinDown) stays in x margin..W-margin, y shadeTo..H-margin. Soft: the hair top (hairUp of face height above the forehead) stays below aTop+margin. On at least (1 - maxOut) of a window's frames; else a smaller scale (down to fitMin of a cover fit) with a blurred side fill; else the window becomes a-full (<= 4 s) or b-full.",
+    "faceCenterY": 1480,
+    "faceH": 170,
+    "hairUp": 0.45,
+    "chinDown": 0.3,
+    "sides": 0.3,
+    "margin": 20,
+    "maxOut": 0.05,
+    "fitMin": 0.6,
+    "darkenLuma": 110,
+    "darkenFilter": "brightness(0.55) saturate(0.7)",
+    "matte": { "choke": 10, "feather": 3, "temporal": 0.3, "$note": "rcg matte settings for the darken cut-out: a wider choke and feather hide the light hair fringe the selfie segmenter leaves (R12)." }
+  },
+  "bfull": {
+    "$note": "Treatments: cover (portrait footage), fit (landscape footage and UI: contained at full width over a blurred, darkened cover copy), band (cards: a white band over dark grey).",
+    "fitBlur": "blur(28px) brightness(0.55) saturate(1.1)",
+    "bandTop": 560,
+    "bandBottom": 1360,
+    "bandColour": "#ffffff",
+    "groundColour": "#2b2b2b",
+    "bandCaptionY": 1290,
+    "kenBurns": 0.05
+  },
+  "afull": {
+    "$note": "Full-frame presenter: the marketing-pro face camera; a two-tier title (small sans lead + italic serif key words) at chest height, in front of the subject.",
+    "titleX": 482,
+    "titleY": 1060,
+    "titleW": 760,
+    "titleH": 300,
+    "maxWords": 6
+  },
+  "pacing": {
+    "$note": "Seconds. Layout windows break 'lead' before the motivating word. Shares are soft targets (reported, the planner demotes extra a-full windows).",
+    "lead": 0.1,
+    "minWindow": 0.6,
+    "afullMax": 4.0,
+    "bfullMax": 6.5,
+    "splitMax": 7.0,
+    "splitRun": 4.0,
+    "topShot": [1.0, 1.8, 2.6],
+    "pauseForAfull": 0.6,
+    "shares": { "split": [0.4, 0.55], "bfull": [0.25, 0.35], "afull": [0.15, 0.25] },
+    "afullShareMax": 0.3
+  },
+  "transitions": {
+    "toAfull": { "style": "light_leak", "d": 0.3, "sfx": "whoosh-short", "volume": 0.14 },
+    "band": { "sfx": "pop", "volume": 0.16 }
+  },
+  "handle": { "x": 64, "y": 236, "size": 34, "seconds": 3 }
+}
