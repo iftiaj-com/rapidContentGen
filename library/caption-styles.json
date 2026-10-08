@@ -134,6 +134,16 @@
       "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
       "flashScale": 0, "defaultMode": "2word",
       "sizes": { "word": 46, "2word": 42, "phrase": 38 }
+    },
+    "info-chip": {
+      "$note": "Style pack info-graphics: one spoken word at a time, white Inter on a small near-black chip, low centre (--y 1440), no pop and no colour change, as in the user's video-essay reference Short.",
+      "font": "Inter", "weight": 700, "uppercase": false,
+      "color": "#ffffff", "stroke": null,
+      "pill": { "bg": "rgba(16,16,16,0.94)", "radius": 6 },
+      "textShadow": null,
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0, "defaultMode": "word",
+      "sizes": { "word": 46, "2word": 44, "phrase": 40 }
     }
   },
   "deferred": {

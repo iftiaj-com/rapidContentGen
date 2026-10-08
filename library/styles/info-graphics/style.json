@@ -1,0 +1,53 @@
+{
+  "$comment": "Style pack: Info-graphics video essay. Learned from the user's reference Short 'Disney vs Midjourney' (YouTube Shorts fZIXlBGaIMs, 88 s, read for technique only, nothing copied). Colours were sampled from its frames: dark ground #191919, cream #fbf3e1, light grey #f5f5f5, accent orange about #e4722a. orange-deep is the text shade on light grounds (the sampled orange is about 2.7:1 on cream, lesson 13az). Italic accents are a synthesized oblique of Inter (a grotesk italic is close to an oblique; no italic cut is bundled). Workflow and judgment: .claude/skills/skill-info-graphics/SKILL.md.",
+  "label": "Info-graphics Essay",
+  "use": "Voice-led video essays and explainers: a new visual every sentence, built from kinetic type with one orange word, equations, stairs and pyramids, social posts, prompt bars with a cursor, orbits, counters, photo plates and collages, over dark, cream or light-grey grounds, with a one-word caption chip.",
+  "keywords": ["infographic", "info-graphics", "explainer", "video essay", "essay", "commentary", "opinion", "facts", "history", "kinetic type", "motion graphics", "faceless", "ai", "tech", "topic"],
+  "from": "user reference video (technique only), 2026-10-08",
+  "skill": ".claude/skills/skill-info-graphics/SKILL.md",
+  "components": "components.mjs",
+  "tokens": {
+    "dark": "#191919",
+    "dark-2": "#262626",
+    "cream": "#fbf3e1",
+    "paper": "#f5f5f5",
+    "ink": "#161616",
+    "white": "#ffffff",
+    "muted": "#6e6a63",
+    "muted-dark": "#a3a3a3",
+    "orange": "#e4722a",
+    "orange-deep": "#b4500f",
+    "orange-soft": "#f6c9a6",
+    "chip": "#101010",
+    "line": "#d9d2c3",
+    "shadow": "rgba(0, 0, 0, 0.18)"
+  },
+  "type": {
+    "display": { "family": "Inter", "weight": 700, "$note": "bundled; stack lines, equation terms, numbers" },
+    "body": { "family": "Inter", "weight": 400, "$note": "bundled; post text, prompt text, labels" },
+    "heavy": { "family": "Inter", "weight": 900, "$note": "bundled; the one shouted word (*word* in a stack with heavy=true)" },
+    "mono": { "family": "JetBrains Mono", "weight": 400, "$note": "bundled; code and prompt text when mono=true" }
+  },
+  "captions": { "style": "info-chip", "mode": "word", "$note": "one spoken word at a time on a small black chip, low centre (y about 1440); no pop, no colour change. The chip is the only caption." },
+  "motion": {
+    "enter": 0.42, "enterEase": "power3.out",
+    "word": 0.34, "wordEase": "power3.out",
+    "stagger": 0.12,
+    "draw": 0.5, "drawEase": "power2.inOut",
+    "exit": 0.2, "exitEase": "power2.in",
+    "rise": 34,
+    "blur": 10,
+    "push": 0.04
+  },
+  "sfx": {
+    "$note": "Essay beds are voice plus a quiet music bed. Sounds mark causal events only: a scene swipe, a click, a pop when an object lands, a tick per step, typing. Start low; voices at -14 LUFS / -3.6 dBTP (lesson 13bc).",
+    "swipe": { "name": "whoosh-short", "volume": 0.16 },
+    "pop": { "name": "pop", "volume": 0.22 },
+    "click": { "name": "click", "volume": 0.3 },
+    "tick": { "name": "click-soft", "volume": 0.26 },
+    "type": { "name": "typing", "volume": 0.14 },
+    "hit": { "name": "impact-bass-1", "volume": 0.14 },
+    "shine": { "name": "sparkle", "volume": 0.16 }
+  },
+  "status": "built"
+}

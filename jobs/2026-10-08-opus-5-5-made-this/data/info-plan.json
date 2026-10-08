@@ -1,0 +1,18 @@
+{
+  "style": "info-graphics",
+  "duration": 10,
+  "items": [
+    { "component": "ground", "id": "g1", "start": 0, "end": "scene", "tone": "dark" },
+    { "component": "stack", "id": "k1", "start": 0, "end": "scene", "text": "One *prompt.*", "align": "center", "y": 600, "h": 220, "size": 132, "times": "@vo1:One,@vo1:prompt", "out": "cut" },
+    { "component": "prompt", "id": "pr1", "start": 0, "end": "scene", "text": "Video: Opus 5.5 made this", "y": 960, "w": 820, "size": 36, "typeAt": 0.08, "cps": 32, "clickAt": "@vo1:prompt$+0.08", "out": "cut" },
+
+    { "component": "ground", "id": "g2", "start": "@vo2:Opus", "end": "scene", "tone": "cream", "enter": "arc" },
+    { "component": "orbit", "id": "o1", "start": "@vo2:Opus", "end": "scene", "label": "Opus 5.5", "items": "Script|Voice|Frames|Sound", "on": "light", "y": 860, "size": 560, "chip": 34, "turn": 40, "times": "@vo2:script,@vo2:voice,@vo2:frame,@vo2:sound", "out": "cut" },
+
+    { "component": "ground", "id": "g3", "start": "@vo3:No", "end": "scene", "tone": "paper", "enter": "wipe-left" },
+    { "component": "equation", "id": "e1", "start": "@vo3:No", "end": "scene", "left": "*Editor*", "op": "=", "right": "Opus|5.5", "chip": "right", "on": "light", "y": 820, "h": 340, "size": 110, "times": "@vo3:editing,@vo3:human,@vo3:editor", "out": "cut" },
+
+    { "component": "ground", "id": "g4", "start": "@vo4:Just-0.12", "end": "scene", "tone": "dark", "enter": "iris" },
+    { "component": "stack", "id": "k2", "start": "@vo4:Just-0.12", "end": "scene", "text": "Opus 5.5|made|*this.*", "heavy": true, "y": 700, "h": 560, "size": 150, "step": 70, "times": "@vo4:Just,@vo4:Just+0.1,@vo4:Just+0.2,@vo4:this", "arrow": "640,1060>560,1320", "bend": -0.4, "arrowAt": "@vo4:this", "out": "cut" }
+  ]
+}

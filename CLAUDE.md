@@ -53,6 +53,7 @@ node tools/rcg.mjs layers --job jobs/<id> --src assets/photo.jpg --name s1 --lay
 node tools/rcg.mjs marketing-pro prep --job jobs/<id> --src assets/clip.mp4 --trim     # then plan, then build (skill style-marketing-pro)
 python -I tools/media/camera_motion.py <video>                   # measure a video's zooms, cuts and drift
 node tools/rcg.mjs split-screen prep --job jobs/<id> --presenter assets/p.mp4 --info assets/b.mp4 --trim   # then plan, then build (skill skill-split-screen-edit)
+node tools/rcg.mjs infographics place-voice --job jobs/<id> --music assets/bed-limited.wav --duration 10   # then resolve --plan data/info-plan.json (skill skill-info-graphics)
 node tools/rcg.mjs broll --job jobs/<id> --src assets/b1-prep.mp4    # info-video shots scored card/ui/footage + sheet
 node tools/rcg.mjs style apply --job jobs/<id> --style tactile-collage
 node tools/rcg.mjs style build --job jobs/<id> --spec jobs/<id>/data/style-plan.json --sfx --insert
