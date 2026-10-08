@@ -1,0 +1,10 @@
+{
+  "name": "2026-10-08-r9b-style-editorial",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.8.115 preview",
+    "check": "npx --yes hyperframes@0.8.115 check",
+    "render": "npx --yes hyperframes@0.8.115 render"
+  }
+}

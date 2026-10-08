@@ -56,6 +56,37 @@
       "glow": { "color": "rgba(0,0,0,0.5)", "blur": 15, "flashBlur": 0 },
       "kinetic": { "spreadX": 0.25, "spreadY": 0.15, "maxRotateDeg": 8, "popIn": 0.3, "popScale": 1.2, "popBlur": 10, "minHold": 1.2, "exit": 0.8, "exitScale": 1.5, "exitBlur": 20 },
       "$note": "Adits kinetic scatters each word with Math.random(); here positions come from a seeded PRNG and are clamped to the 9:16 safe box."
+    },
+    "collage": {
+      "$note": "Style pack tactile-collage (library/styles/tactile-collage). Ported from github.com/audrey-560/hyperframes-tactile-collage tactile-caption.html: sheet card, 4 px ink edge, hard offset shadow, -1 deg tilt, active word in the primary accent. Fonts are files from the style pack, copied into the job.",
+      "font": "TPC Courier", "weight": 700, "uppercase": false,
+      "fontFace": [{ "family": "TPC Courier", "weight": 700, "file": "library/styles/tactile-collage/fonts/courier-prime-700.woff2" }],
+      "color": "#25231f", "stroke": null, "pill": { "bg": "#fffaf0", "radius": 3 },
+      "border": "4px solid #25231f", "boxShadow": "7px 7px 0 #25231f", "rotate": -1,
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0.04, "activeWord": { "color": "#3159c8" },
+      "sizes": { "word": 88, "2word": 76, "phrase": 60 },
+      "emphasis": { "font": "TPC Marker", "weight": 400, "color": "#b8432f",
+        "fontFace": [{ "family": "TPC Marker", "weight": 400, "file": "library/styles/tactile-collage/fonts/permanent-marker-400.woff2" }] }
+    },
+    "editorial": {
+      "$note": "Style pack quiet-editorial (library/styles/quiet-editorial). Ported from github.com/audrey-560/quiet-editorial-ui quiet-editorial-caption.html card mode: Inter 700 on a warm near-white card, hairline border, soft shadow, rise in and lift out, no flash. Emphasis words use upright EB Garamond (no bundled italic).",
+      "font": "Inter", "weight": 700, "uppercase": false,
+      "color": "#0d0d0d", "stroke": null, "pill": { "bg": "rgba(247,247,246,0.94)", "radius": 16 },
+      "border": "2px solid #d9d9d6", "boxShadow": "0 12px 30px rgba(0,0,0,0.10)",
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0, "enter": "rise", "defaultMode": "2word",
+      "sizes": { "word": 104, "2word": 96, "phrase": 76 },
+      "emphasis": { "font": "EB Garamond", "weight": 400, "letterSpacing": "-0.02em" }
+    },
+    "editorial-clean": {
+      "$note": "quiet-editorial clean mode: unboxed ink on a quiet, high-contrast ground (the warm canvas or a clean wall). Use 'editorial' over busy footage.",
+      "font": "Inter", "weight": 700, "uppercase": false,
+      "color": "#0d0d0d", "stroke": null, "pill": null, "textShadow": null,
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0, "enter": "rise", "defaultMode": "2word",
+      "sizes": { "word": 104, "2word": 96, "phrase": 76 },
+      "emphasis": { "font": "EB Garamond", "weight": 400, "letterSpacing": "-0.02em" }
     }
   },
   "deferred": {

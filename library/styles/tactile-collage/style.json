@@ -1,0 +1,42 @@
+{
+  "$comment": "Style pack: Tactile Paper Collage. Ported from github.com/audrey-560/hyperframes-tactile-collage (MIT) at ef6a49f; see docs/PROVENANCE.md. Tokens are the reference's neutral defaults plus two text shades (signal-ink, resolve-ink: the base signal and resolve fall under 3:1 as text on paper or tape, measured by hf check); remap accents to approved brand colours per job, keeping the roles. Workflow and judgment: .claude/skills/style-tactile-collage/SKILL.md.",
+  "label": "Tactile Paper Collage",
+  "use": "Warm paper, cut-out cards, ink edges, tape, stamps, dotted routes and checklists. Explainers, talking heads, process and how-to stories.",
+  "keywords": ["paper", "collage", "scrapbook", "notebook", "cutout", "mixed media", "tactile", "analog", "handmade", "zine", "craft"],
+  "from": "github.com/audrey-560/hyperframes-tactile-collage @ ef6a49f (MIT), ported",
+  "skill": ".claude/skills/style-tactile-collage/SKILL.md",
+  "components": "components.mjs",
+  "tokens": {
+    "paper": "#f3e8cc",
+    "sheet": "#fffaf0",
+    "ink": "#25231f",
+    "primary": "#3159c8",
+    "signal": "#d95b45",
+    "spark": "#e2b93f",
+    "resolve": "#58aa8d",
+    "signal-ink": "#b8432f",
+    "resolve-ink": "#2f7a60",
+    "shadow": "rgba(37, 35, 31, 0.22)"
+  },
+  "type": {
+    "marker": { "family": "TPC Marker", "weight": 400, "file": "fonts/permanent-marker-400.woff2", "$note": "Permanent Marker (Apache-2.0): short handwritten emphasis only" },
+    "mono": { "family": "TPC Courier", "weight": 700, "file": "fonts/courier-prime-700.woff2", "$note": "Courier Prime Bold (OFL): labels, files, checklists, captions" },
+    "display": { "family": "Archivo Black", "weight": 400, "$note": "bundled HyperFrames heavy sans for large statements (the reference asks for the project's heavy sans)" }
+  },
+  "captions": { "style": "collage", "mode": "phrase", "$note": "Group at punctuation, pauses or four words; one highlighted word per cue with --emphasis." },
+  "motion": {
+    "enter": 0.55, "enterEase": "power3.out",
+    "pop": 0.34, "popEase": "back.out(1.4)",
+    "exit": 0.22, "exitEase": "power2.in",
+    "settleDeg": 6
+  },
+  "sfx": {
+    "$note": "The SFX library has no paper sounds yet; these are the closest measured ones, kept quiet. Only causal events get a sound (placement, stamp, check, route, handoff).",
+    "place": { "name": "whoosh-short", "volume": 0.18 },
+    "stamp": { "name": "impact-bass-1", "volume": 0.12 },
+    "check": { "name": "click-soft", "volume": 0.35 },
+    "draw": { "name": "whoosh-short", "volume": 0.14 },
+    "tag": { "name": "pop", "volume": 0.2 }
+  },
+  "status": "ready"
+}

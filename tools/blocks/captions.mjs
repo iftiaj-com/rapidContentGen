@@ -11,15 +11,15 @@
 //
 // Usage:
 //   node tools/blocks/captions.mjs --job <jobDir> --words <audio_meta.json|words.json|file.srt>
-//        [--voice <id>] --style tiktok|karaoke|neon|kinetic|modern|subtitle|glitch|retro|earthquake|vertical_ghost
+//        [--voice <id>] --style tiktok|karaoke|neon|kinetic|modern|subtitle|glitch|retro|earthquake|vertical_ghost|collage|editorial|editorial-clean
 //        [--mode word|2word|phrase] [--position captions|center|top-band] [--y <px>] [--size <px>]
-//        [--id captions-vo] [--start <sec>] [--track 30] [--seed 1] [--insert]
+//        [--id captions-vo] [--start <sec>] [--track 30] [--seed 1] [--emphasis "word,word"] [--insert]
 //
 // --start is where the words' t=0 sits on the main timeline (the voice clip's data-start).
 // --insert adds the host <div> to the job's index.html (before the root's closing tag).
 
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { basename, dirname, join, resolve } from 'node:path';
 import vm from 'node:vm';
 import { isMain, parseArgs } from '../lib/cli.mjs';
 import { readJson, ROOT } from '../lib/config.mjs';
@@ -122,7 +122,9 @@ function boxCss(style, flashScale) {
   const glow = g.color && g.color !== 'transparent'
     ? `0 0 calc(${g.blur || 0}px + var(--flash) * ${g.flashBlur || 0}px) ${g.color}`
     : null;
-  const shadows = [glow, style.pill ? null : '0 3px 10px rgba(0,0,0,0.65)'].filter(Boolean);
+  // A preset may set its own textShadow (null = none), e.g. dark ink on a light ground.
+  const own = style.textShadow !== undefined;
+  const shadows = [glow, style.pill || own ? null : '0 3px 10px rgba(0,0,0,0.65)', own ? style.textShadow : null].filter(Boolean);
   lines.push(`text-shadow: ${shadows.join(', ') || 'none'};`);
   if (style.stroke) lines.push(`-webkit-text-stroke: var(--stroke) ${style.stroke}; paint-order: stroke fill;`);
   if (style.pill) {
@@ -133,14 +135,52 @@ function boxCss(style, flashScale) {
       : style.pill.bg;
     lines.push(`background: ${bg}; border-radius: ${style.pill.radius}px; padding: 0.3em 0.48em;`);
   }
-  lines.push(`transform: scale(calc(1 + var(--flash) * ${flashScale}));`);
+  // Style-pack presets (library/styles): a drawn edge, a card shadow and a resting tilt.
+  if (style.border) lines.push(`border: ${style.border};`);
+  if (style.boxShadow) lines.push(`box-shadow: ${style.boxShadow};`);
+  const tilt = style.rotate ? ` rotate(${style.rotate}deg)` : '';
+  lines.push(`transform: scale(calc(1 + var(--flash) * ${flashScale}))${tilt};`);
   return lines.join('\n          ');
 }
 
-export function buildCaptionHtml({ id, groups, style, styleName, mode, width, height, centerY, size, safe, seed, flash }) {
+/** @font-face rules for presets that use a font file instead of a bundled family. */
+function fontFaceCss(style) {
+  const faces = [...(style.fontFace || []), ...(style.emphasis?.fontFace || [])];
+  return faces.map((f) => `
+      @font-face {
+        font-family: "${f.family}";
+        src: url("assets/fonts/${basename(f.file)}") format("woff2");
+        font-weight: ${f.weight || 400};
+        font-style: normal;
+      }`).join('');
+}
+
+/** Copy a preset's font files into the job (assets/fonts is git-ignored, the library copy is the source). */
+function ensureFonts(jobDir, style) {
+  for (const f of [...(style.fontFace || []), ...(style.emphasis?.fontFace || [])]) {
+    const src = join(ROOT, f.file);
+    if (!existsSync(src)) throw new Error(`Font file for "${f.family}" is missing: ${f.file}`);
+    const dest = join(jobDir, 'assets', 'fonts', basename(f.file));
+    if (!existsSync(dest)) {
+      mkdirSync(dirname(dest), { recursive: true });
+      copyFileSync(src, dest);
+    }
+  }
+}
+
+export function buildCaptionHtml({ id, groups, style, styleName, mode, width, height, centerY, size, safe, seed, flash, emphasis = [] }) {
   const data = groups.map((g) => ({ s: g.start, e: g.end, w: g.words.map((w) => [w.text, +w.start.toFixed(3), +w.end.toFixed(3)]) }));
   const kin = style.kinetic || null;
-  const css = `
+  const flashScale = style.flashScale ?? flash.scale;
+  const em = style.emphasis && emphasis.length ? style.emphasis : null;
+  const emCss = em ? `
+      #${id}-layer .em {
+        font-family: "${em.font}", serif;
+        font-weight: ${em.weight || 400};
+        ${em.color ? `color: ${em.color};` : ''}
+        ${em.letterSpacing ? `letter-spacing: ${em.letterSpacing};` : ''}
+      }` : '';
+  const css = `${fontFaceCss(style)}
       #root {
         position: absolute;
         inset: 0;
@@ -173,8 +213,8 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
         display: inline-block;
         max-width: ${safe.width}px;
         text-wrap: balance;
-        ${boxCss(style, flash.scale)}
-      }
+        ${boxCss(style, flashScale)}
+      }${emCss}
       #${id}-layer .kw {
         position: absolute;
         white-space: nowrap;
@@ -193,8 +233,10 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
         var KIN = ${JSON.stringify(kin)};
         var ACTIVE = ${JSON.stringify(style.activeWord?.color || null)};
         var FLASH_S = ${flash.seconds};
-        var FLASH_SCALE = ${flash.scale};
-        var SEED = ${Number(seed) >>> 0};
+        var FLASH_SCALE = ${flashScale};
+        var SEED = ${Number(seed) >>> 0};${em ? `
+        var EMPH = ${JSON.stringify(emphasis.map((w) => String(w).toLowerCase()))};
+        function isEmph(t) { return EMPH.indexOf(String(t).toLowerCase().replace(/[^\\p{L}\\p{N}'-]+/gu, "")) >= 0; }` : ''}
 
         // mulberry32: seeded, so the kinetic scatter is identical on every render
         function prng(a) {
@@ -297,20 +339,26 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
               var spans = g.w.map(function (w, wi) {
                 var sp = document.createElement("span");
                 sp.id = ID + "-g" + gi + "-" + wi;
-                sp.textContent = w[0];
+                sp.textContent = w[0];${em ? `
+                if (isEmph(w[0])) sp.className = "em";` : ''}
                 box.appendChild(sp);
                 if (wi < g.w.length - 1) box.appendChild(document.createTextNode(" "));
                 return sp;
               });
               grp.appendChild(box);
-              layer.appendChild(grp);
+              layer.appendChild(grp);${style.enter === 'rise' ? `
+              // Rise in, lift out (style-pack "rise" entrance); the group is hidden at its end.
+              var inDur = Math.min(0.28, (g.e - g.s) * 0.35), outDur = Math.min(0.12, (g.e - g.s) * 0.2);
+              tl.fromTo(grp, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: inDur, ease: "power3.out", immediateRender: false }, g.s);
+              tl.to(grp, { opacity: 0, y: -8, duration: outDur, ease: "power2.in" }, g.e - outDur);
+              tl.set(grp, { opacity: 0 }, g.e);` : `
               tl.set(grp, { opacity: 1 }, g.s);
-              tl.set(grp, { opacity: 0 }, g.e);
+              tl.set(grp, { opacity: 0 }, g.e);`}
               g.w.forEach(function (w, wi) {
                 tl.fromTo(box, { "--flash": 1 }, { "--flash": 0, duration: FLASH_S, ease: "power3.out", immediateRender: false }, w[1]);
                 if (ACTIVE && g.w.length > 1) {
                   tl.set(spans[wi], { color: ACTIVE }, w[1]);
-                  tl.set(spans[wi], { color: "inherit" }, Math.min(g.e, wi < g.w.length - 1 ? g.w[wi + 1][1] : g.e));
+                  tl.set(spans[wi], { color: ${em ? '""' : '"inherit"'} }, Math.min(g.e, wi < g.w.length - 1 ? g.w[wi + 1][1] : g.e));
                 }
               });
             });
@@ -378,12 +426,13 @@ export function generateCaptions(opts) {
   const styles = readJson(STYLES_FILE);
   const style = styles.styles[opts.style];
   if (!style) throw new Error(`Unknown style "${opts.style}". Styles: ${Object.keys(styles.styles).join(', ')}`);
-  const mode = style.kinetic ? 'word' : (opts.mode || 'phrase');
+  const mode = style.kinetic ? 'word' : (opts.mode || style.defaultMode || 'phrase');
   const words = loadWords(resolve(opts.words), opts.voice);
   if (!words.length) throw new Error('No words to caption.');
   const geo = jobGeometry(jobDir);
+  ensureFonts(jobDir, style);
   const scale = geo.width / 1080;
-  const defaults = { word: 120, '2word': 104, phrase: 78 };
+  const defaults = { word: 120, '2word': 104, phrase: 78, ...(style.sizes || {}) };
   const size = Number(opts.size) || Math.round((style.kinetic ? 110 : defaults[mode] || 78) * scale);
   const positions = { captions: geo.height * 0.7, center: geo.height * 0.45, 'top-band': geo.height * 0.1667 };
   const centerY = Number(opts.y) || positions[opts.position || 'captions'];
@@ -396,6 +445,7 @@ export function generateCaptions(opts) {
   const html = buildCaptionHtml({
     id, groups, style, styleName: opts.style, mode, width: geo.width, height: geo.height,
     centerY, size, safe: geo.safe, seed: opts.seed ?? 1, flash: styles.flash,
+    emphasis: opts.emphasis ? String(opts.emphasis).split(',').map((w) => w.trim()).filter(Boolean) : [],
   });
   mkdirSync(join(jobDir, 'compositions'), { recursive: true });
   const out = join(jobDir, 'compositions', `${id}.html`);
@@ -426,7 +476,7 @@ export function generateCaptions(opts) {
 if (isMain(import.meta.url)) {
   const a = parseArgs();
   if (!a.job || !a.words || !a.style) {
-    console.error('Usage: captions.mjs --job <dir> --words <file> --style <name> [--voice id] [--mode word|2word|phrase] [--position captions|center|top-band] [--y px] [--size px] [--id x] [--start s] [--track n] [--seed n] [--insert]');
+    console.error('Usage: captions.mjs --job <dir> --words <file> --style <name> [--voice id] [--mode word|2word|phrase] [--position captions|center|top-band] [--y px] [--size px] [--id x] [--start s] [--track n] [--seed n] [--emphasis "word,word"] [--insert]');
     process.exit(2);
   }
   const res = generateCaptions({ ...a, insert: Boolean(a.insert) });

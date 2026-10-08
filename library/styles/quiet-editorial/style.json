@@ -1,0 +1,44 @@
+{
+  "$comment": "Style pack: Quiet Editorial UI. Ported from github.com/audrey-560/quiet-editorial-ui (MIT) at ff0b65e; see docs/PROVENANCE.md. Changes from the reference: the display face is HyperFrames' bundled EB Garamond instead of licensed Georgia (user decision 2026-10-08), and no italic is bundled, so emphasis is a drawn ink underline, not italic. UI sizes are raised for phone viewing (labels 24 px, UI 30 px, body 34 px at 1080 wide). success-deep is used for text and filled pills (success falls under 3:1 as text). Workflow and judgment: .claude/skills/style-quiet-editorial/SKILL.md.",
+  "label": "Quiet Editorial UI",
+  "use": "Calm editorial frames: a large serif line, precise Inter labels, warm near-white surfaces, hairlines, cards, a cursor that selects, one green completed state. Product, SaaS, tutorials, thought leadership.",
+  "keywords": ["editorial", "quiet", "minimal", "clean", "calm", "serif", "premium", "software", "ui", "product", "saas", "elegant", "refined"],
+  "from": "github.com/audrey-560/quiet-editorial-ui @ ff0b65e (MIT), ported",
+  "skill": ".claude/skills/style-quiet-editorial/SKILL.md",
+  "components": "components.mjs",
+  "tokens": {
+    "canvas": "#f7f7f6",
+    "ink": "#0d0d0d",
+    "muted": "#6b6b6b",
+    "border": "#d9d9d6",
+    "quiet": "#f5f5f3",
+    "active": "#ffffff",
+    "success": "#10a37f",
+    "success-deep": "#0c8066",
+    "shadow-soft": "rgba(0, 0, 0, 0.06)",
+    "shadow-raised": "rgba(0, 0, 0, 0.12)"
+  },
+  "type": {
+    "display": { "family": "EB Garamond", "weight": 400, "$note": "bundled; stands in for Georgia (display weight 400 only)" },
+    "body": { "family": "Inter", "weight": 400, "$note": "bundled; body and metadata in muted" },
+    "strong": { "family": "Inter", "weight": 700, "$note": "bundled; UI, rows, captions" },
+    "label": { "family": "Inter", "weight": 700, "$note": "bundled; uppercase, tracked 0.16em" }
+  },
+  "captions": { "style": "editorial", "mode": "2word", "alt": "editorial-clean on the warm canvas or a clean wall", "$note": "2-4 words, one line, no punctuation shown, one --emphasis word at most per beat." },
+  "motion": {
+    "enter": 0.5, "enterEase": "power3.out",
+    "display": 0.62, "displayEase": "expo.out",
+    "label": 0.32,
+    "select": 0.3, "selectEase": "back.out(1.3)",
+    "cursor": 0.72,
+    "exit": 0.18, "exitEase": "power2.in",
+    "rise": 28
+  },
+  "sfx": {
+    "$note": "Quiet UI sounds, only for causal events (a select, a confirm). Most beats need none.",
+    "select": { "name": "click-soft", "volume": 0.3 },
+    "confirm": { "name": "chime", "volume": 0.22 },
+    "pop": { "name": "pop", "volume": 0.2 }
+  },
+  "status": "ready"
+}

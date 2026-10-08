@@ -48,6 +48,9 @@ node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs
 node tools/rcg.mjs level --dir jobs/<id>/assets/voice --lufs -13.5 --ceiling -1.5
 node tools/rcg.mjs captions --job jobs/<id> --words <audio_meta.json|words.json|.srt> --voice vo1 --style tiktok --mode word --start 0.4 --id cap-vo1 --insert
 node tools/rcg.mjs title --job jobs/<id> --text "LINE ONE|LINE TWO" --preset slam --style trailer --start 11 --duration 1.5 --id title-main --insert
+node tools/rcg.mjs style list                          # style packs; skills style-tactile-collage, style-quiet-editorial
+node tools/rcg.mjs style apply --job jobs/<id> --style tactile-collage
+node tools/rcg.mjs style build --job jobs/<id> --spec jobs/<id>/data/style-plan.json --sfx --insert
 node tools/shaders/catalog.mjs --find "nebula gold"
 node tools/rcg.mjs shader --job jobs/<id> --shader <slug> --audio jobs/<id>/assets/song-limited.wav --fit fill --duration 15 --id sh-bg --track 0 --insert
 node tools/rcg.mjs beatflash --job jobs/<id> --words "BASS|MID|TREBLE" --audio jobs/<id>/assets/song-limited.wav --source bands --effect neon --duration 15 --id flash --insert
@@ -84,7 +87,7 @@ node tools/rcg.mjs provenance check
 ## Layout
 
 - `tools/`: CLIs (`rcg.mjs` is the entry point). `lib/` has config, ffmpeg, provenance.
-- `library/`: reusable pieces: `sfx/` (measured manifest), `recipes/` (grades),
+- `library/`: reusable pieces: `sfx/` (measured manifest), `recipes/` (grades), `styles/` (style packs, `docs/styles.md`),
   `runtime/`, `blocks/`, `shaders/` (filled phase by phase), `adits-fx/` (Adits effects and
   environments, copied unmodified) and `fx/` (the `rcg fx` harness and effect registry).
 - `templates/`: HyperFrames project templates (`vertical-1080x1920`).

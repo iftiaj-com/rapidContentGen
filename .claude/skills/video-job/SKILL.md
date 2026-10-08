@@ -48,6 +48,12 @@ that gate is overridden by the user's mode choice (state this in `JOB.md`).
 
 ## 4. Beat sheet
 
+**Named looks (style packs, `docs/styles.md`).** If the prompt names or matches a pack
+(`rcg style list` prints keywords), load its skill and follow its fast path for steps 4-8:
+paper collage, scrapbook, notebook, cut-out, handmade -> `style-tactile-collage`; quiet, editorial,
+minimal, premium, product UI -> `style-quiet-editorial`. Style packs are built for speech-led edits
+(talking heads, voiceover explainers); recipes below cut to music. Using both in one job is untested.
+
 For a styled edit, start from a recipe (`docs/recipes.md`): `rcg recipe list`, pick the style that
 matches the prompt (its `keywords`), then `rcg recipe plan --job jobs/<id> --recipe <style>
 --duration <s> --seed <n>`. It writes the beat sheet on the beat grid with `<PLACEHOLDERS>` for the

@@ -22,6 +22,7 @@ const COMMANDS = {
   'level': ['tools/audio/level.mjs', 'Set integrated loudness (static gain) then limit peaks; --dir levels every WAV in a folder'],
   'captions': ['tools/blocks/captions.mjs', 'Caption track (Adits styles) from word timings -> HyperFrames sub-composition'],
   'title': ['tools/blocks/title.mjs', 'Kinetic title card (slam, stagger-up, kinetic-pop, type-on) -> HyperFrames sub-composition'],
+  'style': ['tools/blocks/style.mjs', 'Style packs (tactile-collage, quiet-editorial): list | show | apply (fonts, spec, tokens) | add / build styled components'],
   'shader': ['tools/blocks/shader.mjs', 'AditsShaders object (166) as an audio-reactive HyperFrames layer (fill or square)'],
   'beatflash': ['tools/blocks/beatflash.mjs', 'Adits beat-flash words (bass/mid/treble or kick/snare/hat) -> HyperFrames sub-composition'],
   'camera': ['tools/blocks/camera.mjs', '46 Adits camera moves on footage (layered cues, whip transitions, kick shake); --list'],

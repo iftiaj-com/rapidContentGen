@@ -290,6 +290,46 @@ Source root: `E:/Develop/Antigravity_testing/flowEditor`
 | port | `src/features/cards/cardTypes.js` | `tools/blocks/flythrough.mjs` | 29f1f8e4 | no | 2026-10-08 | createCard defaults: duration 2, arrivalTime 1, zoom 1, smooth, no entrance |
 | learn | `src/features/sequence/useSequence.js` | `tools/blocks/flythrough.mjs` | 29f1f8e4 | no | 2026-10-08 | live pipeline; the offline renderer (same motionStyles calls) is what was ported |
 
+## quietEditorial
+
+Source root: `E:/Develop/Antigravity_testing/style-refs/quiet-editorial-ui`
+
+| Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
+|---|---|---|---|---|---|---|
+| port | `SKILL.md` | `.claude/skills/style-quiet-editorial/SKILL.md` | ff0b65e2 | no | 2026-10-08 | workflow around rcg style; EB Garamond instead of Georgia (user decision), underline instead of italic |
+| port | `references/layout-modes.md` | `.claude/skills/style-quiet-editorial/references/layout-modes.md` | ff0b65e2 | no | 2026-10-08 | merged with references/safe-zones.md and the workspace 9:16 safe box |
+| port | `references/safe-zones.md` | `.claude/skills/style-quiet-editorial/references/layout-modes.md` | ff0b65e2 | no | 2026-10-08 | collision hierarchy and caption lanes |
+| port | `references/motion-language.md` | `.claude/skills/style-quiet-editorial/references/motion-captions.md` | ff0b65e2 | no | 2026-10-08 | timings and choreography |
+| port | `references/captions.md` | `.claude/skills/style-quiet-editorial/references/motion-captions.md` | ff0b65e2 | no | 2026-10-08 | caption rules mapped to rcg captions editorial / editorial-clean |
+| port | `references/style-system.md` | `.claude/skills/style-quiet-editorial/references/style-system.md` | ff0b65e2 | no | 2026-10-08 | hierarchy, colour semantics, surfaces, components; success-deep for text |
+| port | `assets/components/quiet-editorial-caption.html` | `library/caption-styles.json` | ff0b65e2 | no | 2026-10-08 | editorial and editorial-clean caption presets: Inter 700 card, rise in, lift out |
+| learn | `assets/examples/golden-frames.html` | `library/styles/quiet-editorial/components.mjs` | ff0b65e2 | no | 2026-10-08 | kicker rule, document card, progress rail, status visual benchmark |
+| port | `assets/frame.md` | `library/styles/quiet-editorial/frame.md` | ff0b65e2 | no | 2026-10-08 | design spec written into each job; Georgia replaced by bundled EB Garamond |
+| port | `assets/frame.md` | `library/styles/quiet-editorial/style.json` | ff0b65e2 | no | 2026-10-08 | tokens and motion timings; UI sizes raised for phones |
+| learn | `scripts/preflight.mjs` | `tools/blocks/style.mjs` | ff0b65e2 | no | 2026-10-08 | font preflight not needed: all editorial faces are bundled |
+
+## tactileCollage
+
+Source root: `E:/Develop/Antigravity_testing/style-refs/hyperframes-tactile-collage`
+
+| Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
+|---|---|---|---|---|---|---|
+| port | `SKILL.md` | `.claude/skills/style-tactile-collage/SKILL.md` | ef6a49f5 | no | 2026-10-08 | workflow rewritten around rcg style apply/build inside video-job; boundaries kept |
+| port | `references/layering-safe-zones.md` | `.claude/skills/style-tactile-collage/references/layering-safe-zones.md` | ef6a49f5 | no | 2026-10-08 | layout modes via rcg matte/pnp/layer; workspace 9:16 safe box |
+| port | `references/motion-captions-audio.md` | `.claude/skills/style-tactile-collage/references/motion-captions-audio.md` | ef6a49f5 | no | 2026-10-08 | timings, caption rules, sparse causal SFX mapped to library/sfx |
+| port | `references/scene-grammar.md` | `.claude/skills/style-tactile-collage/references/scene-grammar.md` | ef6a49f5 | no | 2026-10-08 | narrative function table mapped to rcg style components |
+| port | `references/style-system.md` | `.claude/skills/style-tactile-collage/references/style-system.md` | ef6a49f5 | no | 2026-10-08 | colour roles, type, surfaces, failure signatures; -ink text shades added |
+| port | `assets/components/tactile-caption.html` | `library/caption-styles.json` | ef6a49f5 | no | 2026-10-08 | collage caption preset: sheet card, 4 px ink edge, offset shadow, -1 deg tilt, active word colour |
+| learn | `references/style-system.md` | `library/styles/tactile-collage/components.mjs` | ef6a49f5 | no | 2026-10-08 | component grammar (card, folder/tag, taped image, stamp, route, checklist, scribble) built as generators |
+| copy | `assets/fonts/LICENSE-Permanent-Marker.txt` | `library/styles/tactile-collage/fonts/LICENSE-Permanent-Marker.txt` | ef6a49f5 | no | 2026-10-08 | Apache-2.0 license for Permanent Marker (MIT skill repo github.com/audrey-560/hyperframes-tactile-collage) |
+| copy | `assets/fonts/OFL-Courier-Prime.txt` | `library/styles/tactile-collage/fonts/OFL-Courier-Prime.txt` | ef6a49f5 | no | 2026-10-08 | SIL OFL 1.1 for Courier Prime |
+| port | `assets/fonts/courier-prime-700.woff2.b64` | `library/styles/tactile-collage/fonts/courier-prime-700.woff2` | ef6a49f5 | no | 2026-10-08 | base64-decoded to WOFF2, bytes unchanged otherwise; OFL-1.1 |
+| port | `assets/fonts/permanent-marker-400.woff2.b64` | `library/styles/tactile-collage/fonts/permanent-marker-400.woff2` | ef6a49f5 | no | 2026-10-08 | base64-decoded to WOFF2, bytes unchanged otherwise; Apache-2.0 |
+| port | `assets/frame.md` | `library/styles/tactile-collage/frame.md` | ef6a49f5 | no | 2026-10-08 | design spec written into each job by rcg style apply |
+| port | `assets/frame.md` | `library/styles/tactile-collage/style.json` | ef6a49f5 | no | 2026-10-08 | semantic colour tokens, type roles, motion timings |
+| learn | `scripts/install-fonts.mjs` | `tools/blocks/style.mjs` | ef6a49f5 | no | 2026-10-08 | font install into the composition becomes copyFonts at apply/add time |
+| learn | `assets/components/tactile-safe-zones.html` | `tools/blocks/style.mjs` | ef6a49f5 | no | 2026-10-08 | safe-zone overlay becomes a refused-box check against template.json safe zones |
+
 ## tts
 
 Source root: `E:/Develop/Antigravity_testing/tts_app modular`

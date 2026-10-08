@@ -210,6 +210,23 @@ Each entry cost real time on a past job. Read before building.
      footage (`--track`) or a keyframed point (`--point`), converted so the effect lands on that point on
      screen; `anamMagnetHold` defaults on so the camera stays still. A Drop needs time: the ripple takes
      about 2 s before cubes fall, so press it in the pre-roll (`--preroll 1.3 --param rcgDropAt=-1.2`).
+13ay. **Map the head's whole travel before placing graphics.** In R9a and R9b the test clip's head rose
+     to y 330-380 later in the clip, so the only clear band was y 192-450; headlines placed from the
+     first frame covered the face. Snapshot the bare footage across the clip and note the highest point.
+13az. **Reference palettes are not contrast-checked.** The collage reference's signal red (2.0:1 on its own
+     yellow tape) and resolve green (2.7:1 on paper) and the editorial success green (2.8:1 on the canvas)
+     fail as text. The packs keep them for fills and use `-ink` / `-deep` shades for text; `hf check`
+     measures every text node, so check a remapped brand colour the same way.
+13ba. **The render can drop whitespace nodes that snapshots keep.** Words built as inline-block spans
+     with `" "` text nodes between them rendered as "bigidea" in the R9a MP4 while the snapshot was fine.
+     `rcg style` now spaces words with a measured margin (`.w + .w { margin-left: var(--sp) }`). After a
+     render, extract one full-resolution frame of the densest text; the frame sheet is too small to show it.
+13bb. **Do not pipe a multi-item build through `tail`.** `rcg style build` writes the items it can and
+     prints `ERROR` for the rest (an item outside the safe area keeps its old file). R9b rendered a
+     stale headline because `| tail -1` hid the error.
+13bc. **Style SFX need the voice ceiling at -3.6 dBTP.** Voices at -13.5 LUFS / -1.5 dBTP plus the
+     collage stamp (a 2 s bass tail) and a pop under one line peaked at -0.5 dBTP and `rcg render`
+     refused. Voices at -14 / -3.6 (recipes.md) and the stamp at 0.12 gave -2.5 dBTP, MIX OK.
 
 ## Environment
 
@@ -235,6 +252,10 @@ Each entry cost real time on a past job. Read before building.
 16c. **Line endings are frozen.** `.gitattributes` sets `* -text`: git never converts LF/CRLF.
      With `core.autocrlf=true` a fresh clone failed 143 of 205 provenance hashes. New files keep the
      endings they are written with (the tools write LF).
+16d. **Patch generated-JS templates by line, not with sed or nested template literals.** GNU sed reads
+     `\s` in a pattern as whitespace (it rewrote every space in six lines), and a backtick string turns
+     `\b` into a backspace character. For tools that emit JS inside template literals, edit with the
+     Edit tool or a script using `String.raw`, then `node --check` and a real `import()`.
 17. Renders take about 2-3 minutes for 17 s at 1080x1920 with 3 workers on this laptop
     (screenshot capture mode). Low free RAM (< 2.5 GB) risks failures; close apps first.
 
