@@ -11,8 +11,12 @@
 // a counter, a photo plate or a collage. `times` (comma list, seconds from the item start)
 // lines each step up with a spoken word; `rcg infographics resolve` writes them from anchors.
 
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Phosphor icons copied one at a time by `rcg assets icon add` (MIT, library/icons/phosphor/LICENSE).
+const ICONS = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'icons', 'phosphor');
 
 const r1 = (n) => Math.round(n * 10) / 10;
 const r2 = (n) => Math.round(n * 100) / 100;
@@ -740,6 +744,56 @@ export const components = {
             fit($("lab"), ${ctx.js(p.label)}, { font: ${ctx.js(font(ctx, 'body'))}, size: 40, min: 26, maxW: ${p.w}, maxH: 100, maxLines: 2, lh: 1.2 });
             reveal($("lab"), ${r2(p.countAt + 0.2)}, { rise: 16, blur: 6 });` : ''}
             reveal($("row"), 0, { rise: 40, blur: 12, dur: 0.4 });
+            out($("slot"), ${ctx.js(p.out)});`;
+      return { html, css, js };
+    },
+  },
+
+  'icon': {
+    summary: 'A Phosphor icon (from library/icons/phosphor; add one with rcg assets icon add <name> --weight bold) popping on at `at`, coloured by tone; badge none, disc (orange disc, dark icon), chip (dark key cap, orange icon) or ring; optional label under it. Use beside a word it names, or several in a row.',
+    sfx: (p) => soundAt(p, p.at + 0.1),
+    params: { name: 'sparkle', weight: 'bold', tone: 'accent', on: 'dark', badge: 'none', label: '', x: null, y: 760, size: 180, at: 0.05, enter: 'pop', sound: 'pop', out: 'fade' },
+    prepare(p) {
+      const file = join(ICONS, p.weight, p.weight === 'regular' ? `${p.name}.svg` : `${p.name}-${p.weight}.svg`);
+      if (!existsSync(file)) throw new Error(`icon: "${p.name}" (${p.weight}) is not in library/icons/phosphor. Find it: rcg assets icon find ${p.name}; add it: rcg assets icon add ${p.name} --weight ${p.weight}`);
+      p._svg = readFileSync(file, 'utf8').replace(/<script[\s\S]*?<\/script>/gi, '').trim();
+      const box = p.badge === 'none' ? p.size : Math.round(p.size * 1.55);
+      p._box = box;
+      p.w = Math.max(box, p.label ? Math.round(p.size * 2.4) : 0);
+      p.h = box + (p.label ? Math.round(p.size * 0.5) : 0);
+    },
+    render(p, ctx) {
+      oneOf(p.badge, ['none', 'disc', 'chip', 'ring'], 'icon: badge');
+      oneOf(p.tone, ['accent', 'fg', 'muted', 'white', 'ink', 'orange'], 'icon: tone');
+      oneOf(p.enter, ['pop', 'rise', 'spin'], 'icon: enter');
+      oneOf(p.out, ['fade', 'blur', 'cut'], 'icon: out');
+      oneOf(p.sound, SOUNDS, 'icon: sound');
+      const c = inks(p.on);
+      const tone = { accent: c.accent, fg: c.fg, muted: c.muted, white: 'var(--white)', ink: 'var(--ink)', orange: 'var(--orange)' }[p.tone];
+      const color = p.badge === 'disc' ? 'var(--ink)' : p.badge === 'chip' ? 'var(--orange)' : tone;
+      const badge = {
+        none: '',
+        disc: 'border-radius: 50%; background: radial-gradient(circle at 40% 35%, #f19a5c, var(--orange) 55%, #c95d1c); box-shadow: 0 18px 36px rgba(0,0,0,0.3);',
+        chip: `border-radius: ${Math.round(p._box * 0.24)}px; background: linear-gradient(160deg, #3a3a3a, var(--chip) 60%); box-shadow: 0 14px 30px var(--shadow), inset 0 2px 0 rgba(255,255,255,0.14);`,
+        ring: `border-radius: 50%; border: ${Math.max(4, Math.round(p.size * 0.04))}px solid ${tone};`,
+      }[p.badge];
+      const svg = p._svg.replace(/^<svg\b/, `<svg id="${ctx.idf('svg')}" width="${p.size}" height="${p.size}"`);
+      const css = `${SLOT(ctx.sel('slot'), p)}
+      ${ctx.sel('slot')} { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+      ${ctx.sel('box')} { width: ${p._box}px; height: ${p._box}px; flex: none; display: flex; align-items: center; justify-content: center; color: ${color}; ${badge} }
+      ${ctx.sel('svg')} { display: block; }
+      ${ctx.sel('lab')} { display: block; margin-top: ${Math.round(p.size * 0.12)}px; ${ctx.family('display')} color: ${c.fg}; text-align: center; line-height: 1.05; white-space: nowrap; }`;
+      const html = `
+          <div id="${ctx.idf('slot')}"><div id="${ctx.idf('box')}">${svg}</div>${p.label ? `<span id="${ctx.idf('lab')}"></span>` : ''}</div>`;
+      const enter = {
+        pop: `pop($("box"), ${p.at}, { from: 0.4 });`,
+        rise: `reveal($("box"), ${p.at}, { rise: 40, blur: 10, dur: 0.4 });`,
+        spin: `tl.fromTo($("box"), { opacity: 0, scale: 0.4, rotation: -120 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.5, ease: "back.out(1.5)" }, ${p.at});`,
+      }[p.enter];
+      const js = `${HELPERS(ctx.motion)}
+            ${enter}${p.label ? `
+            fit($("lab"), ${ctx.js(p.label)}, { font: ${ctx.js(font(ctx, 'display'))}, size: ${Math.round(p.size * 0.26)}, min: 22, maxW: ${p.w}, maxH: ${Math.round(p.size * 0.4)}, maxLines: 1, lh: 1.05 });
+            reveal($("lab"), ${r2(p.at + 0.12)}, { rise: 14, blur: 6, dur: 0.3 });` : ''}
             out($("slot"), ${ctx.js(p.out)});`;
       return { html, css, js };
     },

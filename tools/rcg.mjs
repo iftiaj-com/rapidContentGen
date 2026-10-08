@@ -39,6 +39,7 @@ const COMMANDS = {
   'marketing-pro': ['tools/recipes/marketing-pro.mjs', 'Promo talking-head edits (style pack marketing-pro): prep (CFR, upscale, voice, transcript) | plan (zoom ladder, heroes, captions) | commands | build'],
   'split-screen': ['tools/recipes/split-screen.mjs', 'Split-screen explainer from a presenter + an info video (skill skill-split-screen-edit): prep | plan (layouts, B-roll montage, face-safe panel crop) | commands | build | check'],
   'infographics': ['tools/blocks/infographics.mjs', 'Info-graphics essays (skill skill-info-graphics): scaffold (graphics-only job) | place-voice (lines end to end, music ducked) | resolve (word anchors -> style plan)'],
+  'assets': ['tools/media/assets.mjs', 'Approved free sources: Phosphor icons into library/icons | search pixabay / polyhaven / met | fetch (also unsplash) into a job with a credit | credit | credits'],
   'broll': ['tools/media/broll.mjs', 'Info-video analysis: scene cuts, segments scored as card / ui / footage / dark, focus point, labelled sheet -> data/broll.json'],
   'recipe': ['tools/recipes/recipe.mjs', 'Edit recipes: list | show | plan (beat-sheet draft locked to the beat grid) | commands | build'],
   'assemble': ['tools/jobs/assemble.mjs', 'Build index.html from the beat sheet: shots, card frames, black cards, music + duck, voice, SFX, flashes, cameras, ramps'],

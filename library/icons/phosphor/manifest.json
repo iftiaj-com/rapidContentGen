@@ -1,0 +1,32 @@
+{
+  "$comment": "Phosphor Icons, copied one file at a time by rcg assets icon add. Licence: LICENSE (MIT).",
+  "package": "@phosphor-icons/core",
+  "version": "2.1.1",
+  "files": {
+    "bold/film-strip-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/film-strip-bold.svg",
+      "sha256": "75f500a192705172ce51686fc8a9a2f62d22e91987419c3bd91448cec2760e38",
+      "added": "2026-10-08"
+    },
+    "bold/microphone-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/microphone-bold.svg",
+      "sha256": "129f28eb3ba66fd180d860b3e46f0e794af24700d05e7cc025aac560a9469f64",
+      "added": "2026-10-08"
+    },
+    "bold/rocket-launch-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/rocket-launch-bold.svg",
+      "sha256": "17cdf50ac375807224f127d664edd1b1090dad01a4156c6d9d042f49beb0475d",
+      "added": "2026-10-08"
+    },
+    "bold/sparkle-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/sparkle-bold.svg",
+      "sha256": "d61e5264b0866af931617635cbda2cd23f7b76d2d0f6daad1560dff8f3cf4980",
+      "added": "2026-10-08"
+    },
+    "bold/speaker-high-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/speaker-high-bold.svg",
+      "sha256": "f0fc825cb96958238882b98aea55afdb63da92c4c5c8b499c0e1068e9abb299e",
+      "added": "2026-10-08"
+    }
+  }
+}

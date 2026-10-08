@@ -8,8 +8,11 @@ description: Make a voice-led info-graphics video (video essay, explainer, facel
 This skill owns the script, the scene plan, the assets and the look. The `video-job` skill still
 owns intake, the working mode, the mix rules, render, report and the final send.
 
-- Pack: `library/styles/info-graphics/` (tokens, `frame.md`, 11 components). Fonts: Inter and
+- Pack: `library/styles/info-graphics/` (tokens, `frame.md`, 12 components). Fonts: Inter and
   JetBrains Mono, both bundled by HyperFrames. Captions: `rcg captions --style info-chip`.
+- Assets: `node tools/rcg.mjs assets icon | search | fetch | credit | credits` (`tools/media/assets.mjs`),
+  only the approved sources in `references/assets.md` (Phosphor, Unsplash, Pixabay, Pexels by hand,
+  Poly Haven, The Met), every file credited in `data/credits.json`.
 - Timing tool: `node tools/rcg.mjs infographics scaffold | place-voice | resolve`
   (`tools/blocks/infographics.mjs`). Every visual is planned against a spoken word, not a second.
 - Learned from the user's reference Short "Disney vs Midjourney" (YouTube Shorts fZIXlBGaIMs, read
@@ -56,10 +59,13 @@ If the request does not say which, it is topic mode when there is no script text
 8. **Beat sheet** `beat-sheet.json` (one beat per scene, `custom` text boxes, absolute `at`) and
    `rcg beat-sheet md`. Gate here in modes (a) and (c).
 9. **Check:** `rcg mix-check` (MIX OK), `rcg hf --cwd jobs/<id> check` (the odometer and collage
-   overflow notes are intentional), then snapshots at the end of each scene and READ them. A
+   overflow notes are intentional; contrast warnings on a photo plate's `-num` digits while it counts
+   are clipped digits measured against the photo, not visible text), then snapshots at the end of each scene and READ them. A
    caption `content_overlap` between two lines means the gap before the second line is too short:
    widen it in step 5 and re-run 5-7 (anchors keep the plan valid).
-10. **Render:** `node tools/rcg.mjs render jobs/<id> --fps 30 --workers 3`, read `renders/final-sheet.png`
+10. **Credits:** every collected file is in `data/credits.json`; paste `rcg assets credits --job jobs/<id>`
+    into `report.md`.
+11. **Render:** `node tools/rcg.mjs render jobs/<id> --fps 30 --workers 3`, read `renders/final-sheet.png`
     and one full-resolution frame of the densest text (lesson 13ba). Report as the video-job skill says.
 
 ## Plan file
@@ -94,6 +100,7 @@ numbers pass through. `x`, `y` are the item's centre (x defaults to 482, the saf
 | `prompt` | a tool or a request: typing, a cursor click, an optional result image | typing, click, pop |
 | `orbit` | one idea with many parts, chips popping on words | pop, tick per chip |
 | `counter` | one real, sourced number rolling up | tick |
+| `icon` | a Phosphor icon (`rcg assets icon add`) with badge `none`, `disc`, `chip` or `ring` and a label; beside the word it names, or in a row | `sound` param (default pop) |
 
 ## Boundaries
 

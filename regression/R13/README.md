@@ -22,6 +22,12 @@ Test stills copied from earlier jobs' assets (`a.png` from R0, `b`/`c` from R4, 
    with typed text, cursor on the button and the result image, orbit with four chips, counter mid-roll
    and settled.
 
+5. Icon scene added (24-26 s, root now 26 s): four Phosphor bold icons fetched with
+   `rcg assets icon add` (microphone, film-strip, speaker-high, rocket-launch; plus sparkle) in each
+   badge (disc, chip, ring, none) with labels; snapshot `snapshots/icons/` read, clean. `hf check`
+   passed; 5 contrast warnings are the photo plate's clipped counter digits measured against the
+   photo while it rolls (not visible text; no HyperFrames opt-out exists).
+
 Open: the gallery was not rendered to MP4, so the collage, post and counter were seen only in
 snapshots. Render it once before calling those components ready.
 

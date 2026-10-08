@@ -33,5 +33,9 @@
     "musicLimitDb": -2.5,
     "mode": null
   },
+  "keys": {
+    "$comment": "API keys go in workspace.local.json (git-ignored), never here. pixabay: free key from pixabay.com/api/docs/ after login (rcg assets).",
+    "pixabay": null
+  },
   "sources": {}
 }
