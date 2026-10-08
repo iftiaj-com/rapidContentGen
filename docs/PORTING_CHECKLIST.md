@@ -17,10 +17,15 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 
 | ☐ | Feature | Source | Decision | Target | Phase |
 |---|---|---|---|---|---|
-| ☑ | Caption style presets: fonts, colors, pill, glow (tiktok, karaoke, neon, kinetic, motion3d, flying3d, flow, instagram, spotlight, kinetic_impact) | `shared/active-tracking-captions.js` (style table about line 1737+), `shared/smart-captions.js` | Port presets → `library/caption-styles.json` | — | P1 |
-| ☑ | Caption styles rebuilt as seekable DOM+GSAP blocks; word / 2-word / line modes | same | Port (the Adits caption code is stateful, `flashAlpha *= 0.80` and voice-level guessing, so its logic is Learn only) | `library/blocks/captions/<style>/` | P1 |
+| ☑ | Caption style presets: fonts, colors, stroke, pill, glow, flash (modern, tiktok, neon, karaoke, subtitle, glitch, retro, earthquake, vertical_ghost; kinetic from smart-captions) | `shared/active-tracking-captions.js` (style table about line 1737+), `shared/smart-captions.js` | Port presets → `library/caption-styles.json` (fonts mapped to bundled families) | — | P1 |
+| ☑ | Caption styles rebuilt as seekable DOM+GSAP blocks; word / 2-word / line modes | same | Port (the Adits caption code is stateful, `flashAlpha *= 0.80` and voice-level guessing, so its logic is Learn only) | `tools/blocks/captions.mjs` (`rcg captions`) | P1 |
+| ☐ | Visual styles not ported: fisheye, 3d_font, premium_impact; smart-captions motion3d, flying3d | `shared/active-tracking-captions.js`, `shared/smart-captions.js` | Defer (fisheye, motion3d and flying3d are listed under `deferred` in `caption-styles.json`; 3d_font and premium_impact are not) | `rcg captions` | later |
+| ☑ | Active Tracking Caption text controls: Hollow Text, RGB Highlight, Negative FX, Text Shadow (angle, distance) | `shared/active-tracking-captions.js` (`_lyricPaint`, `_getRgbHighlightColor`, the motion renderer), `index.html` 28011-28021 and 28212-28283 | Port as CSS on any preset: stroke-only text with the shadow cast from the stroke (`drop-shadow`); RGB keyed on the timeline clock; `difference` blend on the caption host; shadow replaces the glow (Adits rule) | `tools/blocks/captions.mjs` (`--hollow --rgb --negative --shadow`) | extra (R14) |
+| ☐ | Active Tracking Caption font and colour controls: font picker (14 fonts, White Pack), weight, italic, underline, colour override, gradient (angle, spread, swap), stroke and BG colours, transparent stroke / BG, BG radius | `index.html` 27969-28000 and 28085-28240, `shared/active-tracking-captions.js` | Port (each preset has a fixed font, weight and colours today) | `rcg captions` | later |
+| ☐ | Active Tracking Caption motion: motion path (start / finish X, Y, rotation, font size, V / H perspective, Z; curve, zigzag, smoothness), 15 motion presets, motion speed; display modes auto and sequence (SRT blocks overlapping); in / out animations (8 each) and durations; **Caption Cascade** (several lines at once, spawned per SRT block or every N s) | `shared/active-tracking-captions.js` (`_drawMotionCaption`, `_renderCascade`, `_renderSrtSequence`), `index.html` 27458-27891 and 28036-28080 | Port as seekable timeline moves (Adits spawns and moves lines on the live clock) | `rcg captions` | later |
+| ☐ | Active Tracking Caption lyric display styles: flow, carousel, kinetic_impact, instagram, stack, spotlight, wave | `shared/active-tracking-captions.js` (`_lyric*`), `index.html` 27921 (`atcStyle`) | Defer (listed under `deferred` in `caption-styles.json`) | `rcg captions` | later |
 | ☑ | Beat-flash captions | `shared/captions.js` | Port: per-frame states from the audio table, setter-driven | `tools/blocks/beatflash.mjs` | P2 |
-| ☑ | SRT import | caption engines | Port | `tools/captions/srt-to-words.mjs` | P1 |
+| ☑ | SRT import | caption engines | Port | `tools/blocks/captions.mjs` (`srtToWords`) | P1 |
 | ☑ | 46 camera moves (whip_pan, crash_zoom, dolly, orbit, drone…), all pure math | `core/anam/CameraMovements.js` lines 68-130, 308-327, 374-404 | Port, replacing the `performance.now()` clock with timeline time; adds layers, `from`/`rev`, `bars` beat sync, kick shake | `library/runtime/camera-moves.js`; `tools/blocks/camera.mjs` (CSS on footage), `tools/blocks/three.mjs` (3D) | P3 |
 | ☑ | 2D camera presets (20, plus curve, zigzag, handheld, 6 audio-react modes, blurred fill) | `core/VirtualCamera.js` | Port into `camera-moves.js` as `vc.*`; 1440 sampled poses match the Adits code; fill from `drawBackground` | `library/runtime/camera-moves.js`, `tools/blocks/camera.mjs` | P3 |
 | ☐ | GLB models (26) + planet textures | `assets/models3d/` | **Hold**: no license notes, "bandicoot" may be a third-party character, 5 look like duplicates. Use procedural geometry until cleared. | `library/models3d/` | P3 |
@@ -115,13 +120,13 @@ Counts are checklist rows (one row can hold several features). "Waiting" means n
 
 | Source | Ported ☑ | Waiting ☐ | On hold | No work needed |
 |---|---|---|---|---|
-| Adits_Modular | 23 | 5 | 1 (GLB models) | 3 |
+| Adits_Modular | 24 | 9 | 1 (GLB models) | 3 |
 | AditsShaders | 6 | 0 | 0 | 1 |
 | AditsStudio | 2 | 0 | 0 | 2 |
 | flowEditor | 6 | 2 | 0 | 1 |
 | TTS app | 6 | 1 | 0 | 2 |
 | mop-star lessons | 2 | 0 | 0 | 0 |
-| **Total** | **45** | **8** | **1** | **9** |
+| **Total** | **46** | **12** | **1** | **9** |
 
 **Adits effects in `library/adits-fx/` (copied unmodified, run by `rcg fx`), 11 of them:**
 - Footage, canvas: Ghost (`AdvGhost`), Motion Trail (`MotionTrails`), Origami.
@@ -142,10 +147,16 @@ Voxel Drop with Rapier physics (styles drop, orbit, tunnel, bursts), Infinite Ho
 logic runs at 60 Hz on the frame clock, the followed point comes from `rcg track` or `--point`, and
 the audio drives read Adits' analyser emulated per tick.
 
+**Ported 2026-10-09 (outside the phases), from Adits:** the Active Tracking Caption text controls
+Hollow Text, RGB Highlight, Negative FX and Text Shadow, as `rcg captions` options on any preset
+(R14). The caption rows were also corrected: the preset row listed looks that were never ported.
+
 **Still waiting (rows marked ☐ above):**
 - Adits: BlackHole, Clouds and TunnelCorridor environments; PixelStretch, ReversePhi and the VJ
   deck; about 27 more WGSL effects; Voxel Cubes, Pyramorphic, explode, 2D→3D relief, cloak and
-  motion extraction; social frames and doodle.
+  motion extraction; social frames and doodle; captions: the Active Tracking Caption motion path,
+  display modes, in / out animations and Caption Cascade, its font and colour controls, its lyric
+  display styles, and the fisheye, 3d_font, premium_impact, motion3d and flying3d looks.
 - flowEditor: newspaper background; `.flow` import.
 - TTS app: pyttsx3, gTTS, Piper, Melo engines.
 - On hold: the 26 Adits GLB models (no license notes).
@@ -164,5 +175,6 @@ the audio drives read Adits' analyser emulated per tick.
 | P7 Tracking + PNP | MediaPipe face/hand tracking, face-anchored camera, background removal, PNP, layers, transitions, colour mask, effect target | R7 | ☑ done 2026-10-08: a 13.4 s 9:16 edit of the user's 16:9 test clip: face found on 346/346 frames (tracking identical on two runs of a 2 s range), keywords behind the subject, side copy, 4 transitions, colour mask, Blow Pixels switched bg to fg; -14.4 LUFS, 11/11 verify |
 | P8 Voxels + anamorphic models | Voxel Art, Voxel Drop + Rapier, Hole, Magnet, Flip, Grow; Particles, Cutout, Magic Carpet; 60 Hz host clock, followed point, Adits analyser | R8 | ☑ done 2026-10-08: a 14.0 s reel of all 9 effects (R6 and R7 clips, R7 hand track); flat voxel plane fits 1.014-1.020 x linear(input) within 1.5/255; physics and particles byte-identical across runs; 24 vs 30 fps agree at 53-55 dB; -14.8 LUFS, 11/11 verify |
 | P6 remainder | other footage FX and environments, newspaper background, frames/doodle, `.flow` import, extra TTS engines | none yet | not started |
+| Extra: caption text controls | Adits Active Tracking Caption Hollow Text, RGB Highlight, Negative FX, Text Shadow | R14 | ☑ done 2026-10-09: 7 caption blocks on 7 presets (pill, tier and kinetic layouts); hf check 0 errors; 11.2 s, 7/7 verify (silent); RGB colour read from the frame matches the formula; output with no new flag byte-identical to before for 19 presets x 3 modes |
 
 **Note (2026-10-08):** renders made before this date (mop-star, R0-R3b) had a black 8 px strip down the right edge from an ffmpeg 8.1 conversion bug (lessons 16b). HyperFrames now uses ffmpeg 9.0.2, and R0, R1, R1b, R2 (final + repeat, 51.7 dB apart), R3 and R3b were re-rendered: all pass verify, including the new edge check. The mop-star trailer in `videos/` still has the strip.

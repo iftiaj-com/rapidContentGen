@@ -13,10 +13,19 @@
 //   node tools/blocks/captions.mjs --job <jobDir> --words <audio_meta.json|words.json|file.srt>
 //        [--voice <id>] --style tiktok|karaoke|neon|kinetic|modern|subtitle|glitch|retro|earthquake|vertical_ghost|collage|editorial|editorial-clean
 //        [--mode word|2word|phrase] [--position captions|center|top-band] [--y <px>] [--size <px>]
-//        [--id captions-vo] [--start <sec>] [--track 30] [--seed 1] [--emphasis "word,word"] [--insert]
+//        [--id captions-vo] [--start <sec>] [--track 30] [--seed 1] [--emphasis "word,word"]
+//        [--hollow] [--rgb] [--negative] [--shadow [--shadow-angle 45] [--shadow-dist 4]] [--insert]
 //
 // --start is where the words' t=0 sits on the main timeline (the voice clip's data-start).
 // --insert adds the host <div> to the job's index.html (before the root's closing tag).
+//
+// Adits Active Tracking Caption text controls (shared/active-tracking-captions.js), on any preset:
+//   --hollow    outline only (atcHollowText): no fill, a stroke of 5% of the font size in the text colour
+//   --rgb       RGB Highlight (atcRgbHighlight): the text colour cycles r/g/b = sin(2t + 0|2|4) * 127 + 128,
+//               t in main-timeline seconds (Adits reads media time), keyed every 0.2 s so it seeks
+//   --negative  Negative FX (atcNegative): the captions blend with "difference" over the footage
+//   --shadow    Text Shadow (atcShadowEnabled): offset cos/sin(angle) * dist, blur 4, rgba(0,0,0,0.8);
+//               it replaces the preset's glow, as in Adits. Angle 0-360 (default 45), dist 0-50 px (4)
 
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
@@ -117,7 +126,52 @@ function rgbaParts(c) {
   return m ? { r: +m[1], g: +m[2], b: +m[3], a: m[4] == null ? 1 : +m[4] } : null;
 }
 
-function boxCss(style, flashScale) {
+/**
+ * Adits ATC text controls -> CSS. `shadow` is { angle, dist } or null. Returns the text-shadow and
+ * pill box-shadow that replace the preset's (Adits: the user's shadow wins over a style's glow).
+ */
+export function textFx({ hollow = false, rgb = false, negative = false, shadow = null } = {}) {
+  let text = null;
+  let pill = null;
+  if (shadow) {
+    const rad = (Number(shadow.angle ?? 45) * Math.PI) / 180;
+    const d = Number(shadow.dist ?? 4);
+    const dx = +(Math.cos(rad) * d).toFixed(2);
+    const dy = +(Math.sin(rad) * d).toFixed(2);
+    text = `${dx}px ${dy}px 4px rgba(0,0,0,0.8)`;
+    pill = `${dx}px ${dy}px 10px rgba(0,0,0,0.5)`;
+  }
+  return { hollow: Boolean(hollow), rgb: Boolean(rgb), negative: Boolean(negative), shadow: text, pillShadow: pill };
+}
+
+/** RGB Highlight colour at main-timeline time t (Adits _getRgbHighlightColor: time = ms * 0.002). */
+export function rgbAt(t) {
+  const ph = t * 2;
+  const c = (o) => Math.floor(Math.sin(ph + o) * 127 + 128);
+  return `rgb(${c(0)},${c(2)},${c(4)})`;
+}
+
+/** Split a CSS shadow list on its top-level commas (not the ones inside rgba()). */
+function splitShadows(list) {
+  const out = []; let depth = 0; let cur = '';
+  for (const ch of String(list)) {
+    if (ch === '(') depth++;
+    if (ch === ')') depth--;
+    if (ch === ',' && depth === 0) { out.push(cur.trim()); cur = ''; } else cur += ch;
+  }
+  if (cur.trim()) out.push(cur.trim());
+  return out.filter((s) => s && s !== 'none');
+}
+
+/** A preset's resting text shadows (glow at its base blur, the default dark shadow or its own). */
+function staticShadow(style) {
+  const g = style.glow || {};
+  const glow = g.color && g.color !== 'transparent' && g.blur ? `0 0 ${g.blur}px ${g.color}` : null;
+  const own = style.textShadow !== undefined;
+  return [glow, style.pill || own ? null : '0 3px 10px rgba(0,0,0,0.65)', own ? style.textShadow : null].filter(Boolean).join(', ') || null;
+}
+
+function boxCss(style, flashScale, fx) {
   const lines = [];
   const g = style.glow || {};
   const glow = g.color && g.color !== 'transparent'
@@ -125,9 +179,9 @@ function boxCss(style, flashScale) {
     : null;
   // A preset may set its own textShadow (null = none), e.g. dark ink on a light ground.
   const own = style.textShadow !== undefined;
-  const shadows = [glow, style.pill || own ? null : '0 3px 10px rgba(0,0,0,0.65)', own ? style.textShadow : null].filter(Boolean);
+  const shadows = fx.shadow ? [fx.shadow] : [glow, style.pill || own ? null : '0 3px 10px rgba(0,0,0,0.65)', own ? style.textShadow : null].filter(Boolean);
   lines.push(`text-shadow: ${shadows.join(', ') || 'none'};`);
-  if (style.stroke) lines.push(`-webkit-text-stroke: var(--stroke) ${style.stroke}; paint-order: stroke fill;`);
+  if (style.stroke && !fx.hollow) lines.push(`-webkit-text-stroke: var(--stroke) ${style.stroke}; paint-order: stroke fill;`);
   if (style.pill) {
     const base = rgbaParts(style.pill.bg);
     const flash = style.pill.bgFlash ? rgbaParts(style.pill.bgFlash) : null;
@@ -138,7 +192,8 @@ function boxCss(style, flashScale) {
   }
   // Style-pack presets (library/styles): a drawn edge, a card shadow and a resting tilt.
   if (style.border) lines.push(`border: ${style.border};`);
-  if (style.boxShadow) lines.push(`box-shadow: ${style.boxShadow};`);
+  const boxShadow = [style.boxShadow, style.pill ? fx.pillShadow : null].filter(Boolean).join(', ');
+  if (boxShadow) lines.push(`box-shadow: ${boxShadow};`);
   const tilt = style.rotate ? ` rotate(${style.rotate}deg)` : '';
   lines.push(`transform: scale(calc(1 + var(--flash) * ${flashScale}))${tilt};`);
   return lines.join('\n          ');
@@ -169,8 +224,39 @@ function ensureFonts(jobDir, style) {
   }
 }
 
-export function buildCaptionHtml({ id, groups, style, styleName, mode, width, height, centerY, size, safe, seed, flash, emphasis = [] }) {
+export function buildCaptionHtml({ id, groups, style, styleName, mode, width, height, centerY, size, safe, seed, flash, emphasis = [], fx = textFx(), start = 0, duration = 0 }) {
   const data = groups.map((g) => ({ s: g.start, e: g.end, w: g.words.map((w) => [w.text, +w.start.toFixed(3), +w.end.toFixed(3)]) }));
+  // RGB Highlight: the colour keyed every 0.2 s on the main-timeline clock (linear in between,
+  // within about 3 of 255 of Adits' sine), so a seek lands on the same colour as playback.
+  const RGB_STEP = 0.2;
+  const rgbKeys = fx.rgb
+    ? Array.from({ length: Math.ceil((duration || Math.max(...groups.map((g) => g.end))) / RGB_STEP) + 1 }, (_, k) => rgbAt(start + k * RGB_STEP))
+    : null;
+  // Hollow: the fill goes transparent and the stroke takes the text colour (currentcolor), so the
+  // active-word, emphasis and RGB colours still apply. The fill is cleared on the text leaves only:
+  // hf check's text_not_painted reads the fill and not the stroke, and accepts a transparent fill
+  // under background-clip: text with a background image (an empty gradient here). On .box that clip
+  // would cut the pill down to the glyphs. Shadow: one rule for every text element.
+  // A text-shadow is cast from the whole glyph and fills a hollow letter in; Adits' canvas shadow
+  // comes from the stroke only. So hollow text drops its text-shadows and the layer casts the same
+  // shadows with filter: drop-shadow (from the painted pixels: the stroke and any pill). The
+  // flash-driven glow pulse has no layer equivalent; its resting blur is kept.
+  const hollowShadow = fx.hollow ? (fx.shadow || staticShadow(style)) : null;
+  const fxCss = `${fx.hollow ? `
+      #${id}-layer .box, #${id}-layer .kw, #${id}-layer .cur, #${id}-layer .lead {
+        -webkit-text-stroke: max(1px, 0.05em) currentcolor;
+        paint-order: normal;
+        text-shadow: none;
+      }
+      #${id}-layer .tier { text-shadow: none; }${hollowShadow ? `
+      #${id}-layer { filter: ${splitShadows(hollowShadow).map((s) => `drop-shadow(${s})`).join(' ')}; }` : ''}
+      #${id}-layer .box > span, #${id}-layer .kw, #${id}-layer .cur, #${id}-layer .lead {
+        -webkit-text-fill-color: transparent;
+        background-image: linear-gradient(transparent, transparent);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }` : ''}${fx.shadow && !fx.hollow ? `
+      #${id}-layer .kw, #${id}-layer .tier { text-shadow: ${fx.shadow}; }` : ''}`;
   const kin = style.kinetic || null;
   const flashScale = style.flashScale ?? flash.scale;
   const em = style.emphasis && emphasis.length ? style.emphasis : null;
@@ -216,7 +302,7 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
         display: inline-block;
         max-width: ${safe.width}px;
         text-wrap: balance;
-        ${boxCss(style, flashScale)}
+        ${boxCss(style, flashScale, fx)}
       }${emCss}
       #${id}-layer .kw {
         position: absolute;
@@ -227,7 +313,7 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
       #${id}-layer .tier { display: flex; flex-direction: column; align-items: center; width: 100%; text-shadow: ${style.textShadow || 'none'}; }
       #${id}-layer .lead { display: block; white-space: nowrap; font-weight: ${tier.leadWeight || 400}; ${tier.leadColor ? `color: ${tier.leadColor};` : ''} opacity: 0; line-height: 1.05; }
       #${id}-layer .cw { position: relative; width: 100%; }
-      #${id}-layer .cur { position: absolute; left: 0; right: 0; top: 0; white-space: nowrap; text-align: center; opacity: 0; line-height: 1.08; }` : ''}`;
+      #${id}-layer .cur { position: absolute; left: 0; right: 0; top: 0; white-space: nowrap; text-align: center; opacity: 0; line-height: 1.08; }` : ''}${fxCss}`;
 
   const script = `
       (function () {
@@ -241,7 +327,8 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
         var ACTIVE = ${JSON.stringify(style.activeWord?.color || null)};
         var FLASH_S = ${flash.seconds};
         var FLASH_SCALE = ${flashScale};
-        var SEED = ${Number(seed) >>> 0};${tier ? `
+        var SEED = ${Number(seed) >>> 0};${rgbKeys ? `
+        var RGB = ${JSON.stringify(rgbKeys)}, RGB_STEP = ${RGB_STEP};` : ''}${tier ? `
         var TIER = ${JSON.stringify(tier)};` : ''}${em ? `
         var EMPH = ${JSON.stringify(emphasis.map((w) => String(w).toLowerCase()))};
         function isEmph(t) { return EMPH.indexOf(String(t).toLowerCase().replace(/[^\\p{L}\\p{N}'-]+/gu, "")) >= 0; }` : ''}
@@ -449,7 +536,10 @@ export function buildCaptionHtml({ id, groups, style, styleName, mode, width, he
                 }
               });
             });
-          }
+          }${rgbKeys ? `
+          // RGB Highlight on the layer colour; text elements inherit it.
+          tl.set(layer, { color: RGB[0] }, 0);
+          for (var r = 1; r < RGB.length; r++) tl.to(layer, { color: RGB[r], duration: RGB_STEP, ease: "none" }, (r - 1) * RGB_STEP);` : ''}
           window.__timelines[ID] = tl;
         }
 
@@ -532,20 +622,33 @@ export function generateCaptions(opts) {
     ? groupWords(words, 'phrase', { maxChars: 44, maxSeconds: 3.4, gap: 0.3, breakOn: /[.?!,;:]$/ })
     : groupWords(words, mode, { maxChars: Math.round(22 * (geo.width / 1080) * (78 / size) * 1.1) || 22 });
   const id = opts.id || `captions-${opts.style}`;
+  const start = Number(opts.start || 0);
+  const tail = style.kinetic ? (style.kinetic.exit + 0.4) : 0.1;
+  const lastEnd = Math.max(...groups.map((g) => g.end), ...words.map((w) => +w.end + (style.kinetic ? Math.max(style.kinetic.minHold, 0) : 0)));
+  const duration = +(lastEnd + tail).toFixed(3);
+  const wantShadow = opts.shadow || opts['shadow-angle'] != null || opts['shadow-dist'] != null;
+  const fx = textFx({
+    hollow: opts.hollow, rgb: opts.rgb, negative: opts.negative,
+    shadow: wantShadow ? { angle: opts['shadow-angle'] ?? 45, dist: opts['shadow-dist'] ?? 4 } : null,
+  });
+  if (fx.shadow) {
+    const ang = Number(opts['shadow-angle'] ?? 45); const dist = Number(opts['shadow-dist'] ?? 4);
+    if (!(ang >= 0 && ang <= 360) || !(dist >= 0 && dist <= 50)) throw new Error('--shadow-angle must be 0-360 and --shadow-dist 0-50 (the Adits ranges)');
+  }
   const html = buildCaptionHtml({
     id, groups, style, styleName: opts.style, mode, width: geo.width, height: geo.height,
     centerY, size, safe: geo.safe, seed: opts.seed ?? 1, flash: styles.flash,
     emphasis: opts.emphasis ? String(opts.emphasis).split(',').map((w) => w.trim()).filter(Boolean) : [],
+    fx, start, duration,
   });
   mkdirSync(join(jobDir, 'compositions'), { recursive: true });
   const out = join(jobDir, 'compositions', `${id}.html`);
   writeFileSync(out, html);
 
-  const start = Number(opts.start || 0);
-  const tail = style.kinetic ? (style.kinetic.exit + 0.4) : 0.1;
-  const lastEnd = Math.max(...groups.map((g) => g.end), ...words.map((w) => +w.end + (style.kinetic ? Math.max(style.kinetic.minHold, 0) : 0)));
-  const duration = +(lastEnd + tail).toFixed(3);
-  const host = `<div id="${id}" data-composition-id="${id}" data-composition-src="compositions/${id}.html" data-start="${start}" data-duration="${duration}" data-track-index="${opts.track || 30}" data-width="${geo.width}" data-height="${geo.height}"></div>`;
+  // Negative FX blends on the host: an element inside it would only blend with the host's own
+  // stacking context (the host gets a z-index), not with the footage under it.
+  const blend = fx.negative ? ' style="mix-blend-mode: difference"' : '';
+  const host = `<div id="${id}" data-composition-id="${id}" data-composition-src="compositions/${id}.html" data-start="${start}" data-duration="${duration}" data-track-index="${opts.track || 30}" data-width="${geo.width}" data-height="${geo.height}"${blend}></div>`;
   const warnings = [];
   if (geo.rootDuration && start + duration > geo.rootDuration + 1e-3) {
     warnings.push(`Captions end at ${(start + duration).toFixed(2)} s, past the root duration ${geo.rootDuration} s; extend the root or trim the words.`);
@@ -560,17 +663,19 @@ export function generateCaptions(opts) {
       writeFileSync(join(jobDir, 'index.html'), `${html0.slice(0, idx)}  ${host}\n    ${html0.slice(idx)}`);
     }
   }
-  return { out, host, groups: groups.length, words: words.length, mode, size, centerY, duration, warnings };
+  return { out, host, groups: groups.length, words: words.length, mode, size, centerY, duration, warnings, fx };
 }
 
 if (isMain(import.meta.url)) {
   const a = parseArgs();
   if (!a.job || !a.words || !a.style) {
-    console.error('Usage: captions.mjs --job <dir> --words <file> --style <name> [--voice id] [--mode word|2word|phrase] [--position captions|center|top-band] [--y px] [--size px] [--id x] [--start s] [--track n] [--seed n] [--emphasis "word,word"] [--insert]');
+    console.error('Usage: captions.mjs --job <dir> --words <file> --style <name> [--voice id] [--mode word|2word|phrase] [--position captions|center|top-band] [--y px] [--size px] [--id x] [--start s] [--track n] [--seed n] [--emphasis "word,word"] [--hollow] [--rgb] [--negative] [--shadow] [--shadow-angle 0-360] [--shadow-dist 0-50] [--insert]');
     process.exit(2);
   }
   const res = generateCaptions({ ...a, insert: Boolean(a.insert) });
   console.log(`Wrote ${res.out}`);
+  const on = ['hollow', 'rgb', 'negative', 'shadow'].filter((k) => res.fx[k]);
+  if (on.length) console.log(`Text controls: ${on.join(', ')}${res.fx.shadow ? ` (shadow ${res.fx.shadow})` : ''}`);
   console.log(`${res.words} words in ${res.groups} groups, mode ${res.mode}, ${res.size}px at y=${Math.round(res.centerY)}, duration ${res.duration} s`);
   console.log(a.insert ? 'Host inserted into index.html' : `Host element:\n${res.host}`);
   for (const w of res.warnings) console.log(`WARNING: ${w}`);
