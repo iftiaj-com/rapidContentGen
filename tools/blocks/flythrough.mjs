@@ -293,7 +293,9 @@ ${inlineMotionStyles()}
           nodes.forEach(function (n, i) {
             var f = cardFx[i];
             var show = visible(i, t) && f.alpha > 0.004;
-            n.card.style.visibility = show ? "visible" : "hidden";
+            // "" (inherit), never "visible": an explicit visible would override HyperFrames hiding
+            // the whole sub-composition after its window, and the cards would stay on screen.
+            n.card.style.visibility = show ? "" : "hidden";
             if (cardOffsets) n.mv.style.transform = "translate(" + (cardOffsets[i].x * U).toFixed(3) + "px, " + (cardOffsets[i].y * U).toFixed(3) + "px)";
             n.fx.style.transform = "translate(" + (f.x * U).toFixed(3) + "px, " + (f.y * U).toFixed(3) + "px) scale(" + f.scale.toFixed(5) + ")";
             n.fx.style.opacity = String(Math.max(0, Math.min(1, f.alpha)));
