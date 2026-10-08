@@ -1,0 +1,40 @@
+{
+  "job": "R7 tracking, cut-outs, layers, transitions",
+  "phase": "P7",
+  "inputs": {
+    "video": "videos/Video_for_testing.mp4 (the user test clip, git-ignored)"
+  },
+  "render": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 24,
+    "duration": 13.4
+  },
+  "audio": {
+    "integratedLufs": [
+      -16,
+      -12
+    ],
+    "truePeakMax": -1,
+    "gainReductionInLog": false
+  },
+  "checks": {
+    "trackFaceFrames": "346/346",
+    "trackRepeatable": true,
+    "matteChokePx": 6,
+    "verify": "11/11"
+  },
+  "lastRun": {
+    "date": "2026-10-08",
+    "integratedLufs": -14.4,
+    "truePeakDb": -1.7,
+    "renderSeconds": 99,
+    "verify": "11/11 PASS",
+    "mixCheck": {
+      "lufs": -14.3,
+      "truePeak": -1.6
+    },
+    "matteSeconds346Frames": 200,
+    "trackSeconds48Frames": 11.5
+  }
+}

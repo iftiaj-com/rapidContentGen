@@ -60,6 +60,10 @@ export function doctor() {
   const kokoro = existsSync(join(models, 'kokoro-v1.0.onnx')) && existsSync(join(models, 'voices.bin'));
   add('Kokoro weights', kokoro, kokoro ? models : 'not copied yet (Phase 1)', true);
   add('label font', Boolean(cfg.fonts?.label && existsSync(cfg.fonts.label)), cfg.fonts?.label || 'set fonts.label (contact sheet timestamps)', true);
+  const mp = join(models, 'mediapipe');
+  const mpFiles = ['wasm/vision_bundle.mjs', 'wasm/vision_wasm_internal.wasm', 'models/face_landmarker.task', 'models/hand_landmarker.task', 'models/selfie_segmenter.tflite'];
+  const mpMissing = mpFiles.filter((f) => !existsSync(join(mp, f)));
+  add('MediaPipe (rcg track, rcg matte)', !mpMissing.length, mpMissing.length ? `missing ${mpMissing.join(', ')}: copy from Adits with rcg provenance copy (docs/PROVENANCE.md)` : mp, true);
   let fxBrowser = null;
   try { fxBrowser = findChrome(); } catch { /* none found */ }
   add('browser for rcg fx', Boolean(fxBrowser && fxBrowser.kind !== 'headless-shell'),

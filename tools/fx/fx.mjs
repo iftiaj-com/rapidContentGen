@@ -9,6 +9,7 @@
 //   node tools/fx/fx.mjs --job <dir> --effect ghost --src assets/x.mp4 [--start 2] [--duration 3]
 //        [--param id=value ...] [--src2 assets/y.mp4 --start2 0] [--audio <music> --audio-offset s]
 //        [--seed 1] [--fps 24] [--size 1080x1920] [--out assets/fx/name.mp4] [--keep-frames] [--sheet]
+//        [--matte assets/matte/x-fg.webm --matte-start 0 --apply bg|fg|both]  (effect target: -fg.webm = the effect on the subject only)
 // Effects and their defaults: library/fx/effects.json.
 
 import { execFile } from 'node:child_process';
@@ -32,7 +33,7 @@ function ffmpegBin() {
   const { bin } = loadConfig();
   return bin.hfFfmpeg || bin.ffmpeg || 'ffmpeg';
 }
-const ff = (args) => exec(ffmpegBin(), ['-v', 'error', '-y', ...args], { maxBuffer: 1 << 26, windowsHide: true });
+const ff = (args) => exec(ffmpegBin(), ['-nostdin', '-v', 'error', '-y', ...args], { maxBuffer: 1 << 26, windowsHide: true });
 
 function parseValue(v) {
   if (v === 'true' || v === 'false') return v === 'true';
@@ -166,6 +167,26 @@ export async function runFx(opts) {
       ? ['-c:v', 'prores_ks', '-profile:v', '4444', '-pix_fmt', 'yuva444p10le']
       : ['-c:v', 'libx264', '-crf', '12', '-preset', 'medium', '-pix_fmt', 'yuv420p', '-movflags', '+faststart'];
     await ff(['-framerate', String(fps), '-start_number', String(skip + 1), '-i', join(work, 'out', '%06d.png'), ...enc, outAbs]);
+    // Effect target "Foreground" (Adits pnpApplyTo = fg): the effect kept only on the subject,
+    // as an alpha clip, using the alpha of the rcg matte cut-out for the same frames. The plain
+    // clip above is the "Background" version (place the clean cut-out over it with rcg pnp).
+    let fg = null;
+    if (opts.matte && ['fg', 'both'].includes(String(opts.apply || 'both'))) {
+      const matteAbs = resolve(jobDir, opts.matte);
+      if (!existsSync(matteAbs)) throw new Error(`--matte not found: ${opts.matte}`);
+      const mStart = start - Number(opts['matte-start'] || 0);
+      if (mStart < 0) throw new Error(`The range starts before the matte (--matte-start ${opts['matte-start']})`);
+      mkdirSync(join(work, 'mask'), { recursive: true });
+      await ff(['-c:v', 'libvpx-vp9', '-ss', String(mStart), '-t', String(duration), '-i', matteAbs,
+        // alphaextract first: scaling yuva420p first can negotiate a format without the alpha plane.
+        '-vf', `fps=${fps},alphaextract,scale=${W}:${H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${W}:${H},format=gray`,
+        '-start_number', '1', join(work, 'mask', '%06d.png')]);
+      fg = outAbs.replace(/\.\w+$/, '-fg.webm');
+      await ff(['-framerate', String(fps), '-start_number', String(skip + 1), '-i', join(work, 'out', '%06d.png'),
+        '-framerate', String(fps), '-start_number', '1', '-i', join(work, 'mask', '%06d.png'),
+        '-filter_complex', '[0]format=rgb24[c];[1]format=gray[m];[c][m]alphamerge,format=yuva420p', '-shortest',
+        '-c:v', 'libvpx-vp9', '-pix_fmt', 'yuva420p', '-crf', '18', '-b:v', '0', '-row-mt', '1', '-deadline', 'good', '-cpu-used', '2', '-auto-alt-ref', '0', fg]);
+    }
     const outInfo = await probe(outAbs);
     let sheet = null;
     if (opts.sheet) {
@@ -173,7 +194,7 @@ export async function runFx(opts) {
       const n = 7;
       await contactSheet(outAbs, sheet, { times: Array.from({ length: n }, (_, k) => +((outInfo.duration * (k + 0.5)) / n).toFixed(2)), cols: 7 });
     }
-    return { out: relative(jobDir, outAbs).split('\\').join('/'), frames: frames - skip, preroll, seconds: +((Date.now() - t0) / 1000).toFixed(1), duration: outInfo.duration, size: `${outInfo.video.width}x${outInfo.video.height}`, sheet, browser: browser.chrome.kind };
+    return { out: relative(jobDir, outAbs).split('\\').join('/'), frames: frames - skip, preroll, seconds: +((Date.now() - t0) / 1000).toFixed(1), duration: outInfo.duration, size: `${outInfo.video.width}x${outInfo.video.height}`, sheet, fg: fg && relative(jobDir, fg).split('\\').join('/'), browser: browser.chrome.kind };
   } finally {
     if (!opts['keep-frames']) rmSync(work, { recursive: true, force: true });
     else console.log(`frames kept in ${work}`);
@@ -191,5 +212,5 @@ if (isMain(import.meta.url)) {
     process.exit(2);
   }
   const r = await runFx({ ...a, onProgress: (f, n) => { if (f % 24 === 0 || f === n) process.stdout.write(`  frame ${f}/${n}\n`); }, onLog: (l) => console.log(`  page log: ${l.slice(-5).join(' | ')}`), onConsole: (l) => console.log(`  page console (${l.length}):\n    ${l.join('\n    ')}`) });
-  console.log(`Wrote ${r.out}: ${r.frames} frames, ${r.size}, ${r.duration.toFixed(2)} s, in ${r.seconds} s (${r.browser})${r.sheet ? `\nSheet: ${r.sheet}` : ''}`);
+  console.log(`Wrote ${r.out}: ${r.frames} frames, ${r.size}, ${r.duration.toFixed(2)} s, in ${r.seconds} s (${r.browser})${r.fg ? `\nForeground (effect on the subject only, alpha): ${r.fg}` : ''}${r.sheet ? `\nSheet: ${r.sheet}` : ''}`);
 }

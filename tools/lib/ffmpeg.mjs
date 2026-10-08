@@ -20,8 +20,11 @@ function bins() {
 
 export async function run(binName, args, { maxBuffer = 64 * 1024 * 1024 } = {}) {
   const bin = bins()[binName] || binName;
+  // -nostdin: ffmpeg otherwise watches stdin for keys and can stall when run from a background shell
+  // (a stalled mix-check held its output file open and failed the next render).
+  const full = binName === 'ffmpeg' && args[0] !== '-nostdin' ? ['-nostdin', ...args] : args;
   try {
-    return await execFileAsync(bin, args, { maxBuffer, windowsHide: true });
+    return await execFileAsync(bin, full, { maxBuffer, windowsHide: true });
   } catch (err) {
     const tail = String(err.stderr || err.message || '').split('\n').slice(-12).join('\n');
     throw new Error(`${binName} failed: ${tail}`);
@@ -31,7 +34,7 @@ export async function run(binName, args, { maxBuffer = 64 * 1024 * 1024 } = {}) 
 /** Run ffmpeg and collect stdout as a Buffer (for raw PCM / raw frames). */
 export function runBuffer(args) {
   return new Promise((resolvePromise, reject) => {
-    const proc = spawn(bins().ffmpeg, args, { windowsHide: true });
+    const proc = spawn(bins().ffmpeg, ['-nostdin', ...args], { windowsHide: true });
     const chunks = [];
     let stderr = '';
     proc.stdout.on('data', (c) => chunks.push(c));

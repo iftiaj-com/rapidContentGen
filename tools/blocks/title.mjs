@@ -11,7 +11,7 @@
 //
 // Usage:
 //   node tools/blocks/title.mjs --job <dir> --text "MOP|STAR" [--preset slam] [--style trailer|tiktok|neon|kinetic|...]
-//        [--position center|top-band|captions] [--size 160] [--start 11.03] [--duration 1.25]
+//        [--position center|top-band|captions] [--y px] [--size 160] [--color "#3b1f4a"] [--start 11.03] [--duration 1.25]
 //        [--id title-main] [--track 40] [--seed 1] [--insert]
 // "|" in --text starts a new line.
 
@@ -71,7 +71,7 @@ export function buildTitleHtml({ id, lines, style, preset, width, height, center
         ${style.letterSpacing ? `letter-spacing: ${style.letterSpacing};` : ''}
         line-height: 1.02;
         text-align: center;
-        text-shadow: ${glow}0 3px 16px rgba(0, 0, 0, 0.75);
+        text-shadow: ${style.shadow || `${glow}0 3px 16px rgba(0, 0, 0, 0.75)`};
         ${style.stroke ? `-webkit-text-stroke: ${Math.max(2, Math.round(size * 0.04))}px ${style.stroke}; paint-order: stroke fill;` : ''}
       }
       #${id}-card .line {
@@ -211,8 +211,10 @@ export function generateTitle(opts) {
   const preset = opts.preset || 'slam';
   if (!PRESETS.includes(preset)) throw new Error(`Unknown preset "${preset}". Presets: ${PRESETS.join(', ')}`);
   const styleName = opts.style || 'trailer';
-  const style = styleName === 'trailer' ? TRAILER_STYLE : readJson(join(ROOT, 'library', 'caption-styles.json')).styles[styleName];
-  if (!style) throw new Error(`Unknown style "${styleName}"`);
+  const base = styleName === 'trailer' ? TRAILER_STYLE : readJson(join(ROOT, 'library', 'caption-styles.json')).styles[styleName];
+  if (!base) throw new Error(`Unknown style "${styleName}"`);
+  // --color: dark text for light footage (no glow, a light shadow), as text behind a subject often needs.
+  const style = opts.color ? { ...base, color: opts.color, glow: null, stroke: null, shadow: '0 2px 10px rgba(0, 0, 0, 0.18)' } : base;
   const lines = String(opts.text || '').split('|').map((s) => s.trim()).filter(Boolean);
   if (!lines.length) throw new Error('--text is required');
   const geo = jobGeometry(jobDir);
@@ -248,7 +250,7 @@ export function generateTitle(opts) {
 if (isMain(import.meta.url)) {
   const a = parseArgs();
   if (!a.job || !a.text) {
-    console.error('Usage: title.mjs --job <dir> --text "LINE ONE|LINE TWO" [--preset slam|stagger-up|kinetic-pop|type-on] [--style trailer|<caption style>] [--position center|top-band|captions] [--size px] [--start s] [--duration s] [--id x] [--insert]');
+    console.error('Usage: title.mjs --job <dir> --text "LINE ONE|LINE TWO" [--preset slam|stagger-up|kinetic-pop|type-on] [--style trailer|<caption style>] [--position center|top-band|captions] [--size px] [--color css] [--start s] [--duration s] [--id x] [--insert]');
     process.exit(2);
   }
   const res = generateTitle({ ...a, insert: Boolean(a.insert) });

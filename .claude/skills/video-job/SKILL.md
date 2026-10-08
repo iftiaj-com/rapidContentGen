@@ -125,6 +125,27 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
   (`--list` prints the names; presets and defaults are in `library/fx/effects.json`). READ the sheet
   and any "page console" lines. Some Adits defaults are strong on 9:16 (lessons 13ag): smoke
   ambient covers the frame (use `--preset jet`, or `anamSmokeCount=30 anamSmokeIntensity=25`).
+- Subject tracking, cut-outs and layers (talking heads, "text behind the subject"). Build order
+  matters (lessons 13an): cameras, then PNP / fx layers, then titles and captions, then layers,
+  then transitions.
+  1. `rcg track --job jobs/<id> --src assets/<clip> --debug --name v1` and READ the debug sheet
+     (orange boxes came from the crop pass; gesture labels need checking, lessons 13al).
+  2. `rcg matte --job jobs/<id> --src assets/<clip> --plate --sheet --choke 6 --name v1` and READ the
+     sheet. Good on mid shots; full-body action leaks (then ask about HyperFrames' u2net download).
+  3. Face-anchored camera per shot wrapper: `rcg camera --job jobs/<id> --target "#w1" --track data/track-v1.json
+     --cue "0:face.follow:z=1.05:x=0.5:y=0.35:d=0" --cue "2.4:face.zoom:z=1.7:d=0.3" --cue "4.2:face.zoom:z=1.05"`
+     (`face.punch` = instant; a 16:9 clip is reframed to 9:16 automatically).
+  4. `rcg pnp --job jobs/<id> --base "#v1" --cutout assets/matte/v1-fg.webm --id p1` (aligned: text can go
+     between), or a side copy: `--x -0.3 --scale 0.85 --opacity 0.6 --media-offset -2 --show 5.6-8.6
+     --enter blocks --z 25` with an aligned PNP at z 30 over it so the copy sits behind the subject.
+  5. Text behind the subject: `rcg title ... --color "#3b1f4a" --position top-band --id kw1 --insert`, then
+     `rcg layer --job jobs/<id> --id kw1 --behind p1`. Captions: `rcg layer --id cap-vo1 --behind p1
+     --depth 0.5` (behind for the first half of each word or group, then in front) or `--z 40` (front).
+  6. Effects on the background or the subject: `rcg fx ... --size <source WxH> --matte assets/matte/v1-fg.webm
+     --apply both --out assets/fx/x.mp4`, then `rcg target --job jobs/<id> --base "#v4" --fx assets/fx/x.mp4
+     --fx-start <s> --cutout assets/matte/v1-fg.webm --windows "a-b:bg,b-c:fg"`.
+  7. Cuts: `rcg transition --job jobs/<id> --at 5 --style zoom_punch|glitch_punch|crossfade|flash_white|flash_black
+     --to "#w2" [--from "#w1"]` (Adits defaults: 0.25 s).
 - Root `data-duration` must equal the plan.
 
 ## 7. Check

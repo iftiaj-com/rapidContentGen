@@ -36,10 +36,17 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | ☐ | Social frames, doodle overlay (rough.js) | `effects/frames/SocialFrames.js`, Doodle | Port | `library/blocks/frames/`, `doodle/` | P6 |
 | ☑ | Advance JSON segment schema + prompt builder | `effects/auto/advance/` | Learn → shape of `beat-sheet.json` | `docs/job-spec.md` | P0 |
 | ☑ | Presets: auto (18), VJ, Advance recipes (6); time-remap; speed sync | `auto-presets.js`, `vj-presets.js`, `advance/recipes.js`, `TimeRemap.js`, `core/main.js` Speed Sync | Learn → 6 styles + 8 sections (`rcg recipe`); TimeRemap ported (seeded); Speed Sync ported as a rate lane (`rcg ramp`, at least 1x). VJ presets wait for the P6 footage FX | `library/recipes/`, `tools/recipes/`, `tools/blocks/ramp.mjs` | P5 |
-| — | Transitions: flash, glitch punch, zoom punch, crossfade | `effects/auto/Transitions.js` | HF (registry transition blocks) | — | — |
+| ☑ | Transitions: flash white/black, glitch punch, zoom punch, crossfade | `effects/auto/Transitions.js` | Port: same curves and constants; timeline time and a seeded glitch instead of `performance.now()` / `Math.random()`; the crossfade works (Adits blends a frame with itself); punch and bands move the footage layers and any PNP following them | `tools/blocks/transition.mjs` (`rcg transition`) | P7 |
 | — | Audio mixing; `AudioEngine.analyze()` | `core/audio-engine.js` | HF mixing; analysis replaced by the AditsStudio port | — | — |
-| — | Grading, HSL, color mask; background removal (MediaPipe) | `AdvLightroom`, `ColorMask`, `SelfieMatte` | HF (`data-color-grading`, `remove-background`) | — | — |
-| — | Face/hand tracking, MIDI, recorders, share links, Worker, UI, HEIC | various | Skip | — | — |
+| — | Grading, HSL | `AdvLightroom` | HF (`data-color-grading`) | — | — |
+| ☑ | Color mask (Global Color Mask: chroma key, modes media / effect / color, tolerance, feather, invert) | `core/ColorMask.js` | Copy (unmodified, WebGPU path); run by `rcg fx --effect color-mask` (shim); side B = other media or an effect clip | `library/adits-fx/core/ColorMask.js`, `library/fx/shims/color-mask.js` | P7 |
+| ☑ | Background removal, pre-baked (MediaPipe selfie segmenter) | `core/ARBackgroundRemoval.js`, `core/BakedBackgroundRemoval.js`, `core/lib/mediapipe-wasm/`, `mediapipe-models/selfie_segmenter.tflite` | Port: every source frame at the source rate, VP9-alpha cut-out + hole-cut plate; adds threshold, temporal blend, feather and choke (Adits has no refinement). MediaPipe files copied, git-ignored (`models/mediapipe/`) | `tools/track/matte.mjs` (`rcg matte`), `library/vision/` | P7 |
+| ☑ | Face and hand tracking (FaceLandmarker, HandLandmarker; Adits gesture fallback, pinch, palm open, ROI crop pass) | `core/VisionEngine.js`, `core/GestureEngine.js`, `face_landmarker.task`, `hand_landmarker.task` | Port: every frame on frame time (Adits: 15 fps on wall time), crop fallback for small faces, One-Euro on frame time, gesture events (120 ms hold) | `tools/track/track.mjs` (`rcg track`) | P7 |
+| ☑ | Camera moves that follow the tracked subject (zoom, punch, follow; landscape to 9:16 reframe) | new (Adits has no face-follow camera; its tracking drives 3D parallax and gesture zoom) | New: `face.*` cues on the camera block, subject path from the track, uncropped layout so the camera can pan the whole source | `library/runtime/face-reframe.js`, `tools/blocks/camera.mjs` | P7 |
+| ☑ | PNP mode: the same media again on top with its background removed; plus offset / side copy, another moment, filters, show windows, block build | `core/main.js` 9146-9216 (pnpToggle, pnpRemoveBgToggle, pnpOpacitySlider) | Port: a cut-out layer that follows the shot's camera; Adits has no position, scale or entrance controls for PnP | `tools/blocks/pnp.mjs` (`rcg pnp`) | P7 |
+| ☑ | Captions "BG Vid to PNP Vid" and back (depth position per caption line) | `core/main.js` 9138-9144 (atcBgToPnpToggle, atcBgToPnpSlider) | Port: any block (captions, titles) behind or in front of a PNP; timed switches, or Adits' depth rule per caption group | `tools/blocks/layer.mjs` (`rcg layer`) | P7 |
+| ☑ | Effects Target (background / foreground), switchable during the edit | `core/main.js` 8679, 9147-9206 (pnpApplyTo) | Port: `rcg fx --matte --apply both` writes the effect clip and its subject-only alpha twin; `rcg target` places them by time window (bg: effect under the clean cut-out; fg: masked effect on top) | `tools/fx/fx.mjs`, `tools/blocks/target.mjs` | P7 |
+| — | MIDI, recorders, share links, Worker, UI, HEIC | various | Skip | — | — |
 
 ### 2. AditsShaders
 
@@ -106,19 +113,26 @@ Counts are checklist rows (one row can hold several features). "Waiting" means n
 
 | Source | Ported ☑ | Waiting ☐ | On hold | No work needed |
 |---|---|---|---|---|
-| Adits_Modular | 13 | 5 | 1 (GLB models) | 4 |
+| Adits_Modular | 21 | 5 | 1 (GLB models) | 3 |
 | AditsShaders | 6 | 0 | 0 | 1 |
 | AditsStudio | 2 | 0 | 0 | 2 |
 | flowEditor | 6 | 2 | 0 | 1 |
 | TTS app | 6 | 1 | 0 | 2 |
 | mop-star lessons | 2 | 0 | 0 | 0 |
-| **Total** | **35** | **8** | **1** | **10** |
+| **Total** | **43** | **8** | **1** | **9** |
 
 **Adits effects in `library/adits-fx/` (copied unmodified, run by `rcg fx`), 11 of them:**
 - Footage, canvas: Ghost (`AdvGhost`), Motion Trail (`MotionTrails`), Origami.
 - Footage, WebGPU: Heat Haze (`HeatHaze`), Blow Pixels (`BlowPixels`).
 - Footage, GLSL: Frame Tunnel (`FrameTunnel`), Reveal Under (`RevealUnder`), Split Screen (`SplitScreen`).
 - 3D environments: Smoke (`SmokeEnv`), Rain (`RainSystem`), Holo Sheen (`HoloSheen`).
+
+**Ported in P7 (tracking and layers), from Adits:** MediaPipe face and hand tracking (`rcg track`),
+background removal with the selfie segmenter (`rcg matte`), PNP mode (`rcg pnp`), captions BG Vid to
+PNP Vid (`rcg layer`), Effects Target bg/fg (`rcg target`), the four cut transitions
+(`rcg transition`), the Global Color Mask (`rcg fx --effect color-mask`), plus new face-anchored
+camera cues (`rcg camera --track`). MediaPipe wasm and 3 models are copied but git-ignored
+(`models/mediapipe/`, like the Kokoro weights).
 
 **Still waiting (rows marked ☐ above):**
 - Adits: BlackHole, Clouds and TunnelCorridor environments; PixelStretch, ReversePhi and the VJ
@@ -139,6 +153,7 @@ Counts are checklist rows (one row can hold several features). "Waiting" means n
 | P4 Flythrough | flowEditor modules, flythrough block | R4 + R4b | ☑ done 2026-10-08: R4 8 cards (board, star) snapped to downbeats within 6 ms, -15.8 LUFS, 11/11 verify; R4b cards motion, silent, 8/8; stack arrangement checked by snapshot |
 | P5 Integration | recipes, all-in-one job | R5 | ☑ done 2026-10-08: cosmic-promo recipe planned and built in one command (3D, flythrough, shader, beat-flash, camera, ramp, voice, captions, titles); 14.5 s, -15.7 LUFS, 11/11 verify |
 | P6 Optional (selected subset) | `rcg fx` harness; Ghost, Motion Trail, Origami, Heat Haze, Blow Pixels, FrameTunnel, RevealUnder, SplitScreen; SmokeEnv, RainSystem, HoloSheen | R6 | ☑ subset done 2026-10-08: 11 effects rendered offline into a 13.75 s reel, -14.8 LUFS, 11/11 verify; Blow Pixels at intensity 0 returns its input exactly; 3 effects byte-identical across two runs |
+| P7 Tracking + PNP | MediaPipe face/hand tracking, face-anchored camera, background removal, PNP, layers, transitions, colour mask, effect target | R7 | ☑ done 2026-10-08: a 13.4 s 9:16 edit of the user's 16:9 test clip: face found on 346/346 frames (tracking identical on two runs of a 2 s range), keywords behind the subject, side copy, 4 transitions, colour mask, Blow Pixels switched bg to fg; -14.4 LUFS, 11/11 verify |
 | P6 remainder | other footage FX and environments, newspaper background, frames/doodle, `.flow` import, extra TTS engines | none yet | not started |
 
 **Note (2026-10-08):** renders made before this date (mop-star, R0-R3b) had a black 8 px strip down the right edge from an ffmpeg 8.1 conversion bug (lessons 16b). HyperFrames now uses ffmpeg 9.0.2, and R0, R1, R1b, R2 (final + repeat, 51.7 dB apart), R3 and R3b were re-rendered: all pass verify, including the new edge check. The mop-star trailer in `videos/` still has the strip.

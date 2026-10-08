@@ -33,10 +33,77 @@ import { isMain, parseArgs } from '../lib/cli.mjs';
 import { ROOT } from '../lib/config.mjs';
 
 const RUNTIME = join(ROOT, 'library', 'runtime', 'camera-moves.js');
+const FACE_RUNTIME = join(ROOT, 'library', 'runtime', 'face-reframe.js');
 const require = createRequire(import.meta.url);
 export const Moves = require(RUNTIME);
+export const Reframe = require(FACE_RUNTIME);
 
 const isPreset = (move) => String(move).startsWith('vc.');
+const isFace = (move) => String(move).startsWith('face.');
+
+// Subject-anchored cues (need --track): defaults per kind.
+const FACE_KINDS = {
+  zoom: { d: 0.35 },            // ease the zoom (z) about the subject; x/y/k as given or unchanged
+  punch: { d: 0 },              // the same, instantly (a jump cut in on the subject)
+  follow: { d: 0.5, k: 1 },     // move the subject to (x, y) and keep it there
+  off: { d: 0.35, z: 1, k: 0 }, // back to the plain frame
+};
+
+/** "[layer/]2.0:face.zoom[:z=1.8][:x=0.5][:y=0.38][:k=1][:d=0.35][:ease=power3]" -> face cue. */
+export function parseFaceCue(spec) {
+  let s = String(spec);
+  const slash = s.indexOf('/');
+  if (slash > 0) s = s.slice(slash + 1);
+  const [at, move, ...opts] = s.split(':');
+  const kind = move.slice(5);
+  if (!FACE_KINDS[kind]) throw new Error(`Unknown face cue "${move}". One of: ${Object.keys(FACE_KINDS).map((k) => `face.${k}`).join(', ')}`);
+  const cue = { at: Number(at), move, ...FACE_KINDS[kind] };
+  if (!Number.isFinite(cue.at)) throw new Error(`Bad cue time in "${spec}"`);
+  for (const o of opts) {
+    const [k, v] = o.split('=');
+    if (['z', 'x', 'y', 'k', 'd'].includes(k)) cue[k] = Number(v);
+    else if (k === 'ease') {
+      if (!Reframe.EASES[v]) throw new Error(`Unknown ease "${v}". One of: ${Object.keys(Reframe.EASES).join(', ')}`);
+      cue.ease = v;
+    } else throw new Error(`Unknown face cue option "${o}" in "${spec}"`);
+  }
+  return cue;
+}
+
+/**
+ * The subject path for the face cues: one point per track frame (source-normalized),
+ * gaps filled from the nearest found frame, then a centred moving average of `smooth`
+ * seconds (offline, so it may look ahead: a calmer follow than a live tracker).
+ */
+export function subjectPath(track, { anchor = 'face', smooth = 0.25 } = {}) {
+  let ax;
+  let ay;
+  if (anchor === 'face') { ax = track.face.cx; ay = track.face.cy; }
+  else if (anchor === 'eyes') { ax = track.face.ex; ay = track.face.ey; }
+  else if (anchor.startsWith('hand')) {
+    const side = anchor.split(':')[1];
+    const hands = track.hands.filter((h) => !side || h.side === side);
+    if (!hands.length) throw new Error(`No ${side || ''} hand in the track`);
+    ax = track.face.cx.map((_, i) => { const v = hands.map((h) => (h.present[i] ? h.x[i] : null)).filter((x) => x != null); return v.length ? v.reduce((a, b) => a + b) / v.length : null; });
+    ay = track.face.cy.map((_, i) => { const v = hands.map((h) => (h.present[i] ? h.y[i] : null)).filter((x) => x != null); return v.length ? v.reduce((a, b) => a + b) / v.length : null; });
+  } else throw new Error(`--anchor must be face, eyes, hand, hand:Left or hand:Right`);
+  const fill = (arr) => {
+    const out = arr.slice();
+    let last = null;
+    for (let i = 0; i < out.length; i++) { if (out[i] != null) last = out[i]; else if (last != null) out[i] = last; }
+    let next = null;
+    for (let i = out.length - 1; i >= 0; i--) { if (out[i] != null) next = out[i]; else if (next != null) out[i] = next; }
+    if (out.some((v) => v == null)) throw new Error(`The track has no ${anchor} at all; cannot anchor face cues`);
+    return out;
+  };
+  const box = (arr) => {
+    const r = Math.max(0, Math.round((smooth * track.fps) / 2));
+    if (!r) return arr;
+    return arr.map((_, i) => { let s = 0; let n = 0; for (let j = Math.max(0, i - r); j <= Math.min(arr.length - 1, i + r); j++) { s += arr[j]; n++; } return s / n; });
+  };
+  const r4 = (v) => Math.round(v * 10000) / 10000;
+  return { fps: track.fps, start: track.start, ax: box(fill(ax)).map(r4), ay: box(fill(ay)).map(r4) };
+}
 
 /**
  * "[layer/]5.5:whip_pan_right[:i=1.2][:s=1][:loop][:bars=1][:from=0.5][:rev]" -> cue object.
@@ -84,14 +151,14 @@ export function parseCue(spec, { bpm } = {}) {
   return cue;
 }
 
-function rootAttrs(html) {
+export function rootAttrs(html) {
   const tag = html.match(/<[a-z]+\b[^>]*data-composition-id[^>]*>/i)?.[0] || '';
   const num = (n) => Number(tag.match(new RegExp(`${n}="([^"]+)"`))?.[1]);
   return { width: num('data-width') || 1080, height: num('data-height') || 1920, duration: num('data-duration') };
 }
 
 /** Opening tag, inner HTML and end offset of the element with this id (same-tag nesting counted). */
-function elementSpan(html, id) {
+export function elementSpan(html, id) {
   const open = new RegExp(`<([a-z][\\w-]*)\\b[^>]*\\bid="${id}"[^>]*>`, 'i').exec(html);
   if (!open) return null;
   const tag = open[1].toLowerCase();
@@ -143,8 +210,44 @@ export async function applyCamera(opts) {
   const tid = target.slice(1);
   const idMatch = new RegExp(`id="${tid}"`);
   if (!idMatch.test(html.replace(/<!--[\s\S]*?-->/g, ''))) throw new Error(`No element ${target} in index.html`);
-  const cues = [].concat(opts.cue || []).map((c) => parseCue(c, { bpm: opts.bpm })).sort((a, b) => a.at - b.at);
-  if (!cues.length) throw new Error('Give at least one --cue at:move');
+  const specs = [].concat(opts.cue || []);
+  const moveOf = (c) => String(c).replace(/^[^/:]*\//, '').split(':')[1] || '';
+  const cues = specs.filter((c) => !isFace(moveOf(c))).map((c) => parseCue(c, { bpm: opts.bpm })).sort((a, b) => a.at - b.at);
+  const faceCues = specs.filter((c) => isFace(moveOf(c))).map(parseFaceCue).sort((a, b) => a.at - b.at);
+  if (!cues.length && !faceCues.length) throw new Error('Give at least one --cue at:move');
+
+  // Face cues: the tracked subject path, the tracked clip's timing and the cover fit of its source.
+  let face = null;
+  if (faceCues.length) {
+    if (!opts.track) throw new Error('face.* cues need --track data/track-<name>.json (rcg track)');
+    const track = JSON.parse(readFileSync(resolve(jobDir, opts.track), 'utf8'));
+    const span = elementSpan(html, tid);
+    const clipTag = opts['track-clip']
+      ? (html.match(new RegExp(`<video\\b[^>]*\\bid="${String(opts['track-clip']).replace(/^#/, '')}"[^>]*>`)) || [])[0]
+      : (span?.inner.match(/<video\b[^>]*>/i) || [])[0];
+    if (!clipTag) throw new Error(`No tracked <video> found${opts['track-clip'] ? ` (${opts['track-clip']})` : ` inside ${target}`}; pass --track-clip "#id"`);
+    const attr = (n) => Number(clipTag.match(new RegExp(`${n}="([^"]+)"`))?.[1] || 0);
+    const k = Math.max(root.width / track.width, root.height / track.height);
+    const dw = +(track.width * k).toFixed(2);
+    const dh = +(track.height * k).toFixed(2);
+    // Uncrop: object-fit: cover crops a source of another aspect (16:9 on 9:16) to the element,
+    // so the camera could never pan to the rest of it. Lay the clip out at its full cover size,
+    // centred; the canvas crops instead. --uncrop false keeps the cropped layout.
+    const uncrop = String(opts.uncrop ?? 'true') !== 'false' && (dw > root.width + 0.5 || dh > root.height + 0.5);
+    if (uncrop) {
+      const style = `left: ${((root.width - dw) / 2).toFixed(2)}px; top: ${((root.height - dh) / 2).toFixed(2)}px; width: ${dw}px; height: ${dh}px; object-fit: fill;`;
+      let tag = clipTag.replace(/\sstyle="[^"]*"/, '').replace(/\sdata-rcg-uncrop\b/, '').replace(/\sdata-layout-allow-overflow\b/, '');
+      tag = tag.replace(/^<video\b/i, `<video style="${style}" data-rcg-uncrop data-layout-allow-overflow`);
+      html = html.replace(clipTag, tag);
+    }
+    face = {
+      cues: faceCues,
+      track: subjectPath(track, { anchor: opts.anchor || 'face', smooth: Number(opts['track-smooth'] ?? 0.25) }),
+      map: { W: root.width, H: root.height, dw, dh, cw: uncrop ? dw : root.width, ch: uncrop ? dh : root.height },
+      clip: { start: attr('data-start'), mediaStart: attr('data-media-start') },
+      uncrop,
+    };
+  }
   const id = opts.id || `cam-${tid}`;
   const warnings = [];
   const tweenOnTarget = new RegExp(`tl\\.(?:to|from|fromTo|set)\\(\\s*["']${target}["'][^)]*(?:scale|x:|y:|rotation|transform)`);
@@ -197,8 +300,13 @@ export async function applyCamera(opts) {
   mkdirSync(join(jobDir, 'lib'), { recursive: true });
   copyFileSync(RUNTIME, join(jobDir, 'lib', 'camera-moves.js'));
   html = html.replace(/<script data-rcg="camera-runtime">[\s\S]*?<\/script>\s*/, ''); // older inline form
-  const runtimeTag = '<script src="lib/camera-moves.js" data-rcg="camera-runtime"></script>';
-  if (!html.includes(runtimeTag)) {
+  const runtimeTags = ['<script src="lib/camera-moves.js" data-rcg="camera-runtime"></script>'];
+  if (face) {
+    copyFileSync(FACE_RUNTIME, join(jobDir, 'lib', 'face-reframe.js'));
+    runtimeTags.push('<script src="lib/face-reframe.js" data-rcg="face-runtime"></script>');
+  }
+  for (const runtimeTag of runtimeTags) {
+    if (html.includes(runtimeTag)) continue;
     const mainScript = html.lastIndexOf('<script>', html.lastIndexOf('window.__timelines'));
     if (mainScript < 0) throw new Error('Could not find the main timeline script.');
     html = `${html.slice(0, mainScript)}${runtimeTag}\n    ${html.slice(mainScript)}`;
@@ -230,8 +338,19 @@ export async function applyCamera(opts) {
           var f = frame(AUD.length, t), a = AUD[f], b = AUD[Math.max(0, f - 1)];
           return { bass: a[0], mid: a[1], treble: a[2], prevBass: b[0] };
         }
-        function apply(t) {
+        var FACE = ${face ? JSON.stringify(face) : 'null'};
+        // The pose for time t: the camera move, then (face cues) the subject-anchored reframe.
+        function pose(t) {
           var c = RCGCameraMoves.poseToCss(RCGCameraMoves.poseAt(CUES, t, kickAt, audioAt), W, H);
+          if (!FACE) return { transform: c.transform, filter: c.filter };
+          var r = RCGFaceReframe.reframe(FACE.cues, t, FACE.track, FACE.map, FACE.clip);
+          return { transform: c.transform + " " + r.transform, filter: c.filter };
+        }
+        // Other layers that must move with this one (a PNP cut-out over the footage) read it here.
+        window.RCGCamPoses = window.RCGCamPoses || {};
+        window.RCGCamPoses[${JSON.stringify(target)}] = pose;
+        function apply(t) {
+          var c = pose(t);
           el.style.transform = c.transform;
           el.style.filter = c.filter;
         }
@@ -255,7 +374,7 @@ export async function applyCamera(opts) {
     try { new vm.Script(m[1]); } catch (err) { throw new Error(`index.html script would not parse after inserting the camera: ${err.message}`); }
   }
   writeFileSync(indexPath, html);
-  return { id, target, cues, kick: Boolean(kick), react: Boolean(aud), fill: presetCues.length ? fill : null, warnings };
+  return { id, target, cues, faceCues, kick: Boolean(kick), react: Boolean(aud), fill: presetCues.length ? fill : null, warnings };
 }
 
 if (isMain(import.meta.url)) {
@@ -270,6 +389,7 @@ if (isMain(import.meta.url)) {
       console.log(`${n.padEnd(24)} 2D preset, speed ${r[13]}${r[8] || r[9] || r[10] || r[11] ? ', perspective' : ''}${r[6] || r[7] ? ', rotation' : ''}`);
     }
     console.log(`react modes (presets): ${Moves.REACT_MODES.join(', ')}`);
+    console.log(`face cues (need --track): ${Object.keys(FACE_KINDS).map((k) => `face.${k}`).join(', ')}; options z= x= y= k= d= ease=${Object.keys(Reframe.EASES).join('|')}`);
     process.exit(0);
   }
   if (!a.job || !a.target || !a.cue) {
@@ -277,7 +397,7 @@ if (isMain(import.meta.url)) {
     process.exit(2);
   }
   const res = await applyCamera(a);
-  const desc = (c) => `${c.at}s ${c.move}${c.cover ? ` (cover ${c.cover})` : ''}`;
-  console.log(`Camera ${res.id} on ${res.target}: ${res.cues.map(desc).join(', ')}${res.kick ? ' (+ kick shake)' : ''}${res.react ? ' (+ audio react)' : ''}${res.fill ? `; fill ${res.fill}` : ''}`);
+  const desc = (c) => `${c.at}s ${c.move}${c.cover ? ` (cover ${c.cover})` : ''}${c.z != null ? ` z=${c.z}` : ''}`;
+  console.log(`Camera ${res.id} on ${res.target}: ${[...res.cues, ...res.faceCues].sort((a, b) => a.at - b.at).map(desc).join(', ')}${res.kick ? ' (+ kick shake)' : ''}${res.react ? ' (+ audio react)' : ''}${res.fill ? `; fill ${res.fill}` : ''}`);
   for (const w of res.warnings) console.log(`WARNING: ${w}`);
 }

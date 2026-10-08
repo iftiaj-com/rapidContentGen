@@ -150,6 +150,38 @@ Each entry cost real time on a past job. Read before building.
 13ah. **Page errors hide in the console.** A three.js shader compile error never reaches the
      harness state. `rcg fx` prints page console errors and warnings; read them.
 
+## Tracking, mattes and PNP (`rcg track`, `rcg matte`, `rcg pnp`, P7)
+
+13ai. **`object-fit: cover` crops a clip of another aspect inside its element.** A 16:9 clip on 9:16
+     keeps only its middle third, so a camera could never pan to the subject. Face cues on
+     `rcg camera` lay the tracked clip out at its full cover size ("uncrop"); the canvas crops.
+13aj. **Small faces are missed.** The landmarker shrinks its input to about 256 px: a face in a
+     full-body 9:16 frame or a wide 16:9 frame is often not found. `rcg track` retries on square
+     crops (around the last face, then tiles); look at `--debug` (orange boxes came from crops).
+13ak. **The selfie segmenter is a mid-shot model.** On a talking head it holds hair and hands; on
+     full-body action it drops legs and lets furniture in. Its edge band carries a rim of the old
+     background (a white wall became a white halo on purple at a 1.9x punch-in): `--choke 6`
+     removes most of it. Keep the matte at source resolution; a reframe enlarges it 3x.
+13al. **Gesture labels are geometric.** A hand gripping a phone or cup reads as Thumb_Up or Pinch
+     for seconds. Check `--debug` frames before cueing anything on a gesture event.
+13am. **An aligned cut-out shares its base clip's timing** (start and media start); a later
+     start lands a frame off. An offset copy uses its show windows instead: two cut-outs with the
+     same src, start and duration trip `duplicate_media_discovery_risk`.
+13an. **Build order: cameras, PNP, blocks, layers, transitions.** PNP layers read the camera pose
+     (`window.RCGCamPoses`); a zoom punch wraps the shot and its PNP layers, so regenerating a
+     PNP after the transition drops the wrapper (re-run the transition). Re-run `rcg layer` after
+     regenerating a title or caption block (it marks the block's text as covered on purpose:
+     HyperFrames' `text_occluded` check reads `data-layout-allow-occlusion` on the text itself).
+13ao. **VP9 alpha looks like yuv420p to ffprobe.** Check the `alpha_mode` tag, decode with
+     `-c:v libvpx-vp9`, and run `alphaextract` before any scaling (scaling first can pick a
+     format without the alpha plane: no frames written).
+13ap. **A colour key on white footage keys white clothes too.** Put the aligned cut-out over the
+     keyed clip: the background swap stays, the subject comes back whole.
+13aq. **Pick effects that change the background you have.** Ghost on a white wall is a pale wash,
+     invisible as a background-only effect; Blow Pixels or smoke show clearly.
+13ar. **ffmpeg must not read stdin** when started from a background shell: a stalled mix-check
+     held `data/mix-check.wav` open and failed the next render. Every runner passes `-nostdin`.
+
 ## Environment
 
 13. PowerShell pipes add a UTF-8 BOM; parse JSON with `utf-8-sig` or write it from Node.

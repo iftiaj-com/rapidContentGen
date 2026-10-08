@@ -1,6 +1,7 @@
 // Local HTTP server for the fx harness. ES modules do not load from file://,
 // and localhost is a secure context (WebGPU needs one).
 //   /lib/...   -> library/ (the copied Adits code and the harness page)
+//   /models/.. -> the models folder (config paths.models: MediaPipe wasm and models, git-ignored)
 //   /work/...  -> this run's work folder (input frames, job.json); PUT /work/out/<file> saves a frame
 // `import X from './a.png?url'` (a Vite feature the Adits code uses) is answered
 // with a module whose default export is the asset's URL.
@@ -8,12 +9,13 @@
 import { createServer } from 'node:http';
 import { createReadStream, existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, extname, join, normalize, resolve, sep } from 'node:path';
-import { ROOT } from '../lib/config.mjs';
+import { ROOT, loadConfig } from '../lib/config.mjs';
 
 const TYPES = {
   '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp',
   '.wasm': 'application/wasm', '.css': 'text/css', '.glb': 'model/gltf-binary', '.hdr': 'application/octet-stream',
+  '.task': 'application/octet-stream', '.tflite': 'application/octet-stream',
   '.mp4': 'video/mp4', '.m4v': 'video/mp4', '.mov': 'video/quicktime', '.webm': 'video/webm',
 };
 
@@ -25,10 +27,11 @@ function inside(base, rel) {
 export function startServer(workDirIn) {
   const libRoot = resolve(ROOT, 'library');
   const workDir = resolve(workDirIn); // native separators, so inside() can compare prefixes
+  const modelsRoot = resolve(ROOT, loadConfig().paths.models || 'models');
   const server = createServer((req, res) => {
     const url = new URL(req.url, 'http://localhost');
     const [, area, ...rest] = url.pathname.split('/');
-    const base = area === 'lib' ? libRoot : area === 'work' ? workDir : null;
+    const base = area === 'lib' ? libRoot : area === 'work' ? workDir : area === 'models' ? modelsRoot : null;
     const file = base && inside(base, rest.join('/'));
     if (!file) { res.writeHead(404).end(); return; }
     if (req.method === 'PUT' && area === 'work') {

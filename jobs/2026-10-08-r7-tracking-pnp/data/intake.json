@@ -1,0 +1,26 @@
+[
+  {
+    "kind": "video",
+    "source": "videos/Video_for_testing.mp4",
+    "asset": "assets/Video_for_testing.mp4",
+    "probe": {
+      "file": "E:\\Develop\\Antigravity_testing\\rapidContentGen\\jobs\\2026-10-08-r7-tracking-pnp\\assets\\Video_for_testing.mp4",
+      "duration": 14.431098,
+      "sizeBytes": 39875678,
+      "video": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "fps": 23.976,
+        "pixFmt": "yuv420p",
+        "aspect": 1.7778
+      },
+      "audio": [],
+      "notes": [
+        "No audio track: there are no spoken words to transcribe.",
+        "Source is 23.976 fps: slowing it below 1x will stutter. Use a freeze frame or interpolation instead."
+      ]
+    },
+    "sheet": "data/intake-Video_for_testing.png"
+  }
+]

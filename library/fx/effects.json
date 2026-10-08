@@ -2008,5 +2008,47 @@
         1
       ]
     }
+  },
+  "color-mask": {
+    "label": "Color mask (Adits Global Color Mask, chroma key, WebGPU): pixels near a picked colour show side B (--src2: another clip or an fx clip of the same footage) or a solid colour; tolerance, feather, invert",
+    "kind": "footage",
+    "module": "core/ColorMask.js",
+    "class": "ColorMask",
+    "shim": "color-mask.js",
+    "webgpu": true,
+    "optional": [
+      "src2"
+    ],
+    "params": {
+      "colorMaskMode": "media",
+      "colorMaskKeyTarget": "main",
+      "colorMaskColor": "#00ff00",
+      "colorMaskBgColor": "#000000",
+      "colorMaskTolerance": 35,
+      "colorMaskFeather": 20,
+      "colorMaskInvert": false
+    },
+    "ranges": {
+      "colorMaskTolerance": [
+        0,
+        100,
+        1
+      ],
+      "colorMaskFeather": [
+        0,
+        100,
+        1
+      ]
+    },
+    "options": {
+      "ready": [
+        "_ready"
+      ]
+    },
+    "modes": {
+      "media": "reveal side B (or the bg colour) where the colour matches",
+      "effect": "side B (an effect clip) only where the colour matches, raw footage elsewhere",
+      "color": "side B (or the footage) where the colour matches, bg colour elsewhere"
+    }
   }
 }
