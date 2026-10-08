@@ -3226,6 +3226,18 @@
       "to": "library/styles/tactile-collage/style.json"
     },
     {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/VisionEngine.js",
+      "kind": "learn",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "140ebb5df810a8dd634c879b1f4e938a34f21b0483e0881a6fe9a469eb7b956d",
+      "date": "2026-10-08",
+      "note": "segment task: ObjectDetector + InteractiveSegmenter (magic_touch, IMAGE mode keypoint) as Adits VisionEngine configures them; used by rcg layers",
+      "to": "library/vision/vision.js"
+    },
+    {
       "source": "tts",
       "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
       "from": "kokoro-v1.0.onnx",
@@ -3237,6 +3249,19 @@
       "note": "Kokoro-82M ONNX weights (git-ignored)",
       "to": "models/kokoro-v1.0.onnx",
       "sha256Dest": "7d5df8ecf7d4b1878015a32686053fd0eebe2bc377234608764cc0ef3636a6c5"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/lib/mediapipe-models/efficientdet_lite0.tflite",
+      "kind": "copy",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "0720bf247bd76e6594ea28fa9c6f7c5242be774818997dbbeffc4da460c723bb",
+      "date": "2026-10-08",
+      "note": "MediaPipe ObjectDetector (COCO); finds objects for rcg layers (git-ignored). Chosen over ssd_mobilenet_v2 after the R10 benchmark (found chair, table and couch)",
+      "to": "models/mediapipe/models/efficientdet_lite0.tflite",
+      "sha256Dest": "0720bf247bd76e6594ea28fa9c6f7c5242be774818997dbbeffc4da460c723bb"
     },
     {
       "source": "adits",
@@ -3263,6 +3288,19 @@
       "note": "MediaPipe model bundled by Adits (origin and model license not recorded in Adits); git-ignored",
       "to": "models/mediapipe/models/hand_landmarker.task",
       "sha256Dest": "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/lib/mediapipe-models/magic_touch.tflite",
+      "kind": "copy",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "e24338a717c1b7ad8d159666677ef400babb7f33b8ad60c4d96db4ecf694cd25",
+      "date": "2026-10-08",
+      "note": "MediaPipe InteractiveSegmenter (Adits VisionEngine interactive_segmenter); used by rcg layers (git-ignored)",
+      "to": "models/mediapipe/models/magic_touch.tflite",
+      "sha256Dest": "e24338a717c1b7ad8d159666677ef400babb7f33b8ad60c4d96db4ecf694cd25"
     },
     {
       "source": "adits",

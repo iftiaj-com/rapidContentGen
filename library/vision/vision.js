@@ -8,6 +8,8 @@
 //            (a landmark subset per face, all 21 points per hand), optional debug frames.
 // job.task = 'matte': ImageSegmenter (selfie_segmenter) -> /work/out/%06d.png RGBA
 //            cut-out frames (the footage with alpha = refined person confidence).
+// job.task = 'segment': one still (rcg layers): ObjectDetector (efficientdet_lite0) boxes,
+//            InteractiveSegmenter (magic_touch) masks per click point, selfie person mask.
 
 const job = await (await fetch('/work/job.json', { cache: 'no-store' })).json();
 window.__vision = { state: 'starting', frame: 0, error: null, log: [], info: {} };
@@ -234,6 +236,77 @@ try {
       window.__vision.frame = i + 1;
     }
     seg.close();
+  } else if (job.task === 'segment') {
+    // One still image, IMAGE mode (rcg layers): EfficientDet boxes (Adits VisionEngine
+    // object_detector, COCO labels), then one magic_touch cut-out per click point (Adits
+    // interactive_segmenter), plus the selfie person mask. Points given as labels are
+    // resolved here to the centre of the best box with that label. Outputs, at image size:
+    // /work/out/detect.json, /work/out/req-<n>.png (confidence as grey) and selfie.png.
+    const img = await loadImage('/work/in/source.png');
+    const iw = img.naturalWidth, ih = img.naturalHeight;
+    const det = await vision.ObjectDetector.createFromOptions(fileset, {
+      baseOptions: { modelAssetPath: '/models/mediapipe/models/efficientdet_lite0.tflite', delegate },
+      runningMode: 'IMAGE', scoreThreshold: job.minScore ?? 0.3, maxResults: 20,
+    });
+    const detections = det.detect(img).detections.map((d) => ({
+      label: d.categories[0].categoryName,
+      score: Math.round(d.categories[0].score * 1000) / 1000,
+      box: [d.boundingBox.originX, d.boundingBox.originY, d.boundingBox.width, d.boundingBox.height].map(Math.round),
+    }));
+    det.close();
+    const used = new Set();
+    const requests = (job.requests || []).map((r) => {
+      if (r.label == null) return r;
+      // Highest-scoring unused box with this label (two "chair" requests take two chairs).
+      const k = detections.findIndex((d, i) => !used.has(i) && d.label === r.label);
+      if (k < 0) return { ...r, missing: true };
+      used.add(k);
+      const [bx, by, bw, bh] = detections[k].box;
+      return { ...r, box: detections[k].box, x: (bx + bw / 2) / iw, y: (by + bh / 2) / ih, score: detections[k].score };
+    });
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    async function saveMask(mask, name) {
+      const mw = mask.width, mh = mask.height;
+      const f = mask.getAsFloat32Array();
+      canvas.width = mw; canvas.height = mh;
+      const id = ctx.createImageData(mw, mh);
+      for (let k = 0; k < f.length; k++) { const v = Math.round(Math.max(0, Math.min(1, f[k])) * 255); const o = k * 4; id.data[o] = v; id.data[o + 1] = v; id.data[o + 2] = v; id.data[o + 3] = 255; }
+      ctx.putImageData(id, 0, 0);
+      let out = canvas;
+      if (mw !== iw || mh !== ih) {
+        out = document.createElement('canvas'); out.width = iw; out.height = ih;
+        const o2 = out.getContext('2d'); o2.imageSmoothingEnabled = true; o2.imageSmoothingQuality = 'high';
+        o2.drawImage(canvas, 0, 0, iw, ih);
+      }
+      await put(`/work/out/${name}.png`, await new Promise((res) => out.toBlob(res, 'image/png')));
+    }
+    window.__vision.state = 'running';
+    if (requests.some((r) => !r.missing)) {
+      const touch = await vision.InteractiveSegmenter.createFromOptions(fileset, {
+        baseOptions: { modelAssetPath: '/models/mediapipe/models/magic_touch.tflite', delegate },
+        outputConfidenceMasks: true, outputCategoryMask: false,
+      });
+      for (const [n, r] of requests.entries()) {
+        if (r.missing) continue;
+        const res = touch.segment(img, { keypoint: { x: r.x, y: r.y } });
+        await saveMask(res.confidenceMasks[0], `req-${n}`);
+        res.close?.();
+        window.__vision.frame = n + 1;
+      }
+      touch.close();
+    }
+    if (job.selfie !== false) {
+      const seg = await vision.ImageSegmenter.createFromOptions(fileset, {
+        baseOptions: { modelAssetPath: '/models/mediapipe/models/selfie_segmenter.tflite', delegate },
+        runningMode: 'IMAGE', outputConfidenceMasks: true, outputCategoryMask: false,
+      });
+      const res = seg.segment(img);
+      await saveMask(res.confidenceMasks[0], 'selfie');
+      res.close?.();
+      seg.close();
+    }
+    await put('/work/out/detect.json', JSON.stringify({ width: iw, height: ih, detections, requests }));
   } else {
     throw new Error(`unknown task ${job.task}`);
   }

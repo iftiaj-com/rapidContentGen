@@ -10,7 +10,8 @@
     "hfFfmpeg": null,
     "hfFfprobe": null,
     "fxChrome": null,
-    "python311": null
+    "python311": null,
+    "imagePython": "python"
   },
   "paths": {
     "library": "library",

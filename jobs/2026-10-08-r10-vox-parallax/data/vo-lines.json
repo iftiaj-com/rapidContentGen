@@ -1,0 +1,22 @@
+[
+  {
+    "id": "vo1",
+    "text": "This is one photo, not a video.",
+    "voice": "af_heart"
+  },
+  {
+    "id": "vo2",
+    "text": "Cut into layers, it moves like a real camera.",
+    "voice": "af_heart"
+  },
+  {
+    "id": "vo3",
+    "text": "Print it, and it feels physical.",
+    "voice": "af_heart"
+  },
+  {
+    "id": "vo4",
+    "text": "Age it, and it becomes history.",
+    "voice": "af_heart"
+  }
+]

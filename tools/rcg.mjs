@@ -28,6 +28,7 @@ const COMMANDS = {
   'camera': ['tools/blocks/camera.mjs', '46 Adits camera moves on footage (layered cues, whip transitions, kick shake); --list'],
   'three': ['tools/blocks/three.mjs', 'Procedural 3D scene (orb/knot/crystal/rings) with camera-move cues and music reactivity'],
   'track': ['tools/track/track.mjs', 'MediaPipe face + hand tracking over a clip -> data/track-<name>.json (per-frame face box/eyes/roll, hands, gestures); --debug'],
+  'layers': ['tools/track/layers.mjs', 'Cut a photo or clip frame into depth layers (MediaPipe detect + magic_touch, OpenCV clean-up and background fill) for the parallax look'],
   'pnp': ['tools/blocks/pnp.mjs', 'PNP layer: the footage again on top with its background removed (rcg matte cut-out); aligned or offset, follows the camera, show windows, block build'],
   'layer': ['tools/blocks/layer.mjs', 'Put a block behind or in front of a PNP cut-out (text behind the subject), with timed or per-caption-group switches'],
   'transition': ['tools/blocks/transition.mjs', 'Adits cut transitions: flash_white, flash_black, glitch_punch, zoom_punch, crossfade (seeded, frame-exact)'],

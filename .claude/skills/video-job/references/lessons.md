@@ -228,6 +228,25 @@ Each entry cost real time on a past job. Read before building.
      collage stamp (a 2 s bass tail) and a pop under one line peaked at -0.5 dBTP and `rcg render`
      refused. Voices at -14 / -3.6 (recipes.md) and the stamp at 0.12 gave -2.5 dBTP, MIX OK.
 
+13bd. **Cutting photo layers: MediaPipe cuts, OpenCV cleans.** On the R10 frame magic_touch (a click
+     point) cut a table and a person cleanly in 0.3 s each; GrabCut (a box) took 7.7 s and took in the
+     sofa; DeepLab was jagged. EfficientDet boxes give the click points. Keep only the clicked piece:
+     magic_touch also returned a blob of hair for the chair. OpenCV inpainting is only good near edges.
+13be. **Occluded edges need a straight stretch.** A push slid the chair down and uncovered the cut
+     bottom of the person behind it. Telea filled that band with a pale smear and a round nearest-pixel
+     fill with a radial fan and wings past the silhouette; copying the layer's own pixels straight along
+     the row or column (`rcg layers --extend`) reads as fabric continuing.
+13bf. **The contrast audit samples inside each word's box.** A soft wash in a sibling element made the
+     R10 title measure 3.4:1 in the rendered pixels, yet `hf check` still read about 2:1. Put the backing
+     on the text element itself (`serif-title --scrim`); then it passes.
+13bg. **Grain costs file size.** R10 with animated grain: 51.5 MB for 13 s (R9a without grain: 11.8 MB
+     for 12 s). Lower `grain` if the file must be small; the platforms recompress anyway.
+13bh. **ffmpeg `noise` on a colour source adds colour noise.** Generated paper and cardboard showed
+     rainbow speckle; convert to grey first (`format=gray,noise=...`), then tone.
+13bi. **Under CSS perspective, an in-plane offset shrinks with depth.** A crop offset in `left/top`
+     projects by P / (P + z), so layers at different depths drifted apart at rest. Scale every in-plane
+     offset by (P + z) / P (the parallax component does).
+
 ## Environment
 
 13. PowerShell pipes add a UTF-8 BOM; parse JSON with `utf-8-sig` or write it from Node.

@@ -420,7 +420,7 @@ export async function addComponent(opts, cache = {}) {
     for (const s of sfx) h = placeElement(jobDir, h, s.id, s.markup, { underCaptions: false });
     writeFileSync(join(jobDir, 'index.html'), h);
   }
-  return { id, out, host, sfx, warnings, params };
+  return { id, out, host, sfx, warnings, params, report: params._report || null };
 }
 
 export async function applyStyle(opts) {
@@ -523,6 +523,7 @@ if (isMain(import.meta.url)) {
       const res = await addComponent({ ...a, insert: Boolean(a.insert), sfx: Boolean(a.sfx) });
       console.log(`Wrote ${res.out}`);
       console.log(a.insert ? 'Host inserted into index.html' : `Host element:\n${res.host}`);
+      if (res.report) console.log(`Report: ${JSON.stringify(res.report)}`);
       for (const s of res.sfx) console.log(`SFX ${a.insert ? 'placed' : 'element'}: ${s.markup} (peak on ${s.landing} s)`);
       for (const w of res.warnings) console.log(`WARNING: ${w}`);
     } else if (cmd === 'build') {
@@ -530,6 +531,7 @@ if (isMain(import.meta.url)) {
       const { results, errors } = await buildPlan({ ...a, insert: Boolean(a.insert), sfx: Boolean(a.sfx) });
       for (const r of results) {
         console.log(`${String(r.id).padEnd(16)} ${String(r.component).padEnd(14)} ${f3(r.start).toFixed(2).padStart(6)}-${f3(Number(r.start) + Number(r.duration)).toFixed(2).padEnd(6)}${r.sfx.length ? ` sfx peak ${r.sfx.map((s) => s.landing).join(', ')}` : ''}`);
+        if (r.report) console.log(`  ${JSON.stringify(r.report)}`);
         for (const w of r.warnings) console.log(`  WARNING: ${w}`);
       }
       console.log(`${results.length} component(s) ${a.insert ? 'inserted' : 'written (not inserted; pass --insert)'}.`);

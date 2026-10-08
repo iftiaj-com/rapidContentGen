@@ -79,6 +79,14 @@
       "sizes": { "word": 104, "2word": 96, "phrase": 76 },
       "emphasis": { "font": "EB Garamond", "weight": 400, "letterSpacing": "-0.02em" }
     },
+    "vox": {
+      "$note": "Style pack vox-parallax. From the user's Vox reference Short: short uppercase phrases in a bold condensed sans, white on a dark warm rounded pill, no pop. Oswald (bundled) stands in for the condensed face.",
+      "font": "Oswald", "weight": 700, "uppercase": true,
+      "color": "#ffffff", "stroke": null, "pill": { "bg": "rgba(27,21,17,0.8)", "radius": 10 },
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0, "defaultMode": "2word",
+      "sizes": { "word": 64, "2word": 58, "phrase": 52 }
+    },
     "editorial-clean": {
       "$note": "quiet-editorial clean mode: unboxed ink on a quiet, high-contrast ground (the warm canvas or a clean wall). Use 'editorial' over busy footage.",
       "font": "Inter", "weight": 700, "uppercase": false,

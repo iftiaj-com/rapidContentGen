@@ -64,6 +64,11 @@ export function doctor() {
   const mpFiles = ['wasm/vision_bundle.mjs', 'wasm/vision_wasm_internal.wasm', 'models/face_landmarker.task', 'models/hand_landmarker.task', 'models/selfie_segmenter.tflite'];
   const mpMissing = mpFiles.filter((f) => !existsSync(join(mp, f)));
   add('MediaPipe (rcg track, rcg matte)', !mpMissing.length, mpMissing.length ? `missing ${mpMissing.join(', ')}: copy from Adits with rcg provenance copy (docs/PROVENANCE.md)` : mp, true);
+  const lyMissing = ['models/magic_touch.tflite', 'models/efficientdet_lite0.tflite'].filter((f) => !existsSync(join(mp, f)));
+  add('MediaPipe (rcg layers)', !lyMissing.length, lyMissing.length ? `missing ${lyMissing.join(', ')}: copy from Adits with rcg provenance copy` : 'magic_touch + efficientdet_lite0', true);
+  const ip = cfg.bin.imagePython || 'python';
+  const cv = version(ip, ['-I', '-c', 'import cv2, PIL, numpy, sys; print("python", sys.version.split()[0], "opencv", cv2.__version__, "pillow", PIL.__version__)']);
+  add('image python (rcg layers)', Boolean(cv), cv || `${ip}: needs OpenCV + Pillow + numpy (bin.imagePython)`, true);
   let fxBrowser = null;
   try { fxBrowser = findChrome(); } catch { /* none found */ }
   add('browser for rcg fx', Boolean(fxBrowser && fxBrowser.kind !== 'headless-shell'),

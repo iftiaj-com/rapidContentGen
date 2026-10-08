@@ -51,7 +51,8 @@ that gate is overridden by the user's mode choice (state this in `JOB.md`).
 **Named looks (style packs, `docs/styles.md`).** If the prompt names or matches a pack
 (`rcg style list` prints keywords), load its skill and follow its fast path for steps 4-8:
 paper collage, scrapbook, notebook, cut-out, handmade -> `style-tactile-collage`; quiet, editorial,
-minimal, premium, product UI -> `style-quiet-editorial`. Style packs are built for speech-led edits
+minimal, premium, product UI -> `style-quiet-editorial`; Vox, parallax, 2.5D, "make photos move",
+documentary or archival explainer -> `style-vox-parallax`. Style packs are built for speech-led edits
 (talking heads, voiceover explainers); recipes below cut to music. Using both in one job is untested.
 
 For a styled edit, start from a recipe (`docs/recipes.md`): `rcg recipe list`, pick the style that

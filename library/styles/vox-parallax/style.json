@@ -1,0 +1,37 @@
+{
+  "$comment": "Style pack: Vox-style 2.5D parallax (multiplane). Learned from the user's reference Short 'How Vox makes images look like videos' (YouTube Shorts KkckBGX6Yho, read for technique only, nothing copied) and the user's brief. Colours were sampled from that video's frames. Vox's own wordmark and fonts are not used. Workflow and judgment: .claude/skills/style-vox-parallax/SKILL.md.",
+  "label": "Vox Parallax",
+  "use": "Turns still photos into moving, 3D-feeling documentary shots: depth layers on a multiplane camera, depth blur, haze, grain, stepped 12 fps motion, orange highlighter labels, serif titles, photo cards and archival plates. Explainers, history, documentary, essays.",
+  "keywords": ["vox", "parallax", "2.5d", "multiplane", "documentary", "explainer", "archival", "photo animation", "ken burns", "editorial", "history", "essay"],
+  "from": "user reference video (technique only) + user brief, 2026-10-08",
+  "skill": ".claude/skills/style-vox-parallax/SKILL.md",
+  "components": "components.mjs",
+  "tokens": {
+    "orange": "#f0500d",
+    "orange-deep": "#e42806",
+    "slate": "#405a64",
+    "sky": "#5f8fab",
+    "ink": "#22201d",
+    "paper": "#d6cdbb",
+    "cardboard": "#a5825a",
+    "white": "#ffffff"
+  },
+  "type": {
+    "serif": { "family": "EB Garamond", "weight": 400, "$note": "bundled; titles and highlighter labels (Vox uses its own serif, not copied)" },
+    "serif-bold": { "family": "EB Garamond", "weight": 700, "$note": "bundled; emphasis words in titles" },
+    "caption": { "family": "Oswald", "weight": 700, "$note": "bundled condensed sans; captions (rcg captions --style vox)" }
+  },
+  "captions": { "style": "vox", "mode": "2word", "$note": "short uppercase phrases on a dark pill; keep punctuation as spoken" },
+  "motion": {
+    "enter": 0.6, "enterEase": "power3.out",
+    "swipe": 0.38, "swipeEase": "power2.out",
+    "exit": 0.2, "exitEase": "power2.in",
+    "fps": 12
+  },
+  "sfx": {
+    "$note": "Vox-style beds are music and voice; sounds are rare. A soft swipe on a highlighter label, a light slide on a photo card.",
+    "swipe": { "name": "whoosh-short", "volume": 0.12 },
+    "place": { "name": "whoosh-short", "volume": 0.14 }
+  },
+  "status": "ready"
+}
