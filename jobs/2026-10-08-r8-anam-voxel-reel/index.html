@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <!--
+      rapidContentGen vertical template (9:16, Reels / Shorts / TikTok).
+      Built from the mop-star-trailer job. Conventions:
+        - Text never enters the bottom 20% (y >= 1536) or the right 180 px (x >= 900):
+          that is where the app buttons and caption UI sit. The text safe box is
+          x 64..900 (width 836); the top 192 px is kept clear for the app header.
+        - Text cards are FLAT: the .clip element holds the spans directly
+          (no nested div), and GSAP animates the spans, never the .clip.
+        - Footage sits in an untimed .shot wrapper; camera moves animate the wrapper.
+        - Comments in this file never contain literal tags (a regex edit once
+          matched a tag inside a comment and commented out the footage).
+        - Audio: a data-automation volume lane gives ABSOLUTE levels and overrides
+          data-volume. Check the mix with `node tools/rcg.mjs mix-check index.html`
+          before rendering.
+      Replace JOB_DURATION, the shot list, cards and audio for each job.
+    -->
+    <style>
+      :root {
+        --safe-left: 64px;
+        --safe-width: 836px;
+        --band-top: 220px;
+        --band-height: 200px;
+        --ink: #f4efe4;
+        --font-display: "EB Garamond", Garamond, serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+        font-family: var(--font-display);
+      }
+      .shot {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+        transform-origin: 50% 40%;
+      }
+      .shot video,
+      .shot img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 1920px;
+        object-fit: cover;
+      }
+      .bar {
+        position: absolute;
+        left: 0;
+        width: 1080px;
+        background: #000;
+        z-index: 50;
+      }
+      #bar-top {
+        top: 0;
+        height: 192px;
+      }
+      #bar-bottom {
+        top: 1536px;
+        height: 384px;
+      }
+      .card {
+        position: absolute;
+        left: var(--safe-left);
+        width: var(--safe-width);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 60;
+      }
+      .card.center {
+        top: 660px;
+        height: 400px;
+      }
+      .card.top {
+        top: var(--band-top);
+        height: var(--band-height);
+      }
+      .txt {
+        text-align: center;
+        color: var(--ink);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        line-height: 1.08;
+        text-shadow:
+          0 2px 16px rgba(0, 0, 0, 0.85),
+          0 0 28px rgba(255, 236, 200, 0.28);
+      }
+      .txt span {
+        display: block;
+        width: var(--safe-width);
+      }
+      #t1.txt {
+        font-size: 96px;
+      }
+      .lab {
+        font-family: "Inter", "Segoe UI", Arial, sans-serif;
+        font-size: 78px;
+        letter-spacing: 0.08em;
+      }
+      .lab span {
+        width: fit-content;
+        margin: 0 auto;
+        padding: 6px 24px 8px;
+        border-radius: 14px;
+        background: rgba(12, 12, 16, 0.68);
+      }
+      .lab .sub {
+        margin-top: 12px;
+        font-size: 34px;
+        letter-spacing: 0.18em;
+        font-weight: 600;
+        color: #ffd27a;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="14"
+      data-width="1080"
+      data-height="1920"
+    >
+      <!-- Shots: one rcg fx clip each (Adits voxel and anamorphic effects rendered offline), cut every 1.4 s. -->
+      <div id="w1" class="shot">
+        <video id="v1" class="clip" src="assets/fx/voxel-art.mp4" data-start="0" data-duration="1.4" data-media-start="0" data-track-index="0" muted playsinline></video>
+      </div>
+      <div id="w2" class="shot">
+        <video id="v2" class="clip" src="assets/fx/voxel-drop.mp4" data-start="1.4" data-duration="1.4" data-media-start="0" data-track-index="0" muted playsinline></video>
+      </div>
+      <div id="w3" class="shot">
+        <video id="v3" class="clip" src="assets/fx/voxel-bursts.mp4" data-start="2.8" data-duration="1.4" data-media-start="0" data-track-index="0" muted playsinline></video>
+      </div>
+      <div id="w4" class="shot">
+        <video id="v4" class="clip" src="assets/fx/voxel-hole.mp4" data-start="4.2" data-duration="1.4" data-media-start="0" data-track-index="0" muted playsinline></video>
+      </div>
+      <div id="w5" class="shot">
+        <video id="v5" class="clip" src="assets/fx/voxel-magnet.mp4" data-start="5.6" data-duration="1.4" data-media-start="0" data-track-index="0" muted playsinline></video>
+      </div>
+      <div id="w6" class="shot">
+        <video id="v6" class="clip" src="assets/fx/voxel-flip.mp4" data-start="7" data-duration="1.4" data-media-start="0" data-track-index="0" muted playsinline></video>
+      </div>
+      <div id="w7" class="shot">
+        <video id="v7" class="clip" src="assets/fx/voxel-grow.mp4" data-start="8.4" data-duration="1.4" data-media-start="0" data-track-index="0" muted playsinline></video>
+      </div>
+      <div id="w8" class="shot">
+        <video id="v8" class="clip" src="assets/fx/particles.mp4" data-start="9.8" data-duration="1.4" data-media-start="0" data-track-index="0" muted playsinline></video>
+      </div>
+      <div id="w9" class="shot">
+        <video id="v9" class="clip" src="assets/fx/cutout.mp4" data-start="11.2" data-duration="1.4" data-media-start="0" data-track-index="0" muted playsinline></video>
+      </div>
+      <div id="w10" class="shot">
+        <video id="v10" class="clip" src="assets/fx/magic-carpet.mp4" data-start="12.6" data-duration="1.4" data-media-start="0" data-track-index="0" muted playsinline></video>
+      </div>
+
+      <!-- Labels: flat cards in the top text band. -->
+      <div id="lab1" class="card top txt clip lab" data-start="0.08" data-duration="1.24" data-track-index="10"><span>Voxel art</span><span class="sub">VoxelArt, audio depth</span></div>
+      <div id="lab2" class="card top txt clip lab" data-start="1.48" data-duration="1.24" data-track-index="11"><span>Voxel drop</span><span class="sub">VoxelDrop + Rapier</span></div>
+      <div id="lab3" class="card top txt clip lab" data-start="2.88" data-duration="1.24" data-track-index="10"><span>Voxel bursts</span><span class="sub">VoxelDrop, bursts</span></div>
+      <div id="lab4" class="card top txt clip lab" data-start="4.28" data-duration="1.24" data-track-index="11"><span>Infinite hole</span><span class="sub">VoxelDrop + Rapier</span></div>
+      <div id="lab5" class="card top txt clip lab" data-start="5.68" data-duration="1.24" data-track-index="10"><span>Magnet</span><span class="sub">VoxelDrop, tracked hand</span></div>
+      <div id="lab6" class="card top txt clip lab" data-start="7.08" data-duration="1.24" data-track-index="11"><span>Flip</span><span class="sub">VoxelDrop, mid band</span></div>
+      <div id="lab7" class="card top txt clip lab" data-start="8.48" data-duration="1.24" data-track-index="10"><span>Grow</span><span class="sub">VoxelDrop, moving point</span></div>
+      <div id="lab8" class="card top txt clip lab" data-start="9.88" data-duration="1.24" data-track-index="11"><span>Particles</span><span class="sub">ParticleSystem, wave</span></div>
+      <div id="lab9" class="card top txt clip lab" data-start="11.28" data-duration="1.24" data-track-index="10"><span>Cutout</span><span class="sub">CutoutCollage, shattered</span></div>
+      <div id="lab10" class="card top txt clip lab" data-start="12.68" data-duration="1.24" data-track-index="11"><span>Magic carpet</span><span class="sub">MagicCarpet, flag</span></div>
+
+      <audio id="music" src="assets/song-limited.wav" data-start="0" data-duration="14" data-track-index="20"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.04,"v":1},{"t":13.4,"v":1},{"t":14,"v":0}]}]}'></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // Text card: ease in, slow drift, fade out before the clip ends.
+      function card(sel, start, dur) {
+        const el = sel + " > span";
+        tl.fromTo(el, { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 0.45, ease: "power2.out" }, start);
+        tl.to(el, { scale: 0.97, duration: dur - 0.45, ease: "none" }, start + 0.45);
+        tl.to(el, { opacity: 0, duration: 0.25, ease: "power1.in" }, start + dur - 0.25);
+      }
+      card("#lab1", 0.08, 1.24);
+      card("#lab2", 1.48, 1.24);
+      card("#lab3", 2.88, 1.24);
+      card("#lab4", 4.28, 1.24);
+      card("#lab5", 5.68, 1.24);
+      card("#lab6", 7.08, 1.24);
+      card("#lab7", 8.48, 1.24);
+      card("#lab8", 9.88, 1.24);
+      card("#lab9", 11.28, 1.24);
+      card("#lab10", 12.68, 1.24);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

@@ -182,6 +182,35 @@ Each entry cost real time on a past job. Read before building.
 13ar. **ffmpeg must not read stdin** when started from a background shell: a stalled mix-check
      held `data/mix-check.wav` open and failed the next render. Every runner passes `-nostdin`.
 
+## Voxels and anamorphic models (`rcg fx`, P8)
+
+13as. **Adits' model shaders darken the footage, by design of the code, not of the port.** VoxelDrop
+     (drop, hole, magnet, flip, grow) and MagicCarpet sample the sRGB media texture (decoded to linear)
+     and write the result without re-encoding: a flat full-frame plane measured `1.015 x linear(in)`,
+     so mid-grey 128 shows as about 56 and the R6 room reads dim next to its own background. Voxel Art
+     and Particles take raw byte colours and are not darkened. Tone mapping does not touch these
+     ShaderMaterials. Keep it in mind when the model sits over the same footage.
+13at. **Per-call easing and physics need the display rate.** Adits eases, springs and steps Rapier once
+     per composite() (60 Hz live, at most one physics step per 1/60 s). Ticking once per 24 fps output
+     frame would run the drop at 0.4x. The anamorphic shims tick the host at 60 Hz on the frame clock and
+     render per output frame; 24 and 30 fps renders agree at the same time (53-55 dB).
+13au. **Particle size is in canvas pixels.** Adits renders 9:16 at 1080x1920 too, and its default cloud
+     (15000 points, size 30) is sparse and dim there; 40000 at size 50 reads as an image. Raising
+     `anamScale` spreads the same points thinner. The flat cloud is square: the default `stretch`
+     squeezes a 9:16 frame, `anamImageFit=fill` crops the centre square. The cloud keeps the first
+     frame's colours (Adits); `rcgLiveColor=true` follows the footage.
+13av. **Adits' analyser pins bass on loud masters.** With its threshold 50, the R6 song holds bass near
+     0.8: bass-driven modes (flip, grow, tunnel, voxel audio trigger above 0.75) sit near full. Drive them
+     from the mid band. Particle `flow` on such a song dissolves the cloud; `wave` keeps it legible.
+13aw. **Brightness is height.** Grow and Voxel Art extrude bright pixels: a white studio wall becomes a
+     block of tall white columns. Use them on mid-toned footage. Grow's heights are sampled once, from the
+     first frame (Adits).
+13ax. **The followed point is the subject, in screen space.** Adits follows the viewer's hand on a
+     mirrored webcam and also moves the camera with it. Offline the point is the hand or face in the
+     footage (`--track`) or a keyframed point (`--point`), converted so the effect lands on that point on
+     screen; `anamMagnetHold` defaults on so the camera stays still. A Drop needs time: the ripple takes
+     about 2 s before cubes fall, so press it in the pre-roll (`--preroll 1.3 --param rcgDropAt=-1.2`).
+
 ## Environment
 
 13. PowerShell pipes add a UTF-8 BOM; parse JSON with `utf-8-sig` or write it from Node.

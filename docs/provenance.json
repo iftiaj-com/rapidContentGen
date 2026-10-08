@@ -92,6 +92,19 @@
     {
       "source": "adits",
       "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/anam/CutoutCollage.js",
+      "kind": "copy",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "8ff61d37896e5f3eee58130ee97ef198340b0000589499cc37c1bbd9543ae8a2",
+      "date": "2026-10-08",
+      "note": "Cutout collage (Canvas2D, port of the Codrops Cutout Collage Layout demo per its header); run unmodified by rcg fx (shim cutout.js)",
+      "to": "library/adits-fx/core/anam/CutoutCollage.js",
+      "sha256Dest": "8ff61d37896e5f3eee58130ee97ef198340b0000589499cc37c1bbd9543ae8a2"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
       "from": "Adits/core/anam/HoloSheen.js",
       "kind": "copy",
       "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
@@ -101,6 +114,45 @@
       "note": "3D environment, run in the fx harness",
       "to": "library/adits-fx/core/anam/HoloSheen.js",
       "sha256Dest": "f6a1239bd8655ab6b028b78e5738f026ca5e181068479ef9f25ec7f25c55197c"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/anam/MagicCarpet.js",
+      "kind": "copy",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "33287a21614a3cd43905a361b1d41c2a61337b17744022b565b097adc12a4a2f",
+      "date": "2026-10-08",
+      "note": "Magic Carpet cloth plane; run unmodified by rcg fx (shim anam-carpet.js)",
+      "to": "library/adits-fx/core/anam/MagicCarpet.js",
+      "sha256Dest": "33287a21614a3cd43905a361b1d41c2a61337b17744022b565b097adc12a4a2f"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/anam/ParticleSystem.js",
+      "kind": "copy",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "bc7dadb370c40831586836655f0d4ec990a0ed7b9974cdefceb2a483348ff2ee",
+      "date": "2026-10-08",
+      "note": "Anamorphic Particles (image cloud, spring + audio dance modes); run unmodified by rcg fx (shim anam-particles.js)",
+      "to": "library/adits-fx/core/anam/ParticleSystem.js",
+      "sha256Dest": "bc7dadb370c40831586836655f0d4ec990a0ed7b9974cdefceb2a483348ff2ee"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/anam/PhotoCubeGlass.js",
+      "kind": "copy",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "2492eb84304d1a3b14c5dc17eef8b94f9c3f9c5533620ae30555a5b25f5512ba",
+      "date": "2026-10-08",
+      "note": "imported by ParticleSystem (glass-shell outline geometry)",
+      "to": "library/adits-fx/core/anam/PhotoCubeGlass.js",
+      "sha256Dest": "2492eb84304d1a3b14c5dc17eef8b94f9c3f9c5533620ae30555a5b25f5512ba"
     },
     {
       "source": "adits",
@@ -131,6 +183,32 @@
     {
       "source": "adits",
       "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/anam/VoxelArt.js",
+      "kind": "copy",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "94f1d5b50580163377a18f8567d403bff5163f87c94986b922f177a569d83b98",
+      "date": "2026-10-08",
+      "note": "Voxel Art; run unmodified by rcg fx (shim anam-voxel-art.js)",
+      "to": "library/adits-fx/core/anam/VoxelArt.js",
+      "sha256Dest": "94f1d5b50580163377a18f8567d403bff5163f87c94986b922f177a569d83b98"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/anam/VoxelDrop.js",
+      "kind": "copy",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "ec9fbadd05198197bd28232a26ec9ba2c944e7503d8d3c1c403449c49cc2fcd5",
+      "date": "2026-10-08",
+      "note": "Voxel Drop, Infinite Hole, Magnet, Flip, Grow (one class); run unmodified by rcg fx (shim anam-voxel.js)",
+      "to": "library/adits-fx/core/anam/VoxelDrop.js",
+      "sha256Dest": "ec9fbadd05198197bd28232a26ec9ba2c944e7503d8d3c1c403449c49cc2fcd5"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
       "from": "Adits/core/anam/anam-utils.js",
       "kind": "copy",
       "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
@@ -140,6 +218,32 @@
       "note": "3D environment, run in the fx harness",
       "to": "library/adits-fx/core/anam/anam-utils.js",
       "sha256Dest": "e0416b56b06d3cb59c455b32c891da19a1100fc58e8344f32c3c2e99fd503a47"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/lib/rapier/README.md",
+      "kind": "copy",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "d5c1a701b9a6babdfa2c6c96ebc90eb3ede7fe00cdb4513cc0202b434c4b953a",
+      "date": "2026-10-08",
+      "note": "version and license note for the vendored Rapier build",
+      "to": "library/adits-fx/core/lib/rapier/README.md",
+      "sha256Dest": "d5c1a701b9a6babdfa2c6c96ebc90eb3ede7fe00cdb4513cc0202b434c4b953a"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/lib/rapier/rapier.mjs",
+      "kind": "copy",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "87e0eed308b5c2cf6bb319cdb3cbb5659d660f750e30cf70aea0d26db595d262",
+      "date": "2026-10-08",
+      "note": "@dimforge/rapier3d-compat 0.19.3, Apache-2.0 per Adits' README (inlined WASM); imported by the voxel shim",
+      "to": "library/adits-fx/core/lib/rapier/rapier.mjs",
+      "sha256Dest": "87e0eed308b5c2cf6bb319cdb3cbb5659d660f750e30cf70aea0d26db595d262"
     },
     {
       "source": "adits",
@@ -2714,6 +2818,90 @@
     {
       "source": "adits",
       "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/index.html",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "a0af6891d085d6429820d890fbccfb44296a1fc8d54f4878574b099465d98535",
+      "date": "2026-10-08",
+      "note": "UI defaults and ranges of the voxel, particle, carpet and cutout controls; video-upload defaults (anam3dImage, anamGlassShow off) from AnamorphicCamera.js; anamMagnetHold on offline",
+      "to": "library/fx/effects.json"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/AnamorphicCamera.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "598a30e03f3c24ec20d0de53eda6f41532941065532a3fc1f052f5e4381d70f0",
+      "date": "2026-10-08",
+      "note": "_makeCarpetPlane + _fitObject, MagicCarpet.tick(frame context) from composite()",
+      "to": "library/fx/shims/anam-carpet.js"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/AnamorphicCamera.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "598a30e03f3c24ec20d0de53eda6f41532941065532a3fc1f052f5e4381d70f0",
+      "date": "2026-10-08",
+      "note": "_buildScene, _make2DMediaTexture (video), _planeAspect/_planeGeo/_fitObject, _applyCameraFromTrack, composite rotation block, _syncFrameCtx, _getCanvasFilter, _drawObjectLayer plain branch; host logic ticked at 60 Hz on the frame clock; followed point from rcg track / --point in screen space; lights, PMREM, parallax and glitch passes not rebuilt",
+      "to": "library/fx/shims/anam-host.js"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/AnamorphicCamera.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "598a30e03f3c24ec20d0de53eda6f41532941065532a3fc1f052f5e4381d70f0",
+      "date": "2026-10-08",
+      "note": "_loadModel particle branch (_videoFrameURL still, buildImageParticlePoints, _fitObject), _syncRevealUniforms (follows the point on screen), _tickParticles; rcgLiveColor added; Reveal Solid Model half and Transform styles not rebuilt",
+      "to": "library/fx/shims/anam-particles.js"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/AnamorphicCamera.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "598a30e03f3c24ec20d0de53eda6f41532941065532a3fc1f052f5e4381d70f0",
+      "date": "2026-10-08",
+      "note": "_buildVoxelArtModel and the Voxel Art block (audio pulse, gesture pop, tick) of composite()",
+      "to": "library/fx/shims/anam-voxel-art.js"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/AnamorphicCamera.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "598a30e03f3c24ec20d0de53eda6f41532941065532a3fc1f052f5e4381d70f0",
+      "date": "2026-10-08",
+      "note": "_buildVoxelModel, _triggerVoxelDrop, composite() voxel block (Magnet/Flip/Grow drives, tunnel drive, Auto Timer, Audio Trigger); Drop / Back to Plane presses scheduled (rcgDropAt / rcgBackAt); Pyramorphic not wired",
+      "to": "library/fx/shims/anam-voxel.js"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/AnamorphicCamera.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "598a30e03f3c24ec20d0de53eda6f41532941065532a3fc1f052f5e4381d70f0",
+      "date": "2026-10-08",
+      "note": "_buildCutout/_regenCutout, cutout enable handler, _tickCutout, _computeCutoutProgress; Manual latch scheduled (rcgCutoutAt); Gesture trigger not wired",
+      "to": "library/fx/shims/cutout.js"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
       "from": "Adits/effects/auto/advance/recipes.js",
       "kind": "learn",
       "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
@@ -2890,6 +3078,18 @@
       "sha256Dest": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d"
     },
     {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/audio-engine.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "efb2677c0ff567cc028828b79b6c339abc4558cd1fa48cfc5abde839cea8ee58",
+      "date": "2026-10-08",
+      "note": "AnalyserNode setup (fftSize 256, smoothing fxSmooth/100) emulated per tick after Chromium's RealtimeAnalyser; analyze() bass/mid/treble/vol formula with fxThresh 50, fxSens 1.0; 48 kHz assumed",
+      "to": "tools/audio/analyser.mjs"
+    },
+    {
       "source": "aditsStudio",
       "sourceRoot": "E:/Develop/Antigravity_testing/AditsStudio",
       "from": "server/lib/audio-analysis.mjs",
@@ -3044,6 +3244,18 @@
       "date": "2026-10-07",
       "note": "base camera pose and applyToCamera order; scene setup rebuilt with procedural geometry (GLB models on hold)",
       "to": "tools/blocks/three.mjs"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/AnamorphicCamera.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "598a30e03f3c24ec20d0de53eda6f41532941065532a3fc1f052f5e4381d70f0",
+      "date": "2026-10-08",
+      "note": "_extractTrack z formulas (hand size, eye distance) and _measureHandOpenness scale, converted from the GestureEngine openness rcg track stores",
+      "to": "tools/fx/points.mjs"
     },
     {
       "source": "aditsStudio",

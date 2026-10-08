@@ -32,7 +32,9 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | ☑ | WGSL (WebGPU) effects: HeatHaze, BlowPixels | `effects/video/{HeatHaze,BlowPixels}.js` | Copy (unmodified). WebGPU runs in the installed Chrome (`--headless=new`); HyperFrames' headless shell cannot create a device (no `dxil.dll`) | `rcg fx` | P6 |
 | ☐ | About 27 more WGSL (WebGPU) effects | `effects/video/*.js` | Defer (the WebGPU path is proven) | `rcg fx` | later |
 | ☑ | Canvas footage effects: Motion Trail (MotionTrails), Ghost (AdvGhost), Origami | `effects/video/{MotionTrails,AdvGhost,Origami}.js` | Copy (unmodified); pre-roll builds the history of the stateful ones (ghost 2.5 s, trails 2 s) | `rcg fx` | P6 |
-| ☐ | Voxels + Rapier physics, explode, 2D→3D relief, invisibility cloak, motion extraction | various | Defer | — | P6 |
+| ☑ | Voxels + Rapier physics: Voxel Art, Voxel Drop (drop, orbit, tunnel, bursts), Infinite Hole, Magnet, Flip, Grow | `core/anam/{VoxelArt,VoxelDrop}.js`, `core/lib/rapier/rapier.mjs` (@dimforge/rapier3d-compat 0.19.3, Apache-2.0), host code in `core/AnamorphicCamera.js` | Copy (unmodified) + host shims that rebuild the AnamorphicCamera scene, model transform and composite() drives on a 60 Hz host clock; Drop / Back presses scheduled; the hand or face Adits tracks on the webcam becomes a point from `rcg track` or `--point`. Not HF: no voxel, physics or cloth block, and a physics sim is not seekable | `library/adits-fx/core/anam/`, `library/fx/shims/anam-{host,voxel,voxel-art}.js`, `tools/fx/points.mjs` | P8 |
+| ☑ | Anamorphic models: Particles (image cloud, 9 audio dance modes, repel, reveal wipe), Cutout collage (8 layouts), Magic Carpet (fly, hang, flag) | `core/anam/{ParticleSystem,PhotoCubeGlass,CutoutCollage,MagicCarpet}.js`, `core/audio-engine.js` (analyser) | Copy (unmodified) + host shims; the dance modes read Adits' AnalyserNode, emulated per tick (`tools/audio/analyser.mjs`). Not HF: `particle-image-reveal` spreads accent particles not sampled from the image | `library/fx/shims/anam-{particles,carpet}.js`, `cutout.js` | P8 |
+| ☐ | Voxel Cubes, Pyramorphic (same voxel section; the voxel shim is ready), explode, 2D→3D relief, invisibility cloak, motion extraction | various | Defer | `rcg fx` | later |
 | ☐ | Social frames, doodle overlay (rough.js) | `effects/frames/SocialFrames.js`, Doodle | Port | `library/blocks/frames/`, `doodle/` | P6 |
 | ☑ | Advance JSON segment schema + prompt builder | `effects/auto/advance/` | Learn → shape of `beat-sheet.json` | `docs/job-spec.md` | P0 |
 | ☑ | Presets: auto (18), VJ, Advance recipes (6); time-remap; speed sync | `auto-presets.js`, `vj-presets.js`, `advance/recipes.js`, `TimeRemap.js`, `core/main.js` Speed Sync | Learn → 6 styles + 8 sections (`rcg recipe`); TimeRemap ported (seeded); Speed Sync ported as a rate lane (`rcg ramp`, at least 1x). VJ presets wait for the P6 footage FX | `library/recipes/`, `tools/recipes/`, `tools/blocks/ramp.mjs` | P5 |
@@ -113,13 +115,13 @@ Counts are checklist rows (one row can hold several features). "Waiting" means n
 
 | Source | Ported ☑ | Waiting ☐ | On hold | No work needed |
 |---|---|---|---|---|
-| Adits_Modular | 21 | 5 | 1 (GLB models) | 3 |
+| Adits_Modular | 23 | 5 | 1 (GLB models) | 3 |
 | AditsShaders | 6 | 0 | 0 | 1 |
 | AditsStudio | 2 | 0 | 0 | 2 |
 | flowEditor | 6 | 2 | 0 | 1 |
 | TTS app | 6 | 1 | 0 | 2 |
 | mop-star lessons | 2 | 0 | 0 | 0 |
-| **Total** | **43** | **8** | **1** | **9** |
+| **Total** | **45** | **8** | **1** | **9** |
 
 **Adits effects in `library/adits-fx/` (copied unmodified, run by `rcg fx`), 11 of them:**
 - Footage, canvas: Ghost (`AdvGhost`), Motion Trail (`MotionTrails`), Origami.
@@ -134,10 +136,16 @@ PNP Vid (`rcg layer`), Effects Target bg/fg (`rcg target`), the four cut transit
 camera cues (`rcg camera --track`). MediaPipe wasm and 3 models are copied but git-ignored
 (`models/mediapipe/`, like the Kokoro weights).
 
+**Ported in P8 (voxels and anamorphic models), from Adits, run unmodified by `rcg fx`:** Voxel Art,
+Voxel Drop with Rapier physics (styles drop, orbit, tunnel, bursts), Infinite Hole, Magnet, Flip, Grow
+(`voxel-*`), Particles, Cutout and Magic Carpet. Rapier is the compat build Adits vendors. The host
+logic runs at 60 Hz on the frame clock, the followed point comes from `rcg track` or `--point`, and
+the audio drives read Adits' analyser emulated per tick.
+
 **Still waiting (rows marked ☐ above):**
 - Adits: BlackHole, Clouds and TunnelCorridor environments; PixelStretch, ReversePhi and the VJ
-  deck; about 27 more WGSL effects; voxels/physics and the other heavy effects; social frames and
-  doodle.
+  deck; about 27 more WGSL effects; Voxel Cubes, Pyramorphic, explode, 2D→3D relief, cloak and
+  motion extraction; social frames and doodle.
 - flowEditor: newspaper background; `.flow` import.
 - TTS app: pyttsx3, gTTS, Piper, Melo engines.
 - On hold: the 26 Adits GLB models (no license notes).
@@ -154,6 +162,7 @@ camera cues (`rcg camera --track`). MediaPipe wasm and 3 models are copied but g
 | P5 Integration | recipes, all-in-one job | R5 | ☑ done 2026-10-08: cosmic-promo recipe planned and built in one command (3D, flythrough, shader, beat-flash, camera, ramp, voice, captions, titles); 14.5 s, -15.7 LUFS, 11/11 verify |
 | P6 Optional (selected subset) | `rcg fx` harness; Ghost, Motion Trail, Origami, Heat Haze, Blow Pixels, FrameTunnel, RevealUnder, SplitScreen; SmokeEnv, RainSystem, HoloSheen | R6 | ☑ subset done 2026-10-08: 11 effects rendered offline into a 13.75 s reel, -14.8 LUFS, 11/11 verify; Blow Pixels at intensity 0 returns its input exactly; 3 effects byte-identical across two runs |
 | P7 Tracking + PNP | MediaPipe face/hand tracking, face-anchored camera, background removal, PNP, layers, transitions, colour mask, effect target | R7 | ☑ done 2026-10-08: a 13.4 s 9:16 edit of the user's 16:9 test clip: face found on 346/346 frames (tracking identical on two runs of a 2 s range), keywords behind the subject, side copy, 4 transitions, colour mask, Blow Pixels switched bg to fg; -14.4 LUFS, 11/11 verify |
+| P8 Voxels + anamorphic models | Voxel Art, Voxel Drop + Rapier, Hole, Magnet, Flip, Grow; Particles, Cutout, Magic Carpet; 60 Hz host clock, followed point, Adits analyser | R8 | ☑ done 2026-10-08: a 14.0 s reel of all 9 effects (R6 and R7 clips, R7 hand track); flat voxel plane fits 1.014-1.020 x linear(input) within 1.5/255; physics and particles byte-identical across runs; 24 vs 30 fps agree at 53-55 dB; -14.8 LUFS, 11/11 verify |
 | P6 remainder | other footage FX and environments, newspaper background, frames/doodle, `.flow` import, extra TTS engines | none yet | not started |
 
 **Note (2026-10-08):** renders made before this date (mop-star, R0-R3b) had a black 8 px strip down the right edge from an ffmpeg 8.1 conversion bug (lessons 16b). HyperFrames now uses ffmpeg 9.0.2, and R0, R1, R1b, R2 (final + repeat, 51.7 dB apart), R3 and R3b were re-rendered: all pass verify, including the new edge check. The mop-star trailer in `videos/` still has the strip.

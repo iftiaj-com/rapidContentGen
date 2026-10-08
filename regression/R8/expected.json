@@ -1,0 +1,75 @@
+{
+  "job": "R8 anamorphic and voxel reel",
+  "phase": "P8",
+  "inputs": {
+    "video": [
+      "jobs/2026-10-08-r6-fx-reel/assets/101066-video-1080.mp4",
+      "jobs/2026-10-08-r7-tracking-pnp/assets/Video_for_testing.mp4"
+    ],
+    "track": "jobs/2026-10-08-r7-tracking-pnp/data/track-v1.json",
+    "music": "jobs/2026-10-08-r6-fx-reel/assets/song-limited.wav"
+  },
+  "render": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 24,
+    "duration": 14
+  },
+  "audio": {
+    "integratedLufs": [
+      -16,
+      -12
+    ],
+    "truePeakMax": -1,
+    "gainReductionInLog": false
+  },
+  "effects": [
+    "voxel-art",
+    "voxel-drop",
+    "voxel-hole",
+    "voxel-magnet",
+    "voxel-flip",
+    "voxel-grow",
+    "particles",
+    "cutout",
+    "magic-carpet"
+  ],
+  "checks": {
+    "flatVoxelLinearFitGain": [
+      1.0,
+      1.03
+    ],
+    "flatVoxelLinearFitMaxError255": 2,
+    "determinismByteIdentical": [
+      "voxel-drop",
+      "particles"
+    ],
+    "fps24vs30PsnrMin": 45,
+    "flipSilentVsPlainPsnr": "inf",
+    "liveColorFrame0Identical": true,
+    "verify": "11/11"
+  },
+  "lastRun": {
+    "date": "2026-10-08",
+    "integratedLufs": -14.8,
+    "truePeakDb": -2.2,
+    "renderSeconds": 66.5,
+    "verify": "11/11 PASS",
+    "mixCheck": {
+      "lufs": -14.8,
+      "truePeak": -2.5
+    },
+    "flatVoxelLinearFitGain": [
+      1.0138,
+      1.0195
+    ],
+    "fps24vs30Psnr": [
+      52.8,
+      54.9
+    ],
+    "fxSecondsPer1_5s": [
+      17.4,
+      22.1
+    ]
+  }
+}

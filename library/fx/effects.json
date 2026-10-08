@@ -1,5 +1,5 @@
 {
-  "$comment": "Adits effects run unmodified by tools/fx/fx.mjs (rcg fx). params: Adits UI inputs (DOM ids) with their UI defaults; ranges: [min, max, step] so the harness makes real range inputs that clamp and snap as the Adits UI does; vparams: videoEngine.params; presets: Adits preset tables (core/main.js) applied over the defaults; needs/optional: src2 = a second media (side B); webgpu: needs a WebGPU device; options: harness behaviour (media \"video\" = a real seeked <video>; ready/settle = properties to wait for; bSpeedParam).",
+  "$comment": "Adits effects run unmodified by tools/fx/fx.mjs (rcg fx). params: Adits UI inputs (DOM ids) with their UI defaults; ranges: [min, max, step] so the harness makes real range inputs that clamp and snap as the Adits UI does; vparams: videoEngine.params; presets: Adits preset tables (core/main.js) applied over the defaults; needs/optional: src2 = a second media (side B); webgpu: needs a WebGPU device; options: harness behaviour (media \"video\" = a real seeked <video>; ready/settle = properties to wait for; bSpeedParam; tickHz = the host logic runs at this rate, Adits' display loop, and the scene renders once per output frame; such effects also get job.analyser, Adits' AnalyserNode emulated per tick, and job.track, the point from --track / --point). kind anamorphic = the footage as an AnamorphicCamera model over a background (rcgBackground auto | footage | src2 | black | none).",
   "ghost": {
     "label": "Ghost trails (AdvGhost): delayed copies screened in magenta and cyan; lag and offset follow the music",
     "kind": "footage",
@@ -2049,6 +2049,1271 @@
       "media": "reveal side B (or the bg colour) where the colour matches",
       "effect": "side B (an effect clip) only where the colour matches, raw footage elsewhere",
       "color": "side B (or the footage) where the colour matches, bg colour elsewhere"
+    }
+  },
+  "voxel-drop": {
+    "label": "Voxel Drop (VoxelDrop + Rapier physics): the footage as a grid of cubes that voxelize in a ripple and fall; styles drop / orbit / tunnel / bursts (presets); rcgDropAt / rcgBackAt press Drop and Back to Plane (seconds)",
+    "kind": "anamorphic",
+    "module": "core/anam/VoxelDrop.js",
+    "class": "VoxelDrop",
+    "shim": "anam-voxel.js",
+    "optional": [
+      "src2"
+    ],
+    "params": {
+      "anamVoxelCols": 20,
+      "anamVoxelOrganic": true,
+      "anamVoxelDance": true,
+      "anamVoxelDanceLevel": 4,
+      "anamVoxelDropDelay": 0,
+      "anamVoxelDropStyle": "drop",
+      "anamVoxelTimerEnabled": false,
+      "anamVoxelTimer": 3,
+      "anamVoxelAudioEnabled": false,
+      "anamVoxelAudioMode": "bass",
+      "anamScale": 100,
+      "anamPerspAngle": -30,
+      "anamPerspRot": 0,
+      "anamPerspRoll": 0,
+      "anamPerspH": 0,
+      "anamPerspV": 0,
+      "anamSpin": false,
+      "anamSpinUD": false,
+      "anamRoll": false,
+      "anamRollSpeed": 50,
+      "anamFloat": false,
+      "anamBeatPulse": false,
+      "anamBreathe": false,
+      "anamStrength": 100,
+      "anamDepth": 50,
+      "anamMagnetHold": true,
+      "anamToneMapping": "aces",
+      "anamExposure": 1,
+      "anamModelRatio": "original",
+      "anamColorMode": "0",
+      "anamColorModeStrength": 100,
+      "anamCustomColor": "#ff70b8",
+      "rcgBackground": "auto",
+      "rcgDropAt": "0.5",
+      "rcgBackAt": ""
+    },
+    "ranges": {
+      "anamVoxelCols": [
+        4,
+        20,
+        1
+      ],
+      "anamVoxelDanceLevel": [
+        0,
+        10,
+        1
+      ],
+      "anamVoxelDropDelay": [
+        0,
+        2,
+        0.1
+      ],
+      "anamVoxelTimer": [
+        1,
+        10,
+        0.5
+      ],
+      "anamScale": [
+        30,
+        250,
+        1
+      ],
+      "anamPerspAngle": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRot": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRoll": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspH": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspV": [
+        -100,
+        100,
+        1
+      ],
+      "anamRollSpeed": [
+        1,
+        100,
+        1
+      ],
+      "anamStrength": [
+        0,
+        100,
+        1
+      ],
+      "anamDepth": [
+        0,
+        100,
+        1
+      ],
+      "anamExposure": [
+        0,
+        2,
+        0.05
+      ],
+      "anamColorModeStrength": [
+        0,
+        100,
+        1
+      ]
+    },
+    "presets": {
+      "drop": {
+        "anamVoxelDropStyle": "drop"
+      },
+      "orbit": {
+        "anamVoxelDropStyle": "orbit"
+      },
+      "tunnel": {
+        "anamVoxelDropStyle": "tunnel",
+        "anamPerspAngle": 0
+      },
+      "bursts": {
+        "anamVoxelDropStyle": "bursts"
+      }
+    },
+    "options": {
+      "tickHz": 60
+    }
+  },
+  "voxel-hole": {
+    "label": "Infinite Hole (VoxelDrop + Rapier physics): the cubes in a centre circle drop through and loop forever; the rest of the footage stays flat (Adits tilts to -50 on enable)",
+    "kind": "anamorphic",
+    "module": "core/anam/VoxelDrop.js",
+    "class": "VoxelDrop",
+    "shim": "anam-voxel.js",
+    "optional": [
+      "src2"
+    ],
+    "params": {
+      "anamVoxelCols": 20,
+      "anamVoxelOrganic": true,
+      "anamVoxelDance": true,
+      "anamVoxelDanceLevel": 4,
+      "anamVoxelDropDelay": 0,
+      "anamVoxelHole": true,
+      "anamVoxelHoleSize": 35,
+      "anamScale": 100,
+      "anamPerspAngle": -50,
+      "anamPerspRot": 0,
+      "anamPerspRoll": 0,
+      "anamPerspH": 0,
+      "anamPerspV": 0,
+      "anamSpin": false,
+      "anamSpinUD": false,
+      "anamRoll": false,
+      "anamRollSpeed": 50,
+      "anamFloat": false,
+      "anamBeatPulse": false,
+      "anamBreathe": false,
+      "anamStrength": 100,
+      "anamDepth": 50,
+      "anamMagnetHold": true,
+      "anamToneMapping": "aces",
+      "anamExposure": 1,
+      "anamModelRatio": "original",
+      "anamColorMode": "0",
+      "anamColorModeStrength": 100,
+      "anamCustomColor": "#ff70b8",
+      "rcgBackground": "auto"
+    },
+    "ranges": {
+      "anamVoxelCols": [
+        4,
+        20,
+        1
+      ],
+      "anamVoxelDanceLevel": [
+        0,
+        10,
+        1
+      ],
+      "anamVoxelDropDelay": [
+        0,
+        2,
+        0.1
+      ],
+      "anamVoxelHoleSize": [
+        5,
+        100,
+        1
+      ],
+      "anamScale": [
+        30,
+        250,
+        1
+      ],
+      "anamPerspAngle": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRot": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRoll": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspH": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspV": [
+        -100,
+        100,
+        1
+      ],
+      "anamRollSpeed": [
+        1,
+        100,
+        1
+      ],
+      "anamStrength": [
+        0,
+        100,
+        1
+      ],
+      "anamDepth": [
+        0,
+        100,
+        1
+      ],
+      "anamExposure": [
+        0,
+        2,
+        0.05
+      ],
+      "anamColorModeStrength": [
+        0,
+        100,
+        1
+      ]
+    },
+    "options": {
+      "tickHz": 60
+    }
+  },
+  "voxel-magnet": {
+    "label": "Magnet (VoxelDrop): cubes near a point swell and reach toward it (--track hand or face, or --point); anamMagnetInvert pushes; anamMagnetGesture: open palm pushes, fist pulls",
+    "kind": "anamorphic",
+    "module": "core/anam/VoxelDrop.js",
+    "class": "VoxelDrop",
+    "shim": "anam-voxel.js",
+    "optional": [
+      "src2"
+    ],
+    "params": {
+      "anamVoxelCols": 20,
+      "anamVoxelOrganic": true,
+      "anamVoxelDance": true,
+      "anamVoxelDanceLevel": 4,
+      "anamVoxelDropDelay": 0,
+      "anamVoxelMagnet": true,
+      "anamVoxelMagnetStrength": 150,
+      "anamVoxelMagnetRange": 10,
+      "anamMagnetInvert": false,
+      "anamMagnetGesture": false,
+      "anamMagnetGesturePush": true,
+      "anamMagnetGesturePull": true,
+      "anamScale": 100,
+      "anamPerspAngle": -30,
+      "anamPerspRot": 0,
+      "anamPerspRoll": 0,
+      "anamPerspH": 0,
+      "anamPerspV": 0,
+      "anamSpin": false,
+      "anamSpinUD": false,
+      "anamRoll": false,
+      "anamRollSpeed": 50,
+      "anamFloat": false,
+      "anamBeatPulse": false,
+      "anamBreathe": false,
+      "anamStrength": 100,
+      "anamDepth": 50,
+      "anamMagnetHold": true,
+      "anamToneMapping": "aces",
+      "anamExposure": 1,
+      "anamModelRatio": "original",
+      "anamColorMode": "0",
+      "anamColorModeStrength": 100,
+      "anamCustomColor": "#ff70b8",
+      "rcgBackground": "auto"
+    },
+    "ranges": {
+      "anamVoxelCols": [
+        4,
+        20,
+        1
+      ],
+      "anamVoxelDanceLevel": [
+        0,
+        10,
+        1
+      ],
+      "anamVoxelDropDelay": [
+        0,
+        2,
+        0.1
+      ],
+      "anamVoxelMagnetStrength": [
+        0,
+        300,
+        1
+      ],
+      "anamVoxelMagnetRange": [
+        5,
+        100,
+        1
+      ],
+      "anamScale": [
+        30,
+        250,
+        1
+      ],
+      "anamPerspAngle": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRot": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRoll": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspH": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspV": [
+        -100,
+        100,
+        1
+      ],
+      "anamRollSpeed": [
+        1,
+        100,
+        1
+      ],
+      "anamStrength": [
+        0,
+        100,
+        1
+      ],
+      "anamDepth": [
+        0,
+        100,
+        1
+      ],
+      "anamExposure": [
+        0,
+        2,
+        0.05
+      ],
+      "anamColorModeStrength": [
+        0,
+        100,
+        1
+      ]
+    },
+    "options": {
+      "tickHz": 60
+    }
+  },
+  "voxel-flip": {
+    "label": "Flip (VoxelDrop): tiles flip 180 degrees about their centres: an elastic auto wave, the music (anamFlipAudio, --audio) or a hand (anamFlipGesture, --track)",
+    "kind": "anamorphic",
+    "module": "core/anam/VoxelDrop.js",
+    "class": "VoxelDrop",
+    "shim": "anam-voxel.js",
+    "optional": [
+      "src2"
+    ],
+    "params": {
+      "anamVoxelCols": 20,
+      "anamVoxelOrganic": true,
+      "anamVoxelDance": true,
+      "anamVoxelDanceLevel": 4,
+      "anamVoxelDropDelay": 0,
+      "anamVoxelFlip": true,
+      "anamVoxelFlipSpeed": 50,
+      "anamVoxelFlipRange": 30,
+      "anamVoxelFlipAxis": "0",
+      "anamFlipGesture": false,
+      "anamFlipAudio": false,
+      "anamFlipAudioMode": "bass",
+      "anamScale": 100,
+      "anamPerspAngle": -30,
+      "anamPerspRot": 0,
+      "anamPerspRoll": 0,
+      "anamPerspH": 0,
+      "anamPerspV": 0,
+      "anamSpin": false,
+      "anamSpinUD": false,
+      "anamRoll": false,
+      "anamRollSpeed": 50,
+      "anamFloat": false,
+      "anamBeatPulse": false,
+      "anamBreathe": false,
+      "anamStrength": 100,
+      "anamDepth": 50,
+      "anamMagnetHold": true,
+      "anamToneMapping": "aces",
+      "anamExposure": 1,
+      "anamModelRatio": "original",
+      "anamColorMode": "0",
+      "anamColorModeStrength": 100,
+      "anamCustomColor": "#ff70b8",
+      "rcgBackground": "auto"
+    },
+    "ranges": {
+      "anamVoxelCols": [
+        4,
+        20,
+        1
+      ],
+      "anamVoxelDanceLevel": [
+        0,
+        10,
+        1
+      ],
+      "anamVoxelDropDelay": [
+        0,
+        2,
+        0.1
+      ],
+      "anamVoxelFlipSpeed": [
+        1,
+        200,
+        1
+      ],
+      "anamVoxelFlipRange": [
+        5,
+        100,
+        1
+      ],
+      "anamScale": [
+        30,
+        250,
+        1
+      ],
+      "anamPerspAngle": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRot": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRoll": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspH": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspV": [
+        -100,
+        100,
+        1
+      ],
+      "anamRollSpeed": [
+        1,
+        100,
+        1
+      ],
+      "anamStrength": [
+        0,
+        100,
+        1
+      ],
+      "anamDepth": [
+        0,
+        100,
+        1
+      ],
+      "anamExposure": [
+        0,
+        2,
+        0.05
+      ],
+      "anamColorModeStrength": [
+        0,
+        100,
+        1
+      ]
+    },
+    "options": {
+      "tickHz": 60
+    }
+  },
+  "voxel-grow": {
+    "label": "Grow (VoxelDrop): tiles extrude by brightness like a city skyline around a point (--track / --point; anamVoxelGrowRange 100 reaches the whole frame); anamGrowAudio pulses the heights with the music",
+    "kind": "anamorphic",
+    "module": "core/anam/VoxelDrop.js",
+    "class": "VoxelDrop",
+    "shim": "anam-voxel.js",
+    "optional": [
+      "src2"
+    ],
+    "params": {
+      "anamVoxelCols": 20,
+      "anamVoxelOrganic": true,
+      "anamVoxelDance": true,
+      "anamVoxelDanceLevel": 4,
+      "anamVoxelDropDelay": 0,
+      "anamVoxelGrow": true,
+      "anamVoxelGrowHeight": 3000,
+      "anamVoxelGrowContrast": 50,
+      "anamVoxelGrowBackside": false,
+      "anamVoxelGrowRange": 30,
+      "anamGrowGesture": false,
+      "anamGrowAudio": false,
+      "anamGrowAudioMode": "bass",
+      "anamScale": 100,
+      "anamPerspAngle": -30,
+      "anamPerspRot": 0,
+      "anamPerspRoll": 0,
+      "anamPerspH": 0,
+      "anamPerspV": 0,
+      "anamSpin": false,
+      "anamSpinUD": false,
+      "anamRoll": false,
+      "anamRollSpeed": 50,
+      "anamFloat": false,
+      "anamBeatPulse": false,
+      "anamBreathe": false,
+      "anamStrength": 100,
+      "anamDepth": 50,
+      "anamMagnetHold": true,
+      "anamToneMapping": "aces",
+      "anamExposure": 1,
+      "anamModelRatio": "original",
+      "anamColorMode": "0",
+      "anamColorModeStrength": 100,
+      "anamCustomColor": "#ff70b8",
+      "rcgBackground": "auto"
+    },
+    "ranges": {
+      "anamVoxelCols": [
+        4,
+        20,
+        1
+      ],
+      "anamVoxelDanceLevel": [
+        0,
+        10,
+        1
+      ],
+      "anamVoxelDropDelay": [
+        0,
+        2,
+        0.1
+      ],
+      "anamVoxelGrowHeight": [
+        10,
+        20000,
+        1
+      ],
+      "anamVoxelGrowContrast": [
+        0,
+        100,
+        1
+      ],
+      "anamVoxelGrowRange": [
+        5,
+        100,
+        1
+      ],
+      "anamScale": [
+        30,
+        250,
+        1
+      ],
+      "anamPerspAngle": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRot": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRoll": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspH": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspV": [
+        -100,
+        100,
+        1
+      ],
+      "anamRollSpeed": [
+        1,
+        100,
+        1
+      ],
+      "anamStrength": [
+        0,
+        100,
+        1
+      ],
+      "anamDepth": [
+        0,
+        100,
+        1
+      ],
+      "anamExposure": [
+        0,
+        2,
+        0.05
+      ],
+      "anamColorModeStrength": [
+        0,
+        100,
+        1
+      ]
+    },
+    "options": {
+      "tickHz": 60
+    }
+  },
+  "voxel-art": {
+    "label": "Voxel Art (VoxelArt): the footage rebuilt as stacked-cube relief (brightness = depth), banded toon shading, black voxel outlines, re-voxelised every frame",
+    "kind": "anamorphic",
+    "module": "core/anam/VoxelArt.js",
+    "class": "VoxelArt",
+    "shim": "anam-voxel-art.js",
+    "optional": [
+      "src2"
+    ],
+    "params": {
+      "anamVoxelArtRes": 48,
+      "anamVoxelArtLevels": 12,
+      "anamVoxelArtHeight": 100,
+      "anamVoxelArtOutline": 40,
+      "anamVoxelArtBaseTint": true,
+      "anamVoxelArtRotate": false,
+      "anamVoxelArtAudio": false,
+      "anamVoxelArtAudioMode": "bass",
+      "anamVoxelArtGesture": false,
+      "anamScale": 100,
+      "anamPerspAngle": -30,
+      "anamPerspRot": 0,
+      "anamPerspRoll": 0,
+      "anamPerspH": 0,
+      "anamPerspV": 0,
+      "anamSpin": false,
+      "anamSpinUD": false,
+      "anamRoll": false,
+      "anamRollSpeed": 50,
+      "anamFloat": false,
+      "anamBeatPulse": false,
+      "anamBreathe": false,
+      "anamStrength": 100,
+      "anamDepth": 50,
+      "anamMagnetHold": true,
+      "anamToneMapping": "aces",
+      "anamExposure": 1,
+      "anamModelRatio": "original",
+      "anamColorMode": "0",
+      "anamColorModeStrength": 100,
+      "anamCustomColor": "#ff70b8",
+      "rcgBackground": "auto"
+    },
+    "ranges": {
+      "anamVoxelArtRes": [
+        16,
+        96,
+        1
+      ],
+      "anamVoxelArtLevels": [
+        2,
+        32,
+        1
+      ],
+      "anamVoxelArtHeight": [
+        20,
+        200,
+        5
+      ],
+      "anamVoxelArtOutline": [
+        0,
+        100,
+        1
+      ],
+      "anamScale": [
+        30,
+        250,
+        1
+      ],
+      "anamPerspAngle": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRot": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRoll": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspH": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspV": [
+        -100,
+        100,
+        1
+      ],
+      "anamRollSpeed": [
+        1,
+        100,
+        1
+      ],
+      "anamStrength": [
+        0,
+        100,
+        1
+      ],
+      "anamDepth": [
+        0,
+        100,
+        1
+      ],
+      "anamExposure": [
+        0,
+        2,
+        0.05
+      ],
+      "anamColorModeStrength": [
+        0,
+        100,
+        1
+      ]
+    },
+    "options": {
+      "tickHz": 60
+    }
+  },
+  "particles": {
+    "label": "Particles (ParticleSystem): the footage as a cloud of image-coloured points on springs; 9 audio dance modes (anamParticleAudioEnabled, --audio); repel around a point (--track / --point); colours from the first frame as in Adits, rcgLiveColor follows the footage",
+    "kind": "anamorphic",
+    "module": "core/anam/ParticleSystem.js",
+    "class": "ParticleSystem",
+    "shim": "anam-particles.js",
+    "optional": [
+      "src2"
+    ],
+    "params": {
+      "anamParticleCount": 15000,
+      "anamParticleSize": 30,
+      "anamGlowIntensity": 80,
+      "anamSampler": 5,
+      "anamBrightnessSize": false,
+      "anamBrightnessThreshold": 100,
+      "anamBrightnessContrast": 1,
+      "anamBrightnessRandomness": 0,
+      "anamParticleAudioEnabled": false,
+      "anamParticleAudioMotion": "flow",
+      "anamParticleAudioBand": "all",
+      "anamParticleAudioIntensity": 60,
+      "anamParticleAudioSizeGlow": false,
+      "anamParticleAutoNormalize": false,
+      "anamParticleResolveDuration": 3,
+      "anamParticleShowDuration": 0,
+      "anam3dImage": false,
+      "anamGlassShow": false,
+      "anamCurveRadius": 0.2,
+      "anamImageFit": "stretch",
+      "anamRevealEnabled": false,
+      "anamRevealMode": "edge",
+      "anamRevealPos": 50,
+      "anamRevealFeather": 10,
+      "anamRevealAngle": 0,
+      "anamRevealRadius": 40,
+      "anamScale": 100,
+      "anamPerspAngle": -30,
+      "anamPerspRot": 0,
+      "anamPerspRoll": 0,
+      "anamPerspH": 0,
+      "anamPerspV": 0,
+      "anamSpin": false,
+      "anamSpinUD": false,
+      "anamRoll": false,
+      "anamRollSpeed": 50,
+      "anamFloat": false,
+      "anamBeatPulse": false,
+      "anamBreathe": false,
+      "anamStrength": 100,
+      "anamDepth": 50,
+      "anamMagnetHold": true,
+      "anamToneMapping": "aces",
+      "anamExposure": 1,
+      "anamModelRatio": "original",
+      "anamColorMode": "0",
+      "anamColorModeStrength": 100,
+      "anamCustomColor": "#ff70b8",
+      "rcgBackground": "auto",
+      "rcgLiveColor": false
+    },
+    "ranges": {
+      "anamParticleCount": [
+        500,
+        40000,
+        500
+      ],
+      "anamParticleSize": [
+        5,
+        100,
+        1
+      ],
+      "anamGlowIntensity": [
+        0,
+        100,
+        1
+      ],
+      "anamSampler": [
+        1,
+        5,
+        1
+      ],
+      "anamBrightnessThreshold": [
+        0,
+        100,
+        1
+      ],
+      "anamBrightnessContrast": [
+        0.2,
+        3,
+        0.05
+      ],
+      "anamBrightnessRandomness": [
+        0,
+        100,
+        1
+      ],
+      "anamParticleAudioIntensity": [
+        0,
+        100,
+        1
+      ],
+      "anamParticleResolveDuration": [
+        1,
+        6,
+        0.5
+      ],
+      "anamParticleShowDuration": [
+        0,
+        120,
+        1
+      ],
+      "anamCurveRadius": [
+        0,
+        0.5,
+        0.01
+      ],
+      "anamRevealPos": [
+        0,
+        100,
+        1
+      ],
+      "anamRevealFeather": [
+        0,
+        100,
+        1
+      ],
+      "anamRevealAngle": [
+        0,
+        360,
+        1
+      ],
+      "anamRevealRadius": [
+        5,
+        100,
+        1
+      ],
+      "anamScale": [
+        30,
+        250,
+        1
+      ],
+      "anamPerspAngle": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRot": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRoll": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspH": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspV": [
+        -100,
+        100,
+        1
+      ],
+      "anamRollSpeed": [
+        1,
+        100,
+        1
+      ],
+      "anamStrength": [
+        0,
+        100,
+        1
+      ],
+      "anamDepth": [
+        0,
+        100,
+        1
+      ],
+      "anamExposure": [
+        0,
+        2,
+        0.05
+      ],
+      "anamColorModeStrength": [
+        0,
+        100,
+        1
+      ]
+    },
+    "options": {
+      "tickHz": 60
+    }
+  },
+  "magic-carpet": {
+    "label": "Magic Carpet (MagicCarpet): the footage as wind-blown cloth with a woven hem and torn edge: flying carpet, hanging banner or waving flag (presets)",
+    "kind": "anamorphic",
+    "module": "core/anam/MagicCarpet.js",
+    "class": "MagicCarpet",
+    "shim": "anam-carpet.js",
+    "optional": [
+      "src2"
+    ],
+    "params": {
+      "anamCarpetStyle": "fly",
+      "anamCarpetWind": 60,
+      "anamCarpetRipples": 45,
+      "anamCarpetSpeed": 100,
+      "anamCarpetShadow": 40,
+      "anamCarpetEdge": 20,
+      "anamCarpetHemColor": "#d4a24b",
+      "anamCarpetHem": 15,
+      "anamCarpetVintage": 0,
+      "anamCarpetHover": true,
+      "anamCarpetGesture": false,
+      "anamCarpetAudio": false,
+      "anamCarpetAudioMode": "bass",
+      "anamScale": 100,
+      "anamPerspAngle": -30,
+      "anamPerspRot": 0,
+      "anamPerspRoll": 0,
+      "anamPerspH": 0,
+      "anamPerspV": 0,
+      "anamSpin": false,
+      "anamSpinUD": false,
+      "anamRoll": false,
+      "anamRollSpeed": 50,
+      "anamFloat": false,
+      "anamBeatPulse": false,
+      "anamBreathe": false,
+      "anamStrength": 100,
+      "anamDepth": 50,
+      "anamMagnetHold": true,
+      "anamToneMapping": "aces",
+      "anamExposure": 1,
+      "anamModelRatio": "original",
+      "anamColorMode": "0",
+      "anamColorModeStrength": 100,
+      "anamCustomColor": "#ff70b8",
+      "rcgBackground": "auto"
+    },
+    "ranges": {
+      "anamCarpetWind": [
+        0,
+        200,
+        1
+      ],
+      "anamCarpetRipples": [
+        0,
+        100,
+        1
+      ],
+      "anamCarpetSpeed": [
+        25,
+        300,
+        1
+      ],
+      "anamCarpetShadow": [
+        0,
+        100,
+        1
+      ],
+      "anamCarpetEdge": [
+        0,
+        100,
+        1
+      ],
+      "anamCarpetHem": [
+        0,
+        100,
+        1
+      ],
+      "anamCarpetVintage": [
+        0,
+        100,
+        1
+      ],
+      "anamScale": [
+        30,
+        250,
+        1
+      ],
+      "anamPerspAngle": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRot": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspRoll": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspH": [
+        -100,
+        100,
+        1
+      ],
+      "anamPerspV": [
+        -100,
+        100,
+        1
+      ],
+      "anamRollSpeed": [
+        1,
+        100,
+        1
+      ],
+      "anamStrength": [
+        0,
+        100,
+        1
+      ],
+      "anamDepth": [
+        0,
+        100,
+        1
+      ],
+      "anamExposure": [
+        0,
+        2,
+        0.05
+      ],
+      "anamColorModeStrength": [
+        0,
+        100,
+        1
+      ]
+    },
+    "presets": {
+      "fly": {
+        "anamCarpetStyle": "fly"
+      },
+      "hang": {
+        "anamCarpetStyle": "hang"
+      },
+      "flag": {
+        "anamCarpetStyle": "flag"
+      }
+    },
+    "options": {
+      "tickHz": 60
+    }
+  },
+  "cutout": {
+    "label": "Cutout collage (CutoutCollage, Canvas2D): the frame cut into offset paper pieces with shadow, border and tint (8 layouts as presets); trigger manual (rcgCutoutAt \"t:1;t:0\" latches, cut apart from the start) / timer / beat (--audio); parallax around a point (--track / --point)",
+    "kind": "footage",
+    "module": "core/anam/CutoutCollage.js",
+    "class": "CutoutCollage",
+    "shim": "cutout.js",
+    "params": {
+      "cutoutPreset": "classic",
+      "cutoutTrigger": "manual",
+      "cutoutDuration": 4,
+      "cutoutBand": "all",
+      "cutoutPieces": 9,
+      "cutoutSize": 30,
+      "cutoutSizeJitter": 50,
+      "cutoutSpread": 35,
+      "cutoutZoom": 30,
+      "cutoutRotate": 15,
+      "cutoutBorder": 0,
+      "cutoutShadow": 35,
+      "cutoutDrift": 20,
+      "cutoutParallax": 40,
+      "cutoutEdgeStyle": "poly",
+      "cutoutColorMode": "0",
+      "cutoutCustomColor": "#ff70b8",
+      "cutoutColorStrength": 70,
+      "cutoutBgMode": "original",
+      "cutoutBgColor": "#000000",
+      "cutoutAudio": false,
+      "cutoutAudioBand": "all",
+      "rcgCutoutAt": "",
+      "rcgCutoutSeed": ""
+    },
+    "ranges": {
+      "cutoutDuration": [
+        0.5,
+        10,
+        0.5
+      ],
+      "cutoutPieces": [
+        2,
+        24,
+        1
+      ],
+      "cutoutSize": [
+        10,
+        60,
+        1
+      ],
+      "cutoutSizeJitter": [
+        0,
+        100,
+        1
+      ],
+      "cutoutSpread": [
+        0,
+        100,
+        1
+      ],
+      "cutoutZoom": [
+        0,
+        100,
+        1
+      ],
+      "cutoutRotate": [
+        0,
+        100,
+        1
+      ],
+      "cutoutBorder": [
+        0,
+        10,
+        0.5
+      ],
+      "cutoutShadow": [
+        0,
+        100,
+        1
+      ],
+      "cutoutDrift": [
+        0,
+        100,
+        1
+      ],
+      "cutoutParallax": [
+        0,
+        100,
+        1
+      ],
+      "cutoutColorStrength": [
+        0,
+        100,
+        1
+      ]
+    },
+    "presets": {
+      "classic": {
+        "cutoutPreset": "classic"
+      },
+      "collage": {
+        "cutoutPreset": "collage"
+      },
+      "strips_v": {
+        "cutoutPreset": "strips_v"
+      },
+      "strips_h": {
+        "cutoutPreset": "strips_h"
+      },
+      "grid": {
+        "cutoutPreset": "grid"
+      },
+      "shards": {
+        "cutoutPreset": "shards"
+      },
+      "shattered": {
+        "cutoutPreset": "shattered"
+      },
+      "focus": {
+        "cutoutPreset": "focus"
+      }
+    },
+    "options": {
+      "tickHz": 60
     }
   }
 }

@@ -71,6 +71,8 @@ node tools/rcg.mjs transition --job jobs/<id> --at 5 --style zoom_punch --to "#w
 node tools/rcg.mjs target --job jobs/<id> --base "#v4" --fx assets/fx/x.mp4 --fx-start 12.4 --cutout assets/matte/v1-fg.webm --windows "11.4-12.4:bg,12.4-13.4:fg"
 node tools/rcg.mjs fx --list
 node tools/rcg.mjs fx --job jobs/<id> --effect ghost --src assets/x.mp4 --start 2 --duration 3 [--param id=v] [--preset p] [--src2 assets/y.mp4 --start2 0] [--audio m.wav] --sheet --out assets/fx/ghost.mp4
+node tools/rcg.mjs fx --job jobs/<id> --effect voxel-magnet --src assets/x.mp4 --start 2 --duration 1.5 --track data/track-v1.json --anchor hand --sheet --out assets/fx/magnet.mp4
+node tools/rcg.mjs fx --job jobs/<id> --effect voxel-drop --preset bursts --src assets/x.mp4 --start 3 --duration 1.5 --preroll 1 --param rcgDropAt=-0.9 --out assets/fx/drop.mp4
 node tools/rcg.mjs limit in.mp3 out.wav [--ceiling -2.5]
 node tools/rcg.mjs mix-check jobs/<id>/index.html
 node tools/rcg.mjs hf --cwd jobs/<id> check

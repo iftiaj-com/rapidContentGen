@@ -125,6 +125,12 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
   (`--list` prints the names; presets and defaults are in `library/fx/effects.json`). READ the sheet
   and any "page console" lines. Some Adits defaults are strong on 9:16 (lessons 13ag): smoke
   ambient covers the frame (use `--preset jet`, or `anamSmokeCount=30 anamSmokeIntensity=25`).
+- The footage as an Adits 3D model (voxels with Rapier physics, particles, magic carpet) or cut into a
+  collage: the same `rcg fx` call with `voxel-art`, `voxel-drop` (`--preset orbit|tunnel|bursts`,
+  `rcgDropAt`), `voxel-hole`, `voxel-magnet`, `voxel-flip`, `voxel-grow`, `particles`, `magic-carpet`
+  or `cutout`. Magnet / Grow / Flip / Particles follow `--track data/track-v1.json --anchor hand` or
+  `--point "0:0.3,0.4;1.5:0.7,0.6"`. Read lessons 13as-13ax first (the model reads darker, Adits'
+  tilt and 63% framing, sparse particles, pinned bass, pressing Drop in the pre-roll).
 - Subject tracking, cut-outs and layers (talking heads, "text behind the subject"). Build order
   matters (lessons 13an): cameras, then PNP / fx layers, then titles and captions, then layers,
   then transitions.

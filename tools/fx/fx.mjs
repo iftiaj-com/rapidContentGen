@@ -10,6 +10,8 @@
 //        [--param id=value ...] [--src2 assets/y.mp4 --start2 0] [--audio <music> --audio-offset s]
 //        [--seed 1] [--fps 24] [--size 1080x1920] [--out assets/fx/name.mp4] [--keep-frames] [--sheet]
 //        [--matte assets/matte/x-fg.webm --matte-start 0 --apply bg|fg|both]  (effect target: -fg.webm = the effect on the subject only)
+//        [--track data/track-x.json --anchor hand|face|eyes --hand Left|Right | --point "t:x,y[,open];..."]
+//        (the point an anamorphic effect follows, standing in for Adits' webcam hand; see points.mjs)
 // Effects and their defaults: library/fx/effects.json.
 
 import { execFile } from 'node:child_process';
@@ -18,10 +20,12 @@ import { tmpdir } from 'node:os';
 import { basename, extname, join, relative, resolve } from 'node:path';
 import { promisify } from 'node:util';
 import { analyzeToFile } from '../audio/analyze.mjs';
+import { analyserTable } from '../audio/analyser.mjs';
 import { isMain, parseArgs } from '../lib/cli.mjs';
 import { ROOT, loadConfig, readJson } from '../lib/config.mjs';
 import { contactSheet, probe } from '../lib/ffmpeg.mjs';
 import { launch } from './chrome.mjs';
+import { pathPoints, trackPoints } from './points.mjs';
 import { startServer } from './server.mjs';
 
 const exec = promisify(execFile);
@@ -93,10 +97,22 @@ export async function runFx(opts) {
       frames2 = await extract(resolve(jobDir, opts.src2), Math.max(0, Number(opts.start2 || 0) - preroll), frames / fps + 0.5, fps, W, H, join(work, 'in2'));
     }
     let audio = null;
+    let analyser = null;
     if (opts.audio) {
       const table = await analyzeToFile(resolve(jobDir, opts.audio), join(work, 'audio.json'), { fps, duration: frames / fps + 1 / fps, offset: Number(opts['audio-offset'] || 0) - preroll, clock: 'default' });
       audio = table.frames.map(toAudioFeatures);
+      // Effects that tick at Adits' display rate read its own analyser (bins + features) per tick.
+      const hz = def.options?.tickHz;
+      if (hz) analyser = await analyserTable(resolve(jobDir, opts.audio), { hz, ticks: Math.ceil((frames / fps) * hz) + 2, offset: Number(opts['audio-offset'] || 0) - preroll });
     }
+    // The point the effect follows: a tracked hand / face, or a keyframed point.
+    let track = null;
+    let trackNote = null;
+    if (opts.track) {
+      const r = trackPoints({ file: resolve(jobDir, opts.track), anchor: opts.anchor || 'hand', hand: opts.hand, srcStart: start - preroll, fps, frames, W, H });
+      track = r.points;
+      if (opts.src && r.src && resolve(jobDir, r.src) !== src) trackNote = `track was made from ${r.src}, not ${opts.src}`;
+    } else if (opts.point) track = pathPoints(opts.point, { fps, frames, preroll: skip / fps });
     // Defaults, then an Adits preset (as the app applies it: input values over the current ones),
     // then --param overrides. A dotted key (motionTrails.blendMode) sets videoEngine.params.
     const params = { ...(def.params || {}) };
@@ -121,7 +137,7 @@ export async function runFx(opts) {
       module: `/lib/adits-fx/${def.module}`, className: def.class, width: W, height: H, fps, frames, frames2,
       sourceFile, srcStart: start - preroll, ranges: def.ranges || {},
       seed: Number(opts.seed ?? 1), params, skip, vparams, webgpu: Boolean(def.webgpu),
-      shim: def.shim ? `/lib/fx/shims/${def.shim}` : null, alpha, input: needsInput, audio,
+      shim: def.shim ? `/lib/fx/shims/${def.shim}` : null, alpha, input: needsInput, audio, analyser, track,
       options: def.options || {},
     };
     writeFileSync(join(work, 'job.json'), JSON.stringify(jobDoc));
@@ -194,7 +210,7 @@ export async function runFx(opts) {
       const n = 7;
       await contactSheet(outAbs, sheet, { times: Array.from({ length: n }, (_, k) => +((outInfo.duration * (k + 0.5)) / n).toFixed(2)), cols: 7 });
     }
-    return { out: relative(jobDir, outAbs).split('\\').join('/'), frames: frames - skip, preroll, seconds: +((Date.now() - t0) / 1000).toFixed(1), duration: outInfo.duration, size: `${outInfo.video.width}x${outInfo.video.height}`, sheet, fg: fg && relative(jobDir, fg).split('\\').join('/'), browser: browser.chrome.kind };
+    return { out: relative(jobDir, outAbs).split('\\').join('/'), frames: frames - skip, preroll, seconds: +((Date.now() - t0) / 1000).toFixed(1), duration: outInfo.duration, size: `${outInfo.video.width}x${outInfo.video.height}`, sheet, fg: fg && relative(jobDir, fg).split('\\').join('/'), browser: browser.chrome.kind, trackNote, tracked: track ? track.filter((p) => p.has).length : null };
   } finally {
     if (!opts['keep-frames']) rmSync(work, { recursive: true, force: true });
     else console.log(`frames kept in ${work}`);
@@ -208,9 +224,10 @@ if (isMain(import.meta.url)) {
     process.exit(0);
   }
   if (!a.job || !a.effect) {
-    console.error('Usage: fx.mjs --job <dir> --effect <name> --src <clip> [--start s] [--duration s] [--param id=v ...] [--src2 clip] [--audio music] [--out path] | --list');
+    console.error('Usage: fx.mjs --job <dir> --effect <name> --src <clip> [--start s] [--duration s] [--param id=v ...] [--src2 clip] [--audio music] [--track data/track-x.json --anchor hand|face|eyes | --point "t:x,y[,open];..."] [--out path] | --list');
     process.exit(2);
   }
   const r = await runFx({ ...a, onProgress: (f, n) => { if (f % 24 === 0 || f === n) process.stdout.write(`  frame ${f}/${n}\n`); }, onLog: (l) => console.log(`  page log: ${l.slice(-5).join(' | ')}`), onConsole: (l) => console.log(`  page console (${l.length}):\n    ${l.join('\n    ')}`) });
   console.log(`Wrote ${r.out}: ${r.frames} frames, ${r.size}, ${r.duration.toFixed(2)} s, in ${r.seconds} s (${r.browser})${r.fg ? `\nForeground (effect on the subject only, alpha): ${r.fg}` : ''}${r.sheet ? `\nSheet: ${r.sheet}` : ''}`);
+  if (r.tracked != null) console.log(`Point present on ${r.tracked} of ${r.frames + Math.round(r.preroll * (Number(a.fps) || 24))} harness frames${r.trackNote ? ` (warning: ${r.trackNote})` : ''}`);
 }
