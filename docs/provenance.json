@@ -2429,6 +2429,30 @@
     {
       "source": "adits",
       "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/effects/auto/advance/recipes.js",
+      "kind": "learn",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "9d3b789a6cc67d9865f42e35eddefd35bc3e6e0f788f33573bf7fe8b94422c81",
+      "date": "2026-10-08",
+      "note": "the six Advance recipes (when/note/segments) mapped to rapidContentGen tools; footage effects replaced until P6",
+      "to": "library/recipes/sections.json"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/effects/auto/auto-presets.js",
+      "kind": "learn",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "706585157b729e2f28722138509506c48d059e007aa8c134f757014641c94b6b",
+      "date": "2026-10-08",
+      "note": "preset categories and Mix & Match idea; their footage effects wait for P6",
+      "to": "library/recipes/styles.json"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
       "from": "Adits/core/anam/CameraMovements.js",
       "kind": "port",
       "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
@@ -2597,6 +2621,18 @@
       "to": "tools/blocks/flythrough.mjs"
     },
     {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/core/main.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "6371a1f17201a5bbf2e61dfdc9e1f9445b73fd2f0f0c45a0ed0accbfbc95666c",
+      "date": "2026-10-08",
+      "note": "Speed Sync: target = min + (max-min) * max(bass, mid, treble), eased 20% per frame; rescaled from an assumed 60 Hz display loop to the render fps; clamped at 1x unless --allow-slow",
+      "to": "tools/blocks/ramp.mjs"
+    },
+    {
       "source": "aditsShaders",
       "sourceRoot": "E:/Develop/Antigravity_testing/AditsShaders",
       "from": "scripts/lib/offline-shader.mjs",
@@ -2631,6 +2667,18 @@
       "date": "2026-10-07",
       "note": "probe + loudnorm/faststart; binaries from config; added loudness, section levels, limiter, contact sheet",
       "to": "tools/lib/ffmpeg.mjs"
+    },
+    {
+      "source": "adits",
+      "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
+      "from": "Adits/effects/auto/TimeRemap.js",
+      "kind": "port",
+      "gitHead": "78bea0ce3659278ce5e43990ea759cf5c47d5a21",
+      "dirtyAtCopy": false,
+      "sha256Source": "c280c6fb5752bac07cacd26da3915ebcf767fa1d9ce75f787e470764e8f6409e",
+      "date": "2026-10-08",
+      "note": "pickSeekTime logic and constants unchanged; Math.random replaced by a seeded mulberry32 so plans repeat",
+      "to": "tools/recipes/timeremap.mjs"
     },
     {
       "source": "tts",

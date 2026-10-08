@@ -1,0 +1,360 @@
+{
+  "$comment": "Whole-edit recipes for rcg recipe plan: a sequence of sections (library/recipes/sections.json) with weights, plus the look (grades), text (captions, titles), sound and voice choices. Informed by the Adits Auto presets (categories effects / camera / mix) and the jobs built so far; footage effects that wait for P6 are marked. Schema: docs/recipes.md.",
+  "cinematic-trailer": {
+    "label": "Cinematic trailer",
+    "use": "Mock-epic or dramatic: cold open with title cards and a riser, a hard stop, then the drop into a warm beat-cut montage and an end title.",
+    "keywords": [
+      "trailer",
+      "cinematic",
+      "epic",
+      "movie",
+      "dramatic",
+      "teaser"
+    ],
+    "from": [
+      "mop-star trailer (R0)",
+      "Adits Advance: Suspense Build, Beat Drop, Whip Montage",
+      "Adits Auto: cam_cinematic"
+    ],
+    "needs": {
+      "music": true,
+      "grid": "downbeats",
+      "voice": false
+    },
+    "sections": [
+      {
+        "use": "title-card",
+        "weight": 1
+      },
+      {
+        "use": "suspense-build",
+        "weight": 2
+      },
+      {
+        "use": "beat-drop",
+        "weight": 1
+      },
+      {
+        "use": "whip-montage",
+        "weight": 3
+      },
+      {
+        "use": "title-card",
+        "weight": 1.2
+      }
+    ],
+    "text": {
+      "title": {
+        "preset": "slam",
+        "style": "trailer"
+      },
+      "captions": null,
+      "beatflash": null
+    },
+    "music": {
+      "fadeIn": 0,
+      "fadeOut": 0.8
+    },
+    "status": "ready"
+  },
+  "hype-reel": {
+    "label": "Hype reel",
+    "use": "Music-first social clip: a short build, a hard drop, a fast whip montage, a breath at the end.",
+    "keywords": [
+      "hype",
+      "energetic",
+      "dance",
+      "beat",
+      "montage",
+      "tiktok",
+      "reel",
+      "party"
+    ],
+    "from": [
+      "Adits Auto: mix_festival, cam_orbit_pulse",
+      "Adits Advance: Beat Drop, Whip Montage, Cool-Down"
+    ],
+    "needs": {
+      "music": true,
+      "grid": "downbeats",
+      "voice": false
+    },
+    "sections": [
+      {
+        "use": "suspense-build",
+        "weight": 1.5
+      },
+      {
+        "use": "beat-drop",
+        "weight": 1
+      },
+      {
+        "use": "whip-montage",
+        "weight": 4
+      },
+      {
+        "use": "cool-down",
+        "weight": 1.5
+      }
+    ],
+    "text": {
+      "title": {
+        "preset": "kinetic-pop",
+        "style": "kinetic"
+      },
+      "captions": null,
+      "beatflash": {
+        "source": "bands",
+        "effect": "rgb",
+        "style": "kinetic"
+      }
+    },
+    "music": {
+      "fadeIn": 0,
+      "fadeOut": 1
+    },
+    "status": "ready"
+  },
+  "cosmic-promo": {
+    "label": "Cosmic promo",
+    "use": "A voiced promo that uses everything: a 3D orb intro with the title, a beat-snapped card flythrough, the footage as a card over an audio-reactive shader with a drop and whips, and an end title.",
+    "keywords": [
+      "promo",
+      "launch",
+      "announce",
+      "showcase",
+      "cosmic",
+      "all",
+      "everything"
+    ],
+    "from": [
+      "Adits Auto: mix_everything (one of each subsystem)",
+      "Adits Advance: Cinematic Orbit, Beat Drop, Whip Montage, Cool-Down",
+      "flowEditor flythrough"
+    ],
+    "needs": {
+      "music": true,
+      "grid": "downbeats",
+      "voice": true
+    },
+    "sections": [
+      {
+        "use": "cinematic-orbit",
+        "weight": 1.2
+      },
+      {
+        "use": "card-flythrough",
+        "weight": 2
+      },
+      {
+        "use": "beat-drop",
+        "weight": 1,
+        "layout": "card",
+        "background": {
+          "shader": "billowing-plasma-nebula"
+        }
+      },
+      {
+        "use": "whip-montage",
+        "weight": 2,
+        "layout": "card",
+        "background": {
+          "shader": "billowing-plasma-nebula"
+        }
+      },
+      {
+        "use": "cool-down",
+        "weight": 1.2
+      }
+    ],
+    "text": {
+      "title": {
+        "preset": "stagger-up",
+        "style": "neon"
+      },
+      "captions": {
+        "style": "neon",
+        "mode": "2word"
+      },
+      "beatflash": {
+        "source": "bands",
+        "effect": "neon",
+        "style": "kinetic"
+      }
+    },
+    "voice": {
+      "voices": [
+        "af_heart",
+        "am_michael"
+      ],
+      "duck": 0.43,
+      "lufs": -14,
+      "ceiling": -3.6
+    },
+    "music": {
+      "fadeIn": 0,
+      "fadeOut": 1,
+      "volume": 0.7
+    },
+    "status": "ready"
+  },
+  "story-voiceover": {
+    "label": "Story with voiceover",
+    "use": "Voice-led: a narrated clip with readable karaoke captions, calm camera, the music ducked under the voice.",
+    "keywords": [
+      "story",
+      "narration",
+      "voiceover",
+      "explain",
+      "tutorial",
+      "calm",
+      "vlog"
+    ],
+    "from": [
+      "R1 voice + captions",
+      "Adits Advance: Reveal, Cool-Down",
+      "Adits Auto: cam_cinematic"
+    ],
+    "needs": {
+      "music": true,
+      "grid": "downbeats",
+      "voice": true
+    },
+    "sections": [
+      {
+        "use": "reveal",
+        "weight": 2
+      },
+      {
+        "use": "whip-montage",
+        "weight": 1.5
+      },
+      {
+        "use": "cool-down",
+        "weight": 2
+      }
+    ],
+    "text": {
+      "title": {
+        "preset": "type-on",
+        "style": "subtitle"
+      },
+      "captions": {
+        "style": "karaoke",
+        "mode": "phrase"
+      },
+      "beatflash": null
+    },
+    "voice": {
+      "voices": [
+        "af_heart"
+      ],
+      "duck": 0.43,
+      "lufs": -14,
+      "ceiling": -3.6
+    },
+    "music": {
+      "fadeIn": 0.5,
+      "fadeOut": 1.2,
+      "volume": 0.7
+    },
+    "status": "ready"
+  },
+  "photo-flythrough": {
+    "label": "Photo flythrough",
+    "use": "A gallery of stills or short clips flown through on a board, landing on the beat, with a title and an end card.",
+    "keywords": [
+      "photos",
+      "gallery",
+      "recap",
+      "slideshow",
+      "products",
+      "portfolio"
+    ],
+    "from": [
+      "flowEditor (Phase 4)"
+    ],
+    "needs": {
+      "music": true,
+      "grid": "downbeats",
+      "voice": false
+    },
+    "sections": [
+      {
+        "use": "title-card",
+        "weight": 1
+      },
+      {
+        "use": "card-flythrough",
+        "weight": 5
+      },
+      {
+        "use": "title-card",
+        "weight": 1
+      }
+    ],
+    "text": {
+      "title": {
+        "preset": "stagger-up",
+        "style": "modern"
+      },
+      "captions": null,
+      "beatflash": null
+    },
+    "music": {
+      "fadeIn": 0,
+      "fadeOut": 1
+    },
+    "status": "ready"
+  },
+  "glitch-storm": {
+    "label": "Glitch storm",
+    "use": "Aggressive glitch edit. The Adits version runs footage glitch effects (beat mosh, signal overload, corrupt slices) that wait for the P6 footage-FX pre-pass.",
+    "keywords": [
+      "glitch",
+      "distorted",
+      "cyber",
+      "corrupt",
+      "datamosh"
+    ],
+    "from": [
+      "Adits Auto: fx_glitch_storm, global_glitch_mask"
+    ],
+    "needs": {
+      "music": true,
+      "grid": "downbeats",
+      "voice": false
+    },
+    "sections": [
+      {
+        "use": "beat-drop",
+        "weight": 1
+      },
+      {
+        "use": "whip-montage",
+        "weight": 4
+      },
+      {
+        "use": "beat-drop",
+        "weight": 1
+      }
+    ],
+    "text": {
+      "title": {
+        "preset": "kinetic-pop",
+        "style": "glitch"
+      },
+      "captions": null,
+      "beatflash": {
+        "source": "onsets",
+        "effect": "rgb",
+        "style": "glitch"
+      }
+    },
+    "music": {
+      "fadeIn": 0,
+      "fadeOut": 0.6
+    },
+    "status": "partial: footage glitch effects wait for P6; this plan approximates them with flashes, kick shake, rgb beat-flash words and whips"
+  }
+}

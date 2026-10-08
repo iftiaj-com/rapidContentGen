@@ -48,6 +48,14 @@ that gate is overridden by the user's mode choice (state this in `JOB.md`).
 
 ## 4. Beat sheet
 
+For a styled edit, start from a recipe (`docs/recipes.md`): `rcg recipe list`, pick the style that
+matches the prompt (its `keywords`), then `rcg recipe plan --job jobs/<id> --recipe <style>
+--duration <s> --seed <n>`. It writes the beat sheet on the beat grid with `<PLACEHOLDERS>` for the
+spoken words, titles and beat-flash words (and `data/vo-lines.json`). Write those, regenerate the
+table, then `rcg recipe build --job jobs/<id>` does steps 5-7 (voice, assemble, blocks, mix-check,
+check). Read its mix-check: when a voice line overlaps SFX, lower the SFX or the voice ceiling in the
+recipe, not by hand in index.html, and re-plan (the same seed gives the same plan).
+
 Write `jobs/<id>/beat-sheet.json` (schema: `docs/job-spec.md`), then generate the table:
 `node tools/rcg.mjs beat-sheet md jobs/<id>/beat-sheet.json jobs/<id>/beat-sheet.md`.
 Fix every ERROR it prints (overlaps, text in no-text zones). Show the table (start/end, spoken

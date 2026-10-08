@@ -1,0 +1,305 @@
+{
+  "$comment": "Section grammar for rcg recipe plan. Learned from Adits effects/auto/advance/recipes.js (the six Advance recipes) and mapped to rapidContentGen tools; three sections are added from Phases 2-4. Adits footage effects (ghost, glitch, mosh, pixel stretch, ink...) wait for the P6 footage-FX pre-pass, so each is replaced by what exists now: a grade, a white flash, kick shake, a shader or beat-flash words. Camera intensities are scaled down for 9:16 footage (Adits 180% crash zoom = 3.7x here). Schema: docs/recipes.md.",
+  "suspense-build": {
+    "from": "Adits Advance: Suspense Build",
+    "when": "Before a drop, reveal or hard cut. The shot must feel like it is going somewhere while almost nothing happens.",
+    "note": "The long quiet segment carries a slow push so it is never static; intensity only arrives on the last, shortest segment. Adits: adv_ghost + bnw, then signal_overload glitch; here: mono grade, then a flash.",
+    "bars": 2,
+    "segments": [
+      {
+        "weight": 6,
+        "camera": [
+          "a@0:slow_zoom_in:i=0.6:s=0.4"
+        ],
+        "grade": "trailer-cold",
+        "timefx": "random"
+      },
+      {
+        "weight": 2.5,
+        "camera": [
+          "a@0:dolly_in:i=1.1:s=0.8"
+        ],
+        "grade": "mono",
+        "timefx": "linear"
+      },
+      {
+        "weight": 0.5,
+        "camera": [
+          "a@0:crash_zoom_in:i=0.4"
+        ],
+        "grade": "mono",
+        "fx": [
+          "flash@end"
+        ],
+        "timefx": "linear"
+      }
+    ]
+  },
+  "beat-drop": {
+    "from": "Adits Advance: Beat Drop",
+    "when": "The peak. Land it on an audible hit and keep it short: this is the loudest thing in the edit.",
+    "note": "Adits locks glitch flashes to the track (glitch.speed 0) and speed-syncs 0.7-2.4x. Here: flash + impact on the downbeat, kick shake, and an audio speed ramp clamped at 1x (24 fps footage stutters below 1x). The impact (a -6.5 LUFS hit that sustains 1.7 s) sits at 0.14 because the drop usually carries a voice line (R5).",
+    "bars": 1,
+    "kick": true,
+    "segments": [
+      {
+        "weight": 0.4,
+        "camera": [
+          "b@0:crash_zoom_in:i=0.5:s=1.6"
+        ],
+        "grade": "trailer-warm",
+        "fx": [
+          "flash@0"
+        ],
+        "sfx": [
+          {
+            "name": "impact-bass-1",
+            "at": "start",
+            "align": "crest",
+            "volume": 0.14
+          }
+        ],
+        "text": "beatflash",
+        "timefx": "random"
+      },
+      {
+        "weight": 2.2,
+        "camera": [
+          "b@0:crash_zoom_out:i=0.5:s=1.6",
+          "a@0:handheld:i=1.2"
+        ],
+        "grade": "trailer-warm",
+        "ramp": {
+          "min": 1,
+          "max": 2
+        },
+        "text": "beatflash",
+        "timefx": "linear"
+      },
+      {
+        "weight": 0.6,
+        "camera": [
+          "a@0:fast_zoom_out:i=0.6:s=2"
+        ],
+        "grade": "trailer-warm",
+        "timefx": "linear"
+      }
+    ]
+  },
+  "whip-montage": {
+    "from": "Adits Advance: Whip Montage",
+    "when": "A rapid-fire run of shots. 6-14 back to back; never the same treatment twice in a row.",
+    "note": "Alternating whip direction is what sells the montage as cut rather than random; keep each shot under about 1.2 s. Whips go out over the last 0.25 s of a shot and come back in over the first 0.25 s of the next (the R3 pattern at double speed, so sub-second shots do not spend their whole length whipping); every shot settles on a neutral frame.",
+    "bars": 2,
+    "repeat": true,
+    "shotBeats": 2,
+    "kick": true,
+    "segments": [
+      {
+        "weight": 1,
+        "camera": [
+          "a@0:handheld:i=1.3",
+          "b@0:whip_pan_right:from=0.5:rev:s=2",
+          "b@end-0.25:whip_pan_right:s=2"
+        ],
+        "grade": "trailer-warm",
+        "sfx": [
+          {
+            "name": "whoosh-short",
+            "at": "end",
+            "align": "crest",
+            "volume": 0.2
+          }
+        ],
+        "timefx": "random"
+      },
+      {
+        "weight": 1,
+        "camera": [
+          "a@0:handheld:i=1.3",
+          "b@0:whip_pan_left:from=0.5:rev:s=2",
+          "b@end-0.25:whip_pan_left:s=2"
+        ],
+        "grade": "trailer-warm",
+        "sfx": [
+          {
+            "name": "whoosh-short",
+            "at": "end",
+            "align": "crest",
+            "volume": 0.2
+          }
+        ],
+        "timefx": "random"
+      },
+      {
+        "weight": 1,
+        "camera": [
+          "a@0:fast_zoom_in:i=0.5:s=1.5",
+          "b@0:whip_pan_right:from=0.5:rev:s=2",
+          "b@end-0.25:whip_pan_right:s=2"
+        ],
+        "grade": "trailer-warm",
+        "sfx": [
+          {
+            "name": "whoosh-short",
+            "at": "end",
+            "align": "crest",
+            "volume": 0.2
+          }
+        ],
+        "timefx": "random"
+      },
+      {
+        "weight": 1,
+        "camera": [
+          "a@0:handheld:i=1.3",
+          "b@0:whip_pan_left:from=0.5:rev:s=2",
+          "b@end-0.25:whip_pan_left:s=2"
+        ],
+        "grade": "trailer-cold",
+        "sfx": [
+          {
+            "name": "whoosh-short",
+            "at": "end",
+            "align": "crest",
+            "volume": 0.2
+          }
+        ],
+        "timefx": "random"
+      }
+    ]
+  },
+  "reveal": {
+    "from": "Adits Advance: Reveal",
+    "when": "Introducing a subject, a title moment, or coming out of a dark passage.",
+    "note": "Start obscured, then open up. The clean segment at the end is the payoff: put no effect on it. Adits isolates dark then bright areas with ink and holographic effects; here the grade goes from dark-cold to warm.",
+    "bars": 3,
+    "segments": [
+      {
+        "weight": 2.5,
+        "camera": [
+          "a@0:crane_up:i=0.5:s=0.6"
+        ],
+        "grade": "dark",
+        "text": "title",
+        "timefx": "random"
+      },
+      {
+        "weight": 2,
+        "camera": [
+          "a@0:pedestal_up:i=0.6:s=0.9"
+        ],
+        "grade": "trailer-cold",
+        "timefx": "linear"
+      },
+      {
+        "weight": 2.5,
+        "camera": [
+          "a@0:slow_zoom_out:i=0.5:s=0.5"
+        ],
+        "grade": "trailer-warm",
+        "timefx": "linear"
+      }
+    ]
+  },
+  "cinematic-orbit": {
+    "from": "Adits Advance: Cinematic Orbit",
+    "when": "A sustained hero moment. Give it room (Adits says 8 s or more; 4+ s works for an intro) and let the 3D move do the work.",
+    "note": "Adits uses an anamorphic black-hole model in a cosmos environment. Here: an rcg three scene with orbit on layer a and crash zooms on the downbeats on layer b, audio-reactive.",
+    "bars": 2,
+    "block": "three",
+    "three": {
+      "scene": "orb",
+      "base": "a/0:orbit_cw",
+      "downbeat": "crash_zoom_in:i=0.5",
+      "alternate": "crash_zoom_out:i=0.5",
+      "bg": "#05060a"
+    },
+    "segments": [
+      {
+        "weight": 1,
+        "block": "three",
+        "text": "title"
+      }
+    ]
+  },
+  "cool-down": {
+    "from": "Adits Advance: Cool-Down",
+    "when": "After a peak, and before the end. Lets the previous section land instead of fatiguing the viewer.",
+    "note": "Adits leaves a deliberate gap of plain video: silence is a tool. Here the second shot is a static shot with no grade change, and the music fades out over it.",
+    "bars": 2,
+    "segments": [
+      {
+        "weight": 3,
+        "camera": [
+          "a@0:drone_pull_back:i=0.5:s=0.5"
+        ],
+        "grade": "trailer-warm",
+        "timefx": "random",
+        "text": "title"
+      },
+      {
+        "weight": 3,
+        "camera": [
+          "a@0:static_shot"
+        ],
+        "grade": "trailer-warm",
+        "timefx": "linear"
+      }
+    ]
+  },
+  "card-flythrough": {
+    "from": "flowEditor flythrough (Phase 4)",
+    "when": "Showing several moments, products or photos in one beat-locked move; a gallery or a recap.",
+    "note": "Stills are cut from the footage (seeded picks) unless the job supplies images. Arrivals snap to downbeats; whooshes land their crest on each arrival. Keep punch for nearby cards.",
+    "bars": 4,
+    "block": "flythrough",
+    "flythrough": {
+      "cards": 4,
+      "template": "left-right",
+      "spacing": 800,
+      "motion": "board",
+      "paths": [
+        "arc",
+        "whip",
+        "smooth",
+        "kenburns"
+      ],
+      "entrances": [
+        "fade",
+        "slide-up",
+        "pop",
+        "scale"
+      ],
+      "ratios": [
+        "9:16",
+        "1:1",
+        "3:4",
+        "2:3"
+      ],
+      "sound": "whoosh-short",
+      "background": "none"
+    },
+    "segments": [
+      {
+        "weight": 1,
+        "block": "flythrough",
+        "text": "caption"
+      }
+    ]
+  },
+  "title-card": {
+    "from": "mop-star trailer (R0)",
+    "when": "A line of copy that must be read: a cold open, a promise, an end card.",
+    "note": "Black card, centered in the safe box, slam or stagger-up title. Under 2 s it reads as punctuation; give 2-3 s for a sentence.",
+    "bars": 1,
+    "block": "black",
+    "segments": [
+      {
+        "weight": 1,
+        "block": "black",
+        "text": "title"
+      }
+    ]
+  }
+}

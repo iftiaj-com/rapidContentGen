@@ -57,6 +57,11 @@ node tools/rcg.mjs camera --job jobs/<id> --target "#w1" --cue "a/0:handheld" --
 node tools/rcg.mjs three --job jobs/<id> --scene orb --cue "a/0:orbit_cw" --cue "b/2.39:crash_zoom_in:i=0.5" --audio m.wav --duration 6 --id three-orb --track 3 --insert
 node tools/rcg.mjs flythrough --list
 node tools/rcg.mjs flythrough --job jobs/<id> [--spec jobs/<id>/data/flythrough.json] --insert --fit-root
+node tools/rcg.mjs recipe list
+node tools/rcg.mjs recipe plan --job jobs/<id> --recipe cosmic-promo --duration 14.5 --seed 5 [--title "TEXT"]
+node tools/rcg.mjs recipe build --job jobs/<id>      # after filling the <PLACEHOLDERS>
+node tools/rcg.mjs assemble --job jobs/<id>
+node tools/rcg.mjs ramp --job jobs/<id> --target v4 --audio m.wav --audio-offset 6.29 --min 1 --max 2
 node tools/rcg.mjs limit in.mp3 out.wav [--ceiling -2.5]
 node tools/rcg.mjs mix-check jobs/<id>/index.html
 node tools/rcg.mjs hf --cwd jobs/<id> check

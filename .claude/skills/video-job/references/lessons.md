@@ -108,6 +108,19 @@ Each entry cost real time on a past job. Read before building.
 13v. **Forward and backward seeks can differ by a pixel level.** R4 at 1.9 s reached by a forward
      jump vs a backward seek: 75 dB PSNR (invisible float rounding), all other times identical.
 
+13w. **Never set `visibility: visible` inside a sub-composition.** HyperFrames hides a finished
+     sub-composition with visibility, and an explicit `visible` on a child overrides it: R5's last
+     flythrough card stayed on top of every later section. Set `""` (inherit) or `hidden`.
+13x. **Untimed decoration outlives its section.** R5's card-frame drop shadow stayed over the
+     cool-down. A video may not sit inside a timed element (`video_nested_in_timed_element`), so the
+     frame stays untimed and transparent and the shadow is its own timed clip.
+13y. **Voice + SFX + music stack.** Leveled voices with -1.5 dBTP peaks, a 0.5 duck and SFX at
+     0.4-0.5 peaked at +1.4 dBTP in R5. Recipe levels that pass: music 0.7, duck 0.43, voice -14 LUFS
+     with a -3.6 dBTP ceiling, whooshes 0.2-0.3, an impact under a voice line at 0.14 (docs/recipes.md).
+13z. **Whip pairs:** after a whip out to the right, the next shot comes in with `whip_pan_left`
+     reversed (and the reverse). Check the yaw sign flips at each cut. Sub-second shots need s=2.
+13aa. **Check the music length first.** The Paper Ring clip is 15.02 s; R5 had to be 14.5 s.
+
 ## Environment
 
 13. PowerShell pipes add a UTF-8 BOM; parse JSON with `utf-8-sig` or write it from Node.

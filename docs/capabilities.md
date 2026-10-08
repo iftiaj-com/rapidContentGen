@@ -29,6 +29,9 @@ not yet regression-verified), **planned** (phase in `PORTING_CHECKLIST.md`).
 | `camera` | Camera on footage: an element (usually a `.shot` wrapper) follows cues from the 46 Adits camera moves (whip pans, crash zooms, handheld, orbit, drone...) and the 20 Adits Virtual Camera presets (`vc.ken_burns`, `vc.lean_sweep`, `vc.dutch_angle_drift`...). Layers combine (`a/` handheld + `b/` whips); `bars=N` with `--bpm` syncs to the beat; `--kick` adds beat shake; presets take `d=`, `curve=`, `zigzag=`, `hh=` (handheld) and `react=` (bass_zoom, bass_shake, mid_sway, treble_tilt, jitter_stutter, audio_speed, needs `--audio`). `--fill blur` (default on footage: blurred copy behind revealed edges, the Adits look), `cover` (one fixed zoom per cue) or `none`. `--list` prints every name | ready (R3, R3b) |
 | `three` | Procedural three.js scene sub-composition (orb, knot, crystal, rings + seeded starfield) with the 3D camera driven by the same 46 moves; optional audio-reactive bass swell and kick shake. Moves only (presets are 2D) | ready (R3) |
 | `flythrough` | flowEditor camera flythrough as a sub-composition. A JSON spec (`data/flythrough.json`) lists cards (image or video, ratio, arrival, dwell, zoom, `pathStyle` smooth/linear/arc/whip/punch/kenburns, `entrance` fade/slide-*/scale/pop, optional transition `sound`) and settings (`motion` board/cards, `arrangement` none/stack, `template` left/right/up/down/star/left-right/..., spacing, card scale, radius, background colour/texture/image). `snap` lands arrivals on the beat grid; `music` adds the song with fades, clip windows and auto-duck as a volume lane. Media is cover-cropped. `--list` prints the names | ready (R4, R4b) |
+| `recipe list|show|plan|commands|build` | Edit recipes (`docs/recipes.md`): `plan` drafts a beat sheet from a style (sections snapped to downbeats, shots to beats, seeded source picks, camera cues, sounds, voice slots, flythrough specs with stills) and leaves placeholders for words and titles; `build` runs voice, assemble and every block, then mix-check and check | ready (R5) |
+| `assemble` | Builds index.html from the beat sheet: shots in camera wrappers (full frame or a card over a background), black cards, music with fades and a duck under the voice, voice lines, SFX by crest, white flashes, layer order; then camera cues and ramps | ready (R5) |
+| `ramp` | Speed ramp on a footage clip as a rate lane: Adits audio speed sync (`--min/--max`) or explicit points; refuses below 1x; checks the source does not run out | ready (R5) |
 | Shader catalog | `node tools/shaders/catalog.mjs --find "<look>"` searches `library/shaders-catalog.json` | ready |
 | `hf` | Runs the HyperFrames CLI via the plugin launcher (`--cwd <job>`). Passes `bin.hfFfmpeg` / `bin.hfFfprobe` and a per-ffmpeg frame cache folder. Auto-handles graded footage at t=0: render gets `--browser-timeout 180`, check/snapshot run on a grade-free mirror | ready |
 | `provenance copy\|record\|check\|render` | Copies or records material from source projects with commit and sha256 | ready |
@@ -59,6 +62,7 @@ not yet regression-verified), **planned** (phase in `PORTING_CHECKLIST.md`).
 | Caption style presets (10, from Adits) | `library/caption-styles.json` | ready (R1) |
 | AditsShaders (166 objects + validator, compile check, frame renderer, guide) | `library/adits-shaders/` (see `docs/shaders/README.md`) | ready (R2: 166/166 validate + compile) |
 | Kokoro weights (git-ignored) | `models/` | ready |
+| Recipes: 6 styles, 8 sections, 4 grades | `library/recipes/styles.json`, `sections.json`, `grades.json` (schema `docs/recipes.md`) | ready (R5) |
 | flowEditor modules: motion styles, templates, audio clip utils, constants (copied), beat snap | `library/flow/` (used by `rcg flythrough`) | ready (R4) |
 | Camera runtime: 46 Adits moves + 20 Virtual Camera presets, pure functions of time | `library/runtime/camera-moves.js` (copied into each job's `lib/` by `rcg camera`) | ready (R3, R3b) |
 
@@ -66,5 +70,4 @@ not yet regression-verified), **planned** (phase in `PORTING_CHECKLIST.md`).
 
 | Phase | Adds |
 |---|---|
-| P5 | Recipes, end-to-end job using everything |
 | P6 | Footage FX pre-pass (Adits GLSL effects, VJ deck), WGSL trial, 3D environments, newspaper background, `.flow` import |

@@ -1,0 +1,48 @@
+{
+  "job": "R5 cosmic promo",
+  "phase": "P5",
+  "recipe": "cosmic-promo",
+  "seed": 5,
+  "inputs": {
+    "video": "D:/Video/101066-video-1080.mp4",
+    "music": "D:/Music/Audio files/Songs Sound Clips/Paper ring - taylor swift.mp3"
+  },
+  "render": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 24,
+    "duration": 14.489
+  },
+  "audio": {
+    "integratedLufs": [
+      -16,
+      -12
+    ],
+    "truePeakMax": -1,
+    "gainReductionInLog": false
+  },
+  "sections": [
+    "cinematic-orbit 0-2.392",
+    "card-flythrough 2.392-5.875",
+    "beat-drop 5.875-7.546",
+    "whip-montage 7.546-12.725",
+    "cool-down 12.725-14.489"
+  ],
+  "checks": {
+    "planRepeatable": true,
+    "whipContinuity": true,
+    "flythroughBeatErrorMsMax": 41.7,
+    "verify": "11/11"
+  },
+  "lastRun": {
+    "date": "2026-10-08",
+    "integratedLufs": -15.7,
+    "truePeakDb": -1.8,
+    "renderSeconds": 140,
+    "verify": "11/11 PASS",
+    "mixCheck": {
+      "lufs": -15.6,
+      "truePeak": -1.8
+    }
+  }
+}

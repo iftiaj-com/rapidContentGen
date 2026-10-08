@@ -2,10 +2,82 @@
   "$comment": "data-color-grading payloads (HyperFrames realtime grading). Tested on the mop-star-trailer job: cold read about 20% less saturated than source, warm about 10% brighter with stronger color.",
   "trailer-cold": {
     "use": "Mock-epic or dramatic opening before a music drop: cool, muted, darker.",
-    "grading": {"preset":"muted-editorial","intensity":0.7,"adjust":{"exposure":-0.2,"contrast":0.18,"shadows":-0.1,"temperature":-0.6,"tint":-0.05,"saturation":-0.75},"details":{"vignette":0.35,"grain":0.18,"grainSize":0.22,"grainRoughness":0.6}}
+    "grading": {
+      "preset": "muted-editorial",
+      "intensity": 0.7,
+      "adjust": {
+        "exposure": -0.2,
+        "contrast": 0.18,
+        "shadows": -0.1,
+        "temperature": -0.6,
+        "tint": -0.05,
+        "saturation": -0.75
+      },
+      "details": {
+        "vignette": 0.35,
+        "grain": 0.18,
+        "grainSize": 0.22,
+        "grainRoughness": 0.6
+      }
+    }
   },
   "trailer-warm": {
     "use": "Energy after a drop: warm, punchy, light grain and vignette.",
-    "grading": {"preset":"deep-contrast","intensity":0.5,"adjust":{"exposure":0.12,"contrast":0.12,"highlights":-0.1,"shadows":-0.02,"temperature":0.22,"vibrance":0.15},"details":{"vignette":0.25,"grain":0.15,"grainSize":0.22,"grainRoughness":0.6}}
+    "grading": {
+      "preset": "deep-contrast",
+      "intensity": 0.5,
+      "adjust": {
+        "exposure": 0.12,
+        "contrast": 0.12,
+        "highlights": -0.1,
+        "shadows": -0.02,
+        "temperature": 0.22,
+        "vibrance": 0.15
+      },
+      "details": {
+        "vignette": 0.25,
+        "grain": 0.15,
+        "grainSize": 0.22,
+        "grainRoughness": 0.6
+      }
+    }
+  },
+  "mono": {
+    "use": "Black and white for a held breath (Adits Suspense Build visuals.bnw).",
+    "grading": {
+      "preset": "muted-editorial",
+      "intensity": 0.8,
+      "adjust": {
+        "exposure": -0.05,
+        "contrast": 0.25,
+        "saturation": -1
+      },
+      "details": {
+        "vignette": 0.3,
+        "grain": 0.2,
+        "grainSize": 0.22,
+        "grainRoughness": 0.6
+      }
+    }
+  },
+  "dark": {
+    "use": "Obscured opening that a reveal brightens out of (Adits Reveal, isolated dark areas).",
+    "grading": {
+      "preset": "muted-editorial",
+      "intensity": 0.8,
+      "adjust": {
+        "exposure": -0.55,
+        "contrast": 0.2,
+        "shadows": -0.25,
+        "temperature": -0.4,
+        "saturation": -0.5
+      },
+      "details": {
+        "vignette": 0.55,
+        "grain": 0.2,
+        "grainSize": 0.22,
+        "grainRoughness": 0.6
+      }
+    }
   }
 }

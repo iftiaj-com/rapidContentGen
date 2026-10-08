@@ -30,7 +30,7 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | ☐ | Voxels + Rapier physics, explode, 2D→3D relief, invisibility cloak, motion extraction | various | Defer | — | P6 |
 | ☐ | Social frames, doodle overlay (rough.js) | `effects/frames/SocialFrames.js`, Doodle | Port | `library/blocks/frames/`, `doodle/` | P6 |
 | ☑ | Advance JSON segment schema + prompt builder | `effects/auto/advance/` | Learn → shape of `beat-sheet.json` | `docs/job-spec.md` | P0 |
-| ☐ | Presets: auto (18), VJ, Advance recipes (6); time-remap ramps | `auto-presets.js`, `vj-presets.js`, `advance/recipes.js`, `TimeRemap.js` | Learn → `library/recipes/*.json`, HF `rate` lanes | — | P5 |
+| ☑ | Presets: auto (18), VJ, Advance recipes (6); time-remap; speed sync | `auto-presets.js`, `vj-presets.js`, `advance/recipes.js`, `TimeRemap.js`, `core/main.js` Speed Sync | Learn → 6 styles + 8 sections (`rcg recipe`); TimeRemap ported (seeded); Speed Sync ported as a rate lane (`rcg ramp`, at least 1x). VJ presets wait for the P6 footage FX | `library/recipes/`, `tools/recipes/`, `tools/blocks/ramp.mjs` | P5 |
 | — | Transitions: flash, glitch punch, zoom punch, crossfade | `effects/auto/Transitions.js` | HF (registry transition blocks) | — | — |
 | — | Audio mixing; `AudioEngine.analyze()` | `core/audio-engine.js` | HF mixing; analysis replaced by the AditsStudio port | — | — |
 | — | Grading, HSL, color mask; background removal (MediaPipe) | `AdvLightroom`, `ColorMask`, `SelfieMatte` | HF (`data-color-grading`, `remove-background`) | — | — |
@@ -103,7 +103,7 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | P2 Shaders + audio | audio table, shader-layer block, 166 shaders, beat-flash | R2 + smoke | ☑ done 2026-10-08: 166/166 validate + compile; shader snapshots identical across runs; music vs silence 15-18 dB |
 | P3 3D + camera | camera moves, three-scene, camera-move | R3 + R3b | ☑ done 2026-10-08: 46 moves and 20 presets pass unit and fidelity tests (1440 poses match Adits); 3D snapshots identical across runs; R3 -14.6 LUFS, R3b -14.7 LUFS, all 11 verify checks pass |
 | P4 Flythrough | flowEditor modules, flythrough block | R4 + R4b | ☑ done 2026-10-08: R4 8 cards (board, star) snapped to downbeats within 6 ms, -15.8 LUFS, 11/11 verify; R4b cards motion, silent, 8/8; stack arrangement checked by snapshot |
-| P5 Integration | recipes, all-in-one job | R5 | not started |
+| P5 Integration | recipes, all-in-one job | R5 | ☑ done 2026-10-08: cosmic-promo recipe planned and built in one command (3D, flythrough, shader, beat-flash, camera, ramp, voice, captions, titles); 14.5 s, -15.7 LUFS, 11/11 verify |
 | P6 Optional | footage FX pre-pass, WGSL, extras | — | not started |
 
 **Note (2026-10-08):** renders made before this date (mop-star, R0-R3b) had a black 8 px strip down the right edge from an ffmpeg 8.1 conversion bug (lessons 16b). HyperFrames now uses ffmpeg 9.0.2, and R0, R1, R1b, R2 (final + repeat, 51.7 dB apart), R3 and R3b were re-rendered: all pass verify, including the new edge check. The mop-star trailer in `videos/` still has the strip.
