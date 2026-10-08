@@ -55,4 +55,7 @@ rcg marketing-pro build --job $J
 - hf check passed; render 1080x1920, 30 fps, 12.267 s, 11/11 verify, -14.2 LUFS, -2.7 dBTP.
 - Found on the way: re-planning an R11 copy without `--bloom 1` left the old bloom script in
   index.html, pointing at a wrapper the PNP rebuild removes (`page_error ... reading 'style'`).
-  Re-plan with the same `--bloom`; the stale block itself is not cleaned up by build yet.
+  Fixed: build now runs `rcg transition --remove bloom<n>` first for every bloom in index.html
+  that the plan dropped, which also unwraps `w1-tx`/`p1-wrap-tx` when no other block uses them.
+  Checked on a copy: re-plan without `--bloom`, build, hf check passed with no `rcg:tx` left; re-plan
+  with `--bloom 1` gave the same build commands as R11 and, after build, the same index.html.

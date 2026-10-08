@@ -24,6 +24,7 @@ import { readJson, ROOT } from '../lib/config.mjs';
 import { decodeMono, levelAudio, loudness, probe, run, runBuffer } from '../lib/ffmpeg.mjs';
 import { rcg, runCommands } from '../lib/runner.mjs';
 import { Reframe, subjectPath } from '../blocks/camera.mjs';
+import { transitionIds } from '../blocks/transition.mjs';
 import { mulberry32 } from './timeremap.mjs';
 import { validateBeatSheet } from '../jobs/beat-sheet.mjs';
 
@@ -700,6 +701,10 @@ export function buildCommands(jobDir) {
   const mp = readJson(join(jobDir, 'data', 'mp-plan.json'));
   const source = readJson(join(jobDir, 'data', `mp-source-${mp.name}.json`));
   const cmds = [];
+  // Blooms from an earlier plan that this one dropped: their scripts point at wrappers the PNP rebuild removes.
+  const keep = new Set(mp.blooms.map((_, i) => `bloom${i + 1}`));
+  const html = readFileSync(join(jobDir, 'index.html'), 'utf8');
+  for (const id of transitionIds(html)) if (/^bloom\d+$/.test(id) && !keep.has(id)) cmds.push(rcg('transition', '--job', J, '--remove', id));
   cmds.push(rcg('style', 'apply', '--job', J, '--style', 'marketing-pro'));
   cmds.push(rcg('camera', '--job', J, '--target', '#w1', '--track', `data/track-${mp.name}.json`, '--id', 'cam-w1', ...mp.cues.flatMap((c) => ['--cue', c])));
   if (mp.behind) {

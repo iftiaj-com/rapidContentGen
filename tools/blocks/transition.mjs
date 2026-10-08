@@ -28,7 +28,9 @@
 // Usage:
 //   node tools/blocks/transition.mjs --job <dir> --at 4.0 --style zoom_punch|flash_bloom --to "#w2" [--from "#w1"]
 //        [--d 0.25] [--seed 1] [--id tx1]
+//   node tools/blocks/transition.mjs --job <dir> --remove <id>
 //   --to   the incoming shot wrapper (zoom, glitch, crossfade, bloom); --from the outgoing one (crossfade)
+//   --remove drops that block's markup and script, and unwraps any .rcg-tx wrapper no other block uses
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -68,6 +70,47 @@ function ensureInner(html, wrapperId) {
   const inner = `\n        <div id="${wrapperId}-tx" class="rcg-tx" style="position: absolute; inset: 0; transform-origin: 50% 50%;">${span.inner}</div>\n      `;
   const startInner = span.start + span.openTag.length;
   return html.slice(0, startInner) + inner + html.slice(startInner + span.inner.length);
+}
+
+/** Undo ensureInner: put a wrapper's contents back where its .rcg-tx div was. */
+function removeInner(html, wrapperId) {
+  const span = elementSpan(html, `${wrapperId}-tx`);
+  if (!span) return html;
+  const parent = elementSpan(html, wrapperId);
+  if (parent && parent.inner === `\n        ${html.slice(span.start, span.end)}\n      `) {
+    const startInner = parent.start + parent.openTag.length;
+    return html.slice(0, startInner) + span.inner + html.slice(startInner + parent.inner.length);
+  }
+  return html.slice(0, span.start) + span.inner + html.slice(span.end);
+}
+
+/** The transition ids in a job's index.html, in order. */
+export function transitionIds(html) {
+  return [...html.matchAll(/\/\/ rcg:tx ([\w-]+) begin/g)].map((m) => m[1]);
+}
+
+/** Remove a transition (markup and script) and any .rcg-tx wrapper no other block still uses. */
+export function removeTransition(opts) {
+  const jobDir = resolve(opts.job);
+  const indexPath = join(jobDir, 'index.html');
+  let html = readFileSync(indexPath, 'utf8');
+  const id = String(opts.remove ?? opts.id);
+  const script = html.match(new RegExp(`      // rcg:tx ${id} begin[\\s\\S]*?// rcg:tx ${id} end\\n`))?.[0];
+  if (!script && !html.includes(`<!-- rcg:tx ${id} begin`)) return { id, removed: false, unwrapped: [] };
+  html = html.replace(new RegExp(`\\s*<!-- rcg:tx ${id} begin[\\s\\S]*?<!-- rcg:tx ${id} end -->`, 'g'), '');
+  if (script) html = html.replace(script, '');
+  const unwrapped = [];
+  for (const [, w] of (script || '').matchAll(/"([\w-]+)-tx"/g)) {
+    if (new RegExp(`(?<![\\w-])${w}-tx(?![\\w-])`).test(html.replace(`id="${w}-tx"`, ''))) continue; // still used
+    const before = html;
+    html = removeInner(html, w);
+    if (html !== before) unwrapped.push(`${w}-tx`);
+  }
+  for (const m of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) {
+    try { new vm.Script(m[1]); } catch (err) { throw new Error(`index.html script would not parse after removing ${id}: ${err.message}`); }
+  }
+  writeFileSync(indexPath, html);
+  return { id, removed: true, unwrapped };
 }
 
 /** PNP layers following a camera wrapper (rcg pnp writes FOLLOW = "#w1"). */
@@ -232,8 +275,13 @@ ${script}
 if (isMain(import.meta.url)) {
   const a = parseArgs();
   if (a.list) { console.log(STYLES.join('\n')); process.exit(0); }
+  if (a.job && a.remove) {
+    const r = removeTransition(a);
+    console.log(r.removed ? `Removed transition ${r.id}${r.unwrapped.length ? ` (unwrapped ${r.unwrapped.join(', ')})` : ''}` : `No transition ${r.id} in index.html`);
+    process.exit(0);
+  }
   if (!a.job || a.at == null || !a.style) {
-    console.error(`Usage: transition.mjs --job <dir> --at <s> --style ${STYLES.join('|')} [--to "#w2"] [--from "#w1"] [--d 0.25] [--seed 1] [--id tx1]`);
+    console.error(`Usage: transition.mjs --job <dir> --at <s> --style ${STYLES.join('|')} [--to "#w2"] [--from "#w1"] [--d 0.25] [--seed 1] [--id tx1]\n       transition.mjs --job <dir> --remove <id>`);
     process.exit(2);
   }
   const r = applyTransition(a);
