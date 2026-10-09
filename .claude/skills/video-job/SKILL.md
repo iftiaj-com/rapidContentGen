@@ -25,6 +25,10 @@ Before starting a full job, check whether a fast path fits:
 2. Create the job: `node tools/rcg.mjs new-job --name <slug> --video <file> [--audio <file>] [--image <file>] [--prompt-file <file> | --prompt "..."] [--mode a|b|c]`.
    This copies media into `jobs/<id>/assets/`, probes it, writes `data/intake.json`, a safe-zone
    contact sheet per video, and `JOB.md`.
+   When the user asks for a video like an earlier one, add `--like jobs/<old-id>`: the old edit
+   (index.html, compositions/, lib/, beat sheet, data/*.json, assets/fonts, assets/sfx) is copied
+   instead of the template, without footage, voice, music or renders. `JOB.md` lists the assets the
+   copied edit references, and data/ timings still describe the old footage, so re-measure first.
 3. Read `JOB.md` notes and LOOK at each intake sheet. Notes flag: no audio, low fps, hot peaks.
 
 ## 2. Working mode (ask if not given)

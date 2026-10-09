@@ -9,7 +9,7 @@ not yet regression-verified), **planned** (phase in `PORTING_CHECKLIST.md`).
 | Command | What it does | Status |
 |---|---|---|
 | `doctor` | Checks config, ffmpeg (including the edge test for the ffmpeg HyperFrames uses), HyperFrames plugin, Python 3.11, voice venv, Kokoro weights, the MediaPipe files, the browser `rcg fx` will use (WebGPU needs an installed Chrome), sources, provenance | ready |
-| `new-job` | Creates `jobs/<date>-<slug>/` from a template; copies media; probe + safe-zone sheet; `JOB.md` | ready |
+| `new-job` | Creates `jobs/<date>-<slug>/` from a template, or from an earlier job's edit with `--like jobs/<id>` (no footage or renders; `JOB.md` lists the assets to supply); copies media; probe + safe-zone sheet; `JOB.md` | ready |
 | `beat-sheet validate\|md` | Validates `beat-sheet.json` (overlaps, no-text zones) and writes the approval table | ready |
 | `probe` | Streams, fps, duration, loudness, true peak, plus intake notes (no audio, low fps, hot peaks) | ready |
 | `sheet` | Labeled contact sheet; `--safe` draws the 9:16 no-text zones | ready |
