@@ -54,6 +54,9 @@ inbox/*
 # Jobs are personal: each user's jobs stay on their own machine (rcg new-job creates them)
 jobs/*
 !jobs/README.md
+# Regression tests are personal too: built from one machine's files (see regression/README.md)
+regression/*
+!regression/README.md
 jobs/*/assets/
 videos/*/assets/
 # The original hand-built mop-star job: kept on disk as reference, not tracked

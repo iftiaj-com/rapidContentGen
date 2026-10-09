@@ -59,3 +59,28 @@ rejected, and problems are reported rather than silently dropped.
 | `black-card` | Full-frame black card, centered in the safe box |
 | `captions` | Caption line above the bottom 20%, clear of the right edge |
 | `custom` | Give `box: {x, y, w, h}`; validation rejects boxes that reach a no-text zone |
+
+## Card flythrough: `data/flythrough.json` (`rcg flythrough`)
+
+The cards a flythrough flies over, written in the job before
+`node tools/rcg.mjs flythrough --job jobs/<id> --insert --fit-root`. Paths are relative to the job.
+Options for each field: `node tools/rcg.mjs flythrough --list` and `docs/capabilities.md`.
+
+```json
+{ "id": "fly-main",
+  "settings": { "motion": "board", "arrangement": "none", "template": "star", "spacing": 800,
+                "cardScale": 0.8, "radius": 24, "background": "none" },
+  "snap": { "beats": "data/audiomap.json", "grid": "downbeats", "offset": 0 },
+  "music": { "src": "assets/song-limited.wav", "volume": 1, "offset": 0, "fadeIn": 0, "fadeOut": 1, "duck": 0.5 },
+  "cards": [
+    { "src": "assets/cards/still-1.jpg", "ratio": "9:16", "arrivalTime": 0.8, "duration": 1,
+      "pathStyle": "smooth", "entrance": "fade", "zoom": 1,
+      "sound": { "sfx": "whoosh-short", "volume": 0.45, "align": "crest" } }
+  ] }
+```
+
+- `motion`: `board` (the camera flies across a still board) or `cards` (the board stays still and
+  each card flies to the centre).
+- `snap` moves the arrivals onto the beat grid (`grid`: `beats` or `downbeats`); leave it out to
+  keep the `arrivalTime` values as written.
+- Video cards show their first frame until they arrive, then play and loop.

@@ -128,7 +128,7 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
   presets reveal edges on 9:16: keep the default `--fill blur` there (`cover` zooms 1.5-2.3x).
   Audio-react presets (`:react=bass_zoom`) need `--audio <limited music>`.
 - Card flythrough (photos or clips flown through on a board, flowEditor style): write
-  `jobs/<id>/data/flythrough.json` (shape: `regression/R4/README.md`), then
+  `jobs/<id>/data/flythrough.json` (shape: `docs/job-spec.md`), then
   `node tools/rcg.mjs flythrough --job jobs/<id> --insert --fit-root`. Snap arrivals to the beat grid
   (`"snap": {"beats": "data/audiomap.json", "grid": "downbeats"}`) and read the landing report (beat
   error per card). Whoosh sounds land their crest on the arrival. Duck the music at 0.5, not

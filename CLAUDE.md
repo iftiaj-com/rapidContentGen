@@ -111,7 +111,7 @@ node tools/rcg.mjs provenance check
 - `jobs/<date>-<slug>/`: one HyperFrames project per job (git-ignored: jobs stay on each user's machine), with `JOB.md`, `beat-sheet.*`,
   `data/`, `renders/`, `report.md`.
 - `inbox/`: where the user drops media + `prompt.md`.
-- `regression/`: regression job specs per phase.
+- `regression/`: test specs per phase (git-ignored: they use files on the original machine).
 - `docs/`: `capabilities.md` (what exists and how to call it), `PORTING_CHECKLIST.md`,
   `PROVENANCE.md`, `job-spec.md`.
 - `videos/mop-star-trailer/`: the original hand-built job, kept as reference.

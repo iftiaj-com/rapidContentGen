@@ -24,7 +24,7 @@
 //   node tools/blocks/flythrough.mjs --job <dir> --spec <dir>/data/flythrough.json [--id fly-main]
 //        [--start 0] [--track 2] [--insert] [--fit-root]
 //   node tools/blocks/flythrough.mjs --list
-// Spec: docs/capabilities.md (rcg flythrough) and regression/R4.
+// Spec: docs/capabilities.md (rcg flythrough) and docs/job-spec.md (data/flythrough.json).
 
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, extname, join, resolve } from 'node:path';
