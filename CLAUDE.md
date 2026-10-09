@@ -54,7 +54,7 @@ node tools/rcg.mjs captions --job jobs/<id> --words <audio_meta.json|words.json|
 node tools/rcg.mjs title --job jobs/<id> --text "LINE ONE|LINE TWO" --preset slam --style trailer --start 11 --duration 1.5 --id title-main --insert
 node tools/rcg.mjs style list                          # style packs; skills style-tactile-collage, style-quiet-editorial, style-vox-parallax, style-marketing-pro
 node tools/rcg.mjs layers --job jobs/<id> --src assets/photo.jpg --name s1 --layer "mid:person" --layer "fg:chair"   # depth layers for parallax
-node tools/rcg.mjs marketing-pro prep --job jobs/<id> --src assets/clip.mp4 --trim     # then plan, then build (skill style-marketing-pro)
+node tools/rcg.mjs marketing-pro prep --job jobs/<id> --src assets/clip.mp4 --trim [--intro 3.8 --outro 1.8]     # then plan (--fill-heroes --clusters --cards --whips --strips --music), then build (skill style-marketing-pro)
 python -I tools/media/camera_motion.py <video>                   # measure a video's zooms, cuts and drift
 node tools/rcg.mjs split-screen prep --job jobs/<id> --presenter assets/p.mp4 --info assets/b.mp4 --trim   # then plan, then build (skill skill-split-screen-edit)
 node tools/rcg.mjs infographics place-voice --job jobs/<id> --music assets/bed-limited.wav --duration 10   # then resolve --plan data/info-plan.json (skill skill-info-graphics)
@@ -81,7 +81,8 @@ node tools/rcg.mjs matte --job jobs/<id> --src assets/x.mp4 --plate --sheet --ch
 node tools/rcg.mjs camera --job jobs/<id> --target "#w1" --track data/track-v1.json --cue "0:face.follow:z=1.05:x=0.5:y=0.35:d=0" --cue "2.4:face.zoom:z=1.7:d=0.3"
 node tools/rcg.mjs pnp --job jobs/<id> --base "#v1" --cutout assets/matte/v1-fg.webm --id p1 [--x -0.3 --scale 0.85 --media-offset -2 --show a-b --enter blocks --z 25]
 node tools/rcg.mjs layer --job jobs/<id> --id kw1 --behind p1      # or --front p1, --z n, --depth 0.5 (captions)
-node tools/rcg.mjs transition --job jobs/<id> --at 5 --style zoom_punch --to "#w2"   # flash_white|flash_black|glitch_punch|zoom_punch|crossfade (--from)
+node tools/rcg.mjs transition --job jobs/<id> --at 5 --style zoom_punch --to "#w2"   # flash_white|flash_black|glitch_punch|zoom_punch|crossfade (--from)|mirror_whip (--dir)|zoom_blur
+node tools/rcg.mjs strips --job jobs/<id> --mode open --start 0 --duration 3.8 --clips "assets/a.mp4@0:0.5,assets/b.mp4@4"   # cast opener / closer
 node tools/rcg.mjs target --job jobs/<id> --base "#v4" --fx assets/fx/x.mp4 --fx-start 12.4 --cutout assets/matte/v1-fg.webm --windows "11.4-12.4:bg,12.4-13.4:fg"
 node tools/rcg.mjs fx --list
 node tools/rcg.mjs fx --job jobs/<id> --effect ghost --src assets/x.mp4 --start 2 --duration 3 [--param id=v] [--preset p] [--src2 assets/y.mp4 --start2 0] [--audio m.wav] --sheet --out assets/fx/ghost.mp4

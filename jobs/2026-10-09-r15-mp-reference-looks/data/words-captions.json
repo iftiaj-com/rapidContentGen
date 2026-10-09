@@ -1,0 +1,127 @@
+{
+  "words": [
+    {
+      "text": "Hi,",
+      "start": 4,
+      "end": 4.44,
+      "brk": true
+    },
+    {
+      "text": "this",
+      "start": 4.62,
+      "end": 4.72
+    },
+    {
+      "text": "is",
+      "start": 4.72,
+      "end": 4.86
+    },
+    {
+      "text": "a",
+      "start": 4.86,
+      "end": 4.98
+    },
+    {
+      "text": "V",
+      "start": 4.98,
+      "end": 5.14
+    },
+    {
+      "text": "and",
+      "start": 5.14,
+      "end": 5.28
+    },
+    {
+      "text": "this",
+      "start": 5.28,
+      "end": 5.44
+    },
+    {
+      "text": "is",
+      "start": 5.44,
+      "end": 5.56
+    },
+    {
+      "text": "what",
+      "start": 5.56,
+      "end": 5.76
+    },
+    {
+      "text": "and",
+      "start": 7.68,
+      "end": 8.38
+    },
+    {
+      "text": "I",
+      "start": 8.38,
+      "end": 8.8
+    },
+    {
+      "text": "so",
+      "start": 10.08,
+      "end": 10.2
+    },
+    {
+      "text": "I",
+      "start": 10.2,
+      "end": 10.28
+    },
+    {
+      "text": "can",
+      "start": 10.28,
+      "end": 10.4
+    },
+    {
+      "text": "do",
+      "start": 10.4,
+      "end": 10.58
+    },
+    {
+      "text": "whatever",
+      "start": 10.58,
+      "end": 10.84
+    },
+    {
+      "text": "I",
+      "start": 10.84,
+      "end": 11.06
+    },
+    {
+      "text": "want",
+      "start": 11.06,
+      "end": 11.26,
+      "brk": true
+    },
+    {
+      "text": "and",
+      "start": 11.26,
+      "end": 11.5
+    },
+    {
+      "text": "I",
+      "start": 11.5,
+      "end": 11.7
+    },
+    {
+      "text": "to",
+      "start": 12.88,
+      "end": 13.66
+    },
+    {
+      "text": "use",
+      "start": 13.66,
+      "end": 13.92
+    },
+    {
+      "text": "this",
+      "start": 13.92,
+      "end": 14.7
+    },
+    {
+      "text": "system.",
+      "start": 14.7,
+      "end": 15.56,
+      "brk": true
+    }
+  ]
+}

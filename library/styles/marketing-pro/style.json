@@ -16,7 +16,12 @@
     "white": "#ffffff",
     "ink": "#111111",
     "pill": "rgba(17,17,17,0.82)",
-    "ring": "#f2c230"
+    "ring": "#f2c230",
+    "grad-a": "#b65cff",
+    "grad-b": "#ff7ad6",
+    "alert": "#ff2a1f",
+    "gold-a": "#f7d48a",
+    "gold-b": "#b8862f"
   },
   "type": {
     "serif": { "family": "Playfair Display", "weight": 700, "$note": "bundled; serif caps and the upright parts of italic heroes" },
@@ -37,7 +42,8 @@
     "$note": "Sparse: a soft whoosh on a hero, a pop on tags and logos, a shine on stats.",
     "hero": { "name": "whoosh-short", "volume": 0.12 },
     "stat": { "name": "sparkle", "volume": 0.14 },
-    "pop": { "name": "pop", "volume": 0.18 }
+    "pop": { "name": "pop", "volume": 0.18 },
+    "card": { "name": "whoosh", "volume": 0.14 }
   },
   "status": "ready"
 }

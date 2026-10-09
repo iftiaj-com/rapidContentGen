@@ -1,0 +1,37 @@
+[
+  {
+    "kind": "video",
+    "source": "C:/Users/iftiaj/Downloads/WhatsApp Video 2026-10-08 at 19.27.12.mp4",
+    "asset": "assets/WhatsApp_Video_2026-10-08_at_19.27.12.mp4",
+    "probe": {
+      "file": "E:\\Develop\\Antigravity_testing\\rapidContentGen\\jobs\\2026-10-08-r11-marketing-pro\\assets\\WhatsApp_Video_2026-10-08_at_19.27.12.mp4",
+      "duration": 15.731333,
+      "sizeBytes": 3595013,
+      "video": {
+        "codec": "h264",
+        "width": 478,
+        "height": 850,
+        "fps": 29.304572615162943,
+        "pixFmt": "yuv420p",
+        "aspect": 0.5624
+      },
+      "audio": [
+        {
+          "index": 1,
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 2
+        }
+      ],
+      "loudness": {
+        "integratedLufs": -36.6,
+        "lra": 3.3,
+        "truePeakDb": -18.4
+      },
+      "notes": [
+        "Source is 29.305 fps: slowing it below 1x will stutter. Use a freeze frame or interpolation instead."
+      ]
+    },
+    "sheet": "data/intake-WhatsApp_Video_2026-10-08_at_19.27.12.png"
+  }
+]

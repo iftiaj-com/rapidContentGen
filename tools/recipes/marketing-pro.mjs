@@ -8,6 +8,11 @@
 //   node tools/recipes/marketing-pro.mjs plan  --job <dir> [--name main] [--seed 1] [--max-punch 1.6]
 //        [--behind true|false] [--bloom 0|1|2] [--caption-y px]
 //        [--caption-fx hollow,rgb,shadow [--caption-shadow-angle 45] [--caption-shadow-dist 4]] [--negative-heroes n]
+//        [--fill-heroes] [--fills gold=<img>,pink=<img>,photo=<img>] [--clusters] [--cards "word:<img>,..."]
+//        [--whips n] [--music <file>] [--strips "<clip>@<s>[:x],..."] [--leak <video>]
+//   node tools/recipes/marketing-pro.mjs audio --job <dir>      (music bed + sounds from the plan; build runs it)
+//   prep --intro s --outro s pads the clip (first / last frame held) and the voice (silence) for a
+//   strip opener / closer (plan --strips); the words move with it.
 //   node tools/recipes/marketing-pro.mjs commands|build --job <dir> [--dry-run]
 //
 // prep (--trim keeps 0.2 s before the first word and 0.5 s after the last): CFR 30 video (lanczos upscale + light denoise/sharpen when smaller than the output),
@@ -26,6 +31,7 @@ import { rcg, runCommands } from '../lib/runner.mjs';
 import { Reframe, subjectPath } from '../blocks/camera.mjs';
 import { mulberry32 } from './timeremap.mjs';
 import { validateBeatSheet } from '../jobs/beat-sheet.mjs';
+import { musicLane } from '../blocks/flythrough.mjs';
 
 const f3 = (n) => +Number(n).toFixed(3);
 const f2 = (n) => +Number(n).toFixed(2);
@@ -99,10 +105,24 @@ export async function prep(opts) {
   }
   report.trim = { start: f3(t0), end: f3(t1) };
 
+  // Optional room for a strip opener / closer: silence on the voice, the first / last frame held.
+  const intro = Math.max(0, Number(opts.intro ?? 0));
+  const outro = Math.max(0, Number(opts.outro ?? 0));
+  if (intro || outro) {
+    const padded = join(assets, `${name}-voice.pad.wav`);
+    await run('ffmpeg', ['-y', '-v', 'error', '-i', voice, '-af', `adelay=${Math.round(intro * 1000)}:all=1,apad=pad_dur=${outro}`, '-c:a', 'pcm_s16le', padded]);
+    copyFileSync(padded, voice);
+    rmSync(padded, { force: true });
+    doc = { ...doc, words: doc.words.map((w) => ({ ...w, start: f3(w.start + intro), end: f3(w.end + intro) })), padded: { intro, outro } };
+    writeFileSync(words, `${JSON.stringify(doc, null, 2)}\n`);
+  }
+  report.pad = { intro, outro };
+
   // Video: CFR 30 (WhatsApp-style sources are variable frame rate), upscale + clean when smaller.
   const prepV = join(assets, `${name}-prep.mp4`);
   const small = info.video.height < H && info.video.width < W;
-  const vf = ['fps=30', small ? `scale=-2:${H}:flags=lanczos,hqdn3d=1.5:1.5:6:6,unsharp=5:5:0.55:5:5:0` : null, 'format=yuv420p'].filter(Boolean).join(',');
+  const vf = ['fps=30', small ? `scale=-2:${H}:flags=lanczos,hqdn3d=1.5:1.5:6:6,unsharp=5:5:0.55:5:5:0` : null,
+    intro || outro ? `tpad=start_duration=${intro}:start_mode=clone:stop_duration=${outro}:stop_mode=clone` : null, 'format=yuv420p'].filter(Boolean).join(',');
   await run('ffmpeg', ['-y', '-v', 'error', ...(opts.trim ? ['-ss', String(t0), '-to', String(t1)] : []), '-i', src, '-an', '-vf', vf, '-c:v', 'libx264', '-crf', '15', '-preset', 'slow', prepV]);
   const pv = await probe(prepV);
   report.prep = { file: `assets/${basename(prepV)}`, width: pv.video.width, height: pv.video.height, fps: f2(pv.video.fps), duration: f2(pv.duration), upscaled: small };
@@ -112,7 +132,8 @@ export async function prep(opts) {
   // Scaffold index.html when it is still the template.
   const isTemplate = /src="assets\/main\.mp4"/.test(html0) || opts.scaffold;
   if (isTemplate) {
-    const head = html0.slice(0, html0.indexOf('  <body>'));
+    // A re-scaffold keeps the head but not the old layer rules (rcg layer z-indexes of a former build).
+    const head = html0.slice(0, html0.indexOf('  <body>')).replace(/\s*<style data-rcg="layers">[\s\S]*?<\/style>/, '');
     writeFileSync(indexPath, `${head}  <body>
     <div id="root" data-composition-id="main" data-start="0" data-duration="${dur}" data-width="${W}" data-height="${H}">
       <!-- Shot: one untimed wrapper; rcg camera animates it (face cues from rcg marketing-pro plan). -->
@@ -266,10 +287,13 @@ const CONTRAST = new Set(['but', 'however', 'yet', 'instead', 'actually', 'altho
 const EMOTION = new Set(['honored', 'honoured', 'love', 'grateful', 'thank', 'thanks', 'family', 'heart', 'proud', 'dream', 'together', 'trust', 'care', 'happy', 'excited', 'blessed', 'forever']);
 const POWER = new Set(['best', 'top', 'free', 'transparency', 'results', 'success', 'investment', 'guaranteed', 'exclusive', 'secret', 'proven', 'expert', 'system', 'engineer', 'growth', 'million', 'first', 'only', 'whatever', 'everything', 'built', 'integrity', 'character', 'visible', 'maximum', 'internal', 'skills', 'strategy', 'exposure', 'quality', 'premium', 'fast', 'easy', 'simple', 'today', 'now']);
 const CTA = /\b(link|bio|follow|subscribe|call|dm|message|book|visit|click|comment|share)\b/i;
+// Fill heroes (reference Video-54041): scarcity words in solid red, action / value words in gold.
+const URGENCY = new Set(['limited', 'full', 'last', 'hurry', 'deadline', 'capacity', 'sold', 'ends', 'closing', 'spots', 'urgent']);
+const GOLD = new Set(['start', 'started', 'starting', 'sign', 'link', 'join', 'launch', 'win', 'gold', 'free', 'best', 'night', 'success', 'money', 'spot', 'reserve', 'premium', 'exclusive', 'today']);
 const clean = (t) => String(t).toLowerCase().replace(/[^\p{L}\p{N}'%$-]+/gu, '');
 
 /** Pick one hero per sentence: { words: [i..j] in the sentence, role }. */
-export function pickHero(sentence, { first = false, last = false, exclude = new Set() } = {}) {
+export function pickHero(sentence, { first = false, last = false, exclude = new Set(), urgency = false } = {}) {
   const ws = sentence.words;
   let best = null;
   ws.forEach((w, i) => {
@@ -279,6 +303,7 @@ export function pickHero(sentence, { first = false, last = false, exclude = new 
     let role = 'wide';
     if (/\d|%|\$/.test(t) || ['percent', 'million', 'thousand', 'hundred', 'billion'].includes(t)) { score += 5; role = 'neon'; }
     else if (NEGATION.has(t)) { score += 4.5; role = 'strike'; }
+    else if (urgency && URGENCY.has(t)) { score += 4.2; role = 'alert'; }
     else if (CONTRAST.has(t) && (i === 0 || /,$/.test(ws[i - 1]?.text || ''))) { score += 4; role = 'focus'; }
     else if (EMOTION.has(t)) { score += 3.5; role = 'italic'; }
     else if (/^\p{Lu}/u.test(w.text) && t.length >= 2 && i > 0 && t !== 'i' && !/[.!?]$/.test(ws[i - 1]?.text || '')) { score += 3; role = 'serif-caps'; }
@@ -475,27 +500,62 @@ export async function plan(opts) {
   const heroes = [];
   let prevLook = null;
   const used = new Set();
+  const fillHeroes = Boolean(opts['fill-heroes']);
+  const clusters = Boolean(opts.clusters);
+  const fills = Object.fromEntries(String(opts.fills || '').split(',').map((x) => x.trim()).filter(Boolean).map((x) => x.split('=').map((y) => y.trim())));
+  for (const [k, f] of Object.entries(fills)) if (!existsSync(join(jobDir, f))) throw new Error(`--fills ${k}: ${f} not found in the job`);
+  let prevFill = null;
+  let gradTurn = 0;
   sentences.forEach((s, si) => {
-    const pick = pickHero(s, { first: si === 0, last: si === sentences.length - 1, exclude: used });
+    const pick = pickHero(s, { first: si === 0, last: si === sentences.length - 1, exclude: used, urgency: fillHeroes });
     const lastHero = heroes[heroes.length - 1];
     if (pick.score < 1.5 && lastHero && s.start - lastHero.start < 4) return;
     let look = pick.role;
     const ORDER = ['wide', 'serif-caps', 'italic'];
-    if (look === prevLook) look = ORDER.find((l) => l !== prevLook && l !== pick.role) || 'wide';
-    prevLook = look;
+    if (look === 'alert') look = 'fill';
+    else if (look === prevLook) look = ORDER.find((l) => l !== prevLook && l !== pick.role) || 'wide';
     const kw = s.words.slice(pick.a, pick.b + 1);
+    // Fill heroes: every look but strike becomes a filled word; the fill follows the meaning
+    // (urgency red, action / value gold, a name or place the photo fill, else the gradient), and
+    // never the same fill twice running when another fits.
+    let fill = null;
+    if (fillHeroes && look !== 'strike') {
+      const k0 = clean(kw[0].text).replace(/[^\p{L}\p{N}%$]/gu, '');
+      let kind = pick.role === 'alert' ? 'red' : GOLD.has(k0) ? 'gold' : fills.photo && pick.a > 0 && /^\p{Lu}/u.test(kw[0].text) ? 'photo' : 'gradient';
+      if (kind === prevFill && kind !== 'red') kind = kind === 'gold' ? 'gradient' : 'gold';
+      prevFill = kind;
+      fill = kind === 'red' ? 'red' : kind === 'gold' ? (fills.gold || 'gold') : kind === 'photo' ? fills.photo : (fills.pink && gradTurn++ % 2 ? fills.pink : 'gradient');
+      look = 'fill';
+    }
+    prevLook = look;
     for (const w of kw) used.add(clean(w.text).replace(/[^\p{L}\p{N}%$]/gu, ''));
     let text = kw.map((w) => w.text.replace(/[,.;:!?]+$/, '')).join(' ');
     if (look === 'neon') text = text.replace(/\s+%/, '%');
-    const leadWords = s.words.slice(Math.max(0, pick.a - 3), pick.a).map((w) => w.text.replace(/[,.;:!?]+$/, ''));
-    const lead = ['wide', 'italic'].includes(look) && leadWords.length ? leadWords.join(' ') : '';
+    const leadSrc = s.words.slice(Math.max(0, pick.a - 3), pick.a);
+    const leadWords = leadSrc.map((w) => w.text.replace(/[,.;:!?]+$/, ''));
+    // Clusters: the lead line comes in on its own spoken words, the keyword on its own, and up to
+    // three words after the keyword (to the clause end) trail below; those words leave the body caption.
+    let tailSrc = [];
+    if (clusters) for (let k = pick.b + 1; k < s.words.length && tailSrc.length < 3; k++) {
+      if (/[,.;:!?]$/.test(s.words[k - 1].text) && k > pick.b + 1) break;
+      tailSrc.push(s.words[k]);
+      if (/[,.;:!?]$/.test(s.words[k].text)) break;
+    }
+    if (tailSrc.map((w) => w.text).join(' ').length > 22) tailSrc = tailSrc.slice(0, 1);
+    if (/[,.;:!?]$/.test(kw[kw.length - 1].text)) tailSrc = [];
+    const useLead = clusters ? (leadWords.length && leadWords.join(' ').length <= 24) : ['wide', 'italic'].includes(look) && leadWords.length;
+    const lead = useLead ? leadWords.join(' ') : '';
     if (look === 'italic') text = `*${text}*`;
-    const start = Math.max(0, f3(kw[0].start - 0.05));
-    const end = Math.min(start + 2.6, D); // clamped to the next hero's start below
+    const first = clusters && lead ? leadSrc[0].start : kw[0].start;
+    const start = Math.max(0, f3(first - 0.05));
+    const lastSpoken = (tailSrc.length ? tailSrc[tailSrc.length - 1] : kw[kw.length - 1]).end;
+    const end = Math.min(Math.max(start + 2.6, lastSpoken + 0.7), D); // clamped to the next hero's start below
     heroes.push({
       sentence: si, look, text, lead, start, end: f3(end), role: pick.role, score: pick.score,
       times: look === 'serif-caps' ? kw.map((w) => f2(Math.max(0, w.start - start))).join(',') : '',
       cta: si === sentences.length - 1 && CTA.test(s.words.map((w) => w.text).join(' ')),
+      ...(fill ? { fill } : {}),
+      ...(clusters ? { textAt: f2(Math.max(0, kw[0].start - start)), tailWords: tailSrc.map((w) => ({ text: w.text.replace(/[,.;:!?]+$/, ''), start: w.start })), used: [...(lead ? leadSrc : []), ...kw, ...tailSrc] } : {}),
     });
   });
 
@@ -581,6 +641,20 @@ export async function plan(opts) {
     h.y = Math.round(y);
     h.w = hw;
     h.h = hh;
+    // Cluster tail: split around the head when the hero sits behind it and the tail has 2+ words.
+    if (h.tailWords?.length) {
+      const tw = h.tailWords;
+      if (h.behind && tw.length >= 2) {
+        const cut = Math.ceil(tw.length / 2);
+        h.tail = `${tw.slice(0, cut).map((w) => w.text).join(' ')}|${tw.slice(cut).map((w) => w.text).join(' ')}`;
+        h.gap = Math.round(Math.min(hw * 0.5, s.face.w * 1.5));
+        h.tailAt = [tw[0], tw[cut]].map((w) => f2(Math.max(0, w.start - h.start))).join(',');
+      } else {
+        h.tail = tw.map((w) => w.text).join(' ');
+        h.gap = 0;
+        h.tailAt = f2(Math.max(0, tw[0].start - h.start)).toString();
+      }
+    }
     const rect = sim.sourceRect(mid, { x: box.l, y: box.t, w: hw, h: hh }, source.prep.width, source.prep.height);
     h.bg = await luminanceAt(video, mid, rect);
     h.tone = h.bg > 140 ? 'dark' : 'light';
@@ -613,6 +687,25 @@ export async function plan(opts) {
     shadow: fxList.includes('shadow') ? { angle: Number(opts['caption-shadow-angle'] ?? 45), dist: Number(opts['caption-shadow-dist'] ?? 4) } : null,
   } : null;
 
+  // Photo cards (--cards "word:img,..."): on the first time the word is spoken, 2.4 s, beside the
+  // head below the hero band, on the side with more room, behind the cut-out.
+  const cards = [];
+  for (const spec of String(opts.cards || '').split(',').map((x) => x.trim()).filter(Boolean)) {
+    const [word, src] = spec.split(':').map((x) => x.trim());
+    if (!src || !existsSync(join(jobDir, src))) throw new Error(`--cards ${spec}: the image is missing in the job`);
+    const w = words.find((x) => clean(x.text).replace(/[^\p{L}\p{N}]/gu, '') === word.toLowerCase());
+    if (!w) { warnings.push(`--cards: "${word}" is not spoken; card skipped.`); continue; }
+    const start = f3(Math.max(0, w.start - 0.1));
+    const dur = f3(Math.min(2.4, D - start - 0.05));
+    const sAt = sim.at(start + dur / 2);
+    const cw = 340; const ch = 420;
+    const side = sAt.face.x >= W / 2 ? 'left' : 'right';
+    const x = side === 'left' ? safe.left + cw / 2 : safe.right - cw / 2;
+    const band = heroes.find((h) => h.start < start + dur && h.end > start);
+    const y = Math.round(Math.min(safe.bottom - ch / 2 - 300, Math.max(safe.top + ch / 2, (band ? band.y + band.h / 2 : sAt.face.y - ch / 2) + ch / 2 + 10)));
+    cards.push({ word, src, start, duration: dur, x: Math.round(x), y, w: cw, h: ch, side: side === 'left' ? 'right' : 'left' });
+  }
+
   // Body caption: chest height below the chin at the tightest framing; tone from the chest area.
   const capY = Number(opts['caption-y']) || Math.round(0.56 * H);
   const lums = [];
@@ -633,6 +726,40 @@ export async function plan(opts) {
     if (e.sentence > 0) blooms.push(e.at);
   }
 
+  // Mirror whips (--whips N): at sentence starts (the cut between beats, as in the reference), 3 s
+  // apart, not within 1 s of a bloom; plus one at the end of a strip opener. The hero before a
+  // whip ends 0.2 s before it, so the words clear first. Directions alternate up / left.
+  const pad = source.pad || { intro: 0, outro: 0 };
+  const whips = [];
+  const nWhip = Math.max(0, Number(opts.whips ?? 0));
+  const near = (t, list, gap) => list.some((x) => Math.abs(x - t) < gap);
+  const whipCands = sentences.slice(1).map((x) => f3(x.start - 0.05));
+  for (const t of whipCands) {
+    if (whips.length >= nWhip) break;
+    if (t <= pad.intro + 0.5 || t >= D - pad.outro - 0.5 || near(t, whips.map((w) => w.at), 3) || near(t, blooms, 1)) continue;
+    // Never cut a hero so its main word shows for under 1 s.
+    if (heroes.some((h) => h.start < t && h.end > t - 0.2 && t - 0.2 - (h.start + (h.textAt || 0)) < 1.0)) continue;
+    whips.push({ at: f3(t) });
+  }
+  const stripClips = String(opts.strips || '').trim();
+  if (stripClips && pad.intro >= 1) whips.push({ at: f3(pad.intro) });
+  whips.sort((a, b) => a.at - b.at).forEach((w, i) => { w.dir = i % 2 ? 'left' : 'up'; w.d = 0.32; });
+  for (const w of whips) for (const h of heroes) if (h.start < w.at && h.end > w.at - 0.2) h.end = f3(Math.max(h.start + 0.8, w.at - 0.2));
+  if (stripClips && !(pad.intro >= 1 || pad.outro >= 1)) warnings.push('--strips needs room: prep with --intro / --outro (seconds) first; no strips planned.');
+  const strips = stripClips && (pad.intro >= 1 || pad.outro >= 1) ? {
+    clips: stripClips, leak: opts.leak || null,
+    ...(pad.intro >= 1 ? { open: { start: 0, duration: pad.intro } } : {}),
+    ...(pad.outro >= 1 ? { close: { start: f3(D - pad.outro), duration: pad.outro } } : {}),
+  } : null;
+  if (opts.leak && !existsSync(join(jobDir, opts.leak))) throw new Error(`--leak ${opts.leak} not found in the job`);
+  // Sounds: a whoosh on each whip (crest on the cut), a soft click per opener strip, a cinematic
+  // whoosh on the closer's flash. Placed by the measured crest (library/sfx/manifest.json).
+  const sfx = whips.map((w, i) => ({ id: `whip${i + 1}-sfx`, name: 'whoosh-short', at: w.at, volume: 0.16 }));
+  if (strips?.open) parseStripCount(stripClips).forEach((_, i) => sfx.push({ id: `strip${i + 1}-sfx`, name: 'click-soft', at: f3(0.05 + i * 0.53), volume: 0.12 }));
+  if (strips?.close) sfx.push({ id: 'close-sfx', name: 'whoosh-cinematic', at: f3(strips.close.start + Math.min(0.4, pad.outro * 0.15)), volume: 0.16 });
+  const music = opts.music ? { src: opts.music, limited: `assets/music-limited.wav`, volume: Number(opts['music-volume'] ?? 0.5), duck: Number(opts.duck ?? 0.35) } : null;
+  if (music && !existsSync(join(jobDir, music.src))) throw new Error(`--music ${music.src} not found in the job`);
+
   // Style plan (one host per hero, so each can be layered on its own). Negative heroes are caption
   // blocks instead (build), with one words file each: the keyword as a single entry, held for the
   // hero window (the caption group adds a 0.35 s hold). Word times are relative to the hero start.
@@ -640,7 +767,11 @@ export async function plan(opts) {
     component: 'hero', id: `hero${i + 1}`, start: h.start, duration: f3(h.end - h.start),
     text: h.text, lead: h.lead, look: h.look, tone: h.tone, accent: i % 2 ? 'teal' : 'purple',
     x: h.x, y: h.y, w: h.w, h: h.h, ...(h.times ? { times: h.times } : {}),
+    ...(h.fill ? { fill: h.fill } : {}),
+    ...(h.textAt != null ? { textAt: h.textAt } : {}),
+    ...(h.tail ? { tail: h.tail, gap: h.gap, tailAt: h.tailAt } : {}),
   })).filter(Boolean);
+  cards.forEach((c, i) => items.push({ component: 'card', id: `card${i + 1}`, start: c.start, duration: c.duration, src: c.src, x: c.x, y: c.y, w: c.w, h: c.h, side: c.side }));
   heroes.forEach((h, i) => {
     if (!h.negative) return;
     const text = h.text.replace(/\*/g, '').toUpperCase();
@@ -684,13 +815,67 @@ export async function plan(opts) {
     clauses: clauses.map((c) => ({ start: c.start, onset: c.onset, snapped: c.snapped, end: c.end, text: c.words.map((w) => w.text).join(' ') })),
     events, cues: cues.map(cueSpec), heroes, caption: { style: captionStyle, y: capY, luminance: capLum, ...(capFx ? { fx: capFx } : {}) },
     blooms, behind: behind && heroes.some((h) => h.behind), reach, reachFixes: fixes, upscale, warnings,
+    cards, whips, strips, sfx, music, pad, sentences: sentences.map((x) => ({ start: x.start, end: x.end })),
   };
   writeFileSync(join(jobDir, 'data', 'mp-plan.json'), `${JSON.stringify(mp, null, 2)}\n`);
   // Caption words with the planner's clause breaks (brk), so the tier groups follow the beats.
   const ends = new Set(clauses.map((c) => c.words[c.words.length - 1]));
-  const capWords = clauses.flatMap((c) => c.words).map((w) => ({ text: w.text, start: w.start, end: w.end, ...(ends.has(w) ? { brk: true } : {}) }));
+  const inCluster = new Set(heroes.flatMap((h) => h.used || []));
+  const capWords = clauses.flatMap((c) => c.words).filter((w) => !inCluster.has(w)).map((w) => ({ text: w.text, start: w.start, end: w.end, ...(ends.has(w) ? { brk: true } : {}) }));
+  for (const h of heroes) delete h.used;
   writeFileSync(join(jobDir, 'data', 'words-captions.json'), `${JSON.stringify({ words: capWords }, null, 2)}\n`);
   return { mp, problems, warnings };
+}
+
+/** Clip count of a --strips spec. */
+function parseStripCount(spec) { return String(spec || '').split(',').map((x) => x.trim()).filter(Boolean); }
+
+// ── audio: music bed + sounds from the plan ───────────────────────────────────
+
+/** Writes the music bed (ducked under each sentence) and the plan's sounds into index.html. */
+export async function writeAudio(jobDir) {
+  const mp = readJson(join(jobDir, 'data', 'mp-plan.json'));
+  const indexPath = join(jobDir, 'index.html');
+  let html = readFileSync(indexPath, 'utf8');
+  html = html.replace(/\s*<!-- rcg:mp-audio begin[\s\S]*?<!-- rcg:mp-audio end -->/, '');
+  const manifest = readJson(join(ROOT, 'library', 'sfx', 'manifest.json'));
+  const parts = [];
+  if (mp.music) {
+    if (!existsSync(join(jobDir, mp.music.limited))) throw new Error(`${mp.music.limited} is missing: run rcg limit first (build does)`);
+    // A bed shorter than the edit loops (back to back) to cover it.
+    let bed = mp.music.limited;
+    const len = (await probe(join(jobDir, bed))).duration;
+    if (len < mp.duration - 0.05) {
+      bed = bed.replace(/\.wav$/, '-loop.wav');
+      await run('ffmpeg', ['-y', '-v', 'error', '-stream_loop', '-1', '-i', join(jobDir, mp.music.limited), '-t', String(mp.duration), '-c:a', 'pcm_s16le', join(jobDir, bed)]);
+    }
+    const lane = musicLane({
+      total: mp.duration, fadeIn: 0.3, fadeOut: 0.8, volume: mp.music.volume,
+      ducks: mp.sentences.map((x) => ({ start: x.start, duration: x.end - x.start })), duckLevel: mp.music.duck,
+    });
+    parts.push(`<audio id="music" src="${bed}" data-start="0" data-duration="${mp.duration}" data-media-start="0" data-track-index="21" data-automation='${JSON.stringify({ version: 1, lanes: [{ target: 'volume', points: lane }] })}'></audio>`);
+  }
+  // Lanes 50-57 (the style pack's own sounds use 40-47): no two overlapping clips on one track.
+  const lanes = [];
+  for (const x of mp.sfx || []) {
+    const e = manifest[x.name];
+    if (!e) throw new Error(`sfx "${x.name}" is not in library/sfx/manifest.json`);
+    mkdirSync(join(jobDir, 'assets', 'sfx'), { recursive: true });
+    if (!existsSync(join(jobDir, 'assets', 'sfx', e.file))) copyFileSync(join(ROOT, 'library', 'sfx', e.file), join(jobDir, 'assets', 'sfx', e.file));
+    const start = f3(Math.max(0, x.at - (e.crestStartS ?? e.peakS ?? 0)));
+    const dur = f3(Math.min(e.durationS ?? e.duration ?? 1, mp.duration - start));
+    let lane = lanes.findIndex((end) => end <= start + 1e-3);
+    if (lane < 0) { lane = lanes.length; lanes.push(0); }
+    if (lane > 7) throw new Error('more than 8 overlapping sounds');
+    lanes[lane] = start + dur;
+    parts.push(`<audio id="${x.id}" src="assets/sfx/${e.file}" data-start="${start}" data-duration="${dur}" data-volume="${x.volume}" data-track-index="${50 + lane}"></audio>`);
+  }
+  if (parts.length) {
+    const rootEnd = html.lastIndexOf('</div>', html.lastIndexOf('<script>'));
+    html = `${html.slice(0, rootEnd)}  <!-- rcg:mp-audio begin (music bed and sounds, tools/recipes/marketing-pro.mjs audio) -->\n      ${parts.join('\n      ')}\n      <!-- rcg:mp-audio end -->\n    ${html.slice(rootEnd)}`;
+  }
+  writeFileSync(indexPath, html);
+  return { music: Boolean(mp.music), sounds: (mp.sfx || []).length };
 }
 
 // ── commands / build ──────────────────────────────────────────────────────────
@@ -720,11 +905,18 @@ export function buildCommands(jobDir) {
     if (h.negative) cmds.push(rcg('captions', '--job', J, '--words', `${J}/data/words-hero${i + 1}.json`, '--style', 'modern', '--mode', 'phrase', '--y', h.y, '--size', 150, '--id', `hero${i + 1}`, '--start', h.start, '--track', 31, '--negative', '--insert', '--behind', 'p1'));
   });
   if (mp.behind) {
-    mp.heroes.forEach((h, i) => { if (h.behind && !h.negative) cmds.push(rcg('layer', '--job', J, '--id', `hero${i + 1}`, '--behind', 'p1')); });
+    // Behind heroes go under the cut-out; front heroes need an explicit z over it (the PNP sits at z 30).
+    mp.heroes.forEach((h, i) => { if (!h.negative) cmds.push(rcg('layer', '--job', J, '--id', `hero${i + 1}`, ...(h.behind ? ['--behind', 'p1'] : ['--z', 40]))); });
     cmds.push(rcg('layer', '--job', J, '--id', 'cap-body', '--z', 40));
     if (mp.heroes[mp.heroes.length - 1]?.cta) cmds.push(rcg('layer', '--job', J, '--id', 'cta1', '--z', 40));
   }
+  (mp.cards || []).forEach((c, i) => { if (mp.behind) cmds.push(rcg('layer', '--job', J, '--id', `card${i + 1}`, '--behind', 'p1')); });
   mp.blooms.forEach((t, i) => cmds.push(rcg('transition', '--job', J, '--at', t, '--style', 'flash_bloom', '--to', '#w1', '--d', 0.45, '--id', `bloom${i + 1}`)));
+  (mp.whips || []).forEach((w, i) => cmds.push(rcg('transition', '--job', J, '--at', w.at, '--style', 'mirror_whip', '--to', '#w1', '--d', w.d, '--dir', w.dir, '--id', `whip${i + 1}`)));
+  if (mp.strips?.open) cmds.push(rcg('strips', '--job', J, '--mode', 'open', '--start', mp.strips.open.start, '--duration', mp.strips.open.duration, '--clips', mp.strips.clips, '--id', 'strips-open'));
+  if (mp.strips?.close) cmds.push(rcg('strips', '--job', J, '--mode', 'close', '--start', mp.strips.close.start, '--duration', mp.strips.close.duration, '--clips', mp.strips.clips, ...(mp.strips.leak ? ['--leak', mp.strips.leak] : []), '--id', 'strips-close'));
+  if (mp.music) cmds.push(rcg('limit', `${J}/${mp.music.src}`, `${J}/${mp.music.limited}`, '--ceiling', -2.5));
+  if (mp.music || (mp.sfx || []).length) cmds.push(rcg('marketing-pro', 'audio', '--job', J));
   cmds.push(rcg('mix-check', `${J}/index.html`));
   cmds.push(rcg('hf', '--cwd', J, 'check'));
   return cmds;
@@ -736,7 +928,7 @@ if (isMain(import.meta.url)) {
   const fail = (m) => { console.error(m); process.exit(2); };
   try {
     if (cmd === 'prep') {
-      if (!a.job || !a.src) fail('Usage: marketing-pro.mjs prep --job <dir> --src <clip> [--name main] [--trim] [--denoise 12] [--lufs -14]');
+      if (!a.job || !a.src) fail('Usage: marketing-pro.mjs prep --job <dir> --src <clip> [--name main] [--trim] [--intro s] [--outro s] [--denoise 12] [--lufs -14]');
       const { report, words } = await prep({ ...a, trim: Boolean(a.trim), scaffold: Boolean(a.scaffold) });
       console.log(`Source ${report.source.width}x${report.source.height} @ ${report.source.fps} fps -> ${report.prep.file} ${report.prep.width}x${report.prep.height} @ ${report.prep.fps} fps${report.prep.upscaled ? ' (upscaled, denoised, sharpened)' : ''}`);
       console.log(`Voice: ${report.audio.before.integratedLufs} -> ${report.audio.after.integratedLufs} LUFS, true peak ${report.audio.after.truePeakDb} dBTP, noise floor ${report.audio.floorDb} dBFS (denoise nr=${report.audio.denoise})`);
@@ -744,7 +936,7 @@ if (isMain(import.meta.url)) {
       console.log(`Transcript (${words.length} words): ${words.map((w) => w.text).join(' ')}`);
       console.log('Next: correct data/words.json, then rcg marketing-pro plan');
     } else if (cmd === 'plan') {
-      if (!a.job) fail('Usage: marketing-pro.mjs plan --job <dir> [--name main] [--seed 1] [--max-punch 1.6] [--behind true|false] [--bloom n] [--caption-y px] [--caption-fx hollow,rgb,shadow [--caption-shadow-angle 45] [--caption-shadow-dist 4]] [--negative-heroes n]');
+      if (!a.job) fail('Usage: marketing-pro.mjs plan --job <dir> [--name main] [--seed 1] [--max-punch 1.6] [--behind true|false] [--bloom n] [--caption-y px] [--caption-fx hollow,rgb,shadow [--caption-shadow-angle 45] [--caption-shadow-dist 4]] [--negative-heroes n] [--fill-heroes] [--fills k=img,...] [--clusters] [--cards "word:img,..."] [--whips n] [--music file] [--strips "clip@s[:x],..."] [--leak video]');
       const { mp, problems } = await plan(a);
       execFileSync(process.execPath, [join(ROOT, 'tools', 'jobs', 'beat-sheet.mjs'), 'md', join(resolve(a.job), 'beat-sheet.json'), join(resolve(a.job), 'beat-sheet.md')], { stdio: 'inherit' });
       console.log(`Camera: ${mp.events.length} events (${mp.events.filter((e) => e.kind === 'punch').length} punches), ${mp.cues.length} cues; clause onsets snapped: ${mp.clauses.filter((c) => c.snapped).length}/${mp.clauses.length}`);
@@ -757,6 +949,10 @@ if (isMain(import.meta.url)) {
       for (const w of mp.warnings) console.log(`WARNING: ${w}`);
       for (const p of problems.errors || []) console.log(`BEAT SHEET ERROR: ${p}`);
       console.log('Next: review beat-sheet.md, then rcg marketing-pro build --job ' + a.job);
+    } else if (cmd === 'audio') {
+      if (!a.job) fail('Usage: marketing-pro.mjs audio --job <dir>');
+      const r = await writeAudio(resolve(a.job));
+      console.log(`Audio: ${r.music ? 'music bed ducked under each sentence, ' : ''}${r.sounds} sound(s)`);
     } else if (cmd === 'commands' || cmd === 'build') {
       if (!a.job) fail('Usage: marketing-pro.mjs commands|build --job <dir> [--dry-run]');
       runCommands(buildCommands(resolve(a.job)), { dryRun: cmd === 'commands' || Boolean(a['dry-run']) });

@@ -3,6 +3,16 @@
   "package": "@phosphor-icons/core",
   "version": "2.1.1",
   "files": {
+    "bold/calendar-dots-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/calendar-dots-bold.svg",
+      "sha256": "d63b977af5aa66f2548ad99fb99610c5103fe8e6b1739669dd5761d3f3bc0ba6",
+      "added": "2026-10-09"
+    },
+    "bold/chat-circle-text-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/chat-circle-text-bold.svg",
+      "sha256": "259305b66c9ff6a57b4fb7290cc7ad0be20b379967518603847f43a42384ca4f",
+      "added": "2026-10-09"
+    },
     "bold/cursor-click-bold.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/cursor-click-bold.svg",
       "sha256": "beef2cc0770e39e4c39ba62f776d43148947780b8e1ea4dbe6161f9ac0f1e723",
@@ -13,10 +23,20 @@
       "sha256": "75f500a192705172ce51686fc8a9a2f62d22e91987419c3bd91448cec2760e38",
       "added": "2026-10-08"
     },
+    "bold/link-simple-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/link-simple-bold.svg",
+      "sha256": "6e657df99dd4f15c8ee7140cccfc1b0e154dc241a8b32f900f60449c5cd625df",
+      "added": "2026-10-09"
+    },
     "bold/magnifying-glass-bold.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/magnifying-glass-bold.svg",
       "sha256": "b73e393b20bff0aaee96b9e325d0276fe1ab5fc81b5080633a95827bd14ebae6",
       "added": "2026-10-08"
+    },
+    "bold/map-pin-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/map-pin-bold.svg",
+      "sha256": "07bb9883e9e324d0043309d8f7e41a1b2a8db80acb8371be8294edd9135f3b69",
+      "added": "2026-10-09"
     },
     "bold/microphone-bold.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/microphone-bold.svg",
@@ -52,6 +72,16 @@
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/storefront-bold.svg",
       "sha256": "c10db3f6f1cb38a8d8678f9e4e42dd9661a6053412595d50ccc8a057fa23561e",
       "added": "2026-10-08"
+    },
+    "bold/ticket-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/ticket-bold.svg",
+      "sha256": "469612c545944a60057f116be736f2717731e7c9c08647cc64d5199f697afedb",
+      "added": "2026-10-09"
+    },
+    "bold/users-three-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/users-three-bold.svg",
+      "sha256": "5246b7d9cc7e2011823f127b65278a3d9434bb0b008e9dedacd9f10ff33697c5",
+      "added": "2026-10-09"
     },
     "fill/sparkle-fill.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/fill/sparkle-fill.svg",
