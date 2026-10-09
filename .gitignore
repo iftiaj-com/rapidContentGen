@@ -51,6 +51,8 @@ inbox/*
 !inbox/prompt.template.md
 jobs/*/assets/
 videos/*/assets/
+# The original hand-built mop-star job: kept on disk as reference, not tracked
+videos/mop-star-trailer/
 # HyperFrames `beats` output
 jobs/*/beats/
 # Generated per job; regenerate with the tools
