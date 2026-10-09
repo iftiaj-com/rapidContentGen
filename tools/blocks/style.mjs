@@ -4,7 +4,7 @@
 // is a function that writes one HyperFrames sub-composition, the same way
 // rcg captions and rcg title do. The judgment for each pack (which metaphor for
 // which beat, layout modes, collisions) lives in its skill,
-// .claude/skills/style-<slug>/SKILL.md; this tool does the mechanical part.
+// .agents/skills/style-<slug>/SKILL.md; this tool does the mechanical part.
 //
 // Usage:
 //   node tools/blocks/style.mjs list

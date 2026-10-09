@@ -1,10 +1,10 @@
 {
-  "$comment": "Style pack: Quiet Editorial UI. Ported from github.com/audrey-560/quiet-editorial-ui (MIT) at ff0b65e; see docs/PROVENANCE.md. Changes from the reference: the display face is HyperFrames' bundled EB Garamond instead of licensed Georgia (user decision 2026-10-08), and no italic is bundled, so emphasis is a drawn ink underline, not italic. UI sizes are raised for phone viewing (labels 24 px, UI 30 px, body 34 px at 1080 wide). success-deep is used for text and filled pills (success falls under 3:1 as text). Workflow and judgment: .claude/skills/style-quiet-editorial/SKILL.md.",
+  "$comment": "Style pack: Quiet Editorial UI. Ported from github.com/audrey-560/quiet-editorial-ui (MIT) at ff0b65e; see docs/PROVENANCE.md. Changes from the reference: the display face is HyperFrames' bundled EB Garamond instead of licensed Georgia (user decision 2026-10-08), and no italic is bundled, so emphasis is a drawn ink underline, not italic. UI sizes are raised for phone viewing (labels 24 px, UI 30 px, body 34 px at 1080 wide). success-deep is used for text and filled pills (success falls under 3:1 as text). Workflow and judgment: .agents/skills/style-quiet-editorial/SKILL.md.",
   "label": "Quiet Editorial UI",
   "use": "Calm editorial frames: a large serif line, precise Inter labels, warm near-white surfaces, hairlines, cards, a cursor that selects, one green completed state. Product, SaaS, tutorials, thought leadership.",
   "keywords": ["editorial", "quiet", "minimal", "clean", "calm", "serif", "premium", "software", "ui", "product", "saas", "elegant", "refined"],
   "from": "github.com/audrey-560/quiet-editorial-ui @ ff0b65e (MIT), ported",
-  "skill": ".claude/skills/style-quiet-editorial/SKILL.md",
+  "skill": ".agents/skills/style-quiet-editorial/SKILL.md",
   "components": "components.mjs",
   "tokens": {
     "canvas": "#f7f7f6",

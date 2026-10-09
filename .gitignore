@@ -71,6 +71,41 @@ jobs/*/data/*.audio.json
 #   raw tool output dumps
 jobs/*/data/*-say.json
 
+# HyperFrames' own skills: each machine installs them for its agent (SETUP.md), for example
+# `npx skills add heygen-com/hyperframes` for Antigravity. Never committed, never mirrored.
+.agents/skills/hyperframes/
+.agents/skills/hyperframes-*/
+.agents/skills/gsap-*/
+.agents/skills/embedded-captions/
+.agents/skills/faceless-explainer/
+.agents/skills/figma/
+.agents/skills/general-video/
+.agents/skills/media-use/
+.agents/skills/motion-graphics/
+.agents/skills/music-to-video/
+.agents/skills/pr-to-video/
+.agents/skills/product-launch-video/
+.agents/skills/remotion-to-hyperframes/
+.agents/skills/slideshow/
+.agents/skills/talking-head-recut/
+skills-lock.json
+# ...and the links `npx skills add` makes to them in .claude/skills/ (absolute paths on one machine).
+.claude/skills/hyperframes
+.claude/skills/hyperframes-*
+.claude/skills/gsap-*
+.claude/skills/embedded-captions
+.claude/skills/faceless-explainer
+.claude/skills/figma
+.claude/skills/general-video
+.claude/skills/media-use
+.claude/skills/motion-graphics
+.claude/skills/music-to-video
+.claude/skills/pr-to-video
+.claude/skills/product-launch-video
+.claude/skills/remotion-to-hyperframes
+.claude/skills/slideshow
+.claude/skills/talking-head-recut
+
 # Logs, partial downloads, temp files
 *.log
 npm-debug.log*

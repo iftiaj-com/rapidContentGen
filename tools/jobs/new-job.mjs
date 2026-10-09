@@ -98,7 +98,7 @@ export async function newJob({ name, template, videos = [], audios = [], images 
   mkdirSync(join(dir, 'assets'), { recursive: true });
   mkdirSync(join(dir, 'data'), { recursive: true });
 
-  const hfVersion = cfg.hyperframes.pluginRoot ? basename(cfg.hyperframes.pluginRoot) : 'latest';
+  const hfVersion = cfg.hyperframes.cliVersion;
   writeFileSync(join(dir, 'meta.json'), JSON.stringify({ id, name: id, createdAt: new Date().toISOString() }, null, 2) + '\n');
   writeFileSync(join(dir, 'package.json'), JSON.stringify({
     name: id,

@@ -1,5 +1,5 @@
 // rcg marketing-pro: promo talking-head edits from ordinary footage (style pack marketing-pro,
-// skill .claude/skills/style-marketing-pro). The camera rules are measured from the user's
+// skill .agents/skills/style-marketing-pro). The camera rules are measured from the user's
 // reference ad (Video-2306): eased 0.27 s zooms on clause starts 1.4-3.2 s apart alternating
 // 1.3 / 1.0, hard punches to 1.6 on strong sentence starts, constant drift between events, the face
 // at x 0.5 y 0.37; one hero keyword per sentence by meaning; a two-tier body caption.

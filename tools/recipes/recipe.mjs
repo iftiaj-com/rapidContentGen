@@ -81,7 +81,7 @@ export async function plan(opts) {
   const offset = Number(opts.offset || 0);
   const beatsFile = opts.beats || 'data/audiomap.json';
   if (style.needs.music && !music) throw new Error('This recipe needs music: limit it first (rcg limit) or pass --music.');
-  if (!existsSync(join(jobDir, beatsFile))) throw new Error(`Beat grid not found: ${beatsFile}. Run analyze-beatgrid.py (docs/capabilities.md).`);
+  if (!existsSync(join(jobDir, beatsFile))) throw new Error(`Beat grid not found: ${beatsFile}. Run: node tools/rcg.mjs beatgrid <music> -o <job>/${beatsFile}`);
   const am = readJson(join(jobDir, beatsFile));
   const grid = am.grid || am;
   const downbeats = grid.downbeats_sec.map((t) => t - offset).filter((t) => t > 0.05);

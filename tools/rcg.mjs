@@ -15,6 +15,8 @@ const COMMANDS = {
   'doctor': ['tools/jobs/doctor.mjs', 'Check config, ffmpeg, HyperFrames plugin, Python and the voice venv'],
   'new-job': ['tools/jobs/new-job.mjs', 'Create jobs/<date>-<name>/ from a template with intake probe + sheets'],
   'beat-sheet': ['tools/jobs/beat-sheet.mjs', 'validate | md: check a beat-sheet.json and write the approval table'],
+  'skills': ['tools/skills/sync.mjs', 'Copy the project skills from .agents/skills (edit here) to .claude/skills (Claude Code); check = report differences'],
+  'beatgrid': ['tools/audio/hyperframes/analyze-beatgrid.py', 'Music -> audiomap.json: tempo, beats, downbeats, drum hits, energy phases (HyperFrames script, voice venv)'],
   'voice': ['tools/voice/voice_cli.py', 'Voiceover (Kokoro, 54 voices) + 33 voice effects + word timings -> audio_meta.json (Python venv)'],
   'probe': ['tools/media/probe.mjs', 'Media summary + loudness/true peak + intake notes (JSON)'],
   'sheet': ['tools/media/contact-sheet.mjs', 'Labeled contact sheet, --safe draws the 9:16 no-text zones'],

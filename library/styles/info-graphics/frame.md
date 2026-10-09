@@ -10,7 +10,7 @@ principle: one idea per sentence · one orange word · every visual lands on a s
 Written by `rcg style apply --style info-graphics`. A voice-led video essay look, learned from a
 reference Short (technique only, nothing copied): the voice carries the argument, and a new
 visual metaphor arrives with each sentence. Workflow and judgment:
-`.claude/skills/skill-info-graphics/SKILL.md`.
+`.agents/skills/skill-info-graphics/SKILL.md`.
 
 ## Tokens
 

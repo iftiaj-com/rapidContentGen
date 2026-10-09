@@ -1,4 +1,4 @@
-// Workspace health check: config, binaries, HyperFrames plugin, Python, voice
+// Workspace health check: config, binaries, HyperFrames CLI, Python, voice
 // venv, Kokoro weights, provenance. Read-only.
 //
 // Usage: node tools/jobs/doctor.mjs
@@ -10,6 +10,8 @@ import { isMain } from '../lib/cli.mjs';
 import { loadConfig } from '../lib/config.mjs';
 import { checkLedger } from '../lib/provenance.mjs';
 import { findChrome } from '../fx/chrome.mjs';
+import { hfCommand } from './hf.mjs';
+import { checkSkills } from '../skills/sync.mjs';
 
 function version(bin, args = ['-version']) {
   try {
@@ -45,7 +47,10 @@ export function doctor() {
   add('ffmpeg', Boolean(ff), ff || `not found (${cfg.bin.ffmpeg})`);
   const fp = version(cfg.bin.ffprobe);
   add('ffprobe', Boolean(fp), fp || `not found (${cfg.bin.ffprobe})`);
-  add('hyperframes plugin', Boolean(cfg.hyperframes.launcherPath && existsSync(cfg.hyperframes.launcherPath)), cfg.hyperframes.pluginRoot || 'not found');
+  const hfRun = hfCommand();
+  add('hyperframes CLI', Boolean(hfRun), hfRun
+    ? `${hfRun.via}${cfg.hyperframes.runner === 'npx' ? ' (no Claude Code plugin needed; downloads once on first run)' : ''}`
+    : 'no plugin launcher and no npx next to node: install Node.js with npm (SETUP.md)');
   const hfFf = cfg.bin.hfFfmpeg || cfg.bin.ffmpeg;
   const tail = gbrpTailOk(hfFf);
   add('ffmpeg for HyperFrames (edge test)', tail === true,
@@ -75,6 +80,9 @@ export function doctor() {
     !fxBrowser ? 'no Chrome found: set bin.fxChrome in config/workspace.local.json'
       : fxBrowser.kind === 'headless-shell' ? `${fxBrowser.path} (no WebGPU: heat-haze and blow-pixels need an installed Chrome)` : fxBrowser.path, true);
   for (const [key, p] of Object.entries(cfg.sources || {})) add(`source: ${key}`, existsSync(p), p, true);
+  const sk = checkSkills();
+  add('skills copy for Claude Code', sk.problems.length === 0,
+    sk.problems.length ? `${sk.problems.length} difference(s) between .agents/skills and .claude/skills: run rcg skills sync` : `${sk.skills.length} skills in .agents/skills, copied to .claude/skills`, true);
   const prov = checkLedger();
   add('provenance ledger', prov.problems.length === 0, `${prov.entries} entries, ${prov.problems.length} problems, ${prov.drift.length} source drift`);
   if (prov.notInstalled.length) {

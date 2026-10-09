@@ -6,11 +6,11 @@ videos (Vox-style parallax, a promo talking-head ad, an info-graphics video essa
 
 | Pack | Skill | Look | Regression |
 |---|---|---|---|
-| `tactile-collage` | `.claude/skills/style-tactile-collage` | paper, ink edges, tape, stamps, routes, checklists, marker emphasis | R9a |
-| `quiet-editorial` | `.claude/skills/style-quiet-editorial` | serif headline, Inter labels, warm canvas, cards, cursor selection, one green state | R9b |
-| `marketing-pro` | `.claude/skills/style-marketing-pro` | promo talking-head: a planner (`rcg marketing-pro`) turns speech into a moving camera (1.3 base / 1.0 wide / 1.6 punch, drift), hero keywords behind the head styled by meaning, two-tier captions | R11 |
-| `info-graphics` | `.claude/skills/skill-info-graphics` | voice-led video essay: a new visual each sentence on dark, cream or grey grounds; type stacks with one orange word, equations, stairs, pyramids, posts, prompt bars with a cursor, orbits, counters, Phosphor icons, photo plates, collages; word-anchored timing (`rcg infographics`); one-word chip captions | R13 |
-| `vox-parallax` | `.claude/skills/style-vox-parallax` | photos cut into depth layers (`rcg layers`) on a virtual multiplane camera; depth blur, haze, grain, 12 fps steps, orange highlighter labels, serif titles, photo cards, archival plates | R10 |
+| `tactile-collage` | `.agents/skills/style-tactile-collage` | paper, ink edges, tape, stamps, routes, checklists, marker emphasis | R9a |
+| `quiet-editorial` | `.agents/skills/style-quiet-editorial` | serif headline, Inter labels, warm canvas, cards, cursor selection, one green state | R9b |
+| `marketing-pro` | `.agents/skills/style-marketing-pro` | promo talking-head: a planner (`rcg marketing-pro`) turns speech into a moving camera (1.3 base / 1.0 wide / 1.6 punch, drift), hero keywords behind the head styled by meaning, two-tier captions | R11 |
+| `info-graphics` | `.agents/skills/skill-info-graphics` | voice-led video essay: a new visual each sentence on dark, cream or grey grounds; type stacks with one orange word, equations, stairs, pyramids, posts, prompt bars with a cursor, orbits, counters, Phosphor icons, photo plates, collages; word-anchored timing (`rcg infographics`); one-word chip captions | R13 |
+| `vox-parallax` | `.agents/skills/style-vox-parallax` | photos cut into depth layers (`rcg layers`) on a virtual multiplane camera; depth blur, haze, grain, 12 fps steps, orange highlighter labels, serif titles, photo cards, archival plates | R10 |
 
 ## How a pack is built
 
@@ -19,8 +19,8 @@ a `frame.md` design spec, caption and safe-zone components, fonts and scripts):
 
 | Reference skill part | Here |
 |---|---|
-| `SKILL.md` (workflow, boundaries) | `.claude/skills/style-<slug>/SKILL.md`, used inside the `video-job` workflow |
-| `references/*.md` (style system, scene grammar, layout, motion, captions) | `.claude/skills/style-<slug>/references/` |
+| `SKILL.md` (workflow, boundaries) | `.agents/skills/style-<slug>/SKILL.md`, used inside the `video-job` workflow |
+| `references/*.md` (style system, scene grammar, layout, motion, captions) | `.agents/skills/style-<slug>/references/` |
 | `assets/frame.md` (design spec copied into the project) | `library/styles/<slug>/frame.md`, written by `rcg style apply` |
 | tokens in `frame.md` | `library/styles/<slug>/style.json` `tokens` (CSS custom properties) |
 | caption component | a preset in `library/caption-styles.json`, used by `rcg captions --style <name>` |

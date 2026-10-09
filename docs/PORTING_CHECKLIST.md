@@ -113,7 +113,7 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | ☐ | Item | Target |
 |---|---|---|
 | ☑ | Vertical template: letterbox, safe-zone text cards, cold/warm grades, audio lanes | `templates/vertical-1080x1920/` (from `videos/mop-star-trailer/index.html`) |
-| ☑ | Known pitfalls: lane overrides `data-volume`; the riser's real peak is at 3.04 s; limit music to −1 dBTP first; fail the job on "Audio lowered by"; check the mix offline before rendering; footage below 1x speed stutters (freeze frame or `minterpolate`); PowerShell BOM (write JSON from Node); Windows paths, never `/tmp`; ffmpeg `fontfile` | `CLAUDE.md` + `.claude/skills/video-job/references/lessons.md` |
+| ☑ | Known pitfalls: lane overrides `data-volume`; the riser's real peak is at 3.04 s; limit music to −1 dBTP first; fail the job on "Audio lowered by"; check the mix offline before rendering; footage below 1x speed stutters (freeze frame or `minterpolate`); PowerShell BOM (write JSON from Node); Windows paths, never `/tmp`; ffmpeg `fontfile` | `CLAUDE.md` + `.agents/skills/video-job/references/lessons.md` |
 
 ---
 

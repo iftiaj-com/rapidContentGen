@@ -1,7 +1,7 @@
 // rcg assets: the approved free asset sources, one tool, every file credited.
 //
 // Approved by the user on 2026-10-08 (licences read that day, see
-// .claude/skills/skill-info-graphics/references/assets.md):
+// .agents/skills/skill-info-graphics/references/assets.md):
 //   phosphor   icons, MIT. The only source kept in the repo: library/icons/phosphor/,
 //              one SVG at a time, with LICENSE and manifest.json (url + sha256).
 //   unsplash   photos and illustrations, Unsplash License. Search with the Unsplash

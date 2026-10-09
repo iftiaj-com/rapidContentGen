@@ -1,10 +1,10 @@
 {
-  "$comment": "Style pack: Vox-style 2.5D parallax (multiplane). Learned from the user's reference Short 'How Vox makes images look like videos' (YouTube Shorts KkckBGX6Yho, read for technique only, nothing copied) and the user's brief. Colours were sampled from that video's frames. Vox's own wordmark and fonts are not used. Workflow and judgment: .claude/skills/style-vox-parallax/SKILL.md.",
+  "$comment": "Style pack: Vox-style 2.5D parallax (multiplane). Learned from the user's reference Short 'How Vox makes images look like videos' (YouTube Shorts KkckBGX6Yho, read for technique only, nothing copied) and the user's brief. Colours were sampled from that video's frames. Vox's own wordmark and fonts are not used. Workflow and judgment: .agents/skills/style-vox-parallax/SKILL.md.",
   "label": "Vox Parallax",
   "use": "Turns still photos into moving, 3D-feeling documentary shots: depth layers on a multiplane camera, depth blur, haze, grain, stepped 12 fps motion, orange highlighter labels, serif titles, photo cards and archival plates. Explainers, history, documentary, essays.",
   "keywords": ["vox", "parallax", "2.5d", "multiplane", "documentary", "explainer", "archival", "photo animation", "ken burns", "editorial", "history", "essay"],
   "from": "user reference video (technique only) + user brief, 2026-10-08",
-  "skill": ".claude/skills/style-vox-parallax/SKILL.md",
+  "skill": ".agents/skills/style-vox-parallax/SKILL.md",
   "components": "components.mjs",
   "tokens": {
     "orange": "#f0500d",
