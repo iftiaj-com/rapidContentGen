@@ -108,8 +108,8 @@ optional downloads are listed with sizes in `SETUP.md`.
 |---|---|
 | `video-job` | Every editing request. The others run inside it |
 | `style-marketing-pro` | Promo, ad, personal-brand, UGC or testimonial edits of one talking clip |
-| `skill-split-screen-edit` | A presenter clip plus an informative clip as a 9:16 split screen |
-| `skill-info-graphics` | Voice-led info-graphics, explainers, faceless or topic-only videos |
+| `style-split-screen-edit` | A presenter clip plus an informative clip as a 9:16 split screen |
+| `style-info-graphics` | Voice-led info-graphics, explainers, faceless or topic-only videos |
 | `style-tactile-collage` | Paper collage, scrapbook, zine, handmade look |
 | `style-quiet-editorial` | Quiet, minimal, premium, editorial or product-UI look |
 | `style-vox-parallax` | Vox-style 2.5D parallax from still photos |

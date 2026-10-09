@@ -1,5 +1,5 @@
 // rcg split-screen: split-screen explainers from two videos, a presenter and an informative video
-// (skill .agents/skills/skill-split-screen-edit). Learned from the user's reference Video-94146
+// (skill .agents/skills/style-split-screen-edit). Learned from the user's reference Video-94146
 // (measured, nothing copied): B-roll in a top panel that fades to black, the presenter in a bottom
 // panel, small captions on the dark seam, and timed switches to a full-frame presenter (a-full,
 // two-tier title, the marketing-pro face camera), full-frame B-roll (b-full: cover, fit over a

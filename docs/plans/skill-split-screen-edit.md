@@ -1,6 +1,6 @@
-# Plan: `skill-split-screen-edit`
+# Plan: `style-split-screen-edit`
 
-Status: built 2026-10-08 (skill `.agents/skills/skill-split-screen-edit`, regression R12). Written
+Status: built 2026-10-08 (skill `.agents/skills/style-split-screen-edit`, regression R12). Written
 the same day from the two reference videos `Video-94146.mp4` (split-screen explainer) and
 `Video-2306.mp4` (single-presenter promo).
 
@@ -323,7 +323,7 @@ limited to -2.5 dBTP and ducked to about 0.3 under speech; `whoosh-short` under 
 ## 9. Skill files
 
 ```
-.agents/skills/skill-split-screen-edit/
+.agents/skills/style-split-screen-edit/
   SKILL.md                         fast path, commands, boundaries, known gaps
   references/
     layout-geometry.md             the 1080x1920 numbers and how they were measured

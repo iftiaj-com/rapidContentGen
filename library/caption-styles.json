@@ -117,7 +117,7 @@
       "emphasis": { "font": "EB Garamond", "weight": 400, "letterSpacing": "-0.02em" }
     },
     "split-seam": {
-      "$note": "skill-split-screen-edit: the small caption on the seam between the B-roll panel and the presenter panel (reference Video-94146, measured: about 26 px on 720 wide, centred near 64% of the height). 1-3 words, white, soft shadow; the seam is kept dark by the fade and shade, so no box.",
+      "$note": "style-split-screen-edit: the small caption on the seam between the B-roll panel and the presenter panel (reference Video-94146, measured: about 26 px on 720 wide, centred near 64% of the height). 1-3 words, white, soft shadow; the seam is kept dark by the fade and shade, so no box.",
       "font": "Inter", "weight": 600, "uppercase": false,
       "color": "#ffffff", "stroke": null, "pill": null,
       "textShadow": "0 2px 10px rgba(0,0,0,0.7), 0 1px 2px rgba(0,0,0,0.6)",
@@ -126,7 +126,7 @@
       "sizes": { "word": 48, "2word": 44, "phrase": 40 }
     },
     "split-pill": {
-      "$note": "skill-split-screen-edit: the seam caption over full-frame B-roll and white cards, on a dark rounded pill (the reference switches to the pill over light backgrounds).",
+      "$note": "style-split-screen-edit: the seam caption over full-frame B-roll and white cards, on a dark rounded pill (the reference switches to the pill over light backgrounds).",
       "font": "Inter", "weight": 600, "uppercase": false,
       "color": "#ffffff", "stroke": null,
       "pill": { "bg": "rgba(22,22,22,0.86)", "radius": 10 },

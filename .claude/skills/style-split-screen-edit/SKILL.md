@@ -1,5 +1,5 @@
 ---
-name: skill-split-screen-edit
+name: style-split-screen-edit
 description: Turn two videos, a presenter (talking head) and an informative video (screen recording, product demo, stock or explainer footage), into a 9:16 split-screen explainer in rapidContentGen - B-roll in a top panel that fades to black, the presenter in a bottom panel with a face-safe static crop (MediaPipe), small captions on the dark seam, and timed switches to a full-frame presenter (two-tier title, face camera), full-frame B-roll (cover, fit, white band card) and back. Use when the user asks for split screen, top and bottom, presenter plus B-roll, "two videos", picture over talking head, news or tech explainer style, or drops a presenter clip with an info clip. Runs inside the video-job workflow.
 ---
 

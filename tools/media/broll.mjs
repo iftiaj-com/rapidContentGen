@@ -1,4 +1,4 @@
-// rcg broll: analyse the informative video(s) of a split-screen job (skill-split-screen-edit).
+// rcg broll: analyse the informative video(s) of a split-screen job (style-split-screen-edit).
 //
 // For each clip: scene cuts (ffmpeg scene score), then per shot the mean brightness, motion
 // (mean frame difference), an edge-density "text or UI" score and a focus point (the centroid of
