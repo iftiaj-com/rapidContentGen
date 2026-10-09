@@ -106,7 +106,7 @@ node tools/rcg.mjs provenance check
   `runtime/`, `blocks/`, `shaders/` (filled phase by phase), `adits-fx/` (Adits effects and
   environments, copied unmodified) and `fx/` (the `rcg fx` harness and effect registry).
 - `templates/`: HyperFrames project templates (`vertical-1080x1920`).
-- `jobs/<date>-<slug>/`: one HyperFrames project per job, with `JOB.md`, `beat-sheet.*`,
+- `jobs/<date>-<slug>/`: one HyperFrames project per job (git-ignored: jobs stay on each user's machine), with `JOB.md`, `beat-sheet.*`,
   `data/`, `renders/`, `report.md`.
 - `inbox/`: where the user drops media + `prompt.md`.
 - `regression/`: regression job specs per phase.

@@ -1,6 +1,0 @@
-[
-  { "id": "vo1", "text": "One prompt.", "voice": "af_heart", "speed": 1.05 },
-  { "id": "vo2", "text": "Opus 5.5 wrote the script, picked the voice, found the footage, built every frame, and timed every sound.", "voice": "af_heart", "speed": 1.22 },
-  { "id": "vo3", "text": "No human editor.", "voice": "af_heart", "speed": 1.08 },
-  { "id": "vo4", "text": "Just this.", "voice": "af_heart", "speed": 1.0 }
-]
