@@ -1,7 +1,9 @@
 // Measure every SFX file: real duration, onset, loudest moment, loudness and true
 // peak. Writes library/sfx/manifest.json. HyperFrames' own manifest text can be
 // wrong (riser.mp3 says it peaks at the end; it peaks at 3.04 s), so jobs place
-// sounds from these measurements, never from descriptions.
+// sounds from these measurements, never from descriptions. Only the bundled
+// HyperFrames set (listed in manifest.hyperframes.json) is Pixabay; any other
+// file, such as the music beds, gets an empty licence until it is recorded.
 //
 // Usage: node tools/audio/measure-sfx.mjs
 
@@ -59,7 +61,7 @@ export async function measureSfx(dir = join(ROOT, 'library', 'sfx')) {
       integratedLufs: lv.integratedLufs,
       truePeakDb: lv.truePeakDb,
       description: hf[id]?.description || '',
-      license: 'Pixabay Content License (see CREDITS.md)',
+      license: hf[id] ? 'Pixabay Content License (see CREDITS.md)' : '',
     };
   }
   writeFileSync(join(dir, 'manifest.json'), JSON.stringify(out, null, 2) + '\n');
