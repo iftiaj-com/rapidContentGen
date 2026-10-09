@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "title": "Marketing Pro: 2026-10-09-r15-mp-reference-looks",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration": 17.86
+  },
+  "summary": "Promo reframe of assets/WhatsApp_Video_2026-10-08_at_19.27.12.mp4: 5 camera events, 3 hero keywords, mp-body captions.",
+  "beats": [
+    {
+      "start": 0,
+      "end": 7.58,
+      "words": "Hi, this is a V and this is what you get to work with me",
+      "onScreen": "Camera: zoom 1.5x @3.9, zoom 1x @5.34, zoom 1.4x @7.58. Hero \"work\" (fill, light text, in front).",
+      "text": [
+        {
+          "content": "work",
+          "position": "custom",
+          "at": 5.71,
+          "box": {
+            "x": 167,
+            "y": 192,
+            "w": 720,
+            "h": 280
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 7.58,
+      "end": 9.98,
+      "words": "and I am a software engineer,",
+      "onScreen": "Camera: drift. Hero \"engineer\" (fill, dark text, behind the head).",
+      "text": [
+        {
+          "content": "engineer",
+          "position": "custom",
+          "at": 8.75,
+          "box": {
+            "x": 180,
+            "y": 192,
+            "w": 720,
+            "h": 280
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 9.98,
+      "end": 12.78,
+      "words": "so I can do whatever I want and I have really this system",
+      "onScreen": "Camera: punch 1.6x @10.03, zoom 1.3x @12.78. Hero \"system\" (fill, dark text, behind the head).",
+      "text": [
+        {
+          "content": "system",
+          "position": "custom",
+          "at": 11.65,
+          "box": {
+            "x": 180,
+            "y": 192,
+            "w": 720,
+            "h": 280
+          }
+        }
+      ],
+      "sound": "voice"
+    },
+    {
+      "start": 12.78,
+      "end": 17.86,
+      "words": "to use this system.",
+      "onScreen": "Camera: drift. No hero (weak beat).",
+      "text": [],
+      "sound": "voice"
+    }
+  ],
+  "notes": [
+    "Words from data/words.json (correct them before building).",
+    "Upscale at wide / base / punch: 2.26x / 2.94x / 3.62x.",
+    "Punch zoom is 3.62x the source resolution (soft). Lower it per job with --max-punch (e.g. 1.45 -> 3.28x).",
+    "Hero \"work\" would hide 57% behind the head; it goes in front."
+  ]
+}

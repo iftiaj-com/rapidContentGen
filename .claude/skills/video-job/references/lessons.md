@@ -276,10 +276,20 @@ Each entry cost real time on a past job. Read before building.
      keeps the presenter panel to the on-camera ranges, `--drop` frames a close-up with little
      headroom, and `presenter.maskBelow` / `maskAfull` / `maskStyle: paper` cover burned-in captions
      (a blur left 90 px text readable). Map the source at 1 fps and with cut detection first.
+13bs. **Text in front of a PNP needs an explicit z-index.** The cut-out's follow wrapper has z 30,
+     and a host with no z-index paints under it whatever its DOM order. R15's front hero "WORK"
+     showed only a corner beside the head. marketing-pro build now gives front heroes `layer --z 40`.
+13bt. **Re-scaffolding keeps the head, and the head holds layer rules.** `prep --scaffold` rewrote
+     the body but kept `<style data-rcg="layers">` from an earlier build, so a hero planned in front
+     kept its old z 20. The scaffold now strips that block. After any re-scaffold, grep the head.
+13bu. **background-clip: text must reach the leaf spans.** The text fitter wraps words in
+     `.ln > .w`, and hf check's text_not_painted reads each word. A fill set on the parent reaches
+     no word. Give `.ln` and `.w` `background: inherit` with `background-clip: text`, so a
+     background-position tween on the parent still drifts the fill.
 13bo. **A caption block may run past the root.** Captions hold 0.35 s after the last word plus 0.1 s;
      trim 0.5 s after the last word (lint `clip_ends_past_root_duration` at 0.35 s).
 
-## Global Visuals and Video Jockey (`rcg fx`, R15)
+## Global Visuals and Video Jockey (`rcg fx`, R16)
 
 13bs. **Adits' GPU post chain is broken on a BGRA canvas.** With BnW (or Negative) and Fisheye both on
      and the VJ deck off, `VideoEngine.beginPostChain()` runs both passes into rgba8unorm textures with

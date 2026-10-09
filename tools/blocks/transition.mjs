@@ -24,10 +24,17 @@
 //   light_leak (new, from the split-screen reference Video-94146): a warm screen-blended wash from
 //            0.6 D before the cut to 0.4 D after it, peak 0.9, hue drifting yellow -> pink -> orange;
 //            needs no --to (it covers the whole frame)
+//   mirror_whip (new, from the marketing reference Video-54041): centred on the cut, D/2 either side.
+//            The shot slides out (ease-in, (2u)^2) by 55% of the frame and the next slides in from the
+//            other side (ease-out); -webkit-box-reflect mirrors the frame into the gap the slide opens,
+//            and an SVG blur along the slide (sigma 40 px at 1920 high, peak mid-cut) smears it.
+//            --dir up|down|left|right (default up). The shot and its PNP followers move; text stays.
+//   zoom_blur (new, same reference): centred on the cut; scale up to 1.45 into the cut and back down
+//            out of it, blur up to 18 px and a little brightness at the cut.
 //
 // Usage:
 //   node tools/blocks/transition.mjs --job <dir> --at 4.0 --style zoom_punch|flash_bloom --to "#w2" [--from "#w1"]
-//        [--d 0.25] [--seed 1] [--id tx1]
+//        [--d 0.25] [--seed 1] [--id tx1] [--dir up|down|left|right]
 //   node tools/blocks/transition.mjs --job <dir> --remove <id>
 //   --to   the incoming shot wrapper (zoom, glitch, crossfade, bloom); --from the outgoing one (crossfade)
 //   --remove drops that block's markup and script, and unwraps any .rcg-tx wrapper no other block uses
@@ -38,7 +45,7 @@ import vm from 'node:vm';
 import { isMain, parseArgs } from '../lib/cli.mjs';
 import { elementSpan, rootAttrs } from './camera.mjs';
 
-export const STYLES = ['flash_white', 'flash_black', 'glitch_punch', 'zoom_punch', 'crossfade', 'flash_bloom', 'light_leak'];
+export const STYLES = ['flash_white', 'flash_black', 'glitch_punch', 'zoom_punch', 'crossfade', 'flash_bloom', 'light_leak', 'mirror_whip', 'zoom_blur'];
 const f3 = (n) => +Number(n).toFixed(3);
 const MAX_BANDS = 7;
 
@@ -197,6 +204,46 @@ export function applyTransition(opts) {
           var s = 1 + 0.18 * (1 - e), b = 10 * (1 - e) * (W / 1280);
           els.forEach(function (el) { el.style.transform = on ? "scale(" + s.toFixed(5) + ")" : ""; el.style.filter = on && b > 0.01 ? "blur(" + b.toFixed(2) + "px)" : ""; });
         }`;
+  } else if (style === 'mirror_whip') {
+    const dir = String(opts.dir || 'up');
+    const V = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }[dir];
+    if (!V) throw new Error('--dir must be up, down, left or right');
+    const layers = [toId, ...followers(html, `#${toId}`).map((p) => `${p}-wrap`)];
+    for (const l of layers) html = ensureInner(html, l);
+    insertTop(`
+      <svg id="${id}-defs" aria-hidden="true" width="0" height="0" style="position: absolute;"><filter id="${id}-mb" x="-0.1" y="-0.6" width="1.2" height="2.2"><feGaussianBlur id="${id}-mbg" stdDeviation="0 0" /></filter></svg>`);
+    // The side the slide uncovers: out of the cut it is behind the motion, into it ahead of it.
+    const side = { up: ['below', 'above'], down: ['above', 'below'], left: ['right', 'left'], right: ['left', 'right'] }[dir];
+    script = `        var els = ${JSON.stringify(layers.map((l) => `${l}-tx`))}.map(function (i) { return document.getElementById(i); });
+        var blur = document.getElementById(${JSON.stringify(`${id}-mbg`)});
+        var VX = ${V[0]}, VY = ${V[1]}, SIDE = ${JSON.stringify(side)}, URL = "url(#${id}-mb)";
+        function apply(t) {
+          var u = (t - (AT - D / 2)) / D, on = u >= 0 && u < 1;
+          if (!on) { els.forEach(function (el) { el.style.transform = ""; el.style.filter = ""; el.style.webkitBoxReflect = ""; }); blur.setAttribute("stdDeviation", "0 0"); return; }
+          var out = u < 0.5, v = out ? u / 0.5 : (u - 0.5) / 0.5;
+          var k = out ? v * v : -(1 - v) * (1 - v);
+          var dx = VX * 0.55 * W * k, dy = VY * 0.55 * H * k;
+          var sg = (40 * H / 1920 * Math.sin(Math.PI * u)).toFixed(2);
+          blur.setAttribute("stdDeviation", VY !== 0 ? "0 " + sg : sg + " 0");
+          els.forEach(function (el) {
+            el.style.transform = "translate(" + dx.toFixed(1) + "px, " + dy.toFixed(1) + "px)";
+            el.style.webkitBoxReflect = (out ? SIDE[0] : SIDE[1]) + " 0px";
+            el.style.filter = URL;
+          });
+        }`;
+  } else if (style === 'zoom_blur') {
+    const layers = [toId, ...followers(html, `#${toId}`).map((p) => `${p}-wrap`)];
+    for (const l of layers) html = ensureInner(html, l);
+    script = `        var els = ${JSON.stringify(layers.map((l) => `${l}-tx`))}.map(function (i) { return document.getElementById(i); });
+        function apply(t) {
+          var u = (t - (AT - D / 2)) / D, on = u >= 0 && u < 1;
+          var w = on ? Math.sin(Math.PI * u) : 0;
+          var s = 1 + 0.45 * w * w, b = 18 * w * (W / 1080);
+          els.forEach(function (el) {
+            el.style.transform = on ? "scale(" + s.toFixed(5) + ")" : "";
+            el.style.filter = on && b > 0.05 ? "blur(" + b.toFixed(2) + "px) brightness(" + (1 + 0.25 * w).toFixed(3) + ")" : "";
+          });
+        }`;
   } else if (style === 'glitch_punch') {
     const clip = clipAt(html, toId, at);
     const media = f3(clip.mediaStart + (at - clip.start));
@@ -281,7 +328,8 @@ if (isMain(import.meta.url)) {
     process.exit(0);
   }
   if (!a.job || a.at == null || !a.style) {
-    console.error(`Usage: transition.mjs --job <dir> --at <s> --style ${STYLES.join('|')} [--to "#w2"] [--from "#w1"] [--d 0.25] [--seed 1] [--id tx1]\n       transition.mjs --job <dir> --remove <id>`);
+    console.error(`Usage: transition.mjs --job <dir> --at <s> --style ${STYLES.join('|')} [--to "#w2"] [--from "#w1"] [--d 0.25] [--seed 1] [--id tx1] [--dir up|down|left|right]
+       transition.mjs --job <dir> --remove <id>`);
     process.exit(2);
   }
   const r = applyTransition(a);

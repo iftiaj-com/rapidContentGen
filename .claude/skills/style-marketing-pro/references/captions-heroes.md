@@ -26,6 +26,7 @@ words (1.5). A weak beat (< 1.5) gets no hero unless 4 s have passed; a word is 
 | opener, name | `serif-caps`: Playfair Display 700 caps, purple | word by word on the spoken times |
 | emotion, closing | `italic`: Playfair Display Italic, `*word*` bold italic in teal/purple, lead line above | words blur in |
 | anything else | `wide`: Montserrat 700 tracked caps, small lead line | horizontal spread in (scaleX; letter-spacing animation is refused by hf lint) |
+| any but negation, with `--fill-heroes` | `fill`: Montserrat 900 caps filled with `gradient` (purple-pink), `red` (scarcity words), `gold` or a job image (gold texture, pink texture, a photo for a name or place) | rises out of a blur; the fill drifts across the letters while the word holds |
 
 - **Window**: from the keyword's first word, about 2.6 s, ending when the next hero starts (at least
   1.2 s).
@@ -65,6 +66,26 @@ Negative heroes:
   the render.
 - **Never on the body caption:** it sits in front of the chest, and negative text goes behind
   the subject (user rule).
+
+## Keyword clusters (`--clusters`, reference Video-54041)
+
+- **Lead:** up to 3 words before the keyword (at most 24 characters), small, above it. It comes in
+  when the lead is spoken; the hero window now starts there.
+- **Keyword:** comes in on its own spoken time (`textAt`).
+- **Tail:** up to 3 words after the keyword, to the clause end (at most 22 characters, else one
+  word), small and bold below it, each part on its spoken time (`tailAt`).
+- **Split:** behind the head, a tail of 2 or more words splits left and right of it. The gap is 1.5
+  face widths, at most half the box.
+- **Body caption:** cluster words leave it, so nothing shows twice.
+- **Whips:** a whip never cuts a hero's main word to under 1 s.
+
+## Photo cards (`--cards "word:img"`)
+
+- **When:** the first time the word is spoken, for 2.4 s.
+- **Size:** a 340x420 rounded card that flips in from the side with a 3D tilt, floats, and flips out.
+- **Where:** beside the head, on the side with more room, below the hero band, behind the cut-out.
+- **Sound:** a soft whoosh (pack `sfx.card`).
+- **Photos:** only from the approved sources, after the user says yes; credits never on screen.
 
 ## Tags, logos, CTA
 

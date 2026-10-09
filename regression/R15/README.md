@@ -1,54 +1,63 @@
-# R15: Adits Global Visuals and four Video Jockey FX (regression, 2026-10-09)
+# R15: marketing-pro reference looks (Video-54041)
 
-`jobs/2026-10-08-r15-adits-vj-globals`, 15.0 s, mode (b). A labelled reel of everything ported from the
-Adits Global Visuals card and the Video Jockey deck (Depth Scan, Lights, Lightshow, Beat Wash), cut every
-1.25 s over the limited Paper Ring music (from R8). Footage: `101066-video-1080.mp4` (9:16, R6) and the
-user's `Video_for_testing.mp4` (16:9, R7) with its R7 cut-out `assets/matte/v1-fg.webm`.
+`jobs/2026-10-09-r15-mp-reference-looks`, 17.86 s, mode (b). It is a copy of the R11 job, re-prepped
+from the same WhatsApp source with room for a strip opener and closer. Reference analysis:
+`.claude/skills/style-marketing-pro/references/reference-video-54041.md`.
 
-Each `rcg fx` shot: `--duration 1.25 --audio assets/song-limited.wav --audio-offset <shot start> --sheet`,
-so the beat-driven looks hit on the music of the edit.
+## Assets (approved sources, downloaded with the user's OK, 2026-10-09)
 
-| Shot | Start | `rcg fx` effect / block | Clip, start (s) | Options |
-|---|---|---|---|---|
-| 1 | 0 | `global-visuals` + `rcg cinema cf1` | R6, 1 | `fxBnwMode=true`; cinema `--ud --pos 12 --curve 35 --show 0-1.25` |
-| 2 | 1.25 | `global-visuals` | R6, 2.5 | `fxFisheyeEnabled=true fxFisheyeIntensity=0.8` |
-| 3 | 2.5 | `global-visuals` | R6, 4 | `fxNegativeMode=true globalOpacityEnabled=true globalOpacitySlider=0.6` |
-| 4 | 3.75 | `global-visuals` | R6, 5 | `fxRgbColors=true` |
-| 5 | 5 | `global-visuals` + `rcg cinema cf2` | R6, 6.5 | `fxNeonMode=true`; cinema `--lr --lr-pos 7 --lr-color "#14001f" --show 5-6.25` |
-| 6 | 6.25 | `vj-scan --preset pulse_scan` | R6, 7.5 | |
-| 7 | 7.5 | `vj-scan --preset ghost_edges` | R6, 9 | `fxBnwMode=true` (BnW runs before the deck, as in Adits) |
-| 8 | 8.75 | `vj-scan --preset subject_reveal` | R7, 3 | `--subject assets/matte/v1-fg.webm --point "0:0.5,1;1.25:0.5,0.82"` |
-| 9 | 10 | `vj-lights --preset lit_cathedral` | R6, 10.5 | |
-| 10 | 11.25 | `vj-lightshow --preset ls_ignition` | R6, 0 | |
-| 11 | 12.5 | `vj-beatwash --preset red_alert` | R6, 2 | |
-| 12 | 13.75 | plain R7 clip (media start 6) + `rcg pnp p1` + `rcg cinema cf3` | | pnp `--show 13.75-15 --enter none --exit none`; cinema `--ud --pos 24 --curve -40 --show 13.75-15 --behind p1` (Midground) |
+- **Pixabay:** gold leaf 6969821, golden bokeh 6873009, pink-purple watercolour 413269, cherry
+  blossom 324175, vertical light-leak video 377045.
+- **Unsplash:** gold glitter SG59-rbcNRg (Katie Harp), rooftop-bar drink Hs_h11UX858 (Karol Chomka).
+- **Phosphor icons** (in the repo): chat-circle-text, link-simple, calendar-dots, map-pin, ticket,
+  users-three (not used in R15; kept for the comment CTA and event beats).
+- **Credits:** in the job's `data/credits.json` and `report.md` only.
+- **Test music:** `library/sfx/bg-music-daily-mail.mp3`, used only for this local test render. Its
+  licence is unconfirmed, so do not publish R15.
+- **Strip clips:** R15's own `main-prep.mp4` and `videos/Video_for_testing.mp4` (the user's test clip).
 
-1. `rcg new-job --name r15-adits-vj-globals --video <R6 clip> --video <R7 clip> --audio <limited song> --mode b`,
-   then copy R7's `assets/matte/v1-fg.webm` and `data/track-v1.json`.
-2. The 26-preset sweep: every preset of the four FX, 2 s at 540x960 over the music (R6 at 3 s, audio
-   offset 5; Subject Reveal on R7 with `--subject` and `--track data/track-v1.json --anchor hand`), each
-   with a sheet in `assets/fx/sweep/`. Read every sheet.
-3. The 11 shots above at 1080x1920 (13-23 s each), then `index.html` (R8's head and label cards, one
-   `.shot` per clip), `rcg pnp`, the three `rcg cinema` blocks.
-4. `rcg mix-check` (MIX OK, -14.7 LUFS, -2.5 dBTP), `rcg hf --cwd $J check` (passes; R8's two
-   track-density lint warnings, contrast 8/8), `rcg render $J --fps 24 --workers 3`.
+## Steps
 
-**Checks:**
-- All 26 presets render without a page error (Depth Scan 7, Lights 10, Lightshow 5, Beat Wash 4).
-- Formulas, on 3 frames each (540x960, `--keep-frames`): BnW = Rec.601 luma (0.299, 0.587, 0.114),
-  mean error 0.25/255, max 0.6; Negative = 255 - input exactly; Fisheye 0.8 = the WGSL mapping with
-  bilinear sampling, mean 0.2, max 0.7; Global Opacity 0.4 = 0.4 x input, max 0.4; BnW + Fisheye =
-  fisheye(round(luma)), max 1.6/255.
-- Adits' post chain (BnW + Fisheye with the deck off) first gave the input untouched: a WebGPU
-  validation error (lessons 13bs). The shim runs the two passes standalone; that is the result above.
-- RGB Colors: without `--audio` the output equals the input (Adits gates it on bass or treble > 0.05);
-  with the music the overlay steps red, blue, green, yellow every 100 ms (2-3 frames at 24 fps).
-- Determinism: `vj-lightshow ls_flash` (strobe, onset patterns, music) rendered twice: 36/36 frames
-  byte-identical.
-- Clock: `vj-scan pulse_scan` at 24 and 30 fps: identical at 0.5 s and 1.0 s, 45 dB at 1.25 s.
-- Gesture: Subject Reveal reads the hand from the stand-in vision results (handsCount 1, the scan
-  position follows the point height); the band lights the matted subject, not the wall.
-- Cinema bars in the render: shot 1 top bar ends at y 230 at the edges and 260 at the centre (path:
-  230.4 and 260.6), bottom bar 1689 / 1659; shot 5 pillarbox inner edges at x 76 and 1003 (75.6,
-  1004.4), colour #14001f read as (17, 0, 30); shot 12 bars at 460 at the edges, the subject in front.
-- The render passes all 11 verify checks: 1080x1920, 24 fps, 15.000 s, -14.9 LUFS, -2.2 dBTP.
+```
+rcg marketing-pro prep --job $J --src assets/WhatsApp_Video_2026-10-08_at_19.27.12.mp4 --trim --intro 3.8 --outro 1.8 --scaffold
+# R11's corrected words restored, shifted by +3.8 s (same trim, 2.02-14.28 s)
+rcg marketing-pro plan --job $J --bloom 0 --fill-heroes --fills gold=assets/img/unsplash-sg59-rbcnrg.jpg,pink=assets/img/pixabay-413269.jpg,photo=assets/img/pixabay-324175.jpg --clusters --cards "engineer:assets/img/unsplash-hs-h11ux858.jpg" --whips 2 --music assets/music/bed.mp3 --strips "assets/main-prep.mp4@5:0.5,assets/strip-b.mp4@2:0.42,assets/main-prep.mp4@9:0.5,assets/strip-b.mp4@8:0.42,assets/main-prep.mp4@13:0.5" --leak assets/video/pixabay-377045.mp4
+rcg marketing-pro build --job $J
+rcg render $J --fps 30 --workers 3
+```
+
+## Result
+
+- **Opener:** five strips 0-3.8 s, 0.53 s apart, then a mirror whip (up) at 3.8 s into the shot.
+- **Heroes:**
+  - "work": gradient fill, in front of the head, lead "you get to", tail "with me".
+  - "engineer": gold glitter fill, behind the head, lead "am a software"; the rooftop card beside
+    the head, behind the cut-out.
+  - "system": pink watercolour fill, lead "have really this".
+- **Closer:** five strips at 16.06 s, a light-leak flash, then they drop out to black.
+- **Sound:** music looped to 17.86 s and ducked under each sentence; whoosh and clicks.
+- **Checks:** hf check 0 errors. Render 1080x1920, 30 fps, 17.867 s, 11/11 verify, -14.5 LUFS,
+  -2.5 dBTP.
+- **R11 and R11b:** their plans build the same commands as before.
+
+## Found and fixed on the way
+
+- **A whip cut a hero.** Whips first went on punch events, and one landed mid-hero. They now go
+  only at sentence starts. The hero before ends 0.2 s ahead, and a whip that would leave a hero's
+  main word under 1 s on screen is skipped. On this 12 s talk only the opener whip remains; a left
+  whip at 7.63 s rendered correctly in an earlier build.
+- **"T is not defined":** the main-word offset was used in the generated script without being
+  declared there.
+- **The fill did not reach the words.** fit() wraps words in `.ln > .w` spans, and hf check's
+  text_not_painted reads each word. `.ln` and `.w` now inherit and clip the fill.
+- **A front hero sat behind the cut-out.** The PNP has z 30, and a front hero had no z-index
+  (R11's heroes were all behind, so it never showed). The build now gives front heroes z 40.
+- **Stale layer rules.** `prep --scaffold` keeps the page head, and with it an earlier build's
+  layer rules (`#hero1 { z-index: 20 }`). The scaffold now drops them.
+- **The test bed was 9.0 s against a 17.9 s edit.** The audio step now loops a short bed.
+
+## Open
+
+- Several speakers (a clip per sentence), a walking camera, and the "comment WORD" CTA.
+- The pastel watercolour fill reads pale on the light wall.
+- The card photo is a mechanics test, not matched to the words.

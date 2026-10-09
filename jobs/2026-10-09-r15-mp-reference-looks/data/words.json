@@ -1,0 +1,239 @@
+{
+  "audio": "E:\\Develop\\Antigravity_testing\\rapidContentGen\\jobs\\2026-10-09-r15-mp-reference-looks\\assets\\main-voice.wav",
+  "language": "en",
+  "words": [
+    {
+      "text": "Hi,",
+      "start": 4,
+      "end": 4.44,
+      "probability": 0.319
+    },
+    {
+      "text": "this",
+      "start": 4.62,
+      "end": 4.72,
+      "probability": 0.963
+    },
+    {
+      "text": "is",
+      "start": 4.72,
+      "end": 4.86,
+      "probability": 0.991
+    },
+    {
+      "text": "a",
+      "start": 4.86,
+      "end": 4.98,
+      "probability": 0.113
+    },
+    {
+      "text": "V",
+      "start": 4.98,
+      "end": 5.14,
+      "probability": 0.5
+    },
+    {
+      "text": "and",
+      "start": 5.14,
+      "end": 5.28,
+      "probability": 0.619
+    },
+    {
+      "text": "this",
+      "start": 5.28,
+      "end": 5.44,
+      "probability": 0.987
+    },
+    {
+      "text": "is",
+      "start": 5.44,
+      "end": 5.56,
+      "probability": 0.992
+    },
+    {
+      "text": "what",
+      "start": 5.56,
+      "end": 5.76,
+      "probability": 0.944
+    },
+    {
+      "text": "you",
+      "start": 5.76,
+      "end": 5.88,
+      "probability": 0.345
+    },
+    {
+      "text": "get",
+      "start": 5.88,
+      "end": 6.1,
+      "probability": 0.692
+    },
+    {
+      "text": "to",
+      "start": 6.1,
+      "end": 7,
+      "probability": 0.865
+    },
+    {
+      "text": "work",
+      "start": 7,
+      "end": 7.2,
+      "probability": 0.937
+    },
+    {
+      "text": "with",
+      "start": 7.2,
+      "end": 7.48,
+      "probability": 0.999
+    },
+    {
+      "text": "me",
+      "start": 7.48,
+      "end": 7.68,
+      "probability": 0.97
+    },
+    {
+      "text": "and",
+      "start": 7.68,
+      "end": 8.38,
+      "probability": 0.204
+    },
+    {
+      "text": "I",
+      "start": 8.38,
+      "end": 8.8,
+      "probability": 0.941
+    },
+    {
+      "text": "am",
+      "start": 8.8,
+      "end": 8.94,
+      "probability": 0.609
+    },
+    {
+      "text": "a",
+      "start": 8.94,
+      "end": 9.04,
+      "probability": 0.767
+    },
+    {
+      "text": "software",
+      "start": 9.04,
+      "end": 9.28,
+      "probability": 0.942
+    },
+    {
+      "text": "engineer,",
+      "start": 9.28,
+      "end": 9.62,
+      "probability": 0.994
+    },
+    {
+      "text": "so",
+      "start": 10.08,
+      "end": 10.2,
+      "probability": 0.848
+    },
+    {
+      "text": "I",
+      "start": 10.2,
+      "end": 10.28,
+      "probability": 0.677
+    },
+    {
+      "text": "can",
+      "start": 10.28,
+      "end": 10.4,
+      "probability": 0.8
+    },
+    {
+      "text": "do",
+      "start": 10.4,
+      "end": 10.58,
+      "probability": 0.994
+    },
+    {
+      "text": "whatever",
+      "start": 10.58,
+      "end": 10.84,
+      "probability": 0.991
+    },
+    {
+      "text": "I",
+      "start": 10.84,
+      "end": 11.06,
+      "probability": 0.982
+    },
+    {
+      "text": "want",
+      "start": 11.06,
+      "end": 11.26,
+      "probability": 0.998
+    },
+    {
+      "text": "and",
+      "start": 11.26,
+      "end": 11.5,
+      "probability": 0.663
+    },
+    {
+      "text": "I",
+      "start": 11.5,
+      "end": 11.7,
+      "probability": 0.976
+    },
+    {
+      "text": "have",
+      "start": 11.7,
+      "end": 12,
+      "probability": 0.913
+    },
+    {
+      "text": "really",
+      "start": 12,
+      "end": 12.32,
+      "probability": 0.441
+    },
+    {
+      "text": "this",
+      "start": 12.32,
+      "end": 12.56,
+      "probability": 0.162
+    },
+    {
+      "text": "system",
+      "start": 12.56,
+      "end": 12.88,
+      "probability": 0.996
+    },
+    {
+      "text": "to",
+      "start": 12.88,
+      "end": 13.66,
+      "probability": 0.655
+    },
+    {
+      "text": "use",
+      "start": 13.66,
+      "end": 13.92,
+      "probability": 0.14
+    },
+    {
+      "text": "this",
+      "start": 13.92,
+      "end": 14.7,
+      "probability": 0.895
+    },
+    {
+      "text": "system.",
+      "start": 14.7,
+      "end": 15.56,
+      "probability": 0.983
+    }
+  ],
+  "trimmedFrom": 2.02,
+  "padded": {
+    "intro": 3.8,
+    "outro": 1.8
+  }
+}

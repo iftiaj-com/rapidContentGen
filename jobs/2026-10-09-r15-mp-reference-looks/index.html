@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <!--
+      rapidContentGen vertical template (9:16, Reels / Shorts / TikTok).
+      Built from the mop-star-trailer job. Conventions:
+        - Text never enters the bottom 20% (y >= 1536) or the right 180 px (x >= 900):
+          that is where the app buttons and caption UI sit. The text safe box is
+          x 64..900 (width 836); the top 192 px is kept clear for the app header.
+        - Text cards are FLAT: the .clip element holds the spans directly
+          (no nested div), and GSAP animates the spans, never the .clip.
+        - Footage sits in an untimed .shot wrapper; camera moves animate the wrapper.
+        - Comments in this file never contain literal tags (a regex edit once
+          matched a tag inside a comment and commented out the footage).
+        - Audio: a data-automation volume lane gives ABSOLUTE levels and overrides
+          data-volume. Check the mix with `node tools/rcg.mjs mix-check index.html`
+          before rendering.
+      Replace JOB_DURATION, the shot list, cards and audio for each job.
+    -->
+    <style>
+      :root {
+        --safe-left: 64px;
+        --safe-width: 836px;
+        --band-top: 220px;
+        --band-height: 200px;
+        --ink: #f4efe4;
+        --font-display: "EB Garamond", Garamond, serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+        font-family: var(--font-display);
+      }
+      .shot {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+        transform-origin: 50% 40%;
+      }
+      .shot video,
+      .shot img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 1920px;
+        object-fit: cover;
+      }
+      .bar {
+        position: absolute;
+        left: 0;
+        width: 1080px;
+        background: #000;
+        z-index: 50;
+      }
+      #bar-top {
+        top: 0;
+        height: 192px;
+      }
+      #bar-bottom {
+        top: 1536px;
+        height: 384px;
+      }
+      .card {
+        position: absolute;
+        left: var(--safe-left);
+        width: var(--safe-width);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 60;
+      }
+      .card.center {
+        top: 660px;
+        height: 400px;
+      }
+      .card.top {
+        top: var(--band-top);
+        height: var(--band-height);
+      }
+      .txt {
+        text-align: center;
+        color: var(--ink);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        line-height: 1.08;
+        text-shadow:
+          0 2px 16px rgba(0, 0, 0, 0.85),
+          0 0 28px rgba(255, 236, 200, 0.28);
+      }
+      .txt span {
+        display: block;
+        width: var(--safe-width);
+      }
+      #t1.txt {
+        font-size: 96px;
+      }
+    </style>
+      <style data-rcg-style="marketing-pro">
+      @font-face {
+        font-family: "MP Playfair Italic";
+        src: url("assets/fonts/playfair-display-latin-400-italic.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "MP Playfair Italic Bold";
+        src: url("assets/fonts/playfair-display-latin-700-italic.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+      }
+      :root { --purple: #7f51b6; --teal: #3aa6bd; --neon-a: #ff7bf5; --neon-b: #9ef9ff; --neon-glow: #ff3fd8; --strike: #ed4940; --white: #ffffff; --ink: #111111; --pill: rgba(17,17,17,0.82); --ring: #f2c230; --grad-a: #b65cff; --grad-b: #ff7ad6; --alert: #ff2a1f; --gold-a: #f7d48a; --gold-b: #b8862f; }
+    </style>
+    <style data-rcg="layers">
+      #hero1 { z-index: 40; }
+      #hero2 { z-index: 20; }
+      #hero3 { z-index: 20; }
+      #cap-body { z-index: 40; }
+      #card1 { z-index: 20; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="17.86" data-width="1080" data-height="1920">
+      <!-- Shot: one untimed wrapper; rcg camera animates it (face cues from rcg marketing-pro plan). -->
+      <div id="w1" class="shot">
+        <div id="w1-tx" class="rcg-tx" style="position: absolute; inset: 0; transform-origin: 50% 50%;">
+        <video id="v1" class="clip" src="assets/main-prep.mp4" data-start="0" data-duration="17.86" data-media-start="0" data-track-index="0" muted playsinline></video>
+      </div>
+      </div>
+      <!-- rcg:pnp p1 begin (tools/blocks/pnp.mjs; regenerate instead of editing) -->
+      <div id="p1-follow" class="shot rcg-pnp-follow" data-rcg="pnp" style="z-index: 30; pointer-events: none; transform-origin: 50% 50%;">
+        <div id="p1-wrap" class="rcg-pnp" style="position: absolute; inset: 0; opacity: 0;">
+        <div id="p1-wrap-tx" class="rcg-tx" style="position: absolute; inset: 0; transform-origin: 50% 50%;">
+          <video id="p1" class="clip" src="assets/matte/main-fg.webm" data-start="0" data-duration="17.86" data-media-start="0" data-track-index="60" muted playsinline></video>
+        </div>
+      </div>
+      </div>
+      <!-- rcg:pnp p1 end -->
+      <!-- Voice: denoised and leveled by rcg marketing-pro prep. -->
+      <audio id="voice" src="assets/main-voice.wav" data-start="0" data-duration="17.86" data-track-index="22"></audio>
+      <div id="hero1" data-composition-id="hero1" data-composition-src="compositions/hero1.html" data-start="5.71" data-duration="2.67" data-track-index="20" data-width="1080" data-height="1920"></div>
+      <audio id="hero1-sfx" src="assets/sfx/whoosh-short.mp3" data-start="5.59" data-duration="0.57" data-volume="0.12" data-track-index="40"></audio>
+      <div id="hero2" data-layout-allow-occlusion data-composition-id="hero2" data-composition-src="compositions/hero2.html" data-start="8.75" data-duration="2.6" data-track-index="20" data-width="1080" data-height="1920"></div>
+      <audio id="hero2-sfx" src="assets/sfx/whoosh-short.mp3" data-start="8.63" data-duration="0.57" data-volume="0.12" data-track-index="40"></audio>
+      <div id="hero3" data-layout-allow-occlusion data-composition-id="hero3" data-composition-src="compositions/hero3.html" data-start="11.65" data-duration="2.6" data-track-index="20" data-width="1080" data-height="1920"></div>
+      <audio id="hero3-sfx" src="assets/sfx/whoosh-short.mp3" data-start="11.53" data-duration="0.57" data-volume="0.12" data-track-index="40"></audio>
+      <div id="card1" data-layout-allow-occlusion data-composition-id="card1" data-composition-src="compositions/card1.html" data-start="9.18" data-duration="2.4" data-track-index="20" data-width="1080" data-height="1920"></div>
+      <audio id="card1-sfx" src="assets/sfx/whoosh.mp3" data-start="9.11" data-duration="0.57" data-volume="0.14" data-track-index="41"></audio>
+      <div id="cap-body" data-composition-id="cap-body" data-composition-src="compositions/cap-body.html" data-start="0" data-duration="16.01" data-track-index="30" data-width="1080" data-height="1920"></div>
+      <!-- rcg:tx whip1 begin -->
+      <svg id="whip1-defs" aria-hidden="true" width="0" height="0" style="position: absolute;"><filter id="whip1-mb" x="-0.1" y="-0.6" width="1.2" height="2.2"><feGaussianBlur id="whip1-mbg" stdDeviation="0 0" /></filter></svg>
+      <!-- rcg:tx whip1 end -->
+      <!-- rcg:strips strips-open begin (open, 5 strips, tools/blocks/strips.mjs) -->
+      <div id="strips-open-bg" class="clip" data-start="0" data-duration="3.8" data-track-index="96" style="position: absolute; inset: 0; background: #000; z-index: 90;"></div>
+      <div id="strips-open-s0" style="position: absolute; left: 0px; top: 0; width: 216.5px; height: 1920px; overflow: hidden; z-index: 91; opacity: 0;">
+        <video id="strips-open-v0" class="clip" src="assets/main-prep.mp4" data-start="0" data-duration="3.8" data-media-start="5" data-track-index="100" muted playsinline style="position: absolute; left: -432px; top: 0; width: 1080px; height: 1920px; object-fit: cover;"></video>
+      </div>
+      <div id="strips-open-s1" style="position: absolute; left: 216px; top: 0; width: 216.5px; height: 1920px; overflow: hidden; z-index: 91; opacity: 0;">
+        <video id="strips-open-v1" class="clip" src="assets/strip-b.mp4" data-start="0.53" data-duration="3.27" data-media-start="2" data-track-index="101" muted playsinline style="position: absolute; left: -1325.6px; top: 0; width: 3413.3px; height: 1920px; object-fit: cover;"></video>
+      </div>
+      <div id="strips-open-s2" style="position: absolute; left: 432px; top: 0; width: 216.5px; height: 1920px; overflow: hidden; z-index: 91; opacity: 0;">
+        <video id="strips-open-v2" class="clip" src="assets/main-prep.mp4" data-start="1.06" data-duration="2.74" data-media-start="9" data-track-index="102" muted playsinline style="position: absolute; left: -432px; top: 0; width: 1080px; height: 1920px; object-fit: cover;"></video>
+      </div>
+      <div id="strips-open-s3" style="position: absolute; left: 648px; top: 0; width: 216.5px; height: 1920px; overflow: hidden; z-index: 91; opacity: 0;">
+        <video id="strips-open-v3" class="clip" src="assets/strip-b.mp4" data-start="1.59" data-duration="2.21" data-media-start="8" data-track-index="103" muted playsinline style="position: absolute; left: -1325.6px; top: 0; width: 3413.3px; height: 1920px; object-fit: cover;"></video>
+      </div>
+      <div id="strips-open-s4" style="position: absolute; left: 864px; top: 0; width: 216.5px; height: 1920px; overflow: hidden; z-index: 91; opacity: 0;">
+        <video id="strips-open-v4" class="clip" src="assets/main-prep.mp4" data-start="2.12" data-duration="1.68" data-media-start="13" data-track-index="104" muted playsinline style="position: absolute; left: -432px; top: 0; width: 1080px; height: 1920px; object-fit: cover;"></video>
+      </div>
+      <!-- rcg:strips strips-open end -->
+      <!-- rcg:strips strips-close begin (close, 5 strips, tools/blocks/strips.mjs) -->
+      <div id="strips-close-bg" class="clip" data-start="16.06" data-duration="1.8" data-track-index="96" style="position: absolute; inset: 0; background: #000; z-index: 90;"></div>
+      <div id="strips-close-s0" style="position: absolute; left: 0px; top: 0; width: 216.5px; height: 1920px; overflow: hidden; z-index: 91; opacity: 0;">
+        <video id="strips-close-v0" class="clip" src="assets/main-prep.mp4" data-start="16.06" data-duration="1.1" data-media-start="5" data-track-index="100" muted playsinline style="position: absolute; left: -432px; top: 0; width: 1080px; height: 1920px; object-fit: cover;"></video>
+      </div>
+      <div id="strips-close-s1" style="position: absolute; left: 216px; top: 0; width: 216.5px; height: 1920px; overflow: hidden; z-index: 91; opacity: 0;">
+        <video id="strips-close-v1" class="clip" src="assets/strip-b.mp4" data-start="16.14" data-duration="1.16" data-media-start="2" data-track-index="101" muted playsinline style="position: absolute; left: -1325.6px; top: 0; width: 3413.3px; height: 1920px; object-fit: cover;"></video>
+      </div>
+      <div id="strips-close-s2" style="position: absolute; left: 432px; top: 0; width: 216.5px; height: 1920px; overflow: hidden; z-index: 91; opacity: 0;">
+        <video id="strips-close-v2" class="clip" src="assets/main-prep.mp4" data-start="16.22" data-duration="1.22" data-media-start="9" data-track-index="102" muted playsinline style="position: absolute; left: -432px; top: 0; width: 1080px; height: 1920px; object-fit: cover;"></video>
+      </div>
+      <div id="strips-close-s3" style="position: absolute; left: 648px; top: 0; width: 216.5px; height: 1920px; overflow: hidden; z-index: 91; opacity: 0;">
+        <video id="strips-close-v3" class="clip" src="assets/strip-b.mp4" data-start="16.3" data-duration="1.28" data-media-start="8" data-track-index="103" muted playsinline style="position: absolute; left: -1325.6px; top: 0; width: 3413.3px; height: 1920px; object-fit: cover;"></video>
+      </div>
+      <div id="strips-close-s4" style="position: absolute; left: 864px; top: 0; width: 216.5px; height: 1920px; overflow: hidden; z-index: 91; opacity: 0;">
+        <video id="strips-close-v4" class="clip" src="assets/main-prep.mp4" data-start="16.38" data-duration="1.34" data-media-start="13" data-track-index="104" muted playsinline style="position: absolute; left: -432px; top: 0; width: 1080px; height: 1920px; object-fit: cover;"></video>
+      </div>
+      <div id="strips-close-leakw" style="position: absolute; inset: 0; z-index: 92; mix-blend-mode: screen; opacity: 0; pointer-events: none;">
+        <video id="strips-close-leak" class="clip" src="assets/video/pixabay-377045.mp4" data-start="16.33" data-duration="0.83" data-media-start="0" data-track-index="99" muted playsinline style="position: absolute; inset: 0; width: 1080px; height: 1920px; object-fit: cover;"></video>
+      </div>
+      <!-- rcg:strips strips-close end -->
+      <!-- rcg:mp-audio begin (music bed and sounds, tools/recipes/marketing-pro.mjs audio) -->
+      <audio id="music" src="assets/music-limited-loop.wav" data-start="0" data-duration="17.86" data-media-start="0" data-track-index="21" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.3,"v":0.5},{"t":3.85,"v":0.5},{"t":4,"v":0.175},{"t":7.53,"v":0.175},{"t":7.68,"v":0.175},{"t":8.13,"v":0.175},{"t":9.62,"v":0.175},{"t":9.93,"v":0.3989},{"t":10.07,"v":0.1967},{"t":10.08,"v":0.175},{"t":12.73,"v":0.175},{"t":12.88,"v":0.175},{"t":13.33,"v":0.175},{"t":15.56,"v":0.175},{"t":16.01,"v":0.5},{"t":17.06,"v":0.5},{"t":17.86,"v":0}]}]}'></audio>
+      <audio id="whip1-sfx" src="assets/sfx/whoosh-short.mp3" data-start="3.66" data-duration="0.57" data-volume="0.16" data-track-index="50"></audio>
+      <audio id="strip1-sfx" src="assets/sfx/click-soft.mp3" data-start="0" data-duration="0.37" data-volume="0.12" data-track-index="51"></audio>
+      <audio id="strip2-sfx" src="assets/sfx/click-soft.mp3" data-start="0.48" data-duration="0.37" data-volume="0.12" data-track-index="51"></audio>
+      <audio id="strip3-sfx" src="assets/sfx/click-soft.mp3" data-start="1.01" data-duration="0.37" data-volume="0.12" data-track-index="51"></audio>
+      <audio id="strip4-sfx" src="assets/sfx/click-soft.mp3" data-start="1.54" data-duration="0.37" data-volume="0.12" data-track-index="51"></audio>
+      <audio id="strip5-sfx" src="assets/sfx/click-soft.mp3" data-start="2.07" data-duration="0.37" data-volume="0.12" data-track-index="51"></audio>
+      <audio id="close-sfx" src="assets/sfx/whoosh-cinematic.mp3" data-start="13.87" data-duration="3.99" data-volume="0.16" data-track-index="50"></audio>
+      <!-- rcg:mp-audio end -->
+    </div>
+    <script src="lib/camera-moves.js" data-rcg="camera-runtime"></script>
+    <script src="lib/face-reframe.js" data-rcg="face-runtime"></script>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      // rcg:camera cam-w1 begin (generated by tools/blocks/camera.mjs; regenerate instead of editing)
+      (function () {
+        var el = document.querySelector("#w1");
+        var CUES = [];
+        var KICK = null;
+        var AUD = null;
+        var FPS = 24;
+        var DUR = 17.86;
+        var W = el.offsetWidth || 1080, H = el.offsetHeight || 1920;
+        el.style.transformOrigin = "50% 50%";
+        el.style.willChange = "transform, filter";
+        function frame(n, t) { return Math.max(0, Math.min(n - 1, Math.floor(t * FPS + 1e-6))); }
+        function kickAt(t) { return KICK ? KICK[frame(KICK.length, t)] : 0; }
+        function audioAt(t) {
+          if (!AUD) return null;
+          var f = frame(AUD.length, t), a = AUD[f], b = AUD[Math.max(0, f - 1)];
+          return { bass: a[0], mid: a[1], treble: a[2], prevBass: b[0] };
+        }
+        var FACE = {"cues":[{"at":0,"move":"face.zoom","d":0,"z":1,"x":0.5,"y":0.37,"k":1,"ease":"linear"},{"at":0.001,"move":"face.zoom","d":3.899,"z":1.06,"x":0.5,"y":0.37,"k":1,"ease":"linear"},{"at":3.9,"move":"face.zoom","d":0.27,"z":1.5,"x":0.5,"y":0.37,"k":1,"ease":"power2"},{"at":4.17,"move":"face.zoom","d":1.17,"z":1.571,"x":0.503,"y":0.379,"k":1,"ease":"linear"},{"at":5.34,"move":"face.zoom","d":0.27,"z":1,"x":0.5,"y":0.37,"k":1,"ease":"power2"},{"at":5.61,"move":"face.zoom","d":1.97,"z":1.056,"x":0.484,"y":0.379,"k":1,"ease":"linear"},{"at":7.58,"move":"face.zoom","d":0.27,"z":1.4,"x":0.5,"y":0.37,"k":1,"ease":"power2"},{"at":7.85,"move":"face.zoom","d":2.18,"z":1.468,"x":0.505,"y":0.381,"k":1,"ease":"linear"},{"at":10.03,"move":"face.punch","d":0,"z":1.6,"x":0.5,"y":0.37,"k":1,"ease":"power2"},{"at":10.03,"move":"face.zoom","d":2.75,"z":1.649,"x":0.515,"y":0.36,"k":1,"ease":"linear"},{"at":12.78,"move":"face.zoom","d":0.27,"z":1.3,"x":0.5,"y":0.37,"k":1,"ease":"power2"},{"at":13.05,"move":"face.zoom","d":4.81,"z":1.349,"x":0.482,"y":0.358,"k":1,"ease":"linear"}],"track":{"fps":30,"start":0,"ax":[0.1766,0.1767,0.1767,0.1768,0.1768,0.1769,0.177,0.177,0.1771,0.1771,0.1772,0.1772,0.1772,0.1772,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1773,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1772,0.1771,0.1768,0.1761,0.1751,0.1736,0.1717,0.1693,0.1663,0.1629,0.1592,0.1553,0.1513,0.1476,0.1441,0.141,0.1385,0.1365,0.1353,0.1349,0.1353,0.1367,0.139,0.1423,0.1468,0.1525,0.1594,0.1676,0.177,0.1878,0.1998,0.2129,0.227,0.2417,0.257,0.2724,0.2878,0.3028,0.3173,0.3311,0.344,0.3559,0.3666,0.3761,0.3845,0.3917,0.3978,0.4029,0.4071,0.4101,0.4123,0.4137,0.4144,0.4144,0.4137,0.4123,0.4103,0.4076,0.4044,0.4007,0.3966,0.3922,0.3875,0.3827,0.3779,0.373,0.3681,0.3634,0.359,0.3547,0.3508,0.3473,0.3442,0.3416,0.3397,0.3385,0.3381,0.3386,0.3402,0.3428,0.3464,0.3511,0.3567,0.3631,0.3702,0.3779,0.3861,0.3946,0.4032,0.412,0.4209,0.4298,0.4387,0.4475,0.4561,0.4644,0.4723,0.4799,0.487,0.4936,0.4998,0.5056,0.511,0.5161,0.5209,0.5255,0.5298,0.534,0.538,0.5417,0.5452,0.5484,0.5513,0.5537,0.5557,0.5571,0.5579,0.5581,0.5574,0.5559,0.5536,0.5504,0.5461,0.5406,0.534,0.5261,0.517,0.5066,0.4953,0.4829,0.4699,0.4563,0.4424,0.4286,0.4151,0.402,0.3896,0.378,0.3673,0.3575,0.3489,0.3414,0.3349,0.3295,0.325,0.3215,0.3188,0.3168,0.3155,0.3146,0.3141,0.3141,0.3144,0.315,0.3159,0.3171,0.3186,0.3203,0.3223,0.3245,0.3269,0.3295,0.3322,0.335,0.3379,0.3408,0.3438,0.3467,0.3496,0.3524,0.3552,0.358,0.3608,0.3635,0.3662,0.3688,0.3715,0.3742,0.377,0.3799,0.3827,0.3856,0.3884,0.3913,0.3941,0.3969,0.3997,0.4023,0.4048,0.4072,0.4096,0.4118,0.414,0.4161,0.4183,0.4205,0.4228,0.4252,0.4277,0.4303,0.4331,0.436,0.439,0.4422,0.4455,0.4489,0.4523,0.4558,0.4593,0.4628,0.4662,0.4694,0.4726,0.4756,0.4784,0.4809,0.4833,0.4855,0.4874,0.4891,0.4905,0.4916,0.4926,0.4934,0.4939,0.4942,0.4942,0.4939,0.4933,0.4925,0.4914,0.49,0.4882,0.4861,0.4837,0.4809,0.4778,0.4744,0.4707,0.4668,0.4626,0.4581,0.4534,0.4484,0.4433,0.4378,0.4321,0.4262,0.4201,0.4137,0.4073,0.4009,0.3945,0.3881,0.3818,0.3758,0.37,0.3644,0.3591,0.3542,0.3496,0.3454,0.3416,0.3382,0.3352,0.3328,0.3308,0.3293,0.3284,0.3282,0.3286,0.3298,0.3318,0.3346,0.3382,0.3429,0.3485,0.3552,0.3628,0.3713,0.3807,0.391,0.4019,0.4134,0.4254,0.4377,0.45,0.4624,0.4745,0.4863,0.4975,0.5082,0.5184,0.5277,0.5363,0.5443,0.5515,0.5581,0.5639,0.5692,0.5738,0.5778,0.5811,0.5839,0.5861,0.5876,0.5886,0.5889,0.5886,0.5877,0.5861,0.5838,0.5808,0.5771,0.5727,0.5677,0.5621,0.5559,0.5493,0.5424,0.5354,0.5282,0.5211,0.514,0.507,0.5002,0.4937,0.4875,0.4816,0.476,0.4707,0.4658,0.4612,0.4569,0.4528,0.4489,0.4453,0.4419,0.4386,0.4354,0.4323,0.4293,0.4264,0.4235,0.4205,0.4176,0.4145,0.4114,0.4081,0.4047,0.4012,0.3977,0.394,0.3903,0.3866,0.383,0.3796,0.3763,0.3731,0.3701,0.3674,0.3648,0.3624,0.3603,0.3582,0.3563,0.3545,0.3528,0.3513,0.3499,0.3486,0.3475,0.3465,0.3456,0.3448,0.3442,0.3438,0.3434,0.343,0.3428,0.3426,0.3424,0.3423,0.3421,0.3421,0.342,0.3419,0.3418,0.3418,0.3418,0.3417,0.3417,0.3417,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415],"ay":[0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3416,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3415,0.3416,0.3416,0.3417,0.3419,0.3421,0.3424,0.3428,0.3433,0.344,0.3447,0.3455,0.3463,0.3471,0.3479,0.3486,0.3493,0.3498,0.3502,0.3505,0.3506,0.3507,0.3507,0.3506,0.3504,0.3501,0.3498,0.3493,0.3486,0.3479,0.347,0.3459,0.3447,0.3433,0.3419,0.3402,0.3385,0.3368,0.335,0.3332,0.3315,0.3297,0.328,0.3264,0.3249,0.3235,0.3221,0.3209,0.3197,0.3186,0.3175,0.3163,0.3149,0.3134,0.3117,0.3099,0.3079,0.3059,0.3037,0.3016,0.2996,0.2976,0.2957,0.2937,0.2918,0.2898,0.2878,0.2857,0.2836,0.2814,0.2792,0.277,0.2748,0.2726,0.2705,0.2683,0.2662,0.264,0.2618,0.2596,0.2575,0.2554,0.2534,0.2514,0.2495,0.2477,0.246,0.2444,0.2429,0.2414,0.2401,0.2389,0.2379,0.237,0.2362,0.2356,0.2351,0.2347,0.2344,0.2343,0.2342,0.2342,0.2343,0.2344,0.2347,0.2352,0.2357,0.2364,0.2373,0.2382,0.2394,0.2406,0.242,0.2434,0.2449,0.2464,0.248,0.2497,0.2515,0.2534,0.2554,0.2575,0.2597,0.2621,0.2647,0.2674,0.2702,0.2732,0.2762,0.2793,0.2824,0.2854,0.2884,0.2912,0.2938,0.2962,0.2984,0.3004,0.3023,0.304,0.3055,0.3069,0.3082,0.3093,0.3104,0.3113,0.3122,0.3129,0.3136,0.3142,0.3147,0.3151,0.3154,0.3157,0.3158,0.3158,0.3157,0.3155,0.3153,0.315,0.3146,0.3142,0.3138,0.3133,0.3129,0.3125,0.3121,0.3117,0.3113,0.311,0.3107,0.3104,0.3102,0.3099,0.3096,0.3093,0.309,0.3087,0.3083,0.3079,0.3075,0.307,0.3065,0.306,0.3055,0.3051,0.3046,0.3042,0.3039,0.3036,0.3033,0.3031,0.3029,0.3027,0.3026,0.3023,0.3021,0.3018,0.3015,0.3011,0.3007,0.3002,0.2998,0.2993,0.2988,0.2982,0.2977,0.2971,0.2965,0.296,0.2953,0.2947,0.2941,0.2935,0.293,0.2924,0.292,0.2915,0.2911,0.2908,0.2906,0.2904,0.2902,0.2901,0.2899,0.2899,0.2898,0.2898,0.2897,0.2897,0.2897,0.2897,0.2898,0.2898,0.2899,0.29,0.2901,0.2903,0.2904,0.2907,0.2909,0.2913,0.2917,0.2922,0.2928,0.2935,0.2942,0.295,0.2958,0.2968,0.2978,0.2989,0.3,0.3011,0.3022,0.3033,0.3044,0.3055,0.3064,0.3072,0.3078,0.3084,0.3089,0.3092,0.3095,0.3098,0.3099,0.31,0.31,0.3099,0.3098,0.3097,0.3095,0.3092,0.309,0.3086,0.3082,0.3076,0.3069,0.3061,0.3052,0.3042,0.303,0.3018,0.3006,0.2993,0.298,0.2968,0.2957,0.2946,0.2937,0.2928,0.2921,0.2914,0.2909,0.2904,0.29,0.2895,0.2891,0.2887,0.2882,0.2876,0.287,0.2864,0.2857,0.2849,0.2841,0.2834,0.2826,0.2819,0.2812,0.2804,0.2797,0.2791,0.2784,0.2777,0.2771,0.2765,0.276,0.2755,0.2751,0.2748,0.2745,0.2744,0.2744,0.2745,0.2747,0.2749,0.2752,0.2755,0.2759,0.2763,0.2766,0.277,0.2774,0.2777,0.278,0.2782,0.2785,0.2786,0.2788,0.2788,0.2789,0.2789,0.2789,0.2789,0.2789,0.279,0.2791,0.2792,0.2793,0.2794,0.2795,0.2796,0.2796,0.2796,0.2795,0.2793,0.2789,0.2785,0.2779,0.2772,0.2764,0.2755,0.2745,0.2735,0.2723,0.2711,0.27,0.2689,0.2679,0.2669,0.2661,0.2653,0.2647,0.2643,0.2639,0.2635,0.2633,0.2631,0.2629,0.2627,0.2626,0.2625,0.2624,0.2624,0.2623,0.2623,0.2622,0.2622,0.2622,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621,0.2621]},"map":{"W":1080,"H":1920,"dw":1080,"dh":1920,"cw":1080,"ch":1920},"clip":{"start":0,"mediaStart":0},"uncrop":false};
+        // The pose for time t: the camera move, then (face cues) the subject-anchored reframe.
+        function pose(t) {
+          var c = RCGCameraMoves.poseToCss(RCGCameraMoves.poseAt(CUES, t, kickAt, audioAt), W, H);
+          if (!FACE) return { transform: c.transform, filter: c.filter };
+          var r = RCGFaceReframe.reframe(FACE.cues, t, FACE.track, FACE.map, FACE.clip);
+          return { transform: c.transform + " " + r.transform, filter: c.filter };
+        }
+        // Other layers that must move with this one (a PNP cut-out over the footage) read it here.
+        window.RCGCamPoses = window.RCGCamPoses || {};
+        window.RCGCamPoses["#w1"] = pose;
+        function apply(t) {
+          var c = pose(t);
+          el.style.transform = c.transform;
+          el.style.filter = c.filter;
+        }
+        var drv = { _t: 0 };
+        Object.defineProperty(drv, "t", { get: function () { return this._t; }, set: function (v) { this._t = v; apply(v); } });
+        tl.to(drv, { t: DUR, duration: DUR, ease: "none" }, 0);
+        apply(0);
+      })();
+      // rcg:camera cam-w1 end
+      // rcg:pnp p1 begin (generated by tools/blocks/pnp.mjs; regenerate instead of editing)
+      (function () {
+        var follow = document.getElementById("p1-follow");
+        var wrap = document.getElementById("p1-wrap");
+        var FOLLOW = "#w1";
+        var DUR = 17.86;
+        // Copy the base shot's camera pose (rcg camera registers it) every frame.
+        function apply(t) {
+          var f = FOLLOW && window.RCGCamPoses && window.RCGCamPoses[FOLLOW];
+          if (!f) return;
+          var c = f(t);
+          follow.style.transform = c.transform;
+          follow.style.filter = c.filter;
+        }
+        var drv = { _t: 0 };
+        Object.defineProperty(drv, "t", { get: function () { return this._t; }, set: function (v) { this._t = v; apply(v); } });
+        tl.to(drv, { t: DUR, duration: DUR, ease: "none" }, 0);
+        apply(0);
+        tl.set(wrap, { x: 0, y: 0, scaleX: 1, scaleY: 1, rotation: 0, opacity: 0, transformOrigin: "50% 50%" }, 0);
+        tl.set(wrap, { opacity: 1 }, 0);
+        tl.set(wrap, { opacity: 0 }, 17.86);
+      })();
+      // rcg:pnp p1 end
+      // rcg:tx whip1 begin (mirror_whip, generated by tools/blocks/transition.mjs)
+      (function () {
+        var AT = 3.8, D = 0.32, W = 1080, H = 1920;
+        var els = ["w1-tx","p1-wrap-tx"].map(function (i) { return document.getElementById(i); });
+        var blur = document.getElementById("whip1-mbg");
+        var VX = 0, VY = -1, SIDE = ["below","above"], URL = "url(#whip1-mb)";
+        function apply(t) {
+          var u = (t - (AT - D / 2)) / D, on = u >= 0 && u < 1;
+          if (!on) { els.forEach(function (el) { el.style.transform = ""; el.style.filter = ""; el.style.webkitBoxReflect = ""; }); blur.setAttribute("stdDeviation", "0 0"); return; }
+          var out = u < 0.5, v = out ? u / 0.5 : (u - 0.5) / 0.5;
+          var k = out ? v * v : -(1 - v) * (1 - v);
+          var dx = VX * 0.55 * W * k, dy = VY * 0.55 * H * k;
+          var sg = (40 * H / 1920 * Math.sin(Math.PI * u)).toFixed(2);
+          blur.setAttribute("stdDeviation", VY !== 0 ? "0 " + sg : sg + " 0");
+          els.forEach(function (el) {
+            el.style.transform = "translate(" + dx.toFixed(1) + "px, " + dy.toFixed(1) + "px)";
+            el.style.webkitBoxReflect = (out ? SIDE[0] : SIDE[1]) + " 0px";
+            el.style.filter = URL;
+          });
+        }
+        var drv = { _t: 0 };
+        Object.defineProperty(drv, "t", { get: function () { return this._t; }, set: function (v) { this._t = v; apply(v); } });
+        tl.to(drv, { t: 17.86, duration: 17.86, ease: "none" }, 0);
+        apply(0);
+      })();
+      // rcg:tx whip1 end
+      // rcg:strips strips-open begin (generated by tools/blocks/strips.mjs)
+      tl.fromTo("#strips-open-s0", { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, 0);
+      tl.set("#strips-open-s0", { opacity: 0 }, 3.8);
+      tl.fromTo("#strips-open-s1", { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, 0.53);
+      tl.set("#strips-open-s1", { opacity: 0 }, 3.8);
+      tl.fromTo("#strips-open-s2", { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, 1.06);
+      tl.set("#strips-open-s2", { opacity: 0 }, 3.8);
+      tl.fromTo("#strips-open-s3", { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, 1.59);
+      tl.set("#strips-open-s3", { opacity: 0 }, 3.8);
+      tl.fromTo("#strips-open-s4", { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, 2.12);
+      tl.set("#strips-open-s4", { opacity: 0 }, 3.8);
+      // rcg:strips strips-open end
+      // rcg:strips strips-close begin (generated by tools/blocks/strips.mjs)
+      tl.fromTo("#strips-close-s0", { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, 16.06);
+      tl.to("#strips-close-s0", { opacity: 0, y: 90, duration: 0.14, ease: "power2.in" }, 17.02);
+      tl.fromTo("#strips-close-s1", { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, 16.14);
+      tl.to("#strips-close-s1", { opacity: 0, y: 90, duration: 0.14, ease: "power2.in" }, 17.16);
+      tl.fromTo("#strips-close-s2", { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, 16.22);
+      tl.to("#strips-close-s2", { opacity: 0, y: 90, duration: 0.14, ease: "power2.in" }, 17.3);
+      tl.fromTo("#strips-close-s3", { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, 16.3);
+      tl.to("#strips-close-s3", { opacity: 0, y: 90, duration: 0.14, ease: "power2.in" }, 17.44);
+      tl.fromTo("#strips-close-s4", { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out", immediateRender: false }, 16.38);
+      tl.to("#strips-close-s4", { opacity: 0, y: 90, duration: 0.14, ease: "power2.in" }, 17.58);
+      tl.fromTo("#strips-close-leakw", { opacity: 0 }, { opacity: 0.95, duration: 0.249, ease: "power1.out", immediateRender: false }, 16.33);
+      tl.to("#strips-close-leakw", { opacity: 0, duration: 0.415, ease: "power1.in" }, 16.745);
+      // rcg:strips strips-close end
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
