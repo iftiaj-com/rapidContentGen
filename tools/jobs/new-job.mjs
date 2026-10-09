@@ -5,16 +5,22 @@
 // lib/, beat sheet, data/*.json plans) are copied instead of the template, without
 // its media, renders or caches, so a similar video starts from a working edit.
 //
+// Safe with several agent sessions at once: the job folder is created atomically
+// (a name already taken gets -2, -3, ...), and media from inbox/<folder>/ claims
+// that folder with inbox/<folder>/.rcg-claim.json. A folder another job claimed is
+// refused unless --reclaim is given (see `rcg inbox`).
+//
 // Usage:
 //   node tools/jobs/new-job.mjs --name <slug> [--template vertical-1080x1920]
 //        [--video a.mp4 ...] [--audio song.mp3 ...] [--image p.jpg ...]
 //        [--prompt "..." | --prompt-file inbox/x/prompt.md] [--mode a|b|c]
-//        [--like jobs/<old-id>]
+//        [--like jobs/<old-id>] [--agent name] [--reclaim]
 
-import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { basename, extname, join, relative, resolve, sep } from 'node:path';
+import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { basename, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { isMain, parseArgs } from '../lib/cli.mjs';
 import { loadConfig, readJson } from '../lib/config.mjs';
+import { agentName, claimFile } from '../lib/lock.mjs';
 import { makeSheet } from '../media/contact-sheet.mjs';
 import { probeMedia } from '../media/probe.mjs';
 
@@ -78,7 +84,40 @@ function likeSection(dir, likeDir) {
   ];
 }
 
-export async function newJob({ name, template, videos = [], audios = [], images = [], prompt = '', mode = null, like = null }) {
+export const CLAIM_FILE = '.rcg-claim.json';
+
+// The inbox/<folder>/ directories the given files come from.
+function inboxFolders(inbox, files) {
+  const out = new Set();
+  for (const f of files.filter(Boolean)) {
+    const rel = relative(inbox, resolve(f));
+    if (!rel || rel.startsWith('..') || isAbsolute(rel)) continue;
+    const parts = rel.split(sep);
+    if (parts.length > 1) out.add(join(inbox, parts[0]));
+  }
+  return [...out];
+}
+
+// Claim each inbox folder for this job. Throws (after undoing its own claims) when
+// another job holds one, unless reclaim is set.
+function claimInbox(folders, info, reclaim) {
+  const taken = [];
+  for (const folder of folders) {
+    const file = join(folder, CLAIM_FILE);
+    let res = claimFile(file, info);
+    if (!res.ok && reclaim) { rmSync(file, { force: true }); res = claimFile(file, info); }
+    if (!res.ok) {
+      for (const f of taken) rmSync(f, { force: true });
+      const c = res.claim || {};
+      throw new Error(`inbox/${basename(folder)} is already claimed by ${c.job || '?'} (${c.agent || '?'}, ${c.claimedAt || '?'}). `
+        + 'Pick another folder, or pass --reclaim to take it over.');
+    }
+    taken.push(file);
+  }
+  return taken;
+}
+
+export async function newJob({ name, template, videos = [], audios = [], images = [], prompt = '', promptFile = null, mode = null, like = null, agent = null, reclaim = false }) {
   const cfg = loadConfig();
   if (like && template) throw new Error('Use --like or --template, not both');
   const likeDir = like ? resolve(like) : null;
@@ -90,9 +129,28 @@ export async function newJob({ name, template, videos = [], audios = [], images 
 
   const date = new Date().toISOString().slice(0, 10);
   const slug = slugify(name);
-  let dir = join(cfg.paths.jobs, `${date}-${slug}`);
-  for (let n = 2; existsSync(dir); n++) dir = join(cfg.paths.jobs, `${date}-${slug}-${n}`);
+  for (const f of [...[].concat(videos, audios, images), promptFile].filter(Boolean)) {
+    if (!existsSync(f)) throw new Error(`Media not found: ${f}`);
+  }
+
+  // mkdirSync without recursive fails with EEXIST when the name is taken, so two
+  // sessions creating the same name at once get different folders.
+  mkdirSync(cfg.paths.jobs, { recursive: true });
+  let dir;
+  for (let n = 1; ; n++) {
+    dir = join(cfg.paths.jobs, n === 1 ? `${date}-${slug}` : `${date}-${slug}-${n}`);
+    try { mkdirSync(dir); break; } catch (e) { if (e.code !== 'EEXIST') throw e; }
+  }
   const id = basename(dir);
+
+  const folders = inboxFolders(cfg.paths.inbox, [...[].concat(videos, audios, images), promptFile]);
+  let claims;
+  try {
+    claims = claimInbox(folders, { job: id, agent: agentName(agent) }, reclaim);
+  } catch (e) {
+    rmSync(dir, { recursive: true, force: true });
+    throw e;
+  }
 
   cpSync(tplDir, dir, likeDir ? { recursive: true, filter: likeFilter(likeDir) } : { recursive: true });
   mkdirSync(join(dir, 'assets'), { recursive: true });
@@ -179,28 +237,38 @@ export async function newJob({ name, template, videos = [], audios = [], images 
   ];
   writeFileSync(join(dir, 'JOB.md'), lines.join('\n'));
   const missing = likeDir ? assetRefs(dir).filter((r) => !existsSync(join(dir, r))) : [];
-  return { id, dir, media: intake, missing };
+  return { id, dir, media: intake, missing, claims };
 }
 
 if (isMain(import.meta.url)) {
   const a = parseArgs();
   if (!a.name) {
-    console.error('Usage: node tools/jobs/new-job.mjs --name <slug> [--template t] [--video f] [--audio f] [--image f] [--prompt "..." | --prompt-file f] [--mode a|b|c] [--like jobs/<old-id>]');
+    console.error('Usage: node tools/jobs/new-job.mjs --name <slug> [--template t] [--video f] [--audio f] [--image f] [--prompt "..." | --prompt-file f] [--mode a|b|c] [--like jobs/<old-id>] [--agent name] [--reclaim]');
     process.exit(2);
   }
   const prompt = a['prompt-file'] ? readFileSync(a['prompt-file'], 'utf8') : (typeof a.prompt === 'string' ? a.prompt : '');
-  const res = await newJob({
-    name: a.name,
-    template: typeof a.template === 'string' ? a.template : undefined,
-    videos: a.video,
-    audios: a.audio,
-    images: a.image,
-    prompt,
-    mode: typeof a.mode === 'string' ? a.mode : null,
-    like: typeof a.like === 'string' ? a.like : null,
-  });
+  let res;
+  try {
+    res = await newJob({
+      name: a.name,
+      template: typeof a.template === 'string' ? a.template : undefined,
+      videos: a.video,
+      audios: a.audio,
+      images: a.image,
+      prompt,
+      promptFile: typeof a['prompt-file'] === 'string' ? a['prompt-file'] : null,
+      agent: typeof a.agent === 'string' ? a.agent : null,
+      reclaim: Boolean(a.reclaim),
+      mode: typeof a.mode === 'string' ? a.mode : null,
+      like: typeof a.like === 'string' ? a.like : null,
+    });
+  } catch (e) {
+    console.error(`new-job: ${e.message}`);
+    process.exit(1);
+  }
   console.log(`Job created: ${res.dir}`);
   for (const m of res.media) console.log(`  ${m.kind}: ${m.asset}${m.sheet ? `  sheet: ${m.sheet}` : ''}`);
+  for (const c of res.claims) console.log(`  claimed: ${relative(process.cwd(), c)}`);
   if (a.like) {
     console.log(`Edit copied from ${a.like}.`);
     if (res.missing.length) console.log(`  ${res.missing.length} referenced asset(s) not supplied yet (listed in JOB.md):\n    ${res.missing.join('\n    ')}`);
