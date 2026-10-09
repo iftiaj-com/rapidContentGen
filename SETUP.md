@@ -180,6 +180,3 @@ node tools/rcg.mjs new-job --name my-next-reel --like jobs/<old-id> --video new-
   `node tools/rcg.mjs provenance check` names each file.
 - "source drift" in `doctor` means a source project changed after a file was copied. It is
   information, not an error, and it only shows if you have the source projects.
-- Licences: `docs/PORTING_CHECKLIST.md` notes a few copied images whose licence Adits does not
-  document (for example `smoke.png` and the FrameTunnel masks). Check those before publishing work
-  that uses them.

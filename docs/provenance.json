@@ -165,7 +165,7 @@
       "dirtyAtCopy": false,
       "sha256Source": "bc8ac3c086ada036e01fbbf21971e56c01d391ce4070116fa3771f3a2d5e8804",
       "date": "2026-10-08",
-      "note": "SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits",
+      "note": "SplitScreen mask shapes / SmokeEnv sprite",
       "to": "library/adits-fx/assets/visuals/bird.gif",
       "sha256Dest": "bc8ac3c086ada036e01fbbf21971e56c01d391ce4070116fa3771f3a2d5e8804"
     },
@@ -178,7 +178,7 @@
       "dirtyAtCopy": false,
       "sha256Source": "263f412925dc16f16f92b02b283b922ae31ec8f440867086c724f4cd73f05aa8",
       "date": "2026-10-08",
-      "note": "SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits",
+      "note": "SplitScreen mask shapes / SmokeEnv sprite",
       "to": "library/adits-fx/assets/visuals/flower.png",
       "sha256Dest": "263f412925dc16f16f92b02b283b922ae31ec8f440867086c724f4cd73f05aa8"
     },
@@ -191,7 +191,7 @@
       "dirtyAtCopy": false,
       "sha256Source": "e306ce822101dfbb8234d1d19a1badbf3e9861cc478dab903d37bbb7c882e7ea",
       "date": "2026-10-08",
-      "note": "SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits",
+      "note": "SplitScreen mask shapes / SmokeEnv sprite",
       "to": "library/adits-fx/assets/visuals/leaf.png",
       "sha256Dest": "e306ce822101dfbb8234d1d19a1badbf3e9861cc478dab903d37bbb7c882e7ea"
     },
@@ -204,7 +204,7 @@
       "dirtyAtCopy": false,
       "sha256Source": "2308a17774d7fbf39cb86af6a0f22d23e25d5608ab10ce65239b9387b4d6ab9f",
       "date": "2026-10-08",
-      "note": "SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits",
+      "note": "SplitScreen mask shapes / SmokeEnv sprite",
       "to": "library/adits-fx/assets/visuals/smoke.png",
       "sha256Dest": "2308a17774d7fbf39cb86af6a0f22d23e25d5608ab10ce65239b9387b4d6ab9f"
     },

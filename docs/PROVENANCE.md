@@ -17,10 +17,10 @@ Source root: `E:/Develop/Antigravity_testing/Adits_Modular`
 | Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
 |---|---|---|---|---|---|---|
 | learn | `Adits/effects/auto/advance/timeline.js` | `docs/job-spec.md` | 78bea0ce | no | 2026-10-07 | segment rules: absolute seconds, no overlaps per track, report-not-throw validation |
-| copy | `Adits/assets/visuals/bird.gif` | `library/adits-fx/assets/visuals/bird.gif` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits |
-| copy | `Adits/assets/visuals/flower.png` | `library/adits-fx/assets/visuals/flower.png` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits |
-| copy | `Adits/assets/visuals/leaf.png` | `library/adits-fx/assets/visuals/leaf.png` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits |
-| copy | `Adits/assets/visuals/smoke.png` | `library/adits-fx/assets/visuals/smoke.png` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite; license not documented in Adits |
+| copy | `Adits/assets/visuals/bird.gif` | `library/adits-fx/assets/visuals/bird.gif` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite |
+| copy | `Adits/assets/visuals/flower.png` | `library/adits-fx/assets/visuals/flower.png` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite |
+| copy | `Adits/assets/visuals/leaf.png` | `library/adits-fx/assets/visuals/leaf.png` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite |
+| copy | `Adits/assets/visuals/smoke.png` | `library/adits-fx/assets/visuals/smoke.png` | 78bea0ce | no | 2026-10-08 | SplitScreen mask shapes / SmokeEnv sprite |
 | copy | `Adits/core/ColorMask.js` | `library/adits-fx/core/ColorMask.js` | 78bea0ce | no | 2026-10-08 | Global Color Mask (chroma key), unmodified; run by rcg fx (shim color-mask.js) |
 | copy | `Adits/core/anam/CutoutCollage.js` | `library/adits-fx/core/anam/CutoutCollage.js` | 78bea0ce | no | 2026-10-08 | Cutout collage (Canvas2D, port of the Codrops Cutout Collage Layout demo per its header); run unmodified by rcg fx (shim cutout.js) |
 | copy | `Adits/core/anam/HoloSheen.js` | `library/adits-fx/core/anam/HoloSheen.js` | 78bea0ce | no | 2026-10-08 | 3D environment, run in the fx harness |
