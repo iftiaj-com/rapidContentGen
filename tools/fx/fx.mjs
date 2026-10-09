@@ -12,6 +12,8 @@
 //        [--matte assets/matte/x-fg.webm --matte-start 0 --apply bg|fg|both]  (effect target: -fg.webm = the effect on the subject only)
 //        [--track data/track-x.json --anchor hand|face|eyes --hand Left|Right | --point "t:x,y[,open];..."]
 //        (the point an anamorphic effect follows, standing in for Adits' webcam hand; see points.mjs)
+//        [--subject assets/matte/x-fg.webm --subject-start 0]  (effects with options.subject: the
+//        subject matte Adits makes live with MediaPipe, e.g. VJ Subject Depth (AI))
 // Effects and their defaults: library/fx/effects.json.
 
 import { execFile } from 'node:child_process';
@@ -56,6 +58,16 @@ async function extract(src, start, duration, fps, W, H, dir) {
   return readdirSync(dir).filter((f) => f.endsWith('.png')).length;
 }
 
+/** Frames of an rcg matte cut-out (VP9 with alpha): its alpha as gray, or the RGBA frames. */
+async function extractMask(src, start, duration, fps, W, H, dir, format) {
+  mkdirSync(dir, { recursive: true });
+  // alphaextract first: scaling yuva420p first can negotiate a format without the alpha plane.
+  const vf = format === 'gray'
+    ? `fps=${fps},alphaextract,scale=${W}:${H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${W}:${H},format=gray`
+    : `fps=${fps},format=rgba,scale=${W}:${H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${W}:${H}`;
+  await ff(['-c:v', 'libvpx-vp9', '-ss', String(start), '-t', String(duration), '-i', src, '-vf', vf, '-start_number', '1', join(dir, '%06d.png')]);
+}
+
 /** Map our analyze.mjs frames onto the audioFeatures object the Adits effects read. */
 function toAudioFeatures(f) {
   // Adits core/audio-engine.js fields: rawPulse equals bass; rawVol is the 0..1 level.
@@ -98,12 +110,28 @@ export async function runFx(opts) {
     }
     let audio = null;
     let analyser = null;
+    // The music time of the first harness frame (pre-roll included).
+    const aOff = Number(opts['audio-offset'] || 0) - preroll;
     if (opts.audio) {
       const table = await analyzeToFile(resolve(jobDir, opts.audio), join(work, 'audio.json'), { fps, duration: frames / fps + 1 / fps, offset: Number(opts['audio-offset'] || 0) - preroll, clock: 'default' });
       audio = table.frames.map(toAudioFeatures);
       // Effects that tick at Adits' display rate read its own analyser (bins + features) per tick.
+      // options.audioHistory: from the start of the music, as Adits' analysis pre-pass runs, so its
+      // onset detector has the history it would have there.
       const hz = def.options?.tickHz;
-      if (hz) analyser = await analyserTable(resolve(jobDir, opts.audio), { hz, ticks: Math.ceil((frames / fps) * hz) + 2, offset: Number(opts['audio-offset'] || 0) - preroll });
+      const from = def.options?.audioHistory ? Math.min(0, aOff) : aOff;
+      if (hz) analyser = await analyserTable(resolve(jobDir, opts.audio), { hz, ticks: Math.ceil((aOff - from + frames / fps) * hz) + 2, offset: from });
+    }
+    // Subject matte frames (white, the cut-out's alpha), one per harness frame.
+    let subject = false;
+    if (opts.subject) {
+      if (!def.options?.subject) throw new Error(`${opts.effect} takes no --subject`);
+      const subAbs = resolve(jobDir, opts.subject);
+      if (!existsSync(subAbs)) throw new Error(`--subject not found: ${opts.subject}`);
+      const sStart = start - preroll - Number(opts['subject-start'] || 0);
+      if (sStart < 0) throw new Error(`The range starts before the subject matte (--subject-start ${opts['subject-start'] || 0})`);
+      await extractMask(subAbs, sStart, frames / fps, fps, W, H, join(work, 'subject'), 'rgba');
+      subject = true;
     }
     // The point the effect follows: a tracked hand / face, or a keyframed point.
     let track = null;
@@ -138,7 +166,7 @@ export async function runFx(opts) {
       sourceFile, srcStart: start - preroll, ranges: def.ranges || {},
       seed: Number(opts.seed ?? 1), params, skip, vparams, webgpu: Boolean(def.webgpu),
       shim: def.shim ? `/lib/fx/shims/${def.shim}` : null, alpha, input: needsInput, audio, analyser, track,
-      options: def.options || {},
+      audioOffset: aOff, subject, options: def.options || {},
     };
     writeFileSync(join(work, 'job.json'), JSON.stringify(jobDoc));
 
@@ -192,11 +220,7 @@ export async function runFx(opts) {
       if (!existsSync(matteAbs)) throw new Error(`--matte not found: ${opts.matte}`);
       const mStart = start - Number(opts['matte-start'] || 0);
       if (mStart < 0) throw new Error(`The range starts before the matte (--matte-start ${opts['matte-start']})`);
-      mkdirSync(join(work, 'mask'), { recursive: true });
-      await ff(['-c:v', 'libvpx-vp9', '-ss', String(mStart), '-t', String(duration), '-i', matteAbs,
-        // alphaextract first: scaling yuva420p first can negotiate a format without the alpha plane.
-        '-vf', `fps=${fps},alphaextract,scale=${W}:${H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${W}:${H},format=gray`,
-        '-start_number', '1', join(work, 'mask', '%06d.png')]);
+      await extractMask(matteAbs, mStart, duration, fps, W, H, join(work, 'mask'), 'gray');
       fg = outAbs.replace(/\.\w+$/, '-fg.webm');
       await ff(['-framerate', String(fps), '-start_number', String(skip + 1), '-i', join(work, 'out', '%06d.png'),
         '-framerate', String(fps), '-start_number', '1', '-i', join(work, 'mask', '%06d.png'),

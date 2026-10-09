@@ -145,6 +145,14 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
   or `cutout`. Magnet / Grow / Flip / Particles follow `--track data/track-v1.json --anchor hand` or
   `--point "0:0.3,0.4;1.5:0.7,0.6"`. Read lessons 13as-13ax first (the model reads darker, Adits'
   tilt and 63% framing, sparse particles, pinned bass, pressing Drop in the pre-roll).
+- Suspense, transition and accent moments (Adits Global Visuals and Video Jockey): the same `rcg fx`
+  call with `global-visuals` (`--param fxBnwMode=true`, `fxNegativeMode`, `fxFisheyeEnabled` +
+  `fxFisheyeIntensity`, `globalOpacityEnabled` + `globalOpacitySlider`, `fxRgbColors` / `fxNeonMode`
+  with `--audio`) or a VJ FX with an Adits preset: `vj-scan`, `vj-lights`, `vj-lightshow`,
+  `vj-beatwash` `--preset <key>` (keys in `docs/capabilities.md`). Give audio presets
+  `--audio <limited music> --audio-offset <the shot's start in the edit>` so hits land on the music.
+  Letterbox / pillarbox bars: `rcg cinema --job jobs/<id> --ud --pos 12 --curve 35 --show a-b`
+  (`--behind p1` puts them under the cut-out). Read lessons 13bs-13bu.
 - Subject tracking, cut-outs and layers (talking heads, "text behind the subject"). Build order
   matters (lessons 13an): cameras, then PNP / fx layers, then titles and captions, then layers,
   then transitions.

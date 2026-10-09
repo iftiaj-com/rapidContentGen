@@ -32,6 +32,7 @@ const COMMANDS = {
   'pnp': ['tools/blocks/pnp.mjs', 'PNP layer: the footage again on top with its background removed (rcg matte cut-out); aligned or offset, follows the camera, show windows, block build'],
   'layer': ['tools/blocks/layer.mjs', 'Put a block behind or in front of a PNP cut-out (text behind the subject), with timed or per-caption-group switches'],
   'transition': ['tools/blocks/transition.mjs', 'Adits cut transitions: flash_white, flash_black, glitch_punch, zoom_punch, crossfade (seeded, frame-exact)'],
+  'cinema': ['tools/blocks/cinema.mjs', 'Adits Cinema Frames: letterbox (UD) and pillarbox (LR) bars with colour, position and curve, in time windows; --behind p1 = Midground'],
   'target': ['tools/blocks/target.mjs', 'Effect target: an rcg fx effect on the background or on the subject (foreground), switchable by time windows'],
   'matte': ['tools/track/matte.mjs', 'MediaPipe background removal (selfie segmenter): subject cut-out (VP9 alpha) + optional hole-cut plate, frame-aligned to the source'],
   'fx': ['tools/fx/fx.mjs', 'Adits footage effects and 3D environments rendered offline into a clip (unmodified code in a headless-Chrome harness); --list'],

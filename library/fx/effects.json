@@ -3315,5 +3315,265 @@
     "options": {
       "tickHz": 60
     }
+  },
+  "global-visuals": {
+    "label": "Global Visuals (Adits main.js Global Post-Processing): RGB Colors (beat colour cycle), Neon (hue glow), BnW, Negative, Fisheye (fxFisheyeIntensity), Global Opacity (globalOpacitySlider); --audio for RGB / Neon",
+    "kind": "footage",
+    "shim": "adits-post.js",
+    "ranges": {
+      "fxFisheyeIntensity": [
+        0,
+        1,
+        0.01
+      ],
+      "globalOpacitySlider": [
+        0,
+        1,
+        0.01
+      ]
+    },
+    "options": {
+      "tickHz": 60,
+      "audioHistory": true
+    },
+    "module": "core/video-engine.js",
+    "class": "VideoEngine",
+    "params": {
+      "fxRgbColors": false,
+      "fxNeonMode": false,
+      "fxBnwMode": false,
+      "fxNegativeMode": false,
+      "fxFisheyeEnabled": false,
+      "fxFisheyeIntensity": 0.5,
+      "globalOpacityEnabled": false,
+      "globalOpacitySlider": 0.5,
+      "vjPreset": ""
+    }
+  },
+  "vj-scan": {
+    "label": "Depth Scan (VJ ScanFX): a lit pattern band sweeps through luminance depth; 7 Adits presets (--preset); the Global Visuals params apply too (deck after BnW / Negative, before Fisheye); --audio, --track / --point, --subject",
+    "kind": "footage",
+    "shim": "adits-post.js",
+    "ranges": {
+      "fxFisheyeIntensity": [
+        0,
+        1,
+        0.01
+      ],
+      "globalOpacitySlider": [
+        0,
+        1,
+        0.01
+      ]
+    },
+    "options": {
+      "tickHz": 60,
+      "audioHistory": true,
+      "subject": true
+    },
+    "module": "effects/vj/VJDeck.js",
+    "class": "VJDeck",
+    "params": {
+      "fxRgbColors": false,
+      "fxNeonMode": false,
+      "fxBnwMode": false,
+      "fxNegativeMode": false,
+      "fxFisheyeEnabled": false,
+      "fxFisheyeIntensity": 0.5,
+      "globalOpacityEnabled": false,
+      "globalOpacitySlider": 0.5,
+      "vjPreset": "pulse_scan"
+    },
+    "presets": {
+      "pulse_scan": {
+        "vjPreset": "pulse_scan"
+      },
+      "neon_sweep": {
+        "vjPreset": "neon_sweep"
+      },
+      "ghost_edges": {
+        "vjPreset": "ghost_edges"
+      },
+      "wireframe_pass": {
+        "vjPreset": "wireframe_pass"
+      },
+      "deep_sonar": {
+        "vjPreset": "deep_sonar"
+      },
+      "subject_reveal": {
+        "vjPreset": "subject_reveal"
+      },
+      "motes": {
+        "vjPreset": "motes"
+      }
+    }
+  },
+  "vj-lights": {
+    "label": "Lights (VJ LightsFX): keeps what is lit, the rest goes to a void colour; 10 Adits presets (--preset); the Global Visuals params apply too (deck after BnW / Negative, before Fisheye); --audio, --track / --point, --subject",
+    "kind": "footage",
+    "shim": "adits-post.js",
+    "ranges": {
+      "fxFisheyeIntensity": [
+        0,
+        1,
+        0.01
+      ],
+      "globalOpacitySlider": [
+        0,
+        1,
+        0.01
+      ]
+    },
+    "options": {
+      "tickHz": 60,
+      "audioHistory": true,
+      "subject": true
+    },
+    "module": "effects/vj/VJDeck.js",
+    "class": "VJDeck",
+    "params": {
+      "fxRgbColors": false,
+      "fxNeonMode": false,
+      "fxBnwMode": false,
+      "fxNegativeMode": false,
+      "fxFisheyeEnabled": false,
+      "fxFisheyeIntensity": 0.5,
+      "globalOpacityEnabled": false,
+      "globalOpacitySlider": 0.5,
+      "vjPreset": "lit_void"
+    },
+    "presets": {
+      "lit_void": {
+        "vjPreset": "lit_void"
+      },
+      "lit_wreck": {
+        "vjPreset": "lit_wreck"
+      },
+      "lit_haze": {
+        "vjPreset": "lit_haze"
+      },
+      "lit_rain": {
+        "vjPreset": "lit_rain"
+      },
+      "lit_cathedral": {
+        "vjPreset": "lit_cathedral"
+      },
+      "lit_dust": {
+        "vjPreset": "lit_dust"
+      },
+      "lit_rim": {
+        "vjPreset": "lit_rim"
+      },
+      "lit_ignite": {
+        "vjPreset": "lit_ignite"
+      },
+      "lit_laser": {
+        "vjPreset": "lit_laser"
+      },
+      "lit_blueprint": {
+        "vjPreset": "lit_blueprint"
+      }
+    }
+  },
+  "vj-lightshow": {
+    "label": "Lightshow (VJ LightshowFX): the luminance depth field graded and run as a DMX light show; 5 Adits presets (--preset); the Global Visuals params apply too (deck after BnW / Negative, before Fisheye); --audio, --track / --point, --subject",
+    "kind": "footage",
+    "shim": "adits-post.js",
+    "ranges": {
+      "fxFisheyeIntensity": [
+        0,
+        1,
+        0.01
+      ],
+      "globalOpacitySlider": [
+        0,
+        1,
+        0.01
+      ]
+    },
+    "options": {
+      "tickHz": 60,
+      "audioHistory": true,
+      "subject": true
+    },
+    "module": "effects/vj/VJDeck.js",
+    "class": "VJDeck",
+    "params": {
+      "fxRgbColors": false,
+      "fxNeonMode": false,
+      "fxBnwMode": false,
+      "fxNegativeMode": false,
+      "fxFisheyeEnabled": false,
+      "fxFisheyeIntensity": 0.5,
+      "globalOpacityEnabled": false,
+      "globalOpacitySlider": 0.5,
+      "vjPreset": "ls_ignition"
+    },
+    "presets": {
+      "ls_ignition": {
+        "vjPreset": "ls_ignition"
+      },
+      "ls_contour": {
+        "vjPreset": "ls_contour"
+      },
+      "ls_bloom": {
+        "vjPreset": "ls_bloom"
+      },
+      "ls_red_room": {
+        "vjPreset": "ls_red_room"
+      },
+      "ls_flash": {
+        "vjPreset": "ls_flash"
+      }
+    }
+  },
+  "vj-beatwash": {
+    "label": "Beat Wash (VJ BeatWashFX): one coloured point light washes the frame on the beat; 4 Adits presets (--preset); the Global Visuals params apply too (deck after BnW / Negative, before Fisheye); --audio, --track / --point, --subject",
+    "kind": "footage",
+    "shim": "adits-post.js",
+    "ranges": {
+      "fxFisheyeIntensity": [
+        0,
+        1,
+        0.01
+      ],
+      "globalOpacitySlider": [
+        0,
+        1,
+        0.01
+      ]
+    },
+    "options": {
+      "tickHz": 60,
+      "audioHistory": true,
+      "subject": true
+    },
+    "module": "effects/vj/VJDeck.js",
+    "class": "VJDeck",
+    "params": {
+      "fxRgbColors": false,
+      "fxNeonMode": false,
+      "fxBnwMode": false,
+      "fxNegativeMode": false,
+      "fxFisheyeEnabled": false,
+      "fxFisheyeIntensity": 0.5,
+      "globalOpacityEnabled": false,
+      "globalOpacitySlider": 0.5,
+      "vjPreset": "red_alert"
+    },
+    "presets": {
+      "red_alert": {
+        "vjPreset": "red_alert"
+      },
+      "ice_strobe": {
+        "vjPreset": "ice_strobe"
+      },
+      "ember_swell": {
+        "vjPreset": "ember_swell"
+      },
+      "cold_pool": {
+        "vjPreset": "cold_pool"
+      }
+    }
   }
 }

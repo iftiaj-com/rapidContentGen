@@ -279,6 +279,23 @@ Each entry cost real time on a past job. Read before building.
 13bo. **A caption block may run past the root.** Captions hold 0.35 s after the last word plus 0.1 s;
      trim 0.5 s after the last word (lint `clip_ends_past_root_duration` at 0.35 s).
 
+## Global Visuals and Video Jockey (`rcg fx`, R15)
+
+13bs. **Adits' GPU post chain is broken on a BGRA canvas.** With BnW (or Negative) and Fisheye both on
+     and the VJ deck off, `VideoEngine.beginPostChain()` runs both passes into rgba8unorm textures with
+     pipelines built for the canvas format (bgra8unorm on Windows): WebGPU rejects the command buffer
+     ("Attachment state ... not compatible") and the frame comes out untouched, with no error on
+     screen. The shim runs the passes standalone (the chain was only an optimisation). Read the page
+     console from `rcg fx`; this one only shows there.
+13bt. **Audio-position presets pin on loud, limited music.** Adits' bass sits at 0.64-0.90 on the
+     limited Paper Ring excerpt; Neon Sweep scales it by 1.6, so the scan parks at depth 1 (only the
+     brightest pixels) and shows almost nothing. Same in Adits. Lower the gain
+     (`--param vj.progress.gain=0.9`) or use an auto preset.
+13bu. **Keyed VJ presets need matching footage.** Lit Laser keeps red light only (Hue Focus) and goes
+     black on an ordinary room; Depth Bloom blows a bright room to white; Subject Reveal's band is
+     narrow (about 0.02 of depth), so on a high-key studio clip (depth 0.85-1.0) a full 0-1 hand sweep
+     crosses the pixels in a few frames: sweep the point over the range the scene has. Read the sheet.
+
 ## Environment
 
 13. PowerShell pipes add a UTF-8 BOM; parse JSON with `utf-8-sig` or write it from Node.

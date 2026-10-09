@@ -87,6 +87,9 @@ node tools/rcg.mjs fx --list
 node tools/rcg.mjs fx --job jobs/<id> --effect ghost --src assets/x.mp4 --start 2 --duration 3 [--param id=v] [--preset p] [--src2 assets/y.mp4 --start2 0] [--audio m.wav] --sheet --out assets/fx/ghost.mp4
 node tools/rcg.mjs fx --job jobs/<id> --effect voxel-magnet --src assets/x.mp4 --start 2 --duration 1.5 --track data/track-v1.json --anchor hand --sheet --out assets/fx/magnet.mp4
 node tools/rcg.mjs fx --job jobs/<id> --effect voxel-drop --preset bursts --src assets/x.mp4 --start 3 --duration 1.5 --preroll 1 --param rcgDropAt=-0.9 --out assets/fx/drop.mp4
+node tools/rcg.mjs fx --job jobs/<id> --effect vj-lightshow --preset ls_ignition --src assets/x.mp4 --start 3 --duration 2 --audio m.wav --audio-offset 6 --sheet --out assets/fx/ls.mp4   # vj-scan|vj-lights|vj-beatwash; --param vj.tint=#00e5ff
+node tools/rcg.mjs fx --job jobs/<id> --effect global-visuals --src assets/x.mp4 --start 3 --duration 2 --param fxBnwMode=true --param fxFisheyeEnabled=true --out assets/fx/bnw.mp4   # fxNeonMode fxRgbColors (--audio) fxNegativeMode globalOpacityEnabled
+node tools/rcg.mjs cinema --job jobs/<id> --id cf1 --ud --pos 12 --curve 35 --show 4-7 [--lr --lr-pos 7 --lr-color "#14001f"] [--behind p1]   # Adits Cinema Frames; --remove cf1
 node tools/rcg.mjs limit in.mp3 out.wav [--ceiling -2.5]
 node tools/rcg.mjs mix-check jobs/<id>/index.html
 node tools/rcg.mjs hf --cwd jobs/<id> check

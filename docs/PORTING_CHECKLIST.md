@@ -33,7 +33,8 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | ☑ | 3D environments: SmokeEnv (ambient, jet, mist), RainSystem (wind, colour modes, splashes), HoloSheen | `core/anam/{SmokeEnv,RainSystem,HoloSheen,anam-utils}.js`, `assets/visuals/smoke.png`, three.js r184 (MIT) | Copy (unmodified), plus host shims that rebuild AnamorphicCamera's scene (camera 35° at z 5, ACES, transparent clear); rendered over footage by `rcg fx`. `smoke.png`: license not documented in Adits | `library/adits-fx/core/anam/`, `library/fx/shims/env-*.js` | P6 |
 | ☐ | 3D environments: BlackHole, Clouds, TunnelCorridor | `core/anam/*` | Defer (not in the P6 selection; the env host shim is ready) | `rcg fx` | later |
 | ☑ | GLSL footage effects: FrameTunnel (30 presets), RevealUnder (5 presets), SplitScreen (linear split or 10 mask shapes) with side B from a second clip | `effects/video/{FrameTunnel,RevealUnder,SplitScreen}.js`, `shared/{BaseEffect,gl-link}.js`, `assets/visuals/{bird.gif,flower.png,leaf.png}` | Copy (unmodified); offline pre-pass (`rcg fx`). Mask images: license not documented in Adits | `library/adits-fx/effects/video/` | P6 |
-| ☐ | GLSL footage effects: PixelStretch, ReversePhi; VJ deck 8 FX + 47 presets | `effects/video/*.js`, `effects/vj/` | Defer (not in the P6 selection; the harness is ready) | `rcg fx` | later |
+| ☑ | Video Jockey deck: Depth Scan (`ScanFX`, 7 presets), Lights (`LightsFX`, 10), Lightshow (`LightshowFX` + the `vj-show.js` DMX engine, 5), Beat Wash (`BeatWashFX`, 4); the deck's modulator (auto / manual / audio / gesture / pointer), beat clock, Shake, depth controls, Subject Depth (AI) | `effects/vj/` (`VJDeck`, `VJPass`, `VJModulator`, `VJBeatClock`, `VJMidi`, `vj-presets.js`, `fx/`), `core/audio-engine.js` | Copy (unmodified; the other four FX are copied too because `VJDeck.js` imports them, not exposed). Host shim: the deck on the media clock without its panel, presets through `applyPreset`, audio from `AudioEngine.analyze()` on the emulated analyser at 60 Hz from the start of the music (Adits' preAnalyzedAudio), the hand / pointer from `--track` / `--point`, the subject matte from an `rcg matte` cut-out (`--subject`) | `rcg fx --effect vj-scan / vj-lights / vj-lightshow / vj-beatwash --preset <key>`, `library/fx/shims/adits-post.js` | extra (R15) |
+| ☐ | GLSL footage effects: PixelStretch, ReversePhi; VJ FX Lum Network (13 presets), Beam Bloom (3), Pulse Grid (3), Tile Storm (3) | `effects/video/*.js`, `effects/vj/fx/` | Defer (the VJ host is ready: one `effects.json` entry each) | `rcg fx` | later |
 | ☑ | WGSL (WebGPU) effects: HeatHaze, BlowPixels | `effects/video/{HeatHaze,BlowPixels}.js` | Copy (unmodified). WebGPU runs in the installed Chrome (`--headless=new`); HyperFrames' headless shell cannot create a device (no `dxil.dll`) | `rcg fx` | P6 |
 | ☐ | About 27 more WGSL (WebGPU) effects | `effects/video/*.js` | Defer (the WebGPU path is proven) | `rcg fx` | later |
 | ☑ | Canvas footage effects: Motion Trail (MotionTrails), Ghost (AdvGhost), Origami | `effects/video/{MotionTrails,AdvGhost,Origami}.js` | Copy (unmodified); pre-roll builds the history of the stateful ones (ghost 2.5 s, trails 2 s) | `rcg fx` | P6 |
@@ -46,6 +47,9 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | ☑ | Transitions: flash white/black, glitch punch, zoom punch, crossfade | `effects/auto/Transitions.js` | Port: same curves and constants; timeline time and a seeded glitch instead of `performance.now()` / `Math.random()`; the crossfade works (Adits blends a frame with itself); punch and bands move the footage layers and any PNP following them | `tools/blocks/transition.mjs` (`rcg transition`) | P7 |
 | — | Audio mixing; `AudioEngine.analyze()` | `core/audio-engine.js` | HF mixing; analysis replaced by the AditsStudio port | — | — |
 | — | Grading, HSL | `AdvLightroom` | HF (`data-color-grading`) | — | — |
+| ☑ | Global Visuals: RGB Colors (beat colour cycle), Neon, BnW, Negative, Fisheye (intensity), Global Opacity, in Adits order with the VJ deck | `core/main.js` 9595-9686, `core/video-engine.js` (`applyGlobalVisuals`, `applyFisheye`) | Copy `VideoEngine` (its WGSL passes run unmodified); RGB, Neon and Opacity ported verbatim from `drawFrameSingle`. Adits' post chain (BnW / Negative + Fisheye, deck off) is skipped: on a bgra8unorm canvas its command buffer is invalid and the frame comes out untouched; the standalone passes give the intended result | `rcg fx --effect global-visuals` (the params also work on every `vj-*` effect) | extra (R15) |
+| ☑ | Cinema Frames: Frame UD (letterbox) and Frame LR (pillarbox), colour, position, curve; Midground; PnP Opacity | `core/main.js` 4883-4922 (`_drawCinemaFrames`), 8379-8381 | Port: the same bar paths as an SVG block in time windows; Midground = under the PNP cut-out (`--behind p1`). PnP Opacity was already `rcg pnp --opacity` (P7) | `tools/blocks/cinema.mjs` (`rcg cinema`) | extra (R15) |
+| — | Cinema Frame Hold, Always On, Sync; Custom Frame | `core/main.js` 4840-4870, `effects/frames/SocialFrames.js` | Skip: Hold pins Anamorphic 3D parallax and background opacity, Always On keeps bars through Universal Glitch flashes, Sync mirrors sliders in the UI (none exist here). Custom Frame (Instagram post replica) stays with the social frames row | — | — |
 | ☑ | Color mask (Global Color Mask: chroma key, modes media / effect / color, tolerance, feather, invert) | `core/ColorMask.js` | Copy (unmodified, WebGPU path); run by `rcg fx --effect color-mask` (shim); side B = other media or an effect clip | `library/adits-fx/core/ColorMask.js`, `library/fx/shims/color-mask.js` | P7 |
 | ☑ | Background removal, pre-baked (MediaPipe selfie segmenter) | `core/ARBackgroundRemoval.js`, `core/BakedBackgroundRemoval.js`, `core/lib/mediapipe-wasm/`, `mediapipe-models/selfie_segmenter.tflite` | Port: every source frame at the source rate, VP9-alpha cut-out + hole-cut plate; adds threshold, temporal blend, feather and choke (Adits has no refinement). MediaPipe files copied, git-ignored (`models/mediapipe/`) | `tools/track/matte.mjs` (`rcg matte`), `library/vision/` | P7 |
 | ☑ | Face and hand tracking (FaceLandmarker, HandLandmarker; Adits gesture fallback, pinch, palm open, ROI crop pass) | `core/VisionEngine.js`, `core/GestureEngine.js`, `face_landmarker.task`, `hand_landmarker.task` | Port: every frame on frame time (Adits: 15 fps on wall time), crop fallback for small faces, One-Euro on frame time, gesture events (120 ms hold) | `tools/track/track.mjs` (`rcg track`) | P7 |
@@ -120,13 +124,13 @@ Counts are checklist rows (one row can hold several features). "Waiting" means n
 
 | Source | Ported ☑ | Waiting ☐ | On hold | No work needed |
 |---|---|---|---|---|
-| Adits_Modular | 24 | 9 | 1 (GLB models) | 3 |
+| Adits_Modular | 27 | 9 | 1 (GLB models) | 4 |
 | AditsShaders | 6 | 0 | 0 | 1 |
 | AditsStudio | 2 | 0 | 0 | 2 |
 | flowEditor | 6 | 2 | 0 | 1 |
 | TTS app | 6 | 1 | 0 | 2 |
 | mop-star lessons | 2 | 0 | 0 | 0 |
-| **Total** | **46** | **12** | **1** | **9** |
+| **Total** | **49** | **12** | **1** | **10** |
 
 **Adits effects in `library/adits-fx/` (copied unmodified, run by `rcg fx`), 11 of them:**
 - Footage, canvas: Ghost (`AdvGhost`), Motion Trail (`MotionTrails`), Origami.
@@ -151,9 +155,14 @@ the audio drives read Adits' analyser emulated per tick.
 Hollow Text, RGB Highlight, Negative FX and Text Shadow, as `rcg captions` options on any preset
 (R14). The caption rows were also corrected: the preset row listed looks that were never ported.
 
+**Ported 2026-10-09 (outside the phases), from Adits:** the Global Visuals card (RGB Colors, Neon,
+BnW, Negative, Fisheye, Global Opacity as `rcg fx --effect global-visuals`; Cinema Frames as
+`rcg cinema`) and four Video Jockey FX with all their presets, run by the unmodified deck: Depth Scan,
+Lights, Lightshow and Beat Wash (`rcg fx --effect vj-*`, 26 presets) (R15).
+
 **Still waiting (rows marked ☐ above):**
-- Adits: BlackHole, Clouds and TunnelCorridor environments; PixelStretch, ReversePhi and the VJ
-  deck; about 27 more WGSL effects; Voxel Cubes, Pyramorphic, explode, 2D→3D relief, cloak and
+- Adits: BlackHole, Clouds and TunnelCorridor environments; PixelStretch, ReversePhi and four VJ
+  FX (Lum Network, Beam Bloom, Pulse Grid, Tile Storm); about 27 more WGSL effects; Voxel Cubes, Pyramorphic, explode, 2D→3D relief, cloak and
   motion extraction; social frames and doodle; captions: the Active Tracking Caption motion path,
   display modes, in / out animations and Caption Cascade, its font and colour controls, its lyric
   display styles, and the fisheye, 3d_font, premium_impact, motion3d and flying3d looks.
@@ -174,6 +183,7 @@ Hollow Text, RGB Highlight, Negative FX and Text Shadow, as `rcg captions` optio
 | P6 Optional (selected subset) | `rcg fx` harness; Ghost, Motion Trail, Origami, Heat Haze, Blow Pixels, FrameTunnel, RevealUnder, SplitScreen; SmokeEnv, RainSystem, HoloSheen | R6 | ☑ subset done 2026-10-08: 11 effects rendered offline into a 13.75 s reel, -14.8 LUFS, 11/11 verify; Blow Pixels at intensity 0 returns its input exactly; 3 effects byte-identical across two runs |
 | P7 Tracking + PNP | MediaPipe face/hand tracking, face-anchored camera, background removal, PNP, layers, transitions, colour mask, effect target | R7 | ☑ done 2026-10-08: a 13.4 s 9:16 edit of the user's 16:9 test clip: face found on 346/346 frames (tracking identical on two runs of a 2 s range), keywords behind the subject, side copy, 4 transitions, colour mask, Blow Pixels switched bg to fg; -14.4 LUFS, 11/11 verify |
 | P8 Voxels + anamorphic models | Voxel Art, Voxel Drop + Rapier, Hole, Magnet, Flip, Grow; Particles, Cutout, Magic Carpet; 60 Hz host clock, followed point, Adits analyser | R8 | ☑ done 2026-10-08: a 14.0 s reel of all 9 effects (R6 and R7 clips, R7 hand track); flat voxel plane fits 1.014-1.020 x linear(input) within 1.5/255; physics and particles byte-identical across runs; 24 vs 30 fps agree at 53-55 dB; -14.8 LUFS, 11/11 verify |
+| Extra: Global Visuals + VJ | Adits Global Visuals (RGB, Neon, BnW, Negative, Fisheye, Opacity, Cinema Frames); VJ Depth Scan, Lights, Lightshow, Beat Wash, 26 presets | R15 | ☑ done 2026-10-09: all 26 presets rendered; BnW, Negative, Fisheye and Opacity match Adits' formulas within 1/255 (BnW + Fisheye within 1.6/255); Lightshow strobe byte-identical across two runs; Depth Scan identical at 24 and 30 fps; cinema bars within 1 px of the path; 15.0 s reel, -14.9 LUFS, 11/11 verify |
 | P6 remainder | other footage FX and environments, newspaper background, frames/doodle, `.flow` import, extra TTS engines | none yet | not started |
 | Extra: caption text controls | Adits Active Tracking Caption Hollow Text, RGB Highlight, Negative FX, Text Shadow | R14 | ☑ done 2026-10-09: 7 caption blocks on 7 presets (pill, tier and kinetic layouts); hf check 0 errors; 11.2 s, 7/7 verify (silent); RGB colour read from the frame matches the formula; output with no new flag byte-identical to before for 19 presets x 3 modes |
 
