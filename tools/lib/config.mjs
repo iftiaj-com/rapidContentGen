@@ -52,6 +52,15 @@ function detectPluginRoot(launcher) {
   return versions.length ? join(base, versions[versions.length - 1]) : null;
 }
 
+/** The plugin's own version, from its manifest (the folder name is only a hint). */
+function pluginVersion(root) {
+  for (const f of ['plugin.json', '.claude-plugin/plugin.json']) {
+    const file = join(root, f);
+    if (existsSync(file)) return readJson(file).version || null;
+  }
+  return null;
+}
+
 const abs = (p) => (p == null ? p : isAbsolute(p) ? p : join(ROOT, p));
 
 let cached = null;
@@ -69,6 +78,13 @@ export function loadConfig({ fresh = false } = {}) {
   cfg.hyperframes.launcherPath = cfg.hyperframes.pluginRoot
     ? join(cfg.hyperframes.pluginRoot, launcherRel)
     : null;
+  // How HyperFrames runs: through the Claude Code plugin's launcher when it is
+  // installed, else straight from npm (`npx hyperframes@<version>`), which needs no
+  // plugin, account or agent. usePlugin: false (or RCG_HF_NPX=1) forces npm.
+  const pluginUsable = cfg.hyperframes.usePlugin !== false && process.env.RCG_HF_NPX !== '1'
+    && Boolean(cfg.hyperframes.launcherPath && existsSync(cfg.hyperframes.launcherPath));
+  cfg.hyperframes.runner = pluginUsable ? 'plugin' : 'npx';
+  cfg.hyperframes.cliVersion = (pluginUsable && pluginVersion(cfg.hyperframes.pluginRoot)) || cfg.hyperframes.version || 'latest';
 
   const venv = cfg.paths.voiceVenv;
   cfg.bin.voicePython = venv

@@ -10,7 +10,7 @@
     "handmade explainer"
   ],
   "from": "library/styles/info-graphics (components) + library/styles/tactile-collage (palette, fonts)",
-  "skill": ".claude/skills/skill-info-graphics/SKILL.md",
+  "skill": ".agents/skills/skill-info-graphics/SKILL.md",
   "components": "components.mjs",
   "tokens": {
     "dark": "#25231f",

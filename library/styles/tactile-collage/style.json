@@ -1,10 +1,10 @@
 {
-  "$comment": "Style pack: Tactile Paper Collage. Ported from github.com/audrey-560/hyperframes-tactile-collage (MIT) at ef6a49f; see docs/PROVENANCE.md. Tokens are the reference's neutral defaults plus two text shades (signal-ink, resolve-ink: the base signal and resolve fall under 3:1 as text on paper or tape, measured by hf check); remap accents to approved brand colours per job, keeping the roles. Workflow and judgment: .claude/skills/style-tactile-collage/SKILL.md.",
+  "$comment": "Style pack: Tactile Paper Collage. Ported from github.com/audrey-560/hyperframes-tactile-collage (MIT) at ef6a49f; see docs/PROVENANCE.md. Tokens are the reference's neutral defaults plus two text shades (signal-ink, resolve-ink: the base signal and resolve fall under 3:1 as text on paper or tape, measured by hf check); remap accents to approved brand colours per job, keeping the roles. Workflow and judgment: .agents/skills/style-tactile-collage/SKILL.md.",
   "label": "Tactile Paper Collage",
   "use": "Warm paper, cut-out cards, ink edges, tape, stamps, dotted routes and checklists. Explainers, talking heads, process and how-to stories.",
   "keywords": ["paper", "collage", "scrapbook", "notebook", "cutout", "mixed media", "tactile", "analog", "handmade", "zine", "craft"],
   "from": "github.com/audrey-560/hyperframes-tactile-collage @ ef6a49f (MIT), ported",
-  "skill": ".claude/skills/style-tactile-collage/SKILL.md",
+  "skill": ".agents/skills/style-tactile-collage/SKILL.md",
   "components": "components.mjs",
   "tokens": {
     "paper": "#f3e8cc",

@@ -6,7 +6,7 @@ tested on Windows 11.
 ## What the clone has, and what it does not
 
 The clone (about 16 MB) has the tools (`tools/rcg.mjs`), the library (shaders, effects, style
-packs, recipes, the SFX library), the template, the docs and the Claude Code skills.
+packs, recipes, the SFX library), the template, the docs and the project's agent skills.
 
 These are git-ignored and do not come with it:
 
@@ -18,8 +18,9 @@ These are git-ignored and do not come with it:
 | `models/` (Kokoro, MediaPipe) | about 380 MB | voiceover, face and hand tracking, background removal |
 | `jobs/` | yours | each video you make (created for you) |
 
-The project is driven by Claude Code: you drop a video and a prompt, and the agent follows the
-`video-job` skill. You can also run every `rcg` command by hand.
+The project is driven by a coding agent: you drop a video and a prompt, and the agent follows the
+`video-job` skill. It is set up for **Google Antigravity** and **Claude Code** (step 5). You can also
+run every `rcg` command by hand.
 
 ## Check where you are
 
@@ -39,23 +40,22 @@ node tools/rcg.mjs doctor
 
 Node 22 is what the project runs on. Older versions have not been tested.
 
-### 2. Claude Code with the HyperFrames plugin
+### 2. HyperFrames (nothing to install)
 
-HyperFrames renders every video. Install the plugin in Claude Code:
+HyperFrames renders every video. It is free and open source, and rendering locally needs no
+account, login or API key. `rcg hf` and `rcg render` run it as `npx hyperframes@<version>`, with
+the version pinned in `config/workspace.json` (`hyperframes.version`). The first run downloads it
+(npm needs internet once); after that it is cached.
 
-```
-/plugin marketplace add heygen-com/hyperframes
-/plugin install hyperframes@hyperframes
-```
-
-`doctor` finds it on its own under `~/.claude/plugins/cache/hyperframes/hyperframes/<version>`.
-If it lives somewhere else, set `hyperframes.pluginRoot` in the local config (step 4).
+Keep that pin in step with the HyperFrames skills you install in step 5: they come from
+HyperFrames' latest release, so check it with `npm view hyperframes version`, set the same number,
+and test a render. `doctor` shows the version in use on the `hyperframes CLI` row.
 
 ### 3. ffmpeg, plus an ffmpeg for HyperFrames
 
 - Put `ffmpeg` and `ffprobe` on PATH. 8.1 works for the tools.
 - HyperFrames needs a build without the edge bug: ffmpeg 8.1 (gyan.dev) turns the right 8 px
-  of every 1080-wide render black (lesson 16b in `.claude/skills/video-job/references/lessons.md`).
+  of every 1080-wide render black (lesson 16b in `.agents/skills/video-job/references/lessons.md`).
   The gyan.dev release "essentials" build 9.0.2 is fine. Unzip it into `tools/bin/` and point the
   config at it (step 4, `bin.hfFfmpeg` and `bin.hfFfprobe`).
 
@@ -89,6 +89,50 @@ Edit it. Remove the keys you do not need. A typical file:
 - `keys.pixabay` (optional): a free Pixabay API key for `rcg assets`.
 - Write JSON with an editor, Node or Python, not PowerShell redirection: PowerShell 5.1 adds a
   byte-order mark that breaks the file.
+
+### 5. Your agent
+
+Every agent reads the same project rules (`AGENTS.md`) and the same skills. There is one copy of
+each, in `.agents/skills/`:
+
+- the project's skills (`video-job` plus the style skills), committed;
+- HyperFrames' own skills, which teach an agent how to write HyperFrames compositions, installed
+  once per machine for all your agents and git-ignored.
+
+**Install HyperFrames' skills (once, for all agents).** From the repo root:
+
+```bash
+npx skills add heygen-com/hyperframes
+```
+
+In the picker choose **Core Skills**, select every agent you use (for example Antigravity and
+Claude Code), and keep one source of truth for all agents. The skills are written into
+`.agents/skills/`; agents that read another folder (Claude Code reads `.claude/skills/`) get links
+to them. Then start a new conversation in each agent so the skills load.
+
+**Google Antigravity**
+
+1. Open the repo root as the workspace. Antigravity reads `AGENTS.md` and `.agents/skills/` by
+   itself.
+2. Ask for an edit ("new job from inbox/my-reel"). Antigravity picks skills by their description.
+   Antigravity 2.0 and its CLI also let you call one by name (`/video-job`); if your version does
+   not offer that, name the skill in the request.
+
+**Claude Code**
+
+1. Open the repo root. Claude Code reads `CLAUDE.md`, which imports `AGENTS.md`, and the skills in
+   `.claude/skills/`: a copy of the project skills plus the links to HyperFrames' skills.
+2. Do not also install the HyperFrames plugin, or Claude sees two copies of HyperFrames' skills
+   that can differ in version. If it is installed, remove it (this affects all your projects):
+
+   ```bash
+   claude plugin uninstall hyperframes@hyperframes
+   ```
+
+3. Call a skill with `/video-job`, `/style-marketing-pro` and so on.
+
+**Changing a project skill:** edit it in `.agents/skills/` only, then run
+`node tools/rcg.mjs skills sync` so Claude Code gets the same text. `doctor` reports a stale copy.
 
 ## Optional, by feature
 
@@ -161,7 +205,7 @@ need the real Chrome, not the headless shell. Set `bin.fxChrome` if Chrome is so
 
 1. Put your clip and a `prompt.md` in `inbox/<name>/` (see `inbox/README.md`), or attach them in
    chat.
-2. Ask Claude Code: "new job from inbox/<name>".
+2. Ask your agent: "new job from inbox/<name>".
 3. The agent creates `jobs/<date>-<name>/`, plans, builds, renders with `rcg render` and checks the
    result. The finished video is in `jobs/<id>/renders/`.
 

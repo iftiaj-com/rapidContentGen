@@ -22,7 +22,7 @@
       "sha256Source": "3c86d7ecf77b8a7fe4f35cc1b6f541748ab6e6fe34c16df5d2d96724bbee6958",
       "date": "2026-10-08",
       "note": "workflow around rcg style; EB Garamond instead of Georgia (user decision), underline instead of italic",
-      "to": ".claude/skills/style-quiet-editorial/SKILL.md"
+      "to": ".agents/skills/style-quiet-editorial/SKILL.md"
     },
     {
       "source": "quietEditorial",
@@ -34,7 +34,7 @@
       "sha256Source": "e5e1d6a56a36fb93ec28dcc866256609fb9e05e2ea3f9f069c3659c19c89cb2a",
       "date": "2026-10-08",
       "note": "merged with references/safe-zones.md and the workspace 9:16 safe box",
-      "to": ".claude/skills/style-quiet-editorial/references/layout-modes.md"
+      "to": ".agents/skills/style-quiet-editorial/references/layout-modes.md"
     },
     {
       "source": "quietEditorial",
@@ -46,7 +46,7 @@
       "sha256Source": "ea0a769c1e46296a52e43965c9916f2c76d854bae63f83075112374a8aa21101",
       "date": "2026-10-08",
       "note": "collision hierarchy and caption lanes",
-      "to": ".claude/skills/style-quiet-editorial/references/layout-modes.md"
+      "to": ".agents/skills/style-quiet-editorial/references/layout-modes.md"
     },
     {
       "source": "quietEditorial",
@@ -58,7 +58,7 @@
       "sha256Source": "7c0bf00e3453079e7e5c4946ceb5731f9c78ff2d6dbc78f6ce03ee0184dac7e2",
       "date": "2026-10-08",
       "note": "timings and choreography",
-      "to": ".claude/skills/style-quiet-editorial/references/motion-captions.md"
+      "to": ".agents/skills/style-quiet-editorial/references/motion-captions.md"
     },
     {
       "source": "quietEditorial",
@@ -70,7 +70,7 @@
       "sha256Source": "3d1ee86bca48a8ac2930e230c2982f6760a5d7af8740abc056deee8044c8b3e1",
       "date": "2026-10-08",
       "note": "caption rules mapped to rcg captions editorial / editorial-clean",
-      "to": ".claude/skills/style-quiet-editorial/references/motion-captions.md"
+      "to": ".agents/skills/style-quiet-editorial/references/motion-captions.md"
     },
     {
       "source": "quietEditorial",
@@ -82,7 +82,7 @@
       "sha256Source": "1ff54f6c961e89a809555b6776107b04556b446972c92633206b661eae56b091",
       "date": "2026-10-08",
       "note": "hierarchy, colour semantics, surfaces, components; success-deep for text",
-      "to": ".claude/skills/style-quiet-editorial/references/style-system.md"
+      "to": ".agents/skills/style-quiet-editorial/references/style-system.md"
     },
     {
       "source": "tactileCollage",
@@ -94,7 +94,7 @@
       "sha256Source": "392c11e2e4e2a0e2197478a07f16aff4b11cc4774d2f39ff618280c4c5592680",
       "date": "2026-10-08",
       "note": "workflow rewritten around rcg style apply/build inside video-job; boundaries kept",
-      "to": ".claude/skills/style-tactile-collage/SKILL.md"
+      "to": ".agents/skills/style-tactile-collage/SKILL.md"
     },
     {
       "source": "tactileCollage",
@@ -106,7 +106,7 @@
       "sha256Source": "b337b8981657f115ae59a7a7df04afb4ab79cd583c49db3d8391f5fff0ccb3c4",
       "date": "2026-10-08",
       "note": "layout modes via rcg matte/pnp/layer; workspace 9:16 safe box",
-      "to": ".claude/skills/style-tactile-collage/references/layering-safe-zones.md"
+      "to": ".agents/skills/style-tactile-collage/references/layering-safe-zones.md"
     },
     {
       "source": "tactileCollage",
@@ -118,7 +118,7 @@
       "sha256Source": "6432d321195930addfc9a2a3b9d14f4512a6ac869f00d029a127948683279924",
       "date": "2026-10-08",
       "note": "timings, caption rules, sparse causal SFX mapped to library/sfx",
-      "to": ".claude/skills/style-tactile-collage/references/motion-captions-audio.md"
+      "to": ".agents/skills/style-tactile-collage/references/motion-captions-audio.md"
     },
     {
       "source": "tactileCollage",
@@ -130,7 +130,7 @@
       "sha256Source": "6584a2a35a567535025b8f9f8e67b3afd983e9e32039b2c41fdb1ed8821facff",
       "date": "2026-10-08",
       "note": "narrative function table mapped to rcg style components",
-      "to": ".claude/skills/style-tactile-collage/references/scene-grammar.md"
+      "to": ".agents/skills/style-tactile-collage/references/scene-grammar.md"
     },
     {
       "source": "tactileCollage",
@@ -142,7 +142,7 @@
       "sha256Source": "2bda6e8c81deeca21f1fa3f812b2f4a11dd2362dee41269766c0b025d5cc0527",
       "date": "2026-10-08",
       "note": "colour roles, type, surfaces, failure signatures; -ink text shades added",
-      "to": ".claude/skills/style-tactile-collage/references/style-system.md"
+      "to": ".agents/skills/style-tactile-collage/references/style-system.md"
     },
     {
       "source": "adits",
@@ -3674,6 +3674,32 @@
       "date": "2026-10-07",
       "note": "AudioSpeed flywheel integrated at fixed dt into a per-frame TIME column (seekable)",
       "to": "tools/audio/analyze.mjs"
+    },
+    {
+      "source": "hyperframes",
+      "sourceRoot": "C:/Users/iftiaj/.claude/plugins/cache/hyperframes/hyperframes/0.8.115",
+      "from": "LICENSE",
+      "kind": "copy",
+      "gitHead": null,
+      "dirtyAtCopy": false,
+      "sha256Source": "4259155fb06f127687ee7b0a8a3682d45132db0f2da26cbc0b7a2d1e796436b8",
+      "date": "2026-10-09",
+      "note": "Apache-2.0 licence for analyze-beatgrid.py",
+      "to": "tools/audio/hyperframes/LICENSE",
+      "sha256Dest": "4259155fb06f127687ee7b0a8a3682d45132db0f2da26cbc0b7a2d1e796436b8"
+    },
+    {
+      "source": "hyperframes",
+      "sourceRoot": "C:/Users/iftiaj/.claude/plugins/cache/hyperframes/hyperframes/0.8.115",
+      "from": "skills/music-to-video/scripts/analyze-beatgrid.py",
+      "kind": "copy",
+      "gitHead": null,
+      "dirtyAtCopy": false,
+      "sha256Source": "acc14ffbbbcfb59fbe89a6886380d584df07a14205b1a299f424810bc85baed0",
+      "date": "2026-10-09",
+      "note": "Beat grid + audiomap.json for beat-synced cuts; Apache-2.0 (LICENSE beside it). Run with rcg beatgrid",
+      "to": "tools/audio/hyperframes/analyze-beatgrid.py",
+      "sha256Dest": "acc14ffbbbcfb59fbe89a6886380d584df07a14205b1a299f424810bc85baed0"
     },
     {
       "source": "adits",

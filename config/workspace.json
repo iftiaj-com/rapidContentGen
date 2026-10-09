@@ -1,6 +1,9 @@
 {
   "$comment": "Committed defaults. Machine-specific absolute paths go in workspace.local.json (git-ignored). Relative paths resolve against the repo root.",
   "hyperframes": {
+    "$comment": "version: the HyperFrames CLI that rcg runs through npx, for every agent. Keep it in step with the HyperFrames skills installed by `npx skills add heygen-com/hyperframes` (SETUP.md). usePlugin: true would use an installed Claude Code plugin's launcher and version instead.",
+    "version": "0.8.143",
+    "usePlugin": false,
     "pluginRoot": null,
     "launcher": "skills/hyperframes/scripts/plugin-cli.mjs"
   },

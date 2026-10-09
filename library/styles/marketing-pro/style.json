@@ -1,10 +1,10 @@
 {
-  "$comment": "Style pack: Marketing Pro. Learned from the user's reference ad Video-2306 (a real-estate agent promo; measured, nothing copied) and the user's brief. Colours sampled from its frames (purple, neon ends, strike red); teal is a close default. Camera rules and planner: tools/recipes/marketing-pro.mjs. Workflow: .claude/skills/style-marketing-pro/SKILL.md.",
+  "$comment": "Style pack: Marketing Pro. Learned from the user's reference ad Video-2306 (a real-estate agent promo; measured, nothing copied) and the user's brief. Colours sampled from its frames (purple, neon ends, strike red); teal is a close default. Camera rules and planner: tools/recipes/marketing-pro.mjs. Workflow: .agents/skills/style-marketing-pro/SKILL.md.",
   "label": "Marketing Pro",
   "use": "Promo talking-head edits from ordinary footage: a camera that always moves (1.3x base, eased zoom-outs to 1.0x, 1.6x punches on sentence starts), two-tier body captions and one hero keyword per sentence behind the head, styled by meaning.",
   "keywords": ["marketing", "promo", "ad", "talking head", "real estate", "agent", "coach", "personal brand", "reel", "ugc", "testimonial", "sales"],
   "from": "user reference Video-2306 (measured) + user brief, 2026-10-08",
-  "skill": ".claude/skills/style-marketing-pro/SKILL.md",
+  "skill": ".agents/skills/style-marketing-pro/SKILL.md",
   "components": "components.mjs",
   "tokens": {
     "purple": "#7f51b6",

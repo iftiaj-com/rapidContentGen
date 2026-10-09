@@ -1,6 +1,7 @@
-// Run the HyperFrames CLI through the installed plugin's launcher, so the CLI
-// version always matches the plugin's skills. The launcher path comes from
-// config (auto-detected from the plugin cache when not set).
+// Run the HyperFrames CLI. With the Claude Code plugin installed, through its
+// launcher, so the CLI version matches the plugin's skills (the launcher path is
+// auto-detected from the plugin cache when not set). Without it, straight from npm
+// as `npx --yes hyperframes@<hyperframes.version>`, so any agent (or none) can render.
 //
 // Usage: node tools/jobs/hf.mjs [--cwd <dir>] <hyperframes args...>
 
@@ -8,13 +9,17 @@ import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
-import { isAbsolute, join, resolve } from 'node:path';
+import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { isMain } from '../lib/cli.mjs';
 import { loadConfig } from '../lib/config.mjs';
 
 export function hfEnv() {
   const cfg = loadConfig();
   const env = { ...process.env };
+  // What the plugin launcher sets, so the npx route behaves the same: no skill
+  // install or update check from inside a render.
+  env.HYPERFRAMES_SKIP_SKILLS ??= '1';
+  env.HYPERFRAMES_NO_UPDATE_CHECK ??= '1';
   // Point HyperFrames' Python-based tools (Kokoro TTS, etc.) at the voice venv
   // once it exists, so nothing ever falls back to the broken `python3` alias.
   if (cfg.bin.voicePython && existsSync(cfg.bin.voicePython)) env.HYPERFRAMES_PYTHON = cfg.bin.voicePython;
@@ -116,14 +121,35 @@ export function planBrowserRun(args, cwd, note = (m) => process.stdout.write(`${
  * Run a HyperFrames command. onLine receives each output line (stdout + stderr).
  * Resolves with { code, output }.
  */
-export function hf(args, { cwd = process.cwd(), onLine = (l) => process.stdout.write(l + '\n') } = {}) {
+/**
+ * The command that runs the HyperFrames CLI with `args`: the plugin launcher, or
+ * npx with the pinned version. npx runs through node + npx-cli.js on Windows (as
+ * the plugin launcher does) so no shell is needed. Exported for rcg doctor.
+ */
+export function hfCommand(args = []) {
   const cfg = loadConfig();
-  if (!cfg.hyperframes.launcherPath || !existsSync(cfg.hyperframes.launcherPath)) {
-    return Promise.reject(new Error('HyperFrames plugin launcher not found. Set hyperframes.pluginRoot in config/workspace.local.json.'));
+  if (cfg.hyperframes.runner === 'plugin') {
+    return { command: process.execPath, args: [cfg.hyperframes.launcherPath, ...args], via: `plugin ${cfg.hyperframes.cliVersion}` };
+  }
+  const cliArgs = ['--yes', `hyperframes@${cfg.hyperframes.cliVersion}`, ...args];
+  if (process.platform !== 'win32') return { command: 'npx', args: cliArgs, via: `npx hyperframes@${cfg.hyperframes.cliVersion}` };
+  const npx = [
+    process.env.npm_execpath && join(dirname(process.env.npm_execpath), 'npx-cli.js'),
+    join(dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npx-cli.js'),
+  ].filter(Boolean).find((p) => existsSync(p));
+  if (!npx) return null;
+  return { command: process.execPath, args: [npx, ...cliArgs], via: `npx hyperframes@${cfg.hyperframes.cliVersion}` };
+}
+
+export function hf(args, { cwd = process.cwd(), onLine = (l) => process.stdout.write(l + '\n') } = {}) {
+  const probe = hfCommand();
+  if (!probe) {
+    return Promise.reject(new Error('Cannot run HyperFrames: no plugin launcher and no npx-cli.js next to node. Install Node.js with npm (see SETUP.md).'));
   }
   return new Promise((resolvePromise, reject) => {
     const plan = planBrowserRun(args, resolve(cwd), onLine);
-    const proc = spawn(process.execPath, [cfg.hyperframes.launcherPath, ...plan.args], { cwd: plan.cwd, env: hfEnv(), windowsHide: true });
+    const run = hfCommand(plan.args);
+    const proc = spawn(run.command, run.args, { cwd: plan.cwd, env: hfEnv(), windowsHide: true });
     let output = '';
     let pending = '';
     const feed = (chunk) => {
