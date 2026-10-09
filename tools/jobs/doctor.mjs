@@ -77,6 +77,9 @@ export function doctor() {
   for (const [key, p] of Object.entries(cfg.sources || {})) add(`source: ${key}`, existsSync(p), p, true);
   const prov = checkLedger();
   add('provenance ledger', prov.problems.length === 0, `${prov.entries} entries, ${prov.problems.length} problems, ${prov.drift.length} source drift`);
+  if (prov.notInstalled.length) {
+    add('git-ignored copies', false, `${prov.notInstalled.length} not installed yet (models, MediaPipe; see SETUP.md): rcg provenance check lists them`, true);
+  }
   return rows;
 }
 

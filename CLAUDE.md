@@ -9,6 +9,8 @@ app) are **copied or ported in** and logged in `docs/PROVENANCE.md`.
 **For any editing request, follow the `video-job` skill** (`.claude/skills/video-job/SKILL.md`).
 It holds the full workflow: intake, mode, beat sheet, audio, build, render, verify, report.
 
+On a fresh clone, or when `rcg doctor` reports a `FAIL`, follow `SETUP.md` first.
+
 ## Critical rules
 
 - **Never edit the source projects** (`Adits_Modular`, `AditsShaders`, `AditsStudio`,

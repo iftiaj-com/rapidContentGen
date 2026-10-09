@@ -110,14 +110,30 @@ export function recordPort(key, from, to, kind, note) {
 }
 
 /** Copied files must still match what was copied; sources may have moved on. */
+// Which of these repo paths git ignores. Ignored copies (model weights, MediaPipe)
+// never come with a clone, so a missing one is "not installed yet", not a problem.
+// Without git (e.g. a zip download) nothing counts as ignored.
+function ignoredPaths(paths) {
+  if (!paths.length) return new Set();
+  try {
+    const out = execFileSync('git', ['-C', ROOT, 'check-ignore', '--no-index', '--stdin'],
+      { input: paths.join('\n') + '\n', encoding: 'utf8', windowsHide: true, stdio: ['pipe', 'pipe', 'ignore'] });
+    return new Set(out.split('\n').map((l) => l.trim()).filter(Boolean));
+  } catch (err) {
+    return new Set(String(err.stdout || '').split('\n').map((l) => l.trim()).filter(Boolean));
+  }
+}
+
 export function checkLedger() {
   const ledger = loadLedger();
   const problems = [];
+  const notInstalled = [];
   const drift = [];
+  const missing = [];
   for (const e of ledger.entries) {
     if (e.kind === 'copy') {
       const dest = join(ROOT, e.to);
-      if (!existsSync(dest)) problems.push(`missing copy: ${e.to}`);
+      if (!existsSync(dest)) missing.push(e.to);
       else if (sha256(dest) !== e.sha256Dest) problems.push(`edited after copy (should be recorded as a port): ${e.to}`);
     }
     const src = join(e.sourceRoot, e.from);
@@ -125,7 +141,12 @@ export function checkLedger() {
       drift.push(`${e.source}/${e.from} changed since it was copied`);
     }
   }
-  return { entries: ledger.entries.length, problems, drift };
+  const ignored = ignoredPaths(missing);
+  for (const to of missing) {
+    if (ignored.has(to)) notInstalled.push(to);
+    else problems.push(`missing copy: ${to}`);
+  }
+  return { entries: ledger.entries.length, problems, notInstalled, drift };
 }
 
 function renderDoc(ledger) {
@@ -171,6 +192,7 @@ if (isMain(import.meta.url)) {
       const res = checkLedger();
       console.log(`${res.entries} entries`);
       for (const p of res.problems) console.log(`PROBLEM ${p}`);
+      for (const n of res.notInstalled) console.log(`TODO    not installed (git-ignored, see SETUP.md): ${n}`);
       for (const d of res.drift) console.log(`drift   ${d}`);
       process.exit(res.problems.length ? 1 : 0);
     } else if (cmd === 'render') {
