@@ -24,8 +24,8 @@ supports it: `/video-job` in Antigravity (2.0 and CLI) and Claude Code.
 |---|---|
 | `video-job` | Every editing request: intake, working mode, beat sheet, audio, build, render, verify, report. The others run inside it. |
 | `style-marketing-pro` | Promo, ad, personal-brand, coach, UGC or testimonial edits of one talking clip |
-| `skill-split-screen-edit` | A presenter clip plus an informative clip as a 9:16 split screen |
-| `skill-info-graphics` | Voice-led info-graphics, explainers, video essays, faceless or topic-only videos |
+| `style-split-screen-edit` | A presenter clip plus an informative clip as a 9:16 split screen |
+| `style-info-graphics` | Voice-led info-graphics, explainers, video essays, faceless or topic-only videos |
 | `style-tactile-collage` | Paper collage, scrapbook, zine, handmade or analog look |
 | `style-quiet-editorial` | Quiet, minimal, premium, editorial or product-UI look |
 | `style-vox-parallax` | Vox-style 2.5D parallax from still photos, documentary or archival look |
@@ -68,7 +68,7 @@ valid compositions (the `data-*` timing contract, clips, tracks, animation rules
 - **No credit or attribution text on screen.** Never put photographer, source, licence or
   "courtesy of" text in a video. Credits for collected assets live only in the job's
   `data/credits.json` and `report.md` (`rcg assets credits`). The approved sources do not require
-  on-screen credit (`.agents/skills/skill-info-graphics/references/assets.md`).
+  on-screen credit (`.agents/skills/style-info-graphics/references/assets.md`).
 
 ## Environment
 
@@ -102,8 +102,8 @@ node tools/rcg.mjs style list                          # style packs; skills sty
 node tools/rcg.mjs layers --job jobs/<id> --src assets/photo.jpg --name s1 --layer "mid:person" --layer "fg:chair"   # depth layers for parallax
 node tools/rcg.mjs marketing-pro prep --job jobs/<id> --src assets/clip.mp4 --trim [--intro 3.8 --outro 1.8]     # then plan (--fill-heroes --clusters --cards --whips --strips --music), then build (skill style-marketing-pro)
 python -I tools/media/camera_motion.py <video>                   # measure a video's zooms, cuts and drift
-node tools/rcg.mjs split-screen prep --job jobs/<id> --presenter assets/p.mp4 --info assets/b.mp4 --trim   # then plan, then build (skill skill-split-screen-edit)
-node tools/rcg.mjs infographics place-voice --job jobs/<id> --music assets/bed-limited.wav --duration 10   # then resolve --plan data/info-plan.json (skill skill-info-graphics)
+node tools/rcg.mjs split-screen prep --job jobs/<id> --presenter assets/p.mp4 --info assets/b.mp4 --trim   # then plan, then build (skill style-split-screen-edit)
+node tools/rcg.mjs infographics place-voice --job jobs/<id> --music assets/bed-limited.wav --duration 10   # then resolve --plan data/info-plan.json (skill style-info-graphics)
 node tools/rcg.mjs assets icon add rocket-launch --weight bold        # approved sources only; also search / fetch --dry-run / credits
 node tools/rcg.mjs broll --job jobs/<id> --src assets/b1-prep.mp4    # info-video shots scored card/ui/footage + sheet
 node tools/rcg.mjs style apply --job jobs/<id> --style tactile-collage

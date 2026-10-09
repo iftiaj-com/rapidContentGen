@@ -1,5 +1,5 @@
 ---
-name: skill-info-graphics
+name: style-info-graphics
 description: Make a voice-led info-graphics video (video essay, explainer, faceless Short) in rapidContentGen from a topic alone (the agent writes the script, voices it, designs the motion graphics and the sound) or from the user's script plus imported assets (the agent keeps the words, places the assets, then collects or creates the rest). The look is a new visual every sentence on dark, cream or light-grey grounds - kinetic type with one orange word, equations, stairs and pyramids, social posts, prompt bars with a clicking cursor, orbits, counters, photo plates and collages - every entrance landing on a spoken word, with a one-word black caption chip. Use when the user asks for an infographic, info-graphics, explainer, video essay, faceless or topic-only video, "make a video about X", "here is my script", or names this style. Runs inside the video-job workflow.
 ---
 

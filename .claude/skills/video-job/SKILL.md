@@ -62,8 +62,8 @@ paper collage, scrapbook, notebook, cut-out, handmade -> `style-tactile-collage`
 minimal, premium, product UI -> `style-quiet-editorial`; Vox, parallax, 2.5D, "make photos move",
 documentary or archival explainer -> `style-vox-parallax`; promo, ad, personal-brand or testimonial
 talking head (one person) -> `style-marketing-pro`; split screen, presenter plus B-roll or an info
-video, "two videos", top and bottom -> `skill-split-screen-edit`; infographic, explainer, video essay,
-faceless or topic-only video, "make a video about X", or a script plus assets -> `skill-info-graphics`. Style packs are built for speech-led edits
+video, "two videos", top and bottom -> `style-split-screen-edit`; infographic, explainer, video essay,
+faceless or topic-only video, "make a video about X", or a script plus assets -> `style-info-graphics`. Style packs are built for speech-led edits
 (talking heads, voiceover explainers); recipes below cut to music. Using both in one job is untested.
 
 For a styled edit, start from a recipe (`docs/recipes.md`): `rcg recipe list`, pick the style that

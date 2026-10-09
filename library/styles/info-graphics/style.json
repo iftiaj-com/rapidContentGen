@@ -1,10 +1,10 @@
 {
-  "$comment": "Style pack: Info-graphics video essay. Learned from the user's reference Short 'Disney vs Midjourney' (YouTube Shorts fZIXlBGaIMs, 88 s, read for technique only, nothing copied). Colours were sampled from its frames: dark ground #191919, cream #fbf3e1, light grey #f5f5f5, accent orange about #e4722a. orange-deep is the text shade on light grounds (the sampled orange is about 2.7:1 on cream, lesson 13az). Italic accents are a synthesized oblique of Inter (a grotesk italic is close to an oblique; no italic cut is bundled). Workflow and judgment: .agents/skills/skill-info-graphics/SKILL.md.",
+  "$comment": "Style pack: Info-graphics video essay. Learned from the user's reference Short 'Disney vs Midjourney' (YouTube Shorts fZIXlBGaIMs, 88 s, read for technique only, nothing copied). Colours were sampled from its frames: dark ground #191919, cream #fbf3e1, light grey #f5f5f5, accent orange about #e4722a. orange-deep is the text shade on light grounds (the sampled orange is about 2.7:1 on cream, lesson 13az). Italic accents are a synthesized oblique of Inter (a grotesk italic is close to an oblique; no italic cut is bundled). Workflow and judgment: .agents/skills/style-info-graphics/SKILL.md.",
   "label": "Info-graphics Essay",
   "use": "Voice-led video essays and explainers: a new visual every sentence, built from kinetic type with one orange word, equations, stairs and pyramids, social posts, prompt bars with a cursor, orbits, counters, photo plates and collages, over dark, cream or light-grey grounds, with a one-word caption chip.",
   "keywords": ["infographic", "info-graphics", "explainer", "video essay", "essay", "commentary", "opinion", "facts", "history", "kinetic type", "motion graphics", "faceless", "ai", "tech", "topic"],
   "from": "user reference video (technique only), 2026-10-08",
-  "skill": ".agents/skills/skill-info-graphics/SKILL.md",
+  "skill": ".agents/skills/style-info-graphics/SKILL.md",
   "components": "components.mjs",
   "tokens": {
     "dark": "#191919",

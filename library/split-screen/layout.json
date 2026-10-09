@@ -1,5 +1,5 @@
 {
-  "$comment": "skill-split-screen-edit geometry and pacing (1080x1920). Measured from the reference Video-94146 (720x1280, scaled; about +-1-2% of height) and the planning rules in docs/plans/skill-split-screen-edit.md. Tools: tools/recipes/split-screen.mjs (planner), tools/blocks/split.mjs (layout writer), tools/jobs/split-check.mjs. Change numbers here, not in the tools.",
+  "$comment": "style-split-screen-edit geometry and pacing (1080x1920). Measured from the reference Video-94146 (720x1280, scaled; about +-1-2% of height) and the planning rules in docs/plans/style-split-screen-edit.md. Tools: tools/recipes/split-screen.mjs (planner), tools/blocks/split.mjs (layout writer), tools/jobs/split-check.mjs. Change numbers here, not in the tools.",
   "W": 1080,
   "H": 1920,
   "seam": {

@@ -5,7 +5,7 @@
 // Deterministic throughout: no Math.random, no clocks, no onUpdate (it does not fire on
 // seek, tools/blocks/shader.mjs), so counters are digit strips and typing is per-letter sets.
 //
-// Grammar (.agents/skills/skill-info-graphics/references/scene-grammar.md): one idea per
+// Grammar (.agents/skills/style-info-graphics/references/scene-grammar.md): one idea per
 // sentence; a ground per scene (dark, cream, paper, orange); on it one hero object: a type
 // stack with one orange word, an equation, stairs, a pyramid, a post, a prompt bar, an orbit,
 // a counter, a photo plate or a collage. `times` (comma list, seconds from the item start)

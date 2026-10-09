@@ -1,5 +1,5 @@
 // rcg infographics: the mechanical half of the info-graphics essay workflow
-// (skill .agents/skills/skill-info-graphics, style pack library/styles/info-graphics).
+// (skill .agents/skills/style-info-graphics, style pack library/styles/info-graphics).
 // The look lives in the style pack; this tool handles time.
 //
 //   scaffold     Empties a fresh job's template (placeholder footage, bars, title card)
