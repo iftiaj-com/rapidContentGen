@@ -30,6 +30,7 @@ import { tmpdir } from 'node:os';
 import { extname, isAbsolute, join, resolve } from 'node:path';
 import { isMain, parseArgs } from '../lib/cli.mjs';
 import { loadConfig, ROOT } from '../lib/config.mjs';
+import { heavySlot } from '../lib/lock.mjs';
 import { probe } from '../lib/ffmpeg.mjs';
 import { ff, runVisionPage } from './common.mjs';
 
@@ -79,6 +80,7 @@ export async function makeLayers(opts) {
   if (!existsSync(srcAbs)) throw new Error(`Source not found: ${srcAbs}`);
   const name = opts.name || 'scene';
   if (!/^[a-z0-9][a-z0-9-]*$/i.test(name)) throw new Error(`--name "${name}": letters, digits and dashes`);
+  const release = await heavySlot('layers', jobDir, opts);
   const work = mkdtempSync(join(tmpdir(), 'rcg-layers-'));
   try {
     mkdirSync(join(work, 'in'), { recursive: true });
@@ -136,6 +138,7 @@ export async function makeLayers(opts) {
     if (opts.keep) copyFileSync(join(work, 'in', 'source.png'), join(outDir, 'source.png'));
     return { ...res, manifest, sheet, size: [W, H], visionMs, cvMs: Date.now() - t1, requests: det.requests, console: state.console };
   } finally {
+    release();
     if (!opts.keepWork) rmSync(work, { recursive: true, force: true });
   }
 }

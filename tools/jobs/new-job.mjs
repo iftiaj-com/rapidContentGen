@@ -8,7 +8,7 @@
 // Safe with several agent sessions at once: the job folder is created atomically
 // (a name already taken gets -2, -3, ...), and media from inbox/<folder>/ claims
 // that folder with inbox/<folder>/.rcg-claim.json. A folder another job claimed is
-// refused unless --reclaim is given (see `rcg inbox`).
+// refused unless --reclaim is given; a <folder>-Complete one always (see `rcg inbox`).
 //
 // Usage:
 //   node tools/jobs/new-job.mjs --name <slug> [--template vertical-1080x1920]
@@ -20,7 +20,8 @@ import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, readFileSync,
 import { basename, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { isMain, parseArgs } from '../lib/cli.mjs';
 import { loadConfig, readJson } from '../lib/config.mjs';
-import { agentName, claimFile } from '../lib/lock.mjs';
+import { agentName, claimFile, localStamp } from '../lib/lock.mjs';
+import { CLAIM_FILE, COMPLETE_SUFFIX, isComplete } from './inbox.mjs';
 import { makeSheet } from '../media/contact-sheet.mjs';
 import { probeMedia } from '../media/probe.mjs';
 
@@ -84,8 +85,6 @@ function likeSection(dir, likeDir) {
   ];
 }
 
-export const CLAIM_FILE = '.rcg-claim.json';
-
 // The inbox/<folder>/ directories the given files come from.
 function inboxFolders(inbox, files) {
   const out = new Set();
@@ -103,6 +102,10 @@ function inboxFolders(inbox, files) {
 function claimInbox(folders, info, reclaim) {
   const taken = [];
   for (const folder of folders) {
+    if (isComplete(folder)) {
+      for (const f of taken) rmSync(f, { force: true });
+      throw new Error(`inbox/${basename(folder)} is complete (its job is done). To redo it, rename the folder without ${COMPLETE_SUFFIX}.`);
+    }
     const file = join(folder, CLAIM_FILE);
     let res = claimFile(file, info);
     if (!res.ok && reclaim) { rmSync(file, { force: true }); res = claimFile(file, info); }
@@ -127,7 +130,8 @@ export async function newJob({ name, template, videos = [], audios = [], images 
   if (!existsSync(join(tplDir, 'index.html'))) throw new Error(`Template not found: ${tplDir}`);
   if (mode && !MODES[mode]) throw new Error(`--mode must be a, b or c`);
 
-  const date = new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const date = [now.getFullYear(), now.getMonth() + 1, now.getDate()].map((n) => String(n).padStart(2, '0')).join('-');
   const slug = slugify(name);
   for (const f of [...[].concat(videos, audios, images), promptFile].filter(Boolean)) {
     if (!existsSync(f)) throw new Error(`Media not found: ${f}`);
@@ -157,7 +161,7 @@ export async function newJob({ name, template, videos = [], audios = [], images 
   mkdirSync(join(dir, 'data'), { recursive: true });
 
   const hfVersion = cfg.hyperframes.cliVersion;
-  writeFileSync(join(dir, 'meta.json'), JSON.stringify({ id, name: id, createdAt: new Date().toISOString() }, null, 2) + '\n');
+  writeFileSync(join(dir, 'meta.json'), JSON.stringify({ id, name: id, createdAt: localStamp() }, null, 2) + '\n');
   writeFileSync(join(dir, 'package.json'), JSON.stringify({
     name: id,
     private: true,

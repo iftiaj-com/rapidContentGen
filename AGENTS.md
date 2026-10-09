@@ -92,6 +92,7 @@ node tools/rcg.mjs doctor               # health check
 node tools/rcg.mjs skills sync          # copy .agents/skills to .claude/skills after editing a skill (check = compare)
 node tools/rcg.mjs new-job --name x --video a.mp4 [--audio m.mp3] [--prompt-file p.md] [--mode a|b|c] [--like jobs/<old-id>]
 node tools/rcg.mjs inbox list                  # free / claimed inbox folders (new-job claims one); release <folder>
+node tools/rcg.mjs inbox done --job jobs/<id>  # job delivered: rename its inbox folder to <folder>-Complete (agents skip these)
 node tools/rcg.mjs beat-sheet md jobs/<id>/beat-sheet.json jobs/<id>/beat-sheet.md
 node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice
 node tools/rcg.mjs level --dir jobs/<id>/assets/voice --lufs -13.5 --ceiling -1.5
@@ -140,7 +141,7 @@ node tools/rcg.mjs cinema --job jobs/<id> --id cf1 --ud --pos 12 --curve 35 --sh
 node tools/rcg.mjs limit in.mp3 out.wav [--ceiling -2.5]
 node tools/rcg.mjs mix-check jobs/<id>/index.html
 node tools/rcg.mjs hf --cwd jobs/<id> check
-node tools/rcg.mjs render jobs/<id> --fps 24 [--workers 3] [--silence a-b]   # render, fx, matte, track: one at a time machine-wide; others wait
+node tools/rcg.mjs render jobs/<id> --fps 24 [--workers 3] [--silence a-b]   # render, fx, matte, track, layers, hf render/snapshot: one at a time machine-wide; others wait
 node tools/rcg.mjs verify file.mp4 --width 1080 --height 1920 --fps 24 --duration 16.88 --sheet s.png
 node tools/rcg.mjs provenance check
 ```

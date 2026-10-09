@@ -18,4 +18,8 @@ When `rcg new-job` takes media from a folder it writes `.rcg-claim.json` there (
 so a second agent session will not start the same folder. `node tools/rcg.mjs inbox list` shows which
 folders are free or claimed; `node tools/rcg.mjs inbox release <folder>` frees one.
 
+When the job is finished the agent runs `node tools/rcg.mjs inbox done --job jobs/<id>`, which renames the
+folder to `<folder>-Complete`. You can leave finished folders here and keep adding new ones: agents
+skip `-Complete` folders (`inbox list --all` shows them). To redo one, remove `-Complete` from its name.
+
 Everything in this folder except this README and the template is ignored by git.

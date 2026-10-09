@@ -4,6 +4,10 @@
 // as `npx --yes hyperframes@<hyperframes.version>`, so any agent (or none) can render.
 //
 // Usage: node tools/jobs/hf.mjs [--cwd <dir>] <hyperframes args...>
+//
+// `render` and `snapshot` run headless Chrome frame by frame, so from the command
+// line they take the machine-wide heavy-work slot like `rcg render` (which holds
+// it already when it calls hf() in-process). `preview` is a server and never does.
 
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -12,6 +16,7 @@ import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, rmSync, syml
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { isMain } from '../lib/cli.mjs';
 import { loadConfig } from '../lib/config.mjs';
+import { heavySlot } from '../lib/lock.mjs';
 
 export function hfEnv() {
   const cfg = loadConfig();
@@ -175,6 +180,8 @@ if (isMain(import.meta.url)) {
   let cwd = process.cwd();
   const i = argv.indexOf('--cwd');
   if (i >= 0) { cwd = argv[i + 1]; argv.splice(i, 2); }
+  const release = ['render', 'snapshot'].includes(argv[0]) ? await heavySlot(`hf ${argv[0]}`, resolve(cwd), {}) : () => {};
   const { code } = await hf(argv, { cwd });
+  release();
   process.exit(code ?? 1);
 }
