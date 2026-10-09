@@ -3,6 +3,11 @@
   "package": "@phosphor-icons/core",
   "version": "2.1.1",
   "files": {
+    "bold/buildings-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/buildings-bold.svg",
+      "sha256": "d4e2316969136c81f53c38669b53b3d981f2e4dce1dd768ecdeb62ddd291e7b2",
+      "added": "2026-10-09"
+    },
     "bold/calendar-dots-bold.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/calendar-dots-bold.svg",
       "sha256": "d63b977af5aa66f2548ad99fb99610c5103fe8e6b1739669dd5761d3f3bc0ba6",
@@ -11,6 +16,11 @@
     "bold/chat-circle-text-bold.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/chat-circle-text-bold.svg",
       "sha256": "259305b66c9ff6a57b4fb7290cc7ad0be20b379967518603847f43a42384ca4f",
+      "added": "2026-10-09"
+    },
+    "bold/clock-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/clock-bold.svg",
+      "sha256": "45cf8bb6e1929b4d7fcbf52d83b35c6d130f4ea12d981db19370392cba724f4a",
       "added": "2026-10-09"
     },
     "bold/cursor-click-bold.svg": {
@@ -57,6 +67,16 @@
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/rocket-launch-bold.svg",
       "sha256": "17cdf50ac375807224f127d664edd1b1090dad01a4156c6d9d042f49beb0475d",
       "added": "2026-10-08"
+    },
+    "bold/scales-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/scales-bold.svg",
+      "sha256": "1ec5dc3aa40626210797bdb8cece5b26a1b126957c5100baa9722de315d73071",
+      "added": "2026-10-09"
+    },
+    "bold/shield-warning-bold.svg": {
+      "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/shield-warning-bold.svg",
+      "sha256": "4f7d55d31c62860f75439545b402641ca3c9a55703f2aab0f97f7c017b51c2eb",
+      "added": "2026-10-09"
     },
     "bold/sparkle-bold.svg": {
       "url": "https://cdn.jsdelivr.net/npm/@phosphor-icons/core@2.1.1/assets/bold/sparkle-bold.svg",

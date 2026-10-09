@@ -22,6 +22,10 @@ Before starting a full job, check whether a fast path fits:
 ## 1. Intake
 
 1. Find the media and prompt: chat attachments/paths, or `inbox/<folder>/` (`prompt.md` + media).
+   Other agent sessions may be working in this workspace. For the inbox, run `rcg inbox list` and take
+   only the folder the user named, or a `free` one. `new-job` claims the folder (`.rcg-claim.json`) and
+   refuses one another job holds: tell the user, do not pass `--reclaim` unless they ask. Folders
+   ending in `-Complete` are finished jobs: ignore them (`inbox list` hides them; `new-job` refuses them).
 2. Create the job: `node tools/rcg.mjs new-job --name <slug> --video <file> [--audio <file>] [--image <file>] [--prompt-file <file> | --prompt "..."] [--mode a|b|c]`.
    This copies media into `jobs/<id>/assets/`, probes it, writes `data/intake.json`, a safe-zone
    contact sheet per video, and `JOB.md`.
@@ -190,6 +194,10 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
 
 `node tools/rcg.mjs render jobs/<id> --fps <fps> --workers 3 [--silence a-b]`
 
+Only one heavy run (`rcg render`, `fx`, `matte`, `track`, `layers`, `hf snapshot`) runs at a time on the machine. If another
+session holds the slot, the command prints `Waiting for the heavy-work slot ...` and starts when that
+run ends, so run it in the background rather than under a short tool timeout.
+
 It runs mix-check, renders, saves `renders/final.log`, and verifies (dimensions, fps, duration,
 no dead strip at a frame edge, audio present and not silent, loudness, true peak, no "Audio lowered by"), then writes
 `renders/final-sheet.png`. READ the sheet. A failed verify means the job is not done.
@@ -204,3 +212,8 @@ loudness, true peak), deviations from the beat sheet and why, and anything left 
 stages in `JOB.md`. Give the user the video: attach it if your tool can send files, else give the path to `renders/final.mp4`. In the chat reply, be brief and honest:
 say what was verified and what was not (for example: "I cannot listen to audio; the mix was
 judged by measurement").
+
+If the job came from `inbox/`, mark it finished once the verified render is delivered:
+`node tools/rcg.mjs inbox done --job jobs/<id>` renames the folder to `<folder>-Complete`, so no agent
+starts it again. Revisions later still work: the job has its own copy of the media. If the rename fails
+because a file in the folder is open, ask the user to close it and run the command again.

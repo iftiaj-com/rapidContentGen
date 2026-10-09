@@ -14,6 +14,7 @@ import { loadConfig, ROOT } from './lib/config.mjs';
 const COMMANDS = {
   'doctor': ['tools/jobs/doctor.mjs', 'Check config, ffmpeg, HyperFrames plugin, Python and the voice venv'],
   'new-job': ['tools/jobs/new-job.mjs', 'Create jobs/<date>-<name>/ from a template with intake probe + sheets'],
+  'inbox': ['tools/jobs/inbox.mjs', 'list [--all] | done <folder> | done --job jobs/<id> | release <folder>: free / claimed inbox folders; done renames to <folder>-Complete, which agents skip'],
   'beat-sheet': ['tools/jobs/beat-sheet.mjs', 'validate | md: check a beat-sheet.json and write the approval table'],
   'skills': ['tools/skills/sync.mjs', 'Copy the project skills from .agents/skills (edit here) to .claude/skills (Claude Code); check = report differences'],
   'beatgrid': ['tools/audio/hyperframes/analyze-beatgrid.py', 'Music -> audiomap.json: tempo, beats, downbeats, drum hits, energy phases (HyperFrames script, voice venv)'],
@@ -51,7 +52,7 @@ const COMMANDS = {
   'analyze': ['tools/audio/analyze.mjs', 'Music -> per-frame audio table (bands, onsets, kicks) + seekable shader clock'],
   'mix-check': ['tools/audio/mix-check.mjs', 'Rebuild a composition mix offline and predict HyperFrames gain reduction'],
   'measure-sfx': ['tools/audio/measure-sfx.mjs', 'Re-measure library/sfx onsets, crests, loudness'],
-  'render': ['tools/jobs/render.mjs', 'mix-check -> HyperFrames render -> verify (+ frame sheet)'],
+  'render': ['tools/jobs/render.mjs', 'mix-check -> HyperFrames render -> verify (+ frame sheet); shares one machine-wide heavy-work slot with fx, matte, track, layers, hf render/snapshot'],
   'verify': ['tools/media/verify.mjs', 'Verify any rendered video'],
   'hf': ['tools/jobs/hf.mjs', 'Run the HyperFrames CLI via the plugin launcher (--cwd <job>)'],
   'provenance': ['tools/lib/provenance.mjs', 'copy | record | check | render the provenance ledger'],

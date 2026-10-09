@@ -21,6 +21,7 @@ import { existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, join, relative, resolve } from 'node:path';
 import { isMain, parseArgs } from '../lib/cli.mjs';
+import { heavySlot } from '../lib/lock.mjs';
 import { loadConfig } from '../lib/config.mjs';
 import { contactSheet, probe } from '../lib/ffmpeg.mjs';
 import { extractFrames, ff, runVisionPage } from './common.mjs';
@@ -49,6 +50,7 @@ export async function runMatte(opts) {
   const height = Math.round((width * sh) / sw / 2) * 2;
   const name = opts.name || basename(opts.src).replace(/\.\w+$/, '');
   const quality = Number(opts.quality ?? 18);
+  const release = await heavySlot('matte', jobDir, opts);
   const work = mkdtempSync(join(tmpdir(), 'rcg-matte-'));
   const t0 = Date.now();
   try {
@@ -88,6 +90,7 @@ export async function runMatte(opts) {
       seconds: +((Date.now() - t0) / 1000).toFixed(1), sheet, console: state.console,
     };
   } finally {
+    release();
     if (!opts['keep-frames']) rmSync(work, { recursive: true, force: true });
     else console.log(`frames kept in ${work}`);
   }

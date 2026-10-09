@@ -22,6 +22,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync, mkdirSync
 import { tmpdir } from 'node:os';
 import { basename, join, relative, resolve } from 'node:path';
 import { isMain, parseArgs } from '../lib/cli.mjs';
+import { heavySlot } from '../lib/lock.mjs';
 import { contactSheet, probe } from '../lib/ffmpeg.mjs';
 import { extractFrames, ff, runVisionPage } from './common.mjs';
 
@@ -176,6 +177,7 @@ export async function runTrack(opts) {
   const width = Math.round(Number(opts.width || Math.min(sw, 1080)) / 2) * 2;
   const height = Math.round((width * sh) / sw / 2) * 2;
   const name = opts.name || basename(opts.src).replace(/\.\w+$/, '');
+  const release = await heavySlot('track', jobDir, opts);
   const work = mkdtempSync(join(tmpdir(), 'rcg-track-'));
   const t0 = Date.now();
   try {
@@ -211,6 +213,7 @@ export async function runTrack(opts) {
     }
     return { out: outRel.split('\\').join('/'), frames, fps, seconds: +((Date.now() - t0) / 1000).toFixed(1), summary: doc.summary, events: doc.events, engine: doc.engine, console: state.console, debug };
   } finally {
+    release();
     if (!opts['keep-frames']) rmSync(work, { recursive: true, force: true });
     else console.log(`frames kept in ${work}`);
   }

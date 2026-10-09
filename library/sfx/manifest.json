@@ -25,6 +25,32 @@
     "description": "",
     "license": ""
   },
+  "bg-music-dark-fantasy": {
+    "file": "bg-music-dark-fantasy.mp3",
+    "durationS": 9.03,
+    "onsetS": 0.02,
+    "crestStartS": 5.89,
+    "crestEndS": 6.24,
+    "peakS": 7.43,
+    "audibleEndS": 9.01,
+    "integratedLufs": -14.1,
+    "truePeakDb": -4.4,
+    "description": "",
+    "license": ""
+  },
+  "bg-music-feeling-things-i-cant-explain": {
+    "file": "bg-music-feeling-things-i-cant-explain.mp3",
+    "durationS": 15.35,
+    "onsetS": 0.76,
+    "crestStartS": 1.14,
+    "crestEndS": 1.57,
+    "peakS": 8.53,
+    "audibleEndS": 15.31,
+    "integratedLufs": -14.1,
+    "truePeakDb": -5.3,
+    "description": "",
+    "license": ""
+  },
   "bg-music-is-this-the-end": {
     "file": "bg-music-is-this-the-end.mp3",
     "durationS": 83.62,
@@ -51,6 +77,32 @@
     "description": "",
     "license": ""
   },
+  "bg-music-mos-6581": {
+    "file": "bg-music-mos-6581.mp3",
+    "durationS": 21.52,
+    "onsetS": 0.13,
+    "crestStartS": 0.53,
+    "crestEndS": 0.74,
+    "peakS": 1.48,
+    "audibleEndS": 21.49,
+    "integratedLufs": -14.5,
+    "truePeakDb": -4.3,
+    "description": "",
+    "license": ""
+  },
+  "bg-music-reve-brvmes": {
+    "file": "bg-music-reve-brvmes.mp3",
+    "durationS": 12.1,
+    "onsetS": 0.05,
+    "crestStartS": 0.13,
+    "crestEndS": 0.37,
+    "peakS": 9.92,
+    "audibleEndS": 12.07,
+    "integratedLufs": -14.5,
+    "truePeakDb": -5.7,
+    "description": "",
+    "license": ""
+  },
   "bg-music-stranded": {
     "file": "bg-music-stranded.mp3",
     "durationS": 7.97,
@@ -61,6 +113,19 @@
     "audibleEndS": 7.96,
     "integratedLufs": -14.1,
     "truePeakDb": -1,
+    "description": "",
+    "license": ""
+  },
+  "bg-music-tensions-run-high": {
+    "file": "bg-music-tensions-run-high.mp3",
+    "durationS": 23.15,
+    "onsetS": 0.09,
+    "crestStartS": 1.75,
+    "crestEndS": 1.9,
+    "peakS": 11.33,
+    "audibleEndS": 23.13,
+    "integratedLufs": -14.1,
+    "truePeakDb": -0.9,
     "description": "",
     "license": ""
   },

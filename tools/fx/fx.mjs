@@ -24,6 +24,7 @@ import { promisify } from 'node:util';
 import { analyzeToFile } from '../audio/analyze.mjs';
 import { analyserTable } from '../audio/analyser.mjs';
 import { isMain, parseArgs } from '../lib/cli.mjs';
+import { heavySlot } from '../lib/lock.mjs';
 import { ROOT, loadConfig, readJson } from '../lib/config.mjs';
 import { contactSheet, probe } from '../lib/ffmpeg.mjs';
 import { launch } from './chrome.mjs';
@@ -91,6 +92,7 @@ export async function runFx(opts) {
   // so history exists from the first output frame. Clamped to the start of the clip.
   const preroll = needsInput ? Math.min(start, Number(opts.preroll ?? def.preroll ?? 0)) : Number(opts.preroll ?? def.preroll ?? 0);
   const skip = Math.round(preroll * fps);
+  const release = await heavySlot('fx', jobDir, opts);
   const work = mkdtempSync(join(tmpdir(), `rcg-fx-${opts.effect}-`));
   const t0 = Date.now();
   try {
@@ -236,6 +238,7 @@ export async function runFx(opts) {
     }
     return { out: relative(jobDir, outAbs).split('\\').join('/'), frames: frames - skip, preroll, seconds: +((Date.now() - t0) / 1000).toFixed(1), duration: outInfo.duration, size: `${outInfo.video.width}x${outInfo.video.height}`, sheet, fg: fg && relative(jobDir, fg).split('\\').join('/'), browser: browser.chrome.kind, trackNote, tracked: track ? track.filter((p) => p.has).length : null };
   } finally {
+    release();
     if (!opts['keep-frames']) rmSync(work, { recursive: true, force: true });
     else console.log(`frames kept in ${work}`);
   }

@@ -10,14 +10,15 @@ not yet regression-verified), **planned** (phase in `PORTING_CHECKLIST.md`).
 |---|---|---|
 | `doctor` | Checks config, ffmpeg (including the edge test for the ffmpeg HyperFrames uses), the HyperFrames CLI (plugin launcher or npx), Python 3.11, voice venv, Kokoro weights, the MediaPipe files, the browser `rcg fx` will use (WebGPU needs an installed Chrome), sources, provenance | ready |
 | `skills sync\|check` | Copies the project skills from `.agents/skills/` (edit here; Antigravity reads it) to `.claude/skills/` (Claude Code reads only that). Skips HyperFrames' own git-ignored skills. `check` lists differences; `doctor` shows it | ready |
-| `new-job` | Creates `jobs/<date>-<slug>/` from a template, or from an earlier job's edit with `--like jobs/<id>` (no footage or renders; `JOB.md` lists the assets to supply); copies media; probe + safe-zone sheet; `JOB.md` | ready |
+| `new-job` | Creates `jobs/<date>-<slug>/` from a template, or from an earlier job's edit with `--like jobs/<id>` (no footage or renders; `JOB.md` lists the assets to supply); copies media; probe + safe-zone sheet; `JOB.md`. Safe with parallel sessions: the folder is created atomically, and media from `inbox/<folder>/` claims it (`.rcg-claim.json`; refused if another job holds it, `--reclaim` takes it over) | ready |
+| `inbox list\|done\|release` | Lists `inbox/` folders as free or claimed (by which job and agent, when; `--all` adds complete ones); `done <folder>` or `done --job jobs/<id>` renames a finished folder to `<folder>-Complete`, which `list` hides and `new-job` refuses; `release <folder>` removes a claim | ready |
 | `beat-sheet validate\|md` | Validates `beat-sheet.json` (overlaps, no-text zones) and writes the approval table | ready |
 | `probe` | Streams, fps, duration, loudness, true peak, plus intake notes (no audio, low fps, hot peaks) | ready |
 | `sheet` | Labeled contact sheet; `--safe` draws the 9:16 no-text zones | ready |
 | `limit` | Peak-limits audio at 4x oversampling to a true-peak ceiling (default -2.5 dBTP) | ready |
 | `mix-check` | Rebuilds a composition's mix offline; predicts HyperFrames' whole-mix gain cut within about 0.3 dB | ready |
 | `measure-sfx` | Measures onset, crest window, audible end, LUFS and true peak for `library/sfx` | ready |
-| `render` | mix-check, HyperFrames render (log saved), then `verify` with a frame sheet | ready |
+| `render` | mix-check, HyperFrames render (log saved), then `verify` with a frame sheet. Takes the machine-wide heavy-work slot shared with `fx`, `matte`, `track`, `layers` and a direct `hf render`/`hf snapshot` (`defaults.heavySlots`, 1): a second one from another session waits for it (`--lock-wait <min>` caps the wait). A slot left by a dead process, or older than 6 h, is taken over. Warns when free RAM is under `defaults.minFreeMemGb` (2.5) | ready |
 | Camera measurement | `python -I tools/media/camera_motion.py <video> [--json f]` (image Python): zoom events (ratio, duration), cuts and drift per segment via ORB matching; learns camera rules from a reference and checks a render | ready (R11) |
 | `verify` | Dimensions, fps, duration, no dead (black) strip at a frame edge, audio present and not silent, LUFS, true peak, silence windows, "Audio lowered" in the log | ready |
 | `voice voices\|effects\|say\|transcribe\|selftest` | Local Kokoro voiceover (54 voices, 9 languages), 33 voice effects + EQ/ambiance/normalize chain, faster-whisper word times aligned to the script, `audio_meta.json` + SRT. Python 3.11 venv; nothing downloads | ready (R1) |

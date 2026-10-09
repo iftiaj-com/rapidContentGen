@@ -34,7 +34,9 @@
     "loudnessTarget": -14,
     "truePeakCeiling": -1.0,
     "musicLimitDb": -2.5,
-    "mode": null
+    "mode": null,
+    "heavySlots": 1,
+    "minFreeMemGb": 2.5
   },
   "keys": {
     "$comment": "API keys go in workspace.local.json (git-ignored), never here. pixabay: free key from pixabay.com/api/docs/ after login (rcg assets).",
