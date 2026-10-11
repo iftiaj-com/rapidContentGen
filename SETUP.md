@@ -84,7 +84,7 @@ Edit it. Remove the keys you do not need. A typical file:
 - Use absolute paths for everything under `bin` and `fonts`. They are not resolved from the repo
   root, and HyperFrames runs from inside each job folder, so a relative ffmpeg path breaks there.
   (Entries under `paths` may be relative.)
-- `sources` lists the projects features were copied from (Adits, AditsShaders, the TTS app and
+- `sources` lists the projects features were copied from (Adits, AditsShaders, AditsVoiceStudio and
   others). Leave it empty unless you have them: it is only needed to copy more features in.
 - `keys.pixabay` (optional): a free Pixabay API key for `rcg assets`.
 - Write JSON with an editor, Node or Python, not PowerShell redirection: PowerShell 5.1 adds a
@@ -150,7 +150,7 @@ Kokoro weights go in `models/`:
 - `models/kokoro-v1.0.onnx`
 - `models/voices.bin`
 
-The originals were copied from the TTS app (`tts_app modular`). If you do not have it, the
+The originals were copied from AditsVoiceStudio (formerly the TTS app, `tts_app modular`). If you do not have it, the
 public source is the kokoro-onnx project's release files (`kokoro-v1.0.onnx` and
 `voices-v1.0.bin`, renamed to `voices.bin`). These have not been checked against the hashes in
 `docs/provenance.json`; if they differ, `doctor` reports "edited after copy".

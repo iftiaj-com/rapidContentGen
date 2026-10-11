@@ -302,7 +302,23 @@ Source root: `E:/Develop/Antigravity_testing/AditsVoiceStudio`
 
 | Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
 |---|---|---|---|---|---|---|
+| learn | `core/version.py` | `-` | b73506e3 | no | 2026-10-07 | License: GPL-3.0-or-later applies to copied TTS code |
+| copy | `kokoro-v1.0.onnx` | `models/kokoro-v1.0.onnx` | b73506e3 | no | 2026-10-07 | Kokoro-82M ONNX weights (git-ignored) |
+| copy | `voices.bin` | `models/voices.bin` | b73506e3 | no | 2026-10-07 | Kokoro voice embeddings (git-ignored) |
+| copy | `core/__init__.py` | `tools/voice/core/__init__.py` | b73506e3 | no | 2026-10-07 |  |
+| copy | `core/audio_io.py` | `tools/voice/core/audio_io.py` | b73506e3 | no | 2026-10-07 | WAV/MP3 I/O via libsndfile |
+| copy | `core/constants.py` | `tools/voice/core/constants.py` | b73506e3 | no | 2026-10-07 | KOKORO_VOICES / KOKORO_LANGS maps (UI tokens unused) |
+| port | `core/paths.py` | `tools/voice/core/paths.py` | b73506e3 | no | 2026-10-07 | shim: bundle_dir() -> rapidContentGen models dir; no frozen-app logic |
+| copy | `effects/__init__.py` | `tools/voice/effects/__init__.py` | b73506e3 | no | 2026-10-07 |  |
+| copy | `effects/audio_effects.py` | `tools/voice/effects/audio_effects.py` | b73506e3 | no | 2026-10-07 | 33 voice effects DSP (GPL-3.0-or-later) |
+| copy | `effects/registry.py` | `tools/voice/effects/registry.py` | b73506e3 | no | 2026-10-07 | effect registry |
+| copy | `engines/__init__.py` | `tools/voice/engines/__init__.py` | b73506e3 | no | 2026-10-07 |  |
+| copy | `engines/base.py` | `tools/voice/engines/base.py` | b73506e3 | no | 2026-10-07 | engine interface |
+| learn | `effects/cloned_voices.py` | `tools/voice/engines/clone_bridge.py` | b8bca8d1 | no | 2026-10-11 | Cloned voices (clone:<slug>) learned: profile load, VCClient.convert, run before the other effects. clone_bridge.py is new code that calls the app's core.voice_cloning in place under the app's own venv; nothing copied (GPL-3.0-or-later). |
+| copy | `engines/kokoro_engine.py` | `tools/voice/engines/kokoro_engine.py` | b73506e3 | no | 2026-10-07 | Kokoro adapter; ONNX path used (no torch installed) |
 | learn | `engines/melo_engine.py` | `tools/voice/engines/melo_synth.py` | b8bca8d1 | no | 2026-10-10 | MeloTTS call pattern (TTS(language, device), spk2id, tts_to_file, NLTK data check) learned; melo_synth.py is new code that runs in bin.meloPython offline. AditsVoiceStudio is the renamed TTS app (GPL-3.0-or-later); no code copied. |
+| port | `ui/app.py` | `tools/voice/pipeline.py` | b73506e3 | no | 2026-10-07 | _generate_worker post chain (silence, speed, effects, EQ, ambiance, normalize) without UI |
+| port | `core/subtitles.py` | `tools/voice/voice_cli.py` | b73506e3 | no | 2026-10-07 | faster-whisper word timestamps without torch; JSON words aligned to script + SRT |
 
 ## flowEditor
 
@@ -370,25 +386,3 @@ Source root: `E:/Develop/Antigravity_testing/style-refs/hyperframes-tactile-coll
 | port | `assets/frame.md` | `library/styles/tactile-collage/style.json` | ef6a49f5 | no | 2026-10-08 | semantic colour tokens, type roles, motion timings |
 | learn | `scripts/install-fonts.mjs` | `tools/blocks/style.mjs` | ef6a49f5 | no | 2026-10-08 | font install into the composition becomes copyFonts at apply/add time |
 | learn | `assets/components/tactile-safe-zones.html` | `tools/blocks/style.mjs` | ef6a49f5 | no | 2026-10-08 | safe-zone overlay becomes a refused-box check against template.json safe zones |
-
-## tts
-
-Source root: `E:/Develop/Antigravity_testing/tts_app modular`
-
-| Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
-|---|---|---|---|---|---|---|
-| learn | `core/version.py` | `-` | b73506e3 | no | 2026-10-07 | License: GPL-3.0-or-later applies to copied TTS code |
-| copy | `kokoro-v1.0.onnx` | `models/kokoro-v1.0.onnx` | b73506e3 | no | 2026-10-07 | Kokoro-82M ONNX weights (git-ignored) |
-| copy | `voices.bin` | `models/voices.bin` | b73506e3 | no | 2026-10-07 | Kokoro voice embeddings (git-ignored) |
-| copy | `core/__init__.py` | `tools/voice/core/__init__.py` | b73506e3 | no | 2026-10-07 |  |
-| copy | `core/audio_io.py` | `tools/voice/core/audio_io.py` | b73506e3 | no | 2026-10-07 | WAV/MP3 I/O via libsndfile |
-| copy | `core/constants.py` | `tools/voice/core/constants.py` | b73506e3 | no | 2026-10-07 | KOKORO_VOICES / KOKORO_LANGS maps (UI tokens unused) |
-| port | `core/paths.py` | `tools/voice/core/paths.py` | b73506e3 | no | 2026-10-07 | shim: bundle_dir() -> rapidContentGen models dir; no frozen-app logic |
-| copy | `effects/__init__.py` | `tools/voice/effects/__init__.py` | b73506e3 | no | 2026-10-07 |  |
-| copy | `effects/audio_effects.py` | `tools/voice/effects/audio_effects.py` | b73506e3 | no | 2026-10-07 | 33 voice effects DSP (GPL-3.0-or-later) |
-| copy | `effects/registry.py` | `tools/voice/effects/registry.py` | b73506e3 | no | 2026-10-07 | effect registry |
-| copy | `engines/__init__.py` | `tools/voice/engines/__init__.py` | b73506e3 | no | 2026-10-07 |  |
-| copy | `engines/base.py` | `tools/voice/engines/base.py` | b73506e3 | no | 2026-10-07 | engine interface |
-| copy | `engines/kokoro_engine.py` | `tools/voice/engines/kokoro_engine.py` | b73506e3 | no | 2026-10-07 | Kokoro adapter; ONNX path used (no torch installed) |
-| port | `ui/app.py` | `tools/voice/pipeline.py` | b73506e3 | no | 2026-10-07 | _generate_worker post chain (silence, speed, effects, EQ, ambiance, normalize) without UI |
-| port | `core/subtitles.py` | `tools/voice/voice_cli.py` | b73506e3 | no | 2026-10-07 | faster-whisper word timestamps without torch; JSON words aligned to script + SRT |

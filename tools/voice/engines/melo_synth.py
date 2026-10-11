@@ -15,7 +15,7 @@ Prints one JSON line: {"ok": true, "speakers": {...}, "items": [{"out", "seconds
 
 Offline by default: HF_HUB_OFFLINE / TRANSFORMERS_OFFLINE are set unless allow_download, so a
 missing model fails with a clear message instead of downloading (workspace rule: ask first).
-Learned from the TTS app's engines/melo_engine.py (AditsVoiceStudio); written fresh here.
+Learned from AditsVoiceStudio's engines/melo_engine.py (formerly the TTS app); written fresh here.
 """
 
 import json

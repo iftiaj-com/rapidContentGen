@@ -21,6 +21,12 @@ named by config bin.meloPython; see engines/melo_synth.py). With melo, --voice i
 (EN-US, EN-BR, EN_INDIA, EN-AU, EN-Default) and --lang the Melo language (EN). A line in
 --lines may set its own "engine". All Melo lines are made in one process (the model loads once).
 
+Cloned voices: --clone <slug> (or a line's "clone"; --clone-steps / "clone_steps" for Seed-VC,
+--clone-pitch / "clone_pitch" for RVC) converts the voice with one of AditsVoiceStudio's cloned
+voices, called in place (engines/clone_bridge.py, config voiceStudio.root / .python). Order as in
+the app: silence removal -> cloned voice -> other effects -> EQ -> ambiance -> normalize; word times
+come from the final file. All cloned lines go through one worker run.
+
 `say` writes <id>.wav per line and merges entries into audio_meta.json in the same
 shape HyperFrames' audio engine uses:
     {"voices": [{"id", "path", "duration_s", "words": [{"text","start","end"}]}],
@@ -28,8 +34,8 @@ shape HyperFrames' audio engine uses:
 Word times come from faster-whisper, aligned back onto the SCRIPT's own words, so
 captions show the script's spelling and punctuation with measured timing.
 
-Kokoro engine, effects and DSP are copied from the TTS app; the post chain and the
-word timing are ports (docs/PROVENANCE.md). Nothing here downloads: Kokoro weights
+Kokoro engine, effects and DSP are copied from AditsVoiceStudio (formerly the TTS app,
+`tts_app modular`); the post chain and the word timing are ports (docs/PROVENANCE.md). Nothing here downloads: Kokoro weights
 must be in the models folder and the Whisper model must already be cached.
 """
 
@@ -84,7 +90,7 @@ def check_weights():
     missing = [n for n in ("kokoro-v1.0.onnx", "voices.bin") if not (m / n).exists()]
     if missing:
         raise SystemExit(f"Kokoro weights missing in {m}: {', '.join(missing)}. "
-                         "Copy them with `node tools/rcg.mjs provenance copy --source tts ...`; "
+                         "Copy them with `node tools/rcg.mjs provenance copy --source aditsVoiceStudio ...`; "
                          "this tool never downloads.")
 
 
@@ -126,7 +132,7 @@ def melo_python():
     py = (CFG.get("bin") or {}).get("meloPython")
     if not py:
         raise SystemExit("--engine melo needs bin.meloPython in config/workspace.local.json: a Python with the "
-                         "melotts package and its weights cached (for example the TTS app's venv_311).")
+                         "melotts package and its weights cached (for example AditsVoiceStudio's venv_311).")
     if not Path(py).exists():
         raise SystemExit(f"bin.meloPython not found: {py}")
     return py
@@ -306,24 +312,66 @@ def line_engine(line, args):
     return engine_name, voice, lang
 
 
-def say_line(line, args, out_dir, raw_ready=False):
+def clone_of(line, args):
+    """(slug, diffusion_steps, pitch) when the line goes through a cloned voice, else None."""
+    slug = line.get("clone", getattr(args, "clone", None))
+    if not slug:
+        return None
+    return slug, line.get("clone_steps", getattr(args, "clone_steps", None)), line.get("clone_pitch", getattr(args, "clone_pitch", None))
+
+
+def voice_studio():
+    vs = CFG.get("voiceStudio") or {}
+    root = vs.get("root")
+    py = vs.get("python") or (CFG.get("bin") or {}).get("meloPython")
+    if not root or not py:
+        raise SystemExit("--clone needs voiceStudio.root and voiceStudio.python (or bin.meloPython) in "
+                         "config/workspace.local.json: the AditsVoiceStudio folder and its venv's python.")
+    for p in (root, py):
+        if not Path(p).exists():
+            raise SystemExit(f"voiceStudio path not found: {p}")
+    return root, py
+
+
+def clone_batch(items):
+    """items: [{"in", "out", "slug", "diffusion_steps", "pitch"}]. One process: the worker loads once."""
+    root, py = voice_studio()
+    with tempfile.TemporaryDirectory(prefix="rcg_clone_") as tmp:
+        spec = Path(tmp) / "spec.json"
+        spec.write_text(json.dumps({"root": root, "items": items}), encoding="utf-8")
+        proc = subprocess.run([py, "-I", str(HERE / "engines" / "clone_bridge.py"), str(spec)], cwd=tmp,
+                              capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if proc.returncode != 0:
+        tail = (proc.stderr or proc.stdout or "").strip().splitlines()[-6:]
+        raise SystemExit("Cloned voice failed:\n" + "\n".join(tail))
+    return json.loads(proc.stdout.strip().splitlines()[-1])
+
+
+def say_line(line, args, out_dir, raw_ready=False, raw_path=None, cloned=None):
+    """raw_path: an already converted file (cloned voice); silences were removed before conversion."""
     from pipeline import process
     lid = line["id"]
     text = line["text"].strip()
     engine_name, voice, lang = line_engine(line, args)
     speed = float(line.get("speed", args.speed))
     effects = line.get("effects", args.effect or [])
-    raw = out_dir / f"{lid}.raw.wav"
+    raw = Path(raw_path) if raw_path else out_dir / f"{lid}.raw.wav"
     final = out_dir / f"{lid}.wav"
     t0 = time.time()
-    if not raw_ready:
+    if not raw_ready and not raw_path:
         synth(text, str(raw), voice, lang, speed)
     proc = process(str(raw), str(final), speed=1.0, effects=effects, eq=parse_eq(args.eq),
                    ambiance=args.ambiance, ambiance_volume=args.ambiance_volume,
-                   skip_silences=args.skip_silences, normalize=not args.no_normalize)
+                   skip_silences=args.skip_silences and not cloned, normalize=not args.no_normalize)
     raw.unlink(missing_ok=True)
+    applied = proc["applied"]
+    if cloned:
+        # The app's order: silence removal -> speed -> cloned voice -> other effects -> EQ -> ambiance -> normalize.
+        applied = (["skip_silences"] if args.skip_silences else []) + [f"clone {cloned['slug']} ({cloned['mode']})"] + applied
     entry = {"id": lid, "path": final.name, "text": text, "engine": engine_name, "voice": voice, "lang": lang,
-             "speed": speed, "duration_s": proc["duration_s"], "processing": proc["applied"]}
+             "speed": speed, "duration_s": proc["duration_s"], "processing": applied}
+    if cloned:
+        entry["clone"] = cloned["slug"]
     if not args.no_words:
         heard, _ = transcribe_words(str(final), language=None)
         words, matched = align_to_script(text, heard, proc["duration_s"])
@@ -355,7 +403,40 @@ def cmd_say(args):
     for lang, jobs in melo.items():
         res = melo_batch(jobs, lang)
         sys.stderr.write(f"MeloTTS {lang}: {len(jobs)} line(s), model load {res.get('load_s')} s\n")
-    entries = [say_line(l, args, out_dir, raw_ready=line_engine(l, args)[0] == "melo") for l in lines]
+    # Cloned voices (AditsVoiceStudio, called in place): silences out first, then every cloned line
+    # in one worker run, then the rest of the chain on the converted audio.
+    cloned = {}
+    clone_items = []
+    for l in lines:
+        c = clone_of(l, args)
+        if not c:
+            continue
+        from pipeline import process
+        lid = l["id"]
+        raw = out_dir / f"{lid}.raw.wav"
+        if line_engine(l, args)[0] != "melo":
+            e, v, lg = line_engine(l, args)
+            synth(l["text"].strip(), str(raw), v, lg, float(l.get("speed", args.speed)))
+        stage = out_dir / f"{lid}.stage.wav"
+        process(str(raw), str(stage), speed=1.0, effects=[], skip_silences=args.skip_silences, normalize=False)
+        raw.unlink(missing_ok=True)
+        clone_items.append({"in": str(stage), "out": str(out_dir / f"{lid}.clone.wav"), "slug": c[0],
+                            "diffusion_steps": c[1], "pitch": c[2]})
+    if clone_items:
+        t = time.time()
+        res = clone_batch(clone_items)
+        for it, r in zip(clone_items, res["items"]):
+            Path(it["in"]).unlink(missing_ok=True)
+            cloned[Path(it["out"]).name.replace(".clone.wav", "")] = r
+        sys.stderr.write(f"Cloned voice: {len(clone_items)} line(s) in {round(time.time() - t, 1)} s "
+                         f"(first ready after {res.get('first_done_s')} s)\n")
+    entries = []
+    for l in lines:
+        c = cloned.get(l["id"])
+        if c:
+            entries.append(say_line(l, args, out_dir, raw_path=str(out_dir / f"{l['id']}.clone.wav"), cloned=c))
+        else:
+            entries.append(say_line(l, args, out_dir, raw_ready=line_engine(l, args)[0] == "melo"))
 
     meta_path = Path(args.meta).resolve() if args.meta else out_dir / "audio_meta.json"
     meta = json.loads(meta_path.read_text(encoding="utf-8-sig")) if meta_path.exists() else {"voices": []}
@@ -413,6 +494,9 @@ def main():
     s.add_argument("--lang", default="a")
     s.add_argument("--speed", type=float, default=1.0)
     s.add_argument("--engine", default="kokoro", choices=["kokoro", "melo"])
+    s.add_argument("--clone", help="an AditsVoiceStudio cloned voice (slug), applied before the other effects")
+    s.add_argument("--clone-steps", type=int, help="Seed-VC diffusion steps (default: the voice's own, 10)")
+    s.add_argument("--clone-pitch", type=int, help="RVC pitch shift in semitones (default: the voice's own)")
     s.add_argument("--effect", action="append")
     s.add_argument("--eq")
     s.add_argument("--ambiance")

@@ -19,6 +19,7 @@
 |---|---|---|
 | MeloTTS | `rcg voice say --engine melo [--voice EN-US]` | speakers EN-US, EN-BR, EN_INDIA, EN-AU, EN-Default; runs in `bin.meloPython` (a Python with `melotts`, torch and the cached weights; this machine: AditsVoiceStudio's `venv_311`), offline only; the model loads in 80-150 s, all Melo lines in one process |
 | Kokoro (default) | `rcg voice say [--voice af_heart]` | 54 voices, in the voice venv |
+| Cloned voice (on top of either) | `rcg voice say --engine melo --clone <slug> [--clone-steps 10]` | the user's own voices from AditsVoiceStudio (Seed-VC Quick or RVC), called in place; use the base engine the voice was made with (its profile's `base_engine`); about 60 s to start the worker, then the rest of the chain and word timing run on the converted audio. Test: `blj-voiceover-melo` on Melo EN-US, voiceprint 0.70 to its reference (plain Melo 0.39) |
 
 - Pace: the user's default is Kokoro at `--speed 1.3 --skip-silences` (about 3.6 words a second).
   Melo at `--speed 1.0` already speaks about 3.5 words a second, so keep Melo at 1.0 with

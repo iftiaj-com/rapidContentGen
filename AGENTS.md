@@ -3,8 +3,8 @@
 An AI video-editing workspace. The user drops a video (or several) plus a prompt,
 in chat or in `inbox/`, and the agent turns it into a finished motion-graphics
 edit. HyperFrames (HTML + GSAP, rendered headless) is the render core. Features
-from the user's other apps (Adits, AditsShaders, AditsStudio, flowEditor, the TTS
-app) are **copied or ported in** and logged in `docs/PROVENANCE.md`.
+from the user's other apps (Adits, AditsShaders, AditsStudio, flowEditor,
+AditsVoiceStudio) are **copied or ported in** and logged in `docs/PROVENANCE.md`.
 
 These instructions are for any coding agent (Antigravity, Claude Code and others).
 `CLAUDE.md` imports this file and adds notes for Claude Code only.
@@ -55,7 +55,7 @@ valid compositions (the `data-*` timing contract, clips, tracks, animation rules
 ## Critical rules
 
 - **Never edit the source projects** (`Adits_Modular`, `AditsShaders`, `AditsStudio`,
-  `flowEditor`, `tts_app modular`). Read them only. To bring something in, use
+  `flowEditor`, `AditsVoiceStudio` (formerly `tts_app modular`)). Read them only. To bring something in, use
   `node tools/rcg.mjs provenance copy|record ...` so it is logged.
 - **No hardcoded absolute paths in committed code.** Every path and binary comes from
   `tools/lib/config.mjs` (`config/workspace.json` + git-ignored `config/workspace.local.json`).
@@ -95,7 +95,7 @@ node tools/rcg.mjs new-job --name x --video a.mp4 [--audio m.mp3] [--prompt-file
 node tools/rcg.mjs inbox list                  # free / claimed inbox folders (new-job claims one); release <folder>
 node tools/rcg.mjs inbox done --job jobs/<id>  # job delivered: rename its inbox folder to <folder>-Complete (agents skip these)
 node tools/rcg.mjs beat-sheet md jobs/<id>/beat-sheet.json jobs/<id>/beat-sheet.md
-node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice   # --engine melo: MeloTTS via bin.meloPython
+node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice   # --engine melo: MeloTTS via bin.meloPython; --clone <slug>: an AditsVoiceStudio cloned voice
 node tools/rcg.mjs mix-media prep --job jobs/<id> --src assets/clip.mp4 --times 1.5,4.5,8.9 [--objects "cup"]   # torn-paper cut-outs, boards (skill style-mix-media)
 node tools/rcg.mjs level --dir jobs/<id>/assets/voice --lufs -13.5 --ceiling -1.5
 node tools/rcg.mjs captions --job jobs/<id> --words <audio_meta.json|words.json|.srt> --voice vo1 --style tiktok --mode word --start 0.4 --id cap-vo1 --insert   # + --hollow --rgb --shadow; --negative --behind p1

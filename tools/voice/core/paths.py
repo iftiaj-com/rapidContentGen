@@ -1,7 +1,7 @@
 """
 core/paths.py (rapidContentGen shim)
 ────────────────────────────────────
-Replaces the TTS app's core/paths.py (ported, see docs/PROVENANCE.md).
+Replaces AditsVoiceStudio's (formerly the TTS app's) core/paths.py (ported, see docs/PROVENANCE.md).
 
 The copied Kokoro adapter asks bundle_dir() for its weights. Here that is the
 workspace models folder (config paths.models, passed in by voice_cli.py through

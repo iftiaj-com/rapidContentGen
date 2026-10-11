@@ -1,8 +1,8 @@
 {
   "entries": [
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/version.py",
       "kind": "learn",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3484,8 +3484,8 @@
       "to": "library/vision/vision.js"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "kokoro-v1.0.onnx",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3627,8 +3627,8 @@
       "sha256Dest": "8a3092d34c79d3f57e6ba8592105e8a90f6b07c27891ffecd14cca428bfd3e31"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "voices.bin",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3930,8 +3930,8 @@
       "to": "tools/recipes/timeremap.mjs"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/__init__.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3943,8 +3943,8 @@
       "sha256Dest": "a94a8a0ecb8d1f941ab5e3a76ac18ecbe811091811ed339920e6d1a18ab52781"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/audio_io.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3956,8 +3956,8 @@
       "sha256Dest": "b0a63ad636c69fdcf584ff859c553b4e9774efc41bb0d7b5f711bd70e52695a4"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/constants.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3969,8 +3969,8 @@
       "sha256Dest": "dfdc66167e1f5d12e421f1e53d72af4b4d34b610a4a1ebe05086736180850961"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/paths.py",
       "kind": "port",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3981,8 +3981,8 @@
       "to": "tools/voice/core/paths.py"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "effects/__init__.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3994,8 +3994,8 @@
       "sha256Dest": "ae0730f2299c2b70db7d2f9f58606a42802f9913c8d318e8d082221ad8f8286d"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "effects/audio_effects.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4007,8 +4007,8 @@
       "sha256Dest": "bb042bac94523ad89f35842edf79f298f7ab3e75859f1f59aece2c0cc39444de"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "effects/registry.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4020,8 +4020,8 @@
       "sha256Dest": "5aa42b16f7d9d78a36432a694bf032276f38caef4cc7f8ecd9e90935676d0829"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "engines/__init__.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4033,8 +4033,8 @@
       "sha256Dest": "4f2fc8a98a6777a42fb30eccaa29dfc644e7d66bf91f155a304bec4a10f8f2bf"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "engines/base.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4046,8 +4046,20 @@
       "sha256Dest": "34fa9e426d7e845d43c57f40db785fe2bdc91f8e5dd124ce6423d8f4a30ae266"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
+      "from": "effects/cloned_voices.py",
+      "kind": "learn",
+      "gitHead": "b8bca8d126e55bda6b99a80b8275250a31b1f98d",
+      "dirtyAtCopy": false,
+      "sha256Source": "9c71523ebe81935a82d8c038ea2b9bcb3d0b003ac86ef46cd337f4b91a2801a3",
+      "date": "2026-10-11",
+      "note": "Cloned voices (clone:<slug>) learned: profile load, VCClient.convert, run before the other effects. clone_bridge.py is new code that calls the app's core.voice_cloning in place under the app's own venv; nothing copied (GPL-3.0-or-later).",
+      "to": "tools/voice/engines/clone_bridge.py"
+    },
+    {
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "engines/kokoro_engine.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4071,8 +4083,8 @@
       "to": "tools/voice/engines/melo_synth.py"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "ui/app.py",
       "kind": "port",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4083,8 +4095,8 @@
       "to": "tools/voice/pipeline.py"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/subtitles.py",
       "kind": "port",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",

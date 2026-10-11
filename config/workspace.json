@@ -26,6 +26,11 @@
     "regression": "regression",
     "voiceVenv": "tools/voice/.venv"
   },
+  "voiceStudio": {
+    "$comment": "AditsVoiceStudio, called in place for cloned voices (rcg voice say --clone <slug>): root = the app folder, python = its venv's python (null: bin.meloPython). Machine paths go in workspace.local.json.",
+    "root": null,
+    "python": null
+  },
   "fonts": {
     "label": null
   },
