@@ -95,27 +95,53 @@ function cameraAt(move, t, D, a, P, zFront, W, H, ph) {
 
 export const components = {
   'parallax': {
-    summary: 'The multiplane shot: rcg layers output on a virtual 3D camera (push, pull, pan, rise, fall, drift), depth blur, haze, dust, grain, vignette, light leak, paper, stepped fps. object="mid:-140,60" moves a layer on its own.',
+    summary: 'The multiplane shot: rcg layers output on a virtual 3D camera (push, pull, pan, rise, fall, drift), depth blur, haze, dust, grain, vignette, light leak, paper, stepped fps. object="mid:-140,60" moves a layer on its own; sway="mid:1.2" rocks it (puppet pin); props="src@z:x,y,w" adds cut-out assets at a depth on a ground colour; word="TEXT" sets text inside the scene, behind the subject.',
     fullFrame: true,
     minDuration: 0.5,
     params: {
       layers: '', move: 'push', amount: 0.5, focal: 35, depths: '', object: '', objectIn: 0, objectOut: 0,
       blur: '', focusX: 0.5, focusY: 0.5, haze: 0.15, hazeColor: '#e8eef3', dust: 0, grain: 0.28,
       vignette: 0.35, leak: 0, paper: 0, lens: 3, fps: 12,
+      ground: '#000', props: '', sway: '', swayHz: 0.22,
+      word: '', wordZ: null, wordY: 760, wordSize: 150, wordMin: 60, wordFont: 'serif', wordTone: 'white', wordIn: 0.3,
     },
     prepare(p, { geo, rnd, jobDir }) {
-      if (!p.layers) throw new Error('parallax: --layers is required (data/layers-<name>.json from rcg layers)');
-      const file = join(jobDir, p.layers);
-      if (!existsSync(file)) throw new Error(`parallax: ${p.layers} not found (run rcg layers first)`);
-      const m = JSON.parse(readFileSync(file, 'utf8'));
-      for (const name of m.order) {
-        const f = join(jobDir, m.dir, m.layers[name].file);
-        if (!existsSync(f)) throw new Error(`parallax: layer file missing: ${m.dir}/${m.layers[name].file}`);
+      if (!p.layers && !p.props) throw new Error('parallax: --layers (data/layers-<name>.json from rcg layers) or --props is required');
+      let m = { width: geo.width, height: geo.height, order: [], layers: {}, dir: '' };
+      if (p.layers) {
+        const file = join(jobDir, p.layers);
+        if (!existsSync(file)) throw new Error(`parallax: ${p.layers} not found (run rcg layers first)`);
+        m = JSON.parse(readFileSync(file, 'utf8'));
+        for (const name of m.order) {
+          const f = join(jobDir, m.dir, m.layers[name].file);
+          if (!existsSync(f)) throw new Error(`parallax: layer file missing: ${m.dir}/${m.layers[name].file}`);
+        }
       }
+      // props: "src@z[:x,y,w[:dx,dy]];..." extra cut-out assets placed in the scene (the After
+      // Effects "import the PNGs as 3D layers" step). z in units of P; x, y, w in output px at rest
+      // (no box = a full-frame aligned image); dx, dy = the prop's own eased drift over the shot.
+      const props = String(p.props || '').split(';').map((s) => s.trim()).filter(Boolean).map((spec, i) => {
+        const mm = spec.match(/^([^@]+?)\s*@\s*(-?[\d.]+)\s*(?::\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*,\s*([\d.]+))?\s*(?::\s*(-?[\d.]+)\s*,\s*(-?[\d.]+))?$/);
+        if (!mm) throw new Error(`parallax: props "${spec}" (use src@z[:x,y,w[:dx,dy]], z in units of P)`);
+        const src = mm[1].trim();
+        if (!existsSync(join(jobDir, src))) throw new Error(`parallax: prop ${src} not found in the job`);
+        const box = mm[3] !== undefined ? { x: Number(mm[3]), y: Number(mm[4]), w: Number(mm[5]) } : null;
+        return { name: `prop${i + 1}`, src, zu: Number(mm[2]), box, drift: [Number(mm[6] || 0), Number(mm[7] || 0)] };
+      });
+      hide(p, '_props', props);
+      if (p.word) {
+        oneOf(p.wordFont, ['serif', 'caption'], 'parallax: wordFont');
+        if (p.wordY - p.wordSize * 0.6 < geo.safe.top || p.wordY + p.wordSize * 0.6 > geo.safe.bottom) {
+          throw new Error(`parallax: wordY ${p.wordY} puts the word outside the safe band y ${geo.safe.top}-${geo.safe.bottom}`);
+        }
+      }
+      hide(p, '_safe', geo.safe);
       hide(p, '_m', m);
       hide(p, '_tex', ensureTextures(jobDir));
       hide(p, '_ph', [0.35 + rnd() * 0.3, rnd() * 6.283, 0.25 + rnd() * 0.3, rnd() * 6.283, rnd() * 6.283]);
       hide(p, '_dust', Array.from({ length: Math.max(0, Math.min(80, p.dust | 0)) }, () => [rnd(), rnd(), 2 + rnd() * 5, 0.3 + rnd() * 0.45, (rnd() - 0.5) * 30, -10 - rnd() * 30]));
+      // Drawn after the drift and dust values so older plans keep their seeded paths.
+      hide(p, '_sw', Array.from({ length: 16 }, () => rnd() * 6.283));
       oneOf(Number(p.focal), [24, 28, 35, 50, 85], 'parallax: focal');
       if (!(p.amount >= 0 && p.amount <= 1)) throw new Error('parallax: amount must be 0-1');
     },
@@ -123,19 +149,25 @@ export const components = {
       const { W, H, D } = ctx;
       const m = p._m;
       const P = (p.focal / 36) * W;
+      const hasBg = m.order[0] === 'bg';
       const cut = m.order.slice(1);
       const n = cut.length;
       // Depths in units of P: bg 1.4; cut-outs from +0.15 (back) to -0.3 (front).
-      const z = { bg: 1.4 * P };
+      const z = hasBg ? { bg: 1.4 * P } : {};
       cut.forEach((name, i) => { z[name] = n === 1 ? 0 : (0.15 - (0.45 * i) / (n - 1)) * P; });
       for (const [k, v] of Object.entries(pairs(p.depths, 'parallax: depths'))) {
-        if (!(k in z)) throw new Error(`parallax: depths names "${k}", layers are ${m.order.join(', ')}`);
+        if (!(k in z)) throw new Error(`parallax: depths names "${k}", layers are ${m.order.join(', ') || '(none)'}`);
         z[k] = v[0] * P;
       }
+      const props = p._props.map((q) => ({ ...q, z: q.zu * P }));
+      // The word in the scene (the tutorial's 3D text): by default halfway between the background
+      // and the back-most cut-out, so the subject covers it.
+      const wordZ = !p.word ? null : (p.wordZ !== null ? p.wordZ * P : (hasBg && n ? (z.bg + z[cut[0]]) / 2 : 0.6 * P));
       for (const k of m.order) if (P + z[k] < 0.2 * P) throw new Error(`parallax: layer ${k} is too close to the camera (depth ${r2(z[k] / P)})`);
-      const zFront = Math.min(...m.order.map((k) => z[k]));
+      for (const q of props) if (P + q.z < 0.2 * P) throw new Error(`parallax: ${q.name} (${q.src}) is too close to the camera (depth ${q.zu})`);
+      const zFront = Math.min(...m.order.map((k) => z[k]), ...props.map((q) => q.z), ...(wordZ !== null ? [wordZ] : []));
       // Depth blur: the far background a little, the front-most cut-out more, the rest sharp.
-      const blur = { bg: 2.5 };
+      const blur = hasBg ? { bg: 2.5 } : {};
       if (n >= 2) blur[cut[n - 1]] = 6;
       for (const [k, v] of Object.entries(pairs(p.blur, 'parallax: blur'))) blur[k] = v[0];
       const objects = pairs(p.object, 'parallax: object');
@@ -148,6 +180,15 @@ export const components = {
       const eh = m.height * cover;
       const offX = (0.5 - p.focusX) * (ew - W);
       const offY = (0.5 - p.focusY) * (eh - H);
+      // Sway (the tutorial's puppet-pin step): a slow seeded rock, in degrees, plus a faint breath,
+      // around the base of a cut-out (bottom centre of its bbox) or the centre of a prop.
+      const sway = pairs(p.sway, 'parallax: sway');
+      const swayNames = [...cut, ...props.map((q) => q.name)];
+      for (const k of Object.keys(sway)) if (!swayNames.includes(k)) throw new Error(`parallax: sway names "${k}", cut-outs and props are ${swayNames.join(', ') || '(none)'}`);
+      const pivot = (k) => {
+        const b = m.layers[k] && m.layers[k].bbox;
+        return b ? [r1((b[0] + b[2] / 2) * cover - ew / 2), r1((b[1] + b[3]) * cover - eh / 2)] : [0, r1(eh * 0.35)];
+      };
       // Camera table, one row per output step.
       const rate = p.fps > 0 ? p.fps : 60;
       const steps = Math.ceil(D * rate) + 1;
@@ -161,13 +202,15 @@ export const components = {
         rows.push(row);
       }
       // Coverage: the background, and any cut-out touching a frame edge, must keep covering the
-      // frame through the whole move (blur fades an element's edge by about 3x its radius).
+      // frame through the whole move (blur fades an element's edge by about 3x its radius; a sway
+      // swings the corners of a frame-size layer by up to its diagonal x sin(angle)).
       const over = {};
       const touches = (k) => k === 'bg' || Object.values(m.layers[k].touches || {}).some(Boolean);
       for (const k of m.order) {
         let need = 1;
         if (touches(k)) {
           const ci = cut.indexOf(k);
+          const swing = sway[k] ? Math.hypot(ew, eh) * Math.sin((Math.abs(sway[k][0]) * Math.PI) / 180) : 0;
           for (const row of rows) {
             const kp = P / (P + z[k] - row[2]);
             const kRel = (P + z[k]) / (P + z[k] - row[2]);
@@ -175,17 +218,74 @@ export const components = {
             const oy = ci >= 0 ? row[4 + ci * 2] : 0;
             const cx = (offX * kRel) + (ox * kRel) - row[0] * kp;
             const cy = (offY * kRel) + (oy * kRel) - row[1] * kp;
-            const margin = 3 * (blur[k] || 0) + 2;
+            const margin = 3 * (blur[k] || 0) + 2 + swing;
             need = Math.max(need, (W / 2 + Math.abs(cx) + margin) / ((ew / 2) * kRel), (H / 2 + Math.abs(cy) + margin) / ((eh / 2) * kRel));
           }
         }
         over[k] = Math.round(need * 1000) / 1000;
       }
-      const layers = m.order.map((k) => ({ id: k, z: r1(z[k]), s: Math.round(((P + z[k]) / P) * over[k] * 10000) / 10000, ci: cut.indexOf(k) }));
+      // Props are not scaled to cover: a prop that crosses the left or right frame edge at rest
+      // and pulls inside it during the move is reported, so it can be widened or moved out.
+      const warnings = [];
+      for (const q of props) {
+        if (!q.box) continue;
+        const k = (P + q.z) / P;
+        const l = q.box.x - q.box.w / 2;
+        const r = q.box.x + q.box.w / 2;
+        const edges = [l <= 0 && 'left', r >= W && 'right'].filter(Boolean);
+        for (const row of rows) {
+          const proj = P / (P + q.z - row[2]);
+          const sx = (x) => W / 2 + ((x - W / 2) * k - row[0]) * proj;
+          if ((edges.includes('left') && sx(l) > 0) || (edges.includes('right') && sx(r) < W)) {
+            warnings.push(`${q.name} (${q.src}) pulls inside the ${edges.join('/')} frame edge during the move: widen it or move it out`);
+            break;
+          }
+        }
+      }
       const url = (f) => `${m.dir}/${f}`;
-      const hazeZ = n ? r1((z.bg + z[cut[0]]) / 2) : r1(z.bg * 0.5);
-      const hazeS = Math.round(((P + hazeZ) / P) * Math.max(over.bg, 1.05) * 10000) / 10000;
+      // Every plane with its depth. A prop or the word goes in front of the first layer it is
+      // nearer than: DOM order is the painting order.
+      const planes = m.order.map((k) => ({ kind: 'layer', id: k, z: z[k] }));
+      const insert = (e) => {
+        const i = planes.findIndex((q) => q.z < e.z);
+        if (i < 0) planes.push(e); else planes.splice(i, 0, e);
+      };
+      props.forEach((q) => insert({ kind: 'prop', id: q.name, z: q.z, q }));
+      if (wordZ !== null) insert({ kind: 'word', id: 'word', z: wordZ });
+      const LAYERS = planes.map((e) => {
+        const k = (P + e.z) / P;
+        const sw = sway[e.id];
+        const piv = e.kind === 'layer' ? pivot(e.id) : e.kind === 'prop' && e.q.box ? [r1(e.q.box.x - W / 2), r1(e.q.box.y - H / 2)] : [0, 0];
+        return {
+          id: e.id, z: r1(e.z), s: Math.round((e.kind === 'layer' ? k * over[e.id] : k) * 10000) / 10000,
+          ci: e.kind === 'layer' ? cut.indexOf(e.id) : -1, off: e.kind === 'layer' ? 1 : 0,
+          dr: e.kind === 'prop' ? e.q.drift : [0, 0],
+          sw: sw ? [r2(sw[0]), r2(sw[1] || p.swayHz), r2(p._sw[swayNames.indexOf(e.id) % 16]), piv[0], piv[1]] : null,
+        };
+      });
+      const hazeZ = hasBg ? (n ? r1((z.bg + z[cut[0]]) / 2) : r1(z.bg * 0.5)) : 0;
+      const hazeS = hasBg ? Math.round(((P + hazeZ) / P) * Math.max(over.bg, 1.05) * 10000) / 10000 : 1;
       const dustZ = n ? r1(z[cut[n - 1]] * 0.5 - 0.05 * P) : 0;
+      const planeCss = (e) => {
+        if (e.kind === 'layer') return `      ${ctx.sel(`p-${e.id}`)} { background-image: url("${ctx.esc(url(m.layers[e.id].file))}");${blur[e.id] ? ` filter: blur(${blur[e.id]}px);` : ''} }`;
+        if (e.kind === 'prop') {
+          const b = e.q.box;
+          const pos = b ? `left: ${r1(b.x - b.w / 2)}px; top: ${r1(b.y)}px; width: ${b.w}px; height: auto; transform: translateY(-50%);` : `left: 0; top: 0; width: ${W}px; height: ${H}px;`;
+          return `      ${ctx.sel(`p-${e.id}`)} { left: 0; top: 0; width: ${W}px; height: ${H}px; }\n      ${ctx.sel(`i-${e.id}`)} { position: absolute; ${pos}${blur[e.id] ? ` filter: blur(${blur[e.id]}px);` : ''} }`;
+        }
+        return `      ${ctx.sel('p-word')} { left: 0; top: 0; width: ${W}px; height: ${H}px; }
+      ${ctx.sel('wslot')} {
+        position: absolute; left: ${r1(p._safe.left)}px; width: ${r1(p._safe.width)}px;
+        top: ${r1(p.wordY - p.wordSize * 0.6)}px; height: ${r1(p.wordSize * 1.2)}px;
+        display: flex; align-items: center; justify-content: center;
+      }
+      ${ctx.sel('word')} {
+        display: block; text-align: center; white-space: nowrap; line-height: 1;
+        ${ctx.family(p.wordFont)} ${p.wordFont === 'caption' ? 'text-transform: uppercase; letter-spacing: 0.02em;' : 'letter-spacing: -0.01em;'}
+        color: ${colour(ctx, p.wordTone, 'parallax: wordTone')};
+        text-shadow: 0 3px 18px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.5);${blur.word ? ` filter: blur(${blur.word}px);` : ''}
+      }`;
+      };
       const css = `
       ${ctx.sel('stage')} {
         position: absolute;
@@ -193,7 +293,7 @@ export const components = {
         overflow: hidden;
         perspective: ${r1(P)}px;
         perspective-origin: 50% 50%;
-        background: #000;
+        background: ${colour(ctx, p.ground, 'parallax: ground')};
       }
       #${ctx.id}-layer .plane {
         position: absolute;
@@ -206,7 +306,7 @@ export const components = {
         transform-origin: 50% 50%;
         will-change: transform;
       }
-${m.order.map((k) => `      ${ctx.sel(`p-${k}`)} { background-image: url("${ctx.esc(url(m.layers[k].file))}");${blur[k] ? ` filter: blur(${blur[k]}px);` : ''} }`).join('\n')}
+${planes.map(planeCss).join('\n')}
       ${ctx.sel('haze')} {
         position: absolute; left: 0; top: 0; width: ${W}px; height: ${H}px; transform-origin: 50% 50%;
         background: linear-gradient(to bottom, ${p.hazeColor} 0%, transparent 72%);
@@ -229,28 +329,37 @@ ${m.order.map((k) => `      ${ctx.sel(`p-${k}`)} { background-image: url("${ctx.
       ${ctx.sel('paper')} { position: absolute; inset: 0; mix-blend-mode: multiply; opacity: ${r2(p.paper)}; background: url("${p._tex}/paper.png") center / cover; }
       ${ctx.sel('grain')} { position: absolute; inset: -64px; mix-blend-mode: overlay; opacity: ${r2(p.grain)}; background-image: url("${p._tex}/grain-0.png"); background-size: 512px 512px; }
       ${ctx.sel('vig')} { position: absolute; inset: 0; background: radial-gradient(ellipse 75% 65% at 50% 48%, rgba(0,0,0,0) 55%, rgba(0,0,0,${r2(p.vignette)}) 100%); }`;
-      const planes = m.order.map((k, i) => {
-        const el = `<div class="plane" id="${ctx.idf(`p-${k}`)}" data-layout-allow-overflow></div>`;
-        const hz = i === 0 && p.haze > 0 ? `\n            <div id="${ctx.idf('haze')}" data-layout-allow-overflow></div>` : '';
+      const planeHtml = planes.map((e) => {
+        let el;
+        if (e.kind === 'layer') el = `<div class="plane" id="${ctx.idf(`p-${e.id}`)}" data-layout-allow-overflow></div>`;
+        else if (e.kind === 'prop') el = `<div class="plane" id="${ctx.idf(`p-${e.id}`)}" data-layout-allow-overflow><img id="${ctx.idf(`i-${e.id}`)}" src="${ctx.esc(e.q.src)}" alt="" /></div>`;
+        else el = `<div class="plane" id="${ctx.idf('p-word')}" data-layout-allow-overflow><div id="${ctx.idf('wslot')}" data-layout-allow-occlusion><span id="${ctx.idf('word')}" data-layout-allow-occlusion></span></div></div>`;
+        const hz = e.id === 'bg' && p.haze > 0 ? `\n            <div id="${ctx.idf('haze')}" data-layout-allow-overflow></div>` : '';
         return `\n            ${el}${hz}`;
       }).join('');
       const motes = p._dust.map((_, i) => `\n            <i class="mote" id="${ctx.idf(`m${i}`)}"></i>`).join('');
       const html = `
-          <div id="${ctx.idf('stage')}">${planes}${motes}
+          <div id="${ctx.idf('stage')}">${planeHtml}${motes}
           </div>${p.lens > 0 ? `\n          <div id="${ctx.idf('lens')}"></div>` : ''}${p.leak > 0 ? `\n          <div id="${ctx.idf('leak')}"></div>` : ''}${p.paper > 0 ? `\n          <div id="${ctx.idf('paper')}"></div>` : ''}${p.grain > 0 ? `\n          <div id="${ctx.idf('grain')}"></div>` : ''}${p.vignette > 0 ? `\n          <div id="${ctx.idf('vig')}"></div>` : ''}`;
+      const wordFont = { family: ctx.type[p.wordFont].family, weight: ctx.type[p.wordFont].weight };
       const js = `
             var P = ${r1(P)}, RATE = ${rate}, STEPPED = ${p.fps > 0 ? 'true' : 'false'};
             // The crop focus offset is in-plane, scaled by depth like object motion, so layers line up at rest.
             var OFFX = ${r1(offX)}, OFFY = ${r1(offY)};
             var ROWS = ${ctx.js(rows)};
-            var LAYERS = ${ctx.js(layers)};
+            var LAYERS = ${ctx.js(LAYERS)};
             var HAZE = { z: ${hazeZ}, s: ${hazeS} };
             var DUST = ${ctx.js(p._dust.map((d) => d.map(r2)))}, DUSTZ = ${dustZ};
-            var LEAK = ${r2(p.leak)}, PH = ${r2(p._ph[4])};
+            var LEAK = ${r2(p.leak)}, PH = ${r2(p._ph[4])};${wordZ !== null ? `
+            fit($("word"), ${ctx.js(p.word)}, { font: ${ctx.js(wordFont)}, size: ${p.wordSize}, min: ${p.wordMin}, maxW: ${r1(p._safe.width)}, maxH: ${r1(p.wordSize * 1.2)}, maxLines: 1, lh: 1 });
+            // The word sits behind the subject on purpose (the check would call it occluded).
+            Array.prototype.forEach.call($("word").querySelectorAll("*"), function (e) { e.setAttribute("data-layout-allow-occlusion", ""); });
+            tl.fromTo($("wslot"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "expo.out" }, ${r2(Math.max(0, Math.min(D - 0.6, p.wordIn)))});` : ''}
             var els = LAYERS.map(function (l) { return $("p-" + l.id); });
             var haze = $("haze"), leak = $("leak"), grain = $("grain");
             var motes = DUST.map(function (d, i) { return $("m" + i); });
             var GRAIN = [0, 1, 2, 3].map(function (i) { return 'url("${p._tex}/grain-' + i + '.png")'; });
+            function ease2(u) { u = Math.max(0, Math.min(1, u)); return u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) * (1 - u); }
             function rowAt(t) {
               var f = t * RATE;
               if (STEPPED) return ROWS[Math.min(ROWS.length - 1, Math.floor(f + 1e-6))];
@@ -259,13 +368,18 @@ ${m.order.map((k) => `      ${ctx.sel(`p-${k}`)} { background-image: url("${ctx.
             }
             function apply(t) {
               var r = rowAt(t), cx = r[0], cy = r[1], cz = r[2];
+              var tq = STEPPED ? Math.floor(t * RATE + 1e-6) / RATE : t, u = ease2(tq / D);
               for (var i = 0; i < LAYERS.length; i++) {
                 var l = LAYERS[i], k = (P + l.z) / P;
-                var ox = ((l.ci >= 0 ? r[3 + l.ci * 2] : 0) + OFFX) * k, oy = ((l.ci >= 0 ? r[4 + l.ci * 2] : 0) + OFFY) * k;
-                els[i].style.transform = "translate3d(" + (ox - cx).toFixed(2) + "px," + (oy - cy).toFixed(2) + "px," + (cz - l.z).toFixed(2) + "px) scale(" + l.s + ")";
+                var ox = ((l.ci >= 0 ? r[3 + l.ci * 2] : 0) + OFFX * l.off + l.dr[0] * u) * k, oy = ((l.ci >= 0 ? r[4 + l.ci * 2] : 0) + OFFY * l.off + l.dr[1] * u) * k;
+                var tf = "translate3d(" + (ox - cx).toFixed(2) + "px," + (oy - cy).toFixed(2) + "px," + (cz - l.z).toFixed(2) + "px) scale(" + l.s + ")";
+                if (l.sw) {
+                  var w = 2 * Math.PI * l.sw[1] * tq + l.sw[2];
+                  tf += " translate(" + l.sw[3] + "px," + l.sw[4] + "px) rotate(" + (l.sw[0] * Math.sin(w)).toFixed(3) + "deg) scaleY(" + (1 + 0.004 * l.sw[0] * Math.sin(w * 2 + 1.3)).toFixed(5) + ") translate(" + (-l.sw[3]) + "px," + (-l.sw[4]) + "px)";
+                }
+                els[i].style.transform = tf;
               }
               if (haze) haze.style.transform = "translate3d(" + (-cx).toFixed(2) + "px," + (-cy).toFixed(2) + "px," + (cz - HAZE.z).toFixed(2) + "px) scale(" + HAZE.s + ")";
-              var tq = STEPPED ? Math.floor(t * RATE + 1e-6) / RATE : t;
               for (var j = 0; j < motes.length; j++) {
                 var d = DUST[j], x = d[0] * W + d[4] * tq, y = d[1] * H + d[5] * tq;
                 motes[j].style.width = motes[j].style.height = d[2] + "px";
@@ -283,7 +397,10 @@ ${m.order.map((k) => `      ${ctx.sel(`p-${k}`)} { background-image: url("${ctx.
             Object.defineProperty(drv, "t", { get: function () { return this._t; }, set: function (v) { this._t = v; apply(v); } });
             tl.to(drv, { t: D, duration: D, ease: "none" }, 0);
             apply(0);`;
-      hide(p, '_report', { P: r1(P), depths: Object.fromEntries(Object.entries(z).map(([k, v]) => [k, r2(v / P)])), over, steps });
+      const depths = Object.fromEntries(Object.entries(z).map(([k, v]) => [k, r2(v / P)]));
+      for (const q of props) depths[q.name] = q.zu;
+      if (wordZ !== null) depths.word = r2(wordZ / P);
+      hide(p, '_report', { P: r1(P), depths, over, steps, ...(warnings.length ? { warnings } : {}) });
       return { html, css, js };
     },
   },
@@ -487,6 +604,41 @@ ${m.order.map((k) => `      ${ctx.sel(`p-${k}`)} { background-image: url("${ctx.
       const js = `
             tl.fromTo($("slot"), { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power1.out" }, 0);
             tl.fromTo($("img"), { scale: 1 }, { scale: ${r2(1 + p.push)}, duration: D, ease: "none" }, 0);`;
+      return { html, css, js };
+    },
+  },
+
+  'finish': {
+    summary: 'The adjustment layer over the whole edit: fine grain (10% by default), a light vignette and a faint exposure flicker, all changing on the stepped fps, so titles, labels, boards and parallax shots share one texture. Put it last in the plan, spanning the edit; captions stay above it.',
+    fullFrame: true,
+    params: { grain: 0.1, vignette: 0.2, flicker: 0.03, fps: 12 },
+    prepare(p, { rnd, jobDir }) {
+      hide(p, '_tex', ensureTextures(jobDir));
+      hide(p, '_fl', Array.from({ length: 64 }, () => r2(rnd())));
+    },
+    render(p, ctx) {
+      const rate = p.fps > 0 ? p.fps : 24;
+      const css = `
+      ${ctx.sel('grain')} { position: absolute; inset: -64px; mix-blend-mode: overlay; opacity: ${r2(p.grain)}; background-image: url("${p._tex}/grain-0.png"); background-size: 512px 512px; }
+      ${ctx.sel('flick')} { position: absolute; inset: 0; background: #000; opacity: 0; }
+      ${ctx.sel('vig')} { position: absolute; inset: 0; background: radial-gradient(ellipse 75% 65% at 50% 48%, rgba(0,0,0,0) 55%, rgba(0,0,0,${r2(p.vignette)}) 100%); }`;
+      const html = `${p.grain > 0 ? `\n          <div id="${ctx.idf('grain')}"></div>` : ''}${p.flicker > 0 ? `\n          <div id="${ctx.idf('flick')}"></div>` : ''}${p.vignette > 0 ? `\n          <div id="${ctx.idf('vig')}"></div>` : ''}`;
+      const js = `
+            var RATE = ${rate}, FL = ${ctx.js(p._fl)}, FLICK = ${r2(p.flicker)};
+            var grain = $("grain"), flick = $("flick");
+            var GRAIN = [0, 1, 2, 3].map(function (i) { return 'url("${p._tex}/grain-' + i + '.png")'; });
+            function apply(t) {
+              var q = Math.floor(t * RATE + 1e-6);
+              if (grain) {
+                grain.style.backgroundImage = GRAIN[q % 4];
+                grain.style.backgroundPosition = ((q * 197) % 512) + "px " + ((q * 331) % 512) + "px";
+              }
+              if (flick) flick.style.opacity = (FLICK * FL[q % FL.length]).toFixed(3);
+            }
+            var drv = { _t: 0 };
+            Object.defineProperty(drv, "t", { get: function () { return this._t; }, set: function (v) { this._t = v; apply(v); } });
+            tl.to(drv, { t: D, duration: D, ease: "none" }, 0);
+            apply(0);`;
       return { html, css, js };
     },
   },

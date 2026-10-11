@@ -324,6 +324,11 @@ function safeCheck(name, params, geo, comp) {
   const bw = w * Math.cos(r) + h * Math.sin(r);
   const bh = w * Math.sin(r) + h * Math.cos(r);
   const box = { l: x - bw / 2, r: x + bw / 2, t: y - bh / 2, b: y + bh / 2 };
+  // Decoration (a character cut-out, a prop, a marker mark: no load-bearing text) may sit anywhere
+  // in the frame, under the app UI too; only its centre must be inside the frame.
+  if (comp.decor) {
+    return x < 0 || x > geo.width || y < 0 || y > geo.height ? `${name} centre ${Math.round(x)},${Math.round(y)} is outside the ${geo.width}x${geo.height} frame` : null;
+  }
   const s = geo.safe;
   const bad = [];
   if (box.l < s.left - 0.5) bad.push(`left edge ${Math.round(box.l)} < ${s.left}`);
@@ -490,7 +495,7 @@ function showStyle(pack) {
   for (const [role, f] of Object.entries(pack.type)) lines.push(`    ${role.padEnd(10)} ${f.family} ${f.weight}${f.file ? ` (file ${f.file})` : ' (bundled)'}`);
   lines.push('', `  Captions: rcg captions --style ${pack.captions.style} --mode ${pack.captions.mode}${pack.captions.alt ? ` (alt: ${pack.captions.alt})` : ''}`, '', '  Components:');
   for (const [name, c] of Object.entries(pack.components)) {
-    lines.push(`    ${name}${c.fullFrame ? ' (full frame)' : ''}: ${c.summary}`);
+    lines.push(`    ${name}${c.fullFrame ? ' (full frame)' : c.decor ? ' (decor: anywhere in the frame)' : ''}: ${c.summary}`);
     lines.push(`      params: ${Object.entries(c.params).map(([k, v]) => `${k}=${v === '' ? '""' : v}`).join(' ')}`);
     if (typeof c.sfx === 'function') lines.push('      sfx: one per hit (rows, steps), from the pack sfx map');
     else if (c.sfx) lines.push(`      sfx: ${c.sfx.role} at +${c.sfx.at} s -> ${pack.sfx?.[c.sfx.role]?.name || '(none)'}`);

@@ -1,0 +1,55 @@
+{
+  "$comment": "Style pack: Mix Media (handmade cork-board scrapbook). Learned from the user's Hi.Boly director's bible (HiBoly_Directors.pdf, the 'Mix Media Guide') and two reference videos (Video-84385, Video-41225: measured for technique only, no people, footage, copy or brand copied). Four pillars only: the cork board (overlay changes per scene), the character as a real photo cut-out with a torn cream paper edge, handwritten text on torn notebook paper, and illustrated vintage stickers. Stop-motion: every element pops in on discrete frames (12 fps steps), never slides or fades. Workflow and judgment: .agents/skills/style-mix-media/SKILL.md. Cut-outs, boards: rcg mix-media.",
+  "label": "Mix Media (cork-board scrapbook)",
+  "use": "Diary-like, intimate stories built piece by piece on a cork board: a real photo cut-out with a torn paper edge, handwritten notes on torn notebook paper, vintage illustrated stickers, pins and tape, stop-motion pops. Personal stories, tutorials, relatable trends, product notes.",
+  "keywords": ["mix media", "mixed media", "cork board", "corkboard", "scrapbook", "paper doll", "stop motion", "stop-motion", "hi.boly", "boly", "diary", "journal", "collage cut-out", "torn paper", "pinboard", "vision board"],
+  "from": "the user's Hi.Boly director's bible + reference videos Video-84385 and Video-41225 (learned, nothing copied)",
+  "skill": ".agents/skills/style-mix-media/SKILL.md",
+  "components": "components.mjs",
+  "tokens": {
+    "cork": "#a8784a",
+    "cream": "#f3e9cc",
+    "notebook": "#fdfbf4",
+    "rule": "#9ab3d6",
+    "margin": "#e3a0a0",
+    "ink": "#22201c",
+    "pink": "#eaa5b2",
+    "butter": "#f2d06b",
+    "peach": "#f0b089",
+    "mint": "#9fcfb4",
+    "dusty": "#8eadd0",
+    "lavender": "#b7a5d9",
+    "sepia": "#a47d55",
+    "faded-red": "#c45a4b",
+    "old-gold": "#c9a24c",
+    "hl-butter": "rgba(247, 214, 96, 0.62)",
+    "hl-pink": "rgba(240, 150, 170, 0.5)",
+    "hl-mint": "rgba(140, 205, 170, 0.55)",
+    "hl-lavender": "rgba(185, 165, 225, 0.55)"
+  },
+  "type": {
+    "hand": { "family": "MM Caveat", "weight": 500, "file": "fonts/caveat-500.woff2", "$note": "Caveat Medium (OFL 1.1, Caveat Project Authors; woff2 latin subset from Fontsource 5.2.8, licence fonts/OFL-Caveat.txt): every on-screen word, black ink on paper" },
+    "hand-bold": { "family": "MM Caveat", "weight": 700, "file": "fonts/caveat-700.woff2", "$note": "Caveat Bold: one emphasised word, never whole lines" },
+    "print": { "family": "EB Garamond", "weight": 700, "$note": "bundled HyperFrames serif: only the printed matter INSIDE illustrated props (ticket, stamp value, calendar); never a message" }
+  },
+  "captions": { "style": "mm-slip", "mode": "word", "$note": "One spoken word at a time, handwritten on a small torn white paper slip near the character (the references' caption chip, kept on paper so text never floats)." },
+  "motion": {
+    "step": 0.0833,
+    "popScale": 1.08,
+    "popTilt": 1.6,
+    "attachDelay": 0.1667,
+    "wordStagger": 0.3,
+    "wiggleFps": 6,
+    "flickerFps": 8,
+    "$note": "Stop-motion: discrete sets on a 12 fps grid (2 frames at 24 fps), no tweens. A pop is three frames: a little big and tilted, a little small, rest. Pins and tape land two steps after their paper."
+  },
+  "sfx": {
+    "$note": "Made in this workspace (tools/audio/paper_sfx.py, procedural, no third-party rights), measured in library/sfx/manifest.json. Soft and tactile, ASMR-adjacent: one per placed piece, quieter than the voice.",
+    "place": { "name": "paper-place", "volume": 0.4 },
+    "pin": { "name": "pin-click", "volume": 0.45 },
+    "tape": { "name": "tape-peel", "volume": 0.45 },
+    "sticker": { "name": "sticker-press", "volume": 0.5 },
+    "scribble": { "name": "pencil-scribble", "volume": 0.22 }
+  },
+  "status": "built"
+}

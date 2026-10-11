@@ -1,8 +1,8 @@
 # Style packs
 
 A style pack is one reusable visual language: drop a new video, name the style, and the edit is
-built from ready parts instead of hand-written HTML. Five packs exist: two ported from public HyperFrames style skills, three learned from reference
-videos (Vox-style parallax, a promo talking-head ad, an info-graphics video essay):
+built from ready parts instead of hand-written HTML. Six packs exist: two ported from public HyperFrames style skills, four learned from reference
+videos and guides (Vox-style parallax, a promo talking-head ad, an info-graphics video essay, a mix media cork-board scrapbook):
 
 | Pack | Skill | Look | Regression |
 |---|---|---|---|
@@ -10,7 +10,8 @@ videos (Vox-style parallax, a promo talking-head ad, an info-graphics video essa
 | `quiet-editorial` | `.agents/skills/style-quiet-editorial` | serif headline, Inter labels, warm canvas, cards, cursor selection, one green state | R9b |
 | `marketing-pro` | `.agents/skills/style-marketing-pro` | promo talking-head: a planner (`rcg marketing-pro`) turns speech into a moving camera (1.3 base / 1.0 wide / 1.6 punch, drift), hero keywords behind the head styled by meaning, two-tier captions | R11 |
 | `info-graphics` | `.agents/skills/style-info-graphics` | voice-led video essay: a new visual each sentence on dark, cream or grey grounds; type stacks with one orange word, equations, stairs, pyramids, posts, prompt bars with a cursor, orbits, counters, Phosphor icons, photo plates, collages; word-anchored timing (`rcg infographics`); one-word chip captions | R13 |
-| `vox-parallax` | `.agents/skills/style-vox-parallax` | photos cut into depth layers (`rcg layers`) on a virtual multiplane camera; depth blur, haze, grain, 12 fps steps, orange highlighter labels, serif titles, photo cards, archival plates | R10 |
+| `mix-media` | `.agents/skills/style-mix-media` | handmade cork-board scrapbook in stop-motion (the user's Hi.Boly guide): the person from the footage as torn-paper cut-outs (stills and a 12 fps live cut-out, `rcg mix-media`), a cork board whose overlay changes per scene, handwritten notes on torn paper popping on spoken words, 25 drawn vintage stickers, pins and tape, mood tones, paper sounds | test job 2026-10-11-mix-media-test |
+| `vox-parallax` | `.agents/skills/style-vox-parallax` | photos cut into depth layers (`rcg layers`) on a virtual multiplane camera; cut-out props on a colour ground, subject sway, a word inside the scene, depth blur, haze, grain, stepped motion, one finishing layer, orange highlighter labels, serif titles, photo cards, archival plates | R10 |
 
 ## How a pack is built
 

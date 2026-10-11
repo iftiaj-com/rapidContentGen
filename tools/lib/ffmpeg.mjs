@@ -18,13 +18,13 @@ function bins() {
   return { ffmpeg: bin.ffmpeg || 'ffmpeg', ffprobe: bin.ffprobe || 'ffprobe' };
 }
 
-export async function run(binName, args, { maxBuffer = 64 * 1024 * 1024 } = {}) {
+export async function run(binName, args, { maxBuffer = 64 * 1024 * 1024, timeout = 180000 } = {}) {
   const bin = bins()[binName] || binName;
   // -nostdin: ffmpeg otherwise watches stdin for keys and can stall when run from a background shell
   // (a stalled mix-check held its output file open and failed the next render).
   const full = binName === 'ffmpeg' && args[0] !== '-nostdin' ? ['-nostdin', ...args] : args;
   try {
-    return await execFileAsync(bin, full, { maxBuffer, windowsHide: true });
+    return await execFileAsync(bin, full, { maxBuffer, timeout, windowsHide: true });
   } catch (err) {
     const tail = String(err.stderr || err.message || '').split('\n').slice(-12).join('\n');
     throw new Error(`${binName} failed: ${tail}`);

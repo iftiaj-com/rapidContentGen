@@ -6,15 +6,20 @@ Headless voiceover for rapidContentGen. Run it with the voice venv:
     tools/voice/.venv/Scripts/python.exe tools/voice/voice_cli.py <command> ...
 
 Commands
-  voices                        Kokoro languages and voices (JSON)
+  voices   [--engine melo]      Kokoro languages and voices, or the MeloTTS speakers (JSON)
   effects                       Voice effects (JSON)
   say      --text "..." | --script file.txt | --lines lines.json
            --out-dir <dir> [--id vo] [--voice af_heart] [--lang a] [--speed 1.0]
-           [--effect cinematic ...] [--eq bass,mids,treble] [--ambiance NAME|file]
-           [--ambiance-volume 0.3] [--skip-silences] [--no-normalize] [--no-words]
-           [--meta <dir>/audio_meta.json]
+           [--engine kokoro|melo] [--effect cinematic ...] [--eq bass,mids,treble]
+           [--ambiance NAME|file] [--ambiance-volume 0.3] [--skip-silences] [--no-normalize]
+           [--no-words] [--meta <dir>/audio_meta.json]
   transcribe <audio> [--out words.json] [--srt out.srt] [--model base]
   selftest
+
+Engines: kokoro (default, local ONNX in the voice venv) or melo (MeloTTS, run in the Python
+named by config bin.meloPython; see engines/melo_synth.py). With melo, --voice is the speaker
+(EN-US, EN-BR, EN_INDIA, EN-AU, EN-Default) and --lang the Melo language (EN). A line in
+--lines may set its own "engine". All Melo lines are made in one process (the model loads once).
 
 `say` writes <id>.wav per line and merges entries into audio_meta.json in the same
 shape HyperFrames' audio engine uses:
@@ -34,6 +39,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -109,6 +115,38 @@ def synth(text, out_wav, voice, lang, speed):
         # shutil.move, not os.replace: temp (C:) and the job (E:) can be different drives.
         shutil.move(res["playback_file"], out_wav)
     return out_wav
+
+
+# ── MeloTTS (separate Python, see engines/melo_synth.py) ───────────────────
+
+MELO_SPEAKERS = ["EN-US", "EN-BR", "EN_INDIA", "EN-AU", "EN-Default"]
+
+
+def melo_python():
+    py = (CFG.get("bin") or {}).get("meloPython")
+    if not py:
+        raise SystemExit("--engine melo needs bin.meloPython in config/workspace.local.json: a Python with the "
+                         "melotts package and its weights cached (for example the TTS app's venv_311).")
+    if not Path(py).exists():
+        raise SystemExit(f"bin.meloPython not found: {py}")
+    return py
+
+
+def melo_batch(jobs, lang="EN"):
+    """jobs: [{"text", "out", "speaker", "speed"}]. One process, the model loads once."""
+    if not jobs:
+        return {}
+    with tempfile.TemporaryDirectory(prefix="rcg_melo_") as tmp:
+        spec = Path(tmp) / "spec.json"
+        spec.write_text(json.dumps({"language": lang, "device": "cpu", "items": jobs}), encoding="utf-8")
+        script = HERE / "engines" / "melo_synth.py"
+        # Run from the temp folder with -I so nothing from the job or repo shadows a module.
+        proc = subprocess.run([melo_python(), "-I", str(script), str(spec)], cwd=tmp, capture_output=True,
+                              text=True, encoding="utf-8", errors="replace")
+    if proc.returncode != 0:
+        tail = (proc.stderr or proc.stdout or "").strip().splitlines()[-6:]
+        raise SystemExit("MeloTTS failed:\n" + "\n".join(tail))
+    return json.loads(proc.stdout.strip().splitlines()[-1])
 
 
 # ── Whisper word timing ────────────────────────────────────────────────────
@@ -232,7 +270,10 @@ def write_srt(words, path, phrase_chars=32):
 
 # ── Commands ───────────────────────────────────────────────────────────────
 
-def cmd_voices(_args):
+def cmd_voices(args):
+    if getattr(args, "engine", "kokoro") == "melo":
+        emit({"EN": {"language": "English (MeloTTS)", "voices": MELO_SPEAKERS}})
+        return
     from core.constants import KOKORO_LANGS, KOKORO_VOICES
     by_code = {code: name for name, code in KOKORO_LANGS.items()}
     emit({code: {"language": by_code.get(code, code), "voices": list(v.keys())} for code, v in KOKORO_VOICES.items()})
@@ -252,24 +293,37 @@ def parse_eq(s):
     return tuple(parts)
 
 
-def say_line(line, args, out_dir):
+def line_engine(line, args):
+    """(engine, voice, lang) for a line; Kokoro's defaults map to Melo's under --engine melo."""
+    engine_name = line.get("engine", getattr(args, "engine", "kokoro"))
+    if engine_name not in ("kokoro", "melo"):
+        raise SystemExit(f"Unknown engine '{engine_name}' (kokoro or melo)")
+    voice = line.get("voice", args.voice)
+    lang = line.get("lang", args.lang)
+    if engine_name == "melo":
+        voice = "EN-US" if voice in (None, "af_heart") else voice
+        lang = "EN" if lang in (None, "a") else lang
+    return engine_name, voice, lang
+
+
+def say_line(line, args, out_dir, raw_ready=False):
     from pipeline import process
     lid = line["id"]
     text = line["text"].strip()
-    voice = line.get("voice", args.voice)
-    lang = line.get("lang", args.lang)
+    engine_name, voice, lang = line_engine(line, args)
     speed = float(line.get("speed", args.speed))
     effects = line.get("effects", args.effect or [])
     raw = out_dir / f"{lid}.raw.wav"
     final = out_dir / f"{lid}.wav"
     t0 = time.time()
-    synth(text, str(raw), voice, lang, speed)
+    if not raw_ready:
+        synth(text, str(raw), voice, lang, speed)
     proc = process(str(raw), str(final), speed=1.0, effects=effects, eq=parse_eq(args.eq),
                    ambiance=args.ambiance, ambiance_volume=args.ambiance_volume,
                    skip_silences=args.skip_silences, normalize=not args.no_normalize)
     raw.unlink(missing_ok=True)
-    entry = {"id": lid, "path": final.name, "text": text, "voice": voice, "lang": lang, "speed": speed,
-             "duration_s": proc["duration_s"], "processing": proc["applied"]}
+    entry = {"id": lid, "path": final.name, "text": text, "engine": engine_name, "voice": voice, "lang": lang,
+             "speed": speed, "duration_s": proc["duration_s"], "processing": proc["applied"]}
     if not args.no_words:
         heard, _ = transcribe_words(str(final), language=None)
         words, matched = align_to_script(text, heard, proc["duration_s"])
@@ -291,7 +345,17 @@ def cmd_say(args):
         if not text or not text.strip():
             raise SystemExit("say needs --text, --script or --lines")
         lines = [{"id": args.id, "text": text}]
-    entries = [say_line(l, args, out_dir) for l in lines]
+    # Melo lines first, in one process (its model takes about 80 s to load), grouped by language.
+    melo = {}
+    for l in lines:
+        engine_name, voice, lang = line_engine(l, args)
+        if engine_name == "melo":
+            melo.setdefault(lang, []).append({"text": l["text"].strip(), "out": str(out_dir / f"{l['id']}.raw.wav"),
+                                              "speaker": voice, "speed": float(l.get("speed", args.speed))})
+    for lang, jobs in melo.items():
+        res = melo_batch(jobs, lang)
+        sys.stderr.write(f"MeloTTS {lang}: {len(jobs)} line(s), model load {res.get('load_s')} s\n")
+    entries = [say_line(l, args, out_dir, raw_ready=line_engine(l, args)[0] == "melo") for l in lines]
 
     meta_path = Path(args.meta).resolve() if args.meta else out_dir / "audio_meta.json"
     meta = json.loads(meta_path.read_text(encoding="utf-8-sig")) if meta_path.exists() else {"voices": []}
@@ -334,7 +398,9 @@ def cmd_selftest(_args):
 def main():
     p = argparse.ArgumentParser(prog="voice_cli.py", description="rapidContentGen voiceover tools")
     sub = p.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("voices").set_defaults(fn=cmd_voices)
+    v = sub.add_parser("voices")
+    v.add_argument("--engine", default="kokoro", choices=["kokoro", "melo"])
+    v.set_defaults(fn=cmd_voices)
     sub.add_parser("effects").set_defaults(fn=cmd_effects)
     s = sub.add_parser("say")
     src = s.add_mutually_exclusive_group(required=True)
@@ -346,6 +412,7 @@ def main():
     s.add_argument("--voice", default="af_heart")
     s.add_argument("--lang", default="a")
     s.add_argument("--speed", type=float, default=1.0)
+    s.add_argument("--engine", default="kokoro", choices=["kokoro", "melo"])
     s.add_argument("--effect", action="append")
     s.add_argument("--eq")
     s.add_argument("--ambiance")

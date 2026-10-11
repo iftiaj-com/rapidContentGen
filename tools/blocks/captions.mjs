@@ -211,7 +211,9 @@ function boxCss(style, flashScale, fx) {
     const bg = base && flash
       ? `rgba(${base.r}, ${base.g}, ${base.b}, calc(${base.a} + var(--flash) * ${(flash.a - base.a).toFixed(3)}))`
       : style.pill.bg;
-    lines.push(`background: ${bg}; border-radius: ${style.pill.radius}px; padding: 0.3em 0.48em;`);
+    lines.push(`background: ${bg}; border-radius: ${style.pill.radius}px; padding: ${style.pill.padding || '0.3em 0.48em'};`);
+    // A pack preset may cut the pill to a shape (mix-media: a torn paper slip).
+    if (style.pill.clipPath) lines.push(`clip-path: ${style.pill.clipPath};`);
   }
   // Style-pack presets (library/styles): a drawn edge, a card shadow and a resting tilt.
   if (style.border) lines.push(`border: ${style.border};`);

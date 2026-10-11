@@ -4059,6 +4059,18 @@
       "sha256Dest": "7e5841f8446cfb3ce7c922788bd4f68ae49ac417de79277562608707add0b424"
     },
     {
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
+      "from": "engines/melo_engine.py",
+      "kind": "learn",
+      "gitHead": "b8bca8d126e55bda6b99a80b8275250a31b1f98d",
+      "dirtyAtCopy": false,
+      "sha256Source": "1cf2a49ec075260b902d4a6964dd69be38cc5e0d19c15014fd200fc46d9a0e16",
+      "date": "2026-10-10",
+      "note": "MeloTTS call pattern (TTS(language, device), spk2id, tts_to_file, NLTK data check) learned; melo_synth.py is new code that runs in bin.meloPython offline. AditsVoiceStudio is the renamed TTS app (GPL-3.0-or-later); no code copied.",
+      "to": "tools/voice/engines/melo_synth.py"
+    },
+    {
       "source": "tts",
       "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
       "from": "ui/app.py",

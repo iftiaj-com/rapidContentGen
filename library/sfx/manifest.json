@@ -298,6 +298,45 @@
     "description": "Notification chime — alert, message-in, toast/badge appears. Sync to the element entering.",
     "license": "Pixabay Content License (see CREDITS.md)"
   },
+  "paper-place": {
+    "file": "paper-place.mp3",
+    "durationS": 0.45,
+    "onsetS": 0.01,
+    "crestStartS": 0,
+    "crestEndS": 0.04,
+    "peakS": 0,
+    "audibleEndS": 0.37,
+    "integratedLufs": -19.9,
+    "truePeakDb": -3.2,
+    "description": "Soft paper set down on a cork board: a light tap and a short rustle. Pop-in of a note, a cut-out or a sheet (mix-media pack).",
+    "license": "Made in rapidContentGen (tools/audio/paper_sfx.py, procedural noise synthesis); no third-party rights"
+  },
+  "pencil-scribble": {
+    "file": "pencil-scribble.mp3",
+    "durationS": 0.7,
+    "onsetS": 0.02,
+    "crestStartS": 0.08,
+    "crestEndS": 0.42,
+    "peakS": 0.47,
+    "audibleEndS": 0.67,
+    "integratedLufs": -13,
+    "truePeakDb": -3.2,
+    "description": "Pencil or marker scribble, about 0.6 s of quick strokes. A doodle drawn on the board (mix-media pack).",
+    "license": "Made in rapidContentGen (tools/audio/paper_sfx.py, procedural noise synthesis); no third-party rights"
+  },
+  "pin-click": {
+    "file": "pin-click.mp3",
+    "durationS": 0.3,
+    "onsetS": 0.01,
+    "crestStartS": 0,
+    "crestEndS": 0.08,
+    "peakS": 0.01,
+    "audibleEndS": 0.24,
+    "integratedLufs": -70,
+    "truePeakDb": -6.1,
+    "description": "A push pin pressed into cork: soft thud, tiny metal click and ring. A pin, binder clip or paperclip landing (mix-media pack).",
+    "license": "Made in rapidContentGen (tools/audio/paper_sfx.py, procedural noise synthesis); no third-party rights"
+  },
   "ping": {
     "file": "ping.mp3",
     "durationS": 1.32,
@@ -349,6 +388,32 @@
     "truePeakDb": 0.1,
     "description": "Bright sparkle / shimmer — magical reveal or 'shine' highlight on a hero element. Sync to the highlight.",
     "license": "Pixabay Content License (see CREDITS.md)"
+  },
+  "sticker-press": {
+    "file": "sticker-press.mp3",
+    "durationS": 0.36,
+    "onsetS": 0.01,
+    "crestStartS": 0,
+    "crestEndS": 0.08,
+    "peakS": 0,
+    "audibleEndS": 0.33,
+    "integratedLufs": -70,
+    "truePeakDb": -3.3,
+    "description": "A sticker pressed down with a finger: muffled thump and a little crinkle. Illustrated props popping in (mix-media pack).",
+    "license": "Made in rapidContentGen (tools/audio/paper_sfx.py, procedural noise synthesis); no third-party rights"
+  },
+  "tape-peel": {
+    "file": "tape-peel.mp3",
+    "durationS": 0.58,
+    "onsetS": 0.12,
+    "crestStartS": 0.12,
+    "crestEndS": 0.33,
+    "peakS": 0.15,
+    "audibleEndS": 0.56,
+    "integratedLufs": -25.4,
+    "truePeakDb": -4.7,
+    "description": "A strip of tape peeled and pressed: fine crackle, then a small snap at the end (about 0.47 s). Tape, washi or masking strips (mix-media pack).",
+    "license": "Made in rapidContentGen (tools/audio/paper_sfx.py, procedural noise synthesis); no third-party rights"
   },
   "typing": {
     "file": "typing.mp3",

@@ -296,6 +296,14 @@ Source root: `E:/Develop/Antigravity_testing/AditsStudio`
 | port | `server/lib/audio-analysis.mjs` | `tools/audio/analyze.mjs` | 97907a6d | no | 2026-10-07 | analyseTrack ported; decode averages channels (AnalyserNode downmix) instead of ffmpeg -ac 1; added offset |
 | port | `server/lib/ffmpeg.mjs` | `tools/lib/ffmpeg.mjs` | 97907a6d | no | 2026-10-07 | probe + loudnorm/faststart; binaries from config; added loudness, section levels, limiter, contact sheet |
 
+## aditsVoiceStudio
+
+Source root: `E:/Develop/Antigravity_testing/AditsVoiceStudio`
+
+| Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
+|---|---|---|---|---|---|---|
+| learn | `engines/melo_engine.py` | `tools/voice/engines/melo_synth.py` | b8bca8d1 | no | 2026-10-10 | MeloTTS call pattern (TTS(language, device), spk2id, tts_to_file, NLTK data check) learned; melo_synth.py is new code that runs in bin.meloPython offline. AditsVoiceStudio is the renamed TTS app (GPL-3.0-or-later); no code copied. |
+
 ## flowEditor
 
 Source root: `E:/Develop/Antigravity_testing/flowEditor`

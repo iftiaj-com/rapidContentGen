@@ -29,6 +29,7 @@ supports it: `/video-job` in Antigravity (2.0 and CLI) and Claude Code.
 | `style-tactile-collage` | Paper collage, scrapbook, zine, handmade or analog look |
 | `style-quiet-editorial` | Quiet, minimal, premium, editorial or product-UI look |
 | `style-vox-parallax` | Vox-style 2.5D parallax from still photos, documentary or archival look |
+| `style-mix-media` | Mix media cork-board scrapbook in stop-motion: the person from the footage as torn-paper cut-outs, handwritten notes, vintage stickers, diary voiceover |
 
 - **Edit skills in `.agents/skills/` only.** `.claude/skills/` is a copy for Claude Code (which reads
   only that folder). After any change run `node tools/rcg.mjs skills sync`; `rcg doctor` reports a
@@ -94,7 +95,8 @@ node tools/rcg.mjs new-job --name x --video a.mp4 [--audio m.mp3] [--prompt-file
 node tools/rcg.mjs inbox list                  # free / claimed inbox folders (new-job claims one); release <folder>
 node tools/rcg.mjs inbox done --job jobs/<id>  # job delivered: rename its inbox folder to <folder>-Complete (agents skip these)
 node tools/rcg.mjs beat-sheet md jobs/<id>/beat-sheet.json jobs/<id>/beat-sheet.md
-node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice
+node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice   # --engine melo: MeloTTS via bin.meloPython
+node tools/rcg.mjs mix-media prep --job jobs/<id> --src assets/clip.mp4 --times 1.5,4.5,8.9 [--objects "cup"]   # torn-paper cut-outs, boards (skill style-mix-media)
 node tools/rcg.mjs level --dir jobs/<id>/assets/voice --lufs -13.5 --ceiling -1.5
 node tools/rcg.mjs captions --job jobs/<id> --words <audio_meta.json|words.json|.srt> --voice vo1 --style tiktok --mode word --start 0.4 --id cap-vo1 --insert   # + --hollow --rgb --shadow; --negative --behind p1
 node tools/rcg.mjs title --job jobs/<id> --text "LINE ONE|LINE TWO" --preset slam --style trailer --start 11 --duration 1.5 --id title-main --insert

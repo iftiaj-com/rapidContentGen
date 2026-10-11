@@ -15,6 +15,8 @@ import { decodeMono, loudness } from '../lib/ffmpeg.mjs';
 
 export async function measureSfx(dir = join(ROOT, 'library', 'sfx')) {
   const hf = readJson(join(dir, 'manifest.hyperframes.json'), {});
+  // Sounds made in this workspace (tools/audio/paper_sfx.py) carry their own description and licence.
+  const made = readJson(join(dir, 'manifest.made.json'), {});
   const out = {};
   for (const file of readdirSync(dir).filter((f) => f.endsWith('.mp3')).sort()) {
     const sr = 8000;
@@ -60,8 +62,8 @@ export async function measureSfx(dir = join(ROOT, 'library', 'sfx')) {
       audibleEndS: +((lastIdx * hop) / sr).toFixed(2),
       integratedLufs: lv.integratedLufs,
       truePeakDb: lv.truePeakDb,
-      description: hf[id]?.description || '',
-      license: hf[id] ? 'Pixabay Content License (see CREDITS.md)' : '',
+      description: hf[id]?.description || made[id]?.description || '',
+      license: hf[id] ? 'Pixabay Content License (see CREDITS.md)' : made[id]?.license || '',
     };
   }
   writeFileSync(join(dir, 'manifest.json'), JSON.stringify(out, null, 2) + '\n');

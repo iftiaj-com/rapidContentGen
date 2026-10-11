@@ -37,11 +37,17 @@ wordmark, fonts or footage.
 
 - Every photo beat is a multiplane scene: background far back, subject near the focus plane,
   foreground in front of it. A 35 mm or 50 mm virtual lens.
-- The camera always moves: slow push, pan, rise or drift. One object may move on its own path
-  (a cable car along its wire) so it never reads as a flat card zoom.
+- At least three planes: something in front, the subject, something far. A photo with no
+  foreground gets a prop or a word between the planes.
+- The camera always moves: slow push, pan, rise or drift. One thing moves on its own: an object on
+  a path (a cable car along its wire) or a slow sway (a person breathing), so it never reads as a
+  flat card zoom.
+- A scene can also be built from cut-out props on a colour ground (`props`, `ground`).
+- One key word may sit inside the scene, behind the subject (`word`).
 - Depth of field: foreground and far background blurred, the subject sharp.
 - Finish: haze between far and near layers, fine grain, vignette, optional dust, light leak and
-  paper texture. Motion stepped to 12 fps on the 24 fps timeline for the archival, hand-made feel.
+  paper texture. Motion stepped to 12 fps on a 24 fps timeline (15 on 30) for the archival,
+  hand-made feel. One `finish` layer (grain, vignette, flicker) over the whole edit.
 
 ## Safe area (this workspace, 9:16)
 

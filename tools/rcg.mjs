@@ -43,6 +43,7 @@ const COMMANDS = {
   'ramp': ['tools/blocks/ramp.mjs', 'Speed ramp on a footage clip as a rate lane: Adits audio speed sync (min/max) or explicit points; refuses < 1x'],
   'marketing-pro': ['tools/recipes/marketing-pro.mjs', 'Promo talking-head edits (style pack marketing-pro): prep (CFR, upscale, voice, transcript) | plan (zoom ladder, heroes, captions) | commands | build'],
   'split-screen': ['tools/recipes/split-screen.mjs', 'Split-screen explainer from a presenter + an info video (skill style-split-screen-edit): prep | plan (layouts, B-roll montage, face-safe panel crop) | commands | build | check'],
+  'mix-media': ['tools/recipes/mix-media.mjs', 'Mix Media cork-board scrapbook (skill style-mix-media): prep (matte, live torn-paper cut-out at 12 fps, pose stills, illustrated object stickers, boards) | boards | pose | object | sticker | sheet'],
   'infographics': ['tools/blocks/infographics.mjs', 'Info-graphics essays (skill style-info-graphics): scaffold (graphics-only job) | place-voice (lines end to end, music ducked) | resolve (word anchors -> style plan)'],
   'assets': ['tools/media/assets.mjs', 'Approved free sources: Phosphor icons into library/icons | search pixabay / polyhaven / met | fetch (also unsplash) into a job with a credit | credit | credits'],
   'broll': ['tools/media/broll.mjs', 'Info-video analysis: scene cuts, segments scored as card / ui / footage / dark, focus point, labelled sheet -> data/broll.json'],
