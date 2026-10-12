@@ -34,6 +34,15 @@
   "fonts": {
     "label": null
   },
+  "cut": {
+    "$comment": "rcg cut (tools/cut/cut.mjs). whisperModel must already be cached (rcg doctor checks); language null = detect. maxPause: pauses over this are tightened to 2/3 of it. pad: kept round each cut. gapQuietDb: a gap between words is trimmed as a pause when it stays this far under speech; ai-video-editor uses 12, which ate a soft 'okay' on a real take (2026-10-12), 15 kept it. keepFillers: never cut um/uh or soft fillers.",
+    "whisperModel": "base",
+    "language": null,
+    "maxPause": 0.15,
+    "pad": 0.1,
+    "gapQuietDb": 15,
+    "keepFillers": false
+  },
   "defaults": {
     "template": "vertical-1080x1920",
     "fps": 24,

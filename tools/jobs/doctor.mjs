@@ -4,7 +4,8 @@
 // Usage: node tools/jobs/doctor.mjs
 
 import { execFileSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { isMain } from '../lib/cli.mjs';
 import { loadConfig } from '../lib/config.mjs';
@@ -37,6 +38,18 @@ export function gbrpTailOk(ffmpeg) {
   }
 }
 
+/**
+ * The cached faster-whisper model folder for a size (Systran/faster-whisper-<size> in the Hugging
+ * Face cache, where voice_cli.py loads it with local_files_only), or null.
+ */
+export function whisperCached(size) {
+  const hub = process.env.HF_HUB_CACHE || (process.env.HF_HOME ? join(process.env.HF_HOME, 'hub') : join(homedir(), '.cache', 'huggingface', 'hub'));
+  const snaps = join(hub, `models--Systran--faster-whisper-${size}`, 'snapshots');
+  if (!existsSync(snaps)) return null;
+  const hit = readdirSync(snaps).find((s) => existsSync(join(snaps, s, 'model.bin')));
+  return hit ? join(snaps, hit) : null;
+}
+
 export function doctor() {
   const cfg = loadConfig({ fresh: true });
   const rows = [];
@@ -64,6 +77,8 @@ export function doctor() {
   const models = cfg.paths.models;
   const kokoro = existsSync(join(models, 'kokoro-v1.0.onnx')) && existsSync(join(models, 'voices.bin'));
   add('Kokoro weights', kokoro, kokoro ? models : 'not copied yet (Phase 1)', true);
+  const wm = whisperCached(cfg.cut?.whisperModel || 'base');
+  add(`Whisper ${cfg.cut?.whisperModel || 'base'} (rcg cut, voice timing)`, Boolean(wm), wm || 'not in the Hugging Face cache: downloading it needs the user\'s yes (SETUP.md)', true);
   add('label font', Boolean(cfg.fonts?.label && existsSync(cfg.fonts.label)), cfg.fonts?.label || 'set fonts.label (contact sheet timestamps)', true);
   const mp = join(models, 'mediapipe');
   const mpFiles = ['wasm/vision_bundle.mjs', 'wasm/vision_wasm_internal.wasm', 'models/face_landmarker.task', 'models/hand_landmarker.task', 'models/selfie_segmenter.tflite'];

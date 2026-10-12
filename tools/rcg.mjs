@@ -15,6 +15,7 @@ const COMMANDS = {
   'doctor': ['tools/jobs/doctor.mjs', 'Check config, ffmpeg, HyperFrames plugin, Python and the voice venv'],
   'new-job': ['tools/jobs/new-job.mjs', 'Create jobs/<date>-<name>/ from a template with intake probe + sheets'],
   'inbox': ['tools/jobs/inbox.mjs', 'list [--all] | done <folder> | done --job jobs/<id> | release <folder>: free / claimed inbox folders; done renames to <folder>-Complete, which agents skip'],
+  'cut': ['tools/cut/cut.mjs', 'Clean cut of a raw talking take: transcribe | propose | apply | build | render | verify | fix | demo (retakes, false starts, fillers, pauses -> assets/cut/<name>.mp4 + data/words.json)'],
   'beat-sheet': ['tools/jobs/beat-sheet.mjs', 'validate | md: check a beat-sheet.json and write the approval table'],
   'skills': ['tools/skills/sync.mjs', 'Copy the project skills from .agents/skills (edit here) to .claude/skills (Claude Code); check = report differences'],
   'beatgrid': ['tools/audio/hyperframes/analyze-beatgrid.py', 'Music -> audiomap.json: tempo, beats, downbeats, drum hits, energy phases (HyperFrames script, voice venv)'],

@@ -320,6 +320,24 @@ Source root: `E:/Develop/Antigravity_testing/AditsVoiceStudio`
 | port | `ui/app.py` | `tools/voice/pipeline.py` | b73506e3 | no | 2026-10-07 | _generate_worker post chain (silence, speed, effects, EQ, ambiance, normalize) without UI |
 | port | `core/subtitles.py` | `tools/voice/voice_cli.py` | b73506e3 | no | 2026-10-07 | faster-whisper word timestamps without torch; JSON words aligned to script + SRT |
 
+## aiVideoEditor
+
+Source root: `E:/Develop/Antigravity_testing/ai-video-editor`
+
+| Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
+|---|---|---|---|---|---|---|
+| copy | `LICENSE` | `tools/cut/LICENSE-ai-video-editor` | 3b01d277 | no | 2026-10-12 | MIT notice for the cut stage ported from ai-video-editor |
+| port | `plugins/ai-editor/skills/cut/scripts/retakes.py` | `tools/cut/apply.mjs` | 3b01d277 | no | 2026-10-12 | Answers -> quoted spans, merging and review list (decide/to_spans/review_md); MIT |
+| port | `plugins/ai-editor/skills/cut/scripts/build_timeline.py` | `tools/cut/build.mjs` | 3b01d277 | no | 2026-10-12 | Spans -> kept frames: snap and pad, pause tightening, splice budget, frame snapping, joins off speech, retime; MIT. Silence by window peak like silencedetect; word-gap threshold 15 dB (was 12) |
+| port | `plugins/ai-editor/skills/cut/scripts/preview_cut.py` | `tools/cut/build.mjs` | 3b01d277 | no | 2026-10-12 | paper-edit.md writer and CLIPPED check; MIT. Zero-length labels count by their moment |
+| port | `plugins/ai-editor/skills/cut/scripts/retakes.py` | `tools/cut/candidates.mjs` | 3b01d277 | no | 2026-10-12 | Candidate finder (restarts, fragments, meta, fillers, alt hooks) rewritten in Node; MIT. Jev judging dropped: the agent answers decisions.in.json. Added: a two-clause retake gives one cut |
+| port | `plugins/ai-editor/skills/cut/scripts/build_timeline.py` | `tools/cut/levels.mjs` | 3b01d277 | no | 2026-10-12 | Window levels, derived silence threshold, label fitting, unheard labels; MIT. Added: voiced gaps with no words |
+| port | `plugins/ai-editor/skills/cut/scripts/render.py` | `tools/cut/render.mjs` | 3b01d277 | no | 2026-10-12 | Per-range exact re-encode, frame counts, one-pass audio with 8 ms fades; MIT. Heavy slot, filter graph from a file, output check added |
+| port | `plugins/ai-editor/skills/cut/scripts/textnorm.py` | `tools/cut/text.mjs` | 3b01d277 | no | 2026-10-12 | Normalizing, number folding, quote lookup, pair by time; MIT. difflib SequenceMatcher ported (fuzzed against Python: 400 cases identical) |
+| port | `plugins/ai-editor/skills/cut/scripts/transcribe.py` | `tools/cut/transcribe.mjs` | 3b01d277 | no | 2026-10-12 | Re-check pass for over-long labels; MIT. Added: re-transcribe voiced gaps (Whisper skipped 18 s of a test take) |
+| port | `plugins/ai-editor/skills/cut/scripts/verify_cut.py` | `tools/cut/verify.mjs` | 3b01d277 | no | 2026-10-12 | Re-transcribe and diff: MISSING, SURVIVED, HEARD DIFFERENTLY, DOUBLED; MIT. MISSING only near a join, the rest listed as transcriber variance |
+| port | `plugins/ai-editor/skills/cut/scripts/transcribe.py` | `tools/voice/voice_cli.py` | 3b01d277 | no | 2026-10-12 | transcribe-cut: filler prompt, VAD 500 ms, no previous-text conditioning, beam 5, clip re-transcription; MIT |
+
 ## flowEditor
 
 Source root: `E:/Develop/Antigravity_testing/flowEditor`

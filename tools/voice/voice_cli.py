@@ -14,6 +14,8 @@ Commands
            [--ambiance NAME|file] [--ambiance-volume 0.3] [--skip-silences] [--no-normalize]
            [--no-words] [--meta <dir>/audio_meta.json]
   transcribe <audio> [--out words.json] [--srt out.srt] [--model base]
+  transcribe-cut <media> --out words.json [--model base] [--lang en] [--clips a-b,a-b]
+                                  Raw-take words for rcg cut: fillers and restarts kept
   selftest
 
 Engines: kokoro (default, local ONNX in the voice venv) or melo (MeloTTS, run in the Python
@@ -182,6 +184,52 @@ def transcribe_words(audio, model_name="base", language=None):
                 words.append({"text": t, "start": round(float(w.start), 3), "end": round(float(w.end), 3),
                               "probability": round(float(getattr(w, "probability", 0.0)), 3)})
     return words, getattr(info, "language", None)
+
+
+# ── Cut transcription (rcg cut) ────────────────────────────────────────────
+# Settings ported from ai-video-editor's cut transcriber (docs/PROVENANCE.md): a raw take is full
+# of retakes, fillers and long pauses, and plain Whisper tidies those away.
+#   initial_prompt with fillers: Whisper writes the ums and restarts down instead of dropping them.
+#   condition_on_previous_text=False: with it on, a repeated line tends to merge into one, and
+#     repeated lines are exactly the retakes.
+#   vad_filter (500 ms): without it, word times drift after a long silence.
+# --clips re-transcribes short stretches on their own (no VAD: the stretch is speech). rcg cut
+# uses it for a word label that holds far more speech than its word (tools/cut/transcribe.mjs).
+
+CUT_PROMPT = "Umm, so, uh, like, I mean, you know, um, so, wait, sorry, let me say that again."
+
+
+def _cut_words(segments):
+    return [{"text": w.word.strip(), "start": round(float(w.start), 3), "end": round(float(w.end), 3),
+             "probability": round(float(getattr(w, "probability", 0.0)), 3)}
+            for s in segments for w in (s.words or []) if w.word.strip()]
+
+
+def cmd_transcribe_cut(args):
+    from faster_whisper import decode_audio
+    model = whisper(args.model)
+    audio = decode_audio(args.media, sampling_rate=16000)
+    lang = args.lang or None
+    opts = dict(word_timestamps=True, initial_prompt=CUT_PROMPT, beam_size=5, condition_on_previous_text=False)
+    t0 = time.time()
+    if args.clips:
+        clips = []
+        for part in args.clips.split(","):
+            a, b = (float(x) for x in part.split("-"))
+            segs, _ = model.transcribe(audio, language=lang, clip_timestamps=[a, b], **opts)
+            clips.append({"start": a, "end": b,
+                          "words": [w for w in _cut_words(segs) if w["start"] >= a - 0.05 and w["end"] <= b + 0.05]})
+        out = {"media": args.media, "model": args.model, "clips": clips}
+    else:
+        segs, info = model.transcribe(audio, language=lang, vad_filter=True,
+                                      vad_parameters={"min_silence_duration_ms": 500}, **opts)
+        words = _cut_words(segs)
+        out = {"media": args.media, "model": args.model, "language": getattr(info, "language", None),
+               "duration_s": round(len(audio) / 16000, 3), "words": words}
+    out["seconds_to_transcribe"] = round(time.time() - t0, 2)
+    Path(args.out).write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    emit({"out": args.out, "words": len(out.get("words", [])), "clips": len(out.get("clips", [])),
+          "language": out.get("language"), "seconds_to_transcribe": out["seconds_to_transcribe"]})
 
 
 _norm = lambda s: re.sub(r"[^\w']+", "", s.lower())
@@ -512,6 +560,13 @@ def main():
     t.add_argument("--srt")
     t.add_argument("--model", default="base")
     t.set_defaults(fn=cmd_transcribe)
+    tc = sub.add_parser("transcribe-cut")
+    tc.add_argument("media")
+    tc.add_argument("--out", required=True)
+    tc.add_argument("--model", default="base")
+    tc.add_argument("--lang")
+    tc.add_argument("--clips", help="a-b,a-b seconds: transcribe only these stretches")
+    tc.set_defaults(fn=cmd_transcribe_cut)
     sub.add_parser("selftest").set_defaults(fn=cmd_selftest)
     args = p.parse_args()
     args.fn(args)

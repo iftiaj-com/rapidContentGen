@@ -35,6 +35,32 @@ Before starting a full job, check whether a fast path fits:
    copied edit references, and data/ timings still describe the old footage, so re-measure first.
 3. Read `JOB.md` notes and LOOK at each intake sheet. Notes flag: no audio, low fps, hot peaks.
 
+## 1b. Cut (the user's own raw talking take)
+
+Run it when the footage is the user's own recording of themself talking, raw (retakes, false starts,
+"um", long pauses), and the user did not say it is already cut. Skip it for stock or B-roll footage,
+an already edited clip, or music-only edits. Every later step works from the cut:
+`assets/cut/<name>.mp4` and the re-timed `data/words.json`.
+
+1. `rcg cut transcribe jobs/<id> [--src assets/<take>]` (Whisper `base`, cached; about a quarter of the take's length).
+2. `rcg cut propose jobs/<id>`, then read only `data/cut/transcript.txt` and `data/cut/candidates.md`
+   (never `words.raw.json`). Answer every candidate in `data/cut/decisions.in.json`: `cut`, `keep` or
+   `unsure`; for a restart, `cut` removes the EARLIER attempt (last take wins), and an earlier take that
+   is better is `{"answer": "cut", "keep": "first"}` (goes to the user). Rules: when in doubt, keep; a
+   quotative "like" ("my brain is like, okay") stays; a clean repeat for emphasis stays. A long list can
+   go to a sub-agent with this file as its only input; check its answers against `transcript.txt`.
+   Spans the code missed go in `"extra"`.
+3. `rcg cut apply jobs/<id>` -> `spans.json` + `review.md` (what the user decides).
+4. `rcg cut build jobs/<id>`, then read `paper-edit.md` straight through as the viewer will hear it.
+   CLIPPED words or joins "still in speech" are listed there.
+5. `rcg cut render jobs/<id>` (heavy-work slot), then `rcg cut verify jobs/<id>`. MISSING (a kept word
+   lost at a join) or SURVIVED (a removed word still heard): one fix round (`--pad`, `--gap-quiet-db`,
+   a span in `"extra"`), then show the user what is left. NOT HEARD far from a join and HEARD
+   DIFFERENTLY are transcriber variance, not cut errors.
+6. A misheard name: `rcg cut fix jobs/<id> old=new` (kept in `fixes.json` for later transcripts).
+7. Show the user `paper-edit.md` and `review.md` (and the cut), and continue only after they approve
+   it. In mode (b) state the cut in the report instead.
+
 ## 2. Working mode (ask if not given)
 
 If `prompt.md` or the chat did not set a mode, ask the user (with your tool's question prompt if it has one, else in chat):
@@ -49,7 +75,8 @@ that gate is overridden by the user's mode choice (state this in `JOB.md`).
 ## 3. Analyze (fast, in parallel)
 
 - `rcg probe` output is already in `data/intake.json`.
-- Speech? Transcribe for word timestamps (`rcg hf --cwd <job> transcribe <file>` uses whisper.cpp; faster-whisper is in the voice venv from Phase 1).
+- Speech? After step 1b the words are already in `data/words.json`, timed to the cut. Otherwise
+  transcribe for word timestamps (`rcg voice transcribe <file> --out data/words.json`, faster-whisper in the voice venv).
 - Music? Beats: `rcg hf --cwd <job> beats <audio>`; levels: `rcg probe`.
 - Look at the frames: where are faces and important action? Plan text around them.
 - Footage fps < 30 and the plan needs slow motion: plan a freeze frame or interpolation.

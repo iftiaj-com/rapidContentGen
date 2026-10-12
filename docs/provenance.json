@@ -3894,6 +3894,127 @@
       "to": "tools/blocks/three.mjs"
     },
     {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "LICENSE",
+      "kind": "copy",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "6027f80096af0747b52de4292af515590003f0b4f2da6a7de9e1916624baa9b6",
+      "date": "2026-10-12",
+      "note": "MIT notice for the cut stage ported from ai-video-editor",
+      "to": "tools/cut/LICENSE-ai-video-editor",
+      "sha256Dest": "6027f80096af0747b52de4292af515590003f0b4f2da6a7de9e1916624baa9b6"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/retakes.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "17fa415ed103732468c923c7123c23343a7c315c6b297b754d5a69a679c51262",
+      "date": "2026-10-12",
+      "note": "Answers -> quoted spans, merging and review list (decide/to_spans/review_md); MIT",
+      "to": "tools/cut/apply.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/build_timeline.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "58c58410f72b0534702685863f028ec8f999d64f32a41d160fb8455380200114",
+      "date": "2026-10-12",
+      "note": "Spans -> kept frames: snap and pad, pause tightening, splice budget, frame snapping, joins off speech, retime; MIT. Silence by window peak like silencedetect; word-gap threshold 15 dB (was 12)",
+      "to": "tools/cut/build.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/preview_cut.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "ea18b9174458f988f60928696f30e1f369887ab9b35ef5f91a422f5bdd7862e1",
+      "date": "2026-10-12",
+      "note": "paper-edit.md writer and CLIPPED check; MIT. Zero-length labels count by their moment",
+      "to": "tools/cut/build.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/retakes.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "17fa415ed103732468c923c7123c23343a7c315c6b297b754d5a69a679c51262",
+      "date": "2026-10-12",
+      "note": "Candidate finder (restarts, fragments, meta, fillers, alt hooks) rewritten in Node; MIT. Jev judging dropped: the agent answers decisions.in.json. Added: a two-clause retake gives one cut",
+      "to": "tools/cut/candidates.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/build_timeline.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "58c58410f72b0534702685863f028ec8f999d64f32a41d160fb8455380200114",
+      "date": "2026-10-12",
+      "note": "Window levels, derived silence threshold, label fitting, unheard labels; MIT. Added: voiced gaps with no words",
+      "to": "tools/cut/levels.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/render.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "c93f77625818088a4564b1d7e26ccc0c02f2ed4fc39e46875dc632cc44c43bea",
+      "date": "2026-10-12",
+      "note": "Per-range exact re-encode, frame counts, one-pass audio with 8 ms fades; MIT. Heavy slot, filter graph from a file, output check added",
+      "to": "tools/cut/render.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/textnorm.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "0a7712cc6b7d0060247e060de92af6031d4cf83eafea2f696a00f317dbbf0e63",
+      "date": "2026-10-12",
+      "note": "Normalizing, number folding, quote lookup, pair by time; MIT. difflib SequenceMatcher ported (fuzzed against Python: 400 cases identical)",
+      "to": "tools/cut/text.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/transcribe.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "70589764b2d1e4dcde714b07946ba3dbe1b8ec4dd8f590e3389b950946572b5e",
+      "date": "2026-10-12",
+      "note": "Re-check pass for over-long labels; MIT. Added: re-transcribe voiced gaps (Whisper skipped 18 s of a test take)",
+      "to": "tools/cut/transcribe.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/verify_cut.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "72baaf7e7e0b1b8781ac136fcfa31e0372926cb8869decb10e291359d6123455",
+      "date": "2026-10-12",
+      "note": "Re-transcribe and diff: MISSING, SURVIVED, HEARD DIFFERENTLY, DOUBLED; MIT. MISSING only near a join, the rest listed as transcriber variance",
+      "to": "tools/cut/verify.mjs"
+    },
+    {
       "source": "adits",
       "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
       "from": "Adits/core/AnamorphicCamera.js",
@@ -4104,6 +4225,18 @@
       "sha256Source": "1528804b70aaaa20d6d2d8e71c78c9a5355f78878a1b4b4570801d7fce93fba1",
       "date": "2026-10-07",
       "note": "faster-whisper word timestamps without torch; JSON words aligned to script + SRT",
+      "to": "tools/voice/voice_cli.py"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/transcribe.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "70589764b2d1e4dcde714b07946ba3dbe1b8ec4dd8f590e3389b950946572b5e",
+      "date": "2026-10-12",
+      "note": "transcribe-cut: filler prompt, VAD 500 ms, no previous-text conditioning, beam 5, clip re-transcription; MIT",
       "to": "tools/voice/voice_cli.py"
     }
   ]
