@@ -37,6 +37,18 @@
       "to": ".agents/skills/style-anti-ai/scripts/check.mjs"
     },
     {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/clips/scripts/clips.py",
+      "kind": "learn",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "64c3d72b3eb88ecce8ed4b095a9eb5300b29e9bb33b26b2a096bc301727d2d71",
+      "date": "2026-10-12",
+      "note": "The plan's design (sentences, length runs, features, four questions, shortlist, pads) was learned from this file during the study; the code was written fresh; MIT",
+      "to": ".agents/skills/style-long-video-to-clips/scripts/clips.mjs"
+    },
+    {
       "source": "quietEditorial",
       "sourceRoot": "E:/Develop/Antigravity_testing/style-refs/quiet-editorial-ui",
       "from": "SKILL.md",
