@@ -221,6 +221,13 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
 
 ## 7. Check
 
+- `node tools/rcg.mjs plan check jobs/<id>` first (milliseconds, JSON and HTML only): every block command
+  run through rcg is recorded in `data/plan.json`, and this checks the whole edit on paper (missing
+  inputs, blocks past the end, captions vs their words and voice, captions timed to an `rcg cut` the
+  page does not play, text in no-text zones, overlapping text, text over the tracked face). Fix every
+  FAIL before rendering; read the WARNs. Always run blocks through `node tools/rcg.mjs`, so they are recorded.
+  After a HyperFrames Studio session, `rcg plan diff` shows what Studio changed; `rcg plan apply`
+  rebuilds the page from the plan (it refuses to overwrite Studio edits without `--force`).
 - `node tools/rcg.mjs hf --cwd jobs/<id> check`: must pass (lint, runtime, layout, motion, contrast).
 - Snapshots at beat midpoints: `rcg hf --cwd jobs/<id> snapshot --at <t1,t2,...> --describe false --output snapshots/beats`, then READ the contact sheet.
 - Mode (c): stop here for preview approval (offer `rcg hf --cwd jobs/<id> preview --background`).

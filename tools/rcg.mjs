@@ -10,6 +10,7 @@ import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { loadConfig, ROOT } from './lib/config.mjs';
+import { beginRecord } from './plan/record.mjs';
 
 const COMMANDS = {
   'doctor': ['tools/jobs/doctor.mjs', 'Check config, ffmpeg, HyperFrames plugin, Python and the voice venv'],
@@ -20,6 +21,7 @@ const COMMANDS = {
   'skills': ['tools/skills/sync.mjs', 'Copy the project skills from .agents/skills (edit here) to .claude/skills (Claude Code); check = report differences'],
   'beatgrid': ['tools/audio/hyperframes/analyze-beatgrid.py', 'Music -> audiomap.json: tempo, beats, downbeats, drum hits, energy phases (HyperFrames script, voice venv)'],
   'voice': ['tools/voice/voice_cli.py', 'Voiceover (Kokoro, 54 voices) + 33 voice effects + word timings -> audio_meta.json (Python venv)'],
+  'plan': ['tools/plan/plan.mjs', 'plan.json, the whole edit in one file (every block command records into it): check (safe zones, captions vs words, overlaps, faces, timing) | apply (rebuild the page from it) | diff | show | demo'],
   'probe': ['tools/media/probe.mjs', 'Media summary + loudness/true peak + intake notes (JSON)'],
   'sheet': ['tools/media/contact-sheet.mjs', 'Labeled contact sheet, --safe draws the 9:16 no-text zones'],
   'limit': ['tools/audio/limit.mjs', 'Peak-limit music/voice to a true-peak ceiling (default -2.5 dBTP)'],
@@ -82,9 +84,14 @@ if (script.endsWith('.py')) {
     process.exit(1);
   }
 }
+// A block command that edits a job's page is also written into the job's data/plan.json (record mode).
+const record = beginRecord(cmd, rest);
 const child = spawn(bin, [script, ...rest], {
   stdio: 'inherit',
   windowsHide: true,
   env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
 });
-child.on('close', (code) => process.exit(code ?? 1));
+child.on('close', (code) => {
+  record?.finish(code);
+  process.exit(code ?? 1);
+});
