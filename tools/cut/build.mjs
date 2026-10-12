@@ -373,7 +373,7 @@ export async function planCut({ source, words, spans, maxPause, pad, noise: nois
   const gaps = spliceGaps(all, fitted, modelCuts, lvl, spliceNoise).sort((x, y) => x - y);
   for (const c of all) { delete c.next; if (c.end === Infinity) c.end = video.duration; }
   const report = [
-    `noise      ${noise.toFixed(0)} dB ${noiseFlag != null ? '(--noise)' : `derived (speech ${diag.speech}, ${bed ? `music bed ${diag.bed}: trimming only between words` : `floor ${diag.floor}`})`}`,
+    `noise      ${noise.toFixed(0)} dB ${noiseFlag != null ? '(--noise)' : `derived (speech ${diag.speech}, ${bed ? `music bed ${diag.bed}: trimming only between words` : diag.digitalSilence ? `digital silence in ${(diag.digitalSilence * 100).toFixed(1)}% of the take: no bed` : `floor ${diag.floor}`})`}`,
     ...(Object.keys(labels).length ? [`labels     ${Object.keys(labels).length} over-long word label(s) fitted to the audio`] : []),
     `pause      tighten over ${gapMax.toFixed(2)}s to ${gapKeep.toFixed(2)}s`,
     `source     ${video.duration.toFixed(2)}s at ${video.fps.toFixed(3)} fps, ${video.frames} frames`,

@@ -17,6 +17,8 @@ const MIN_SEPARATION_DB = 20;
 const FLOOR_SEARCH_DB = 10;
 const FLOOR_HEADROOM_DB = 6;
 const ONSET_MARGIN_S = 0.04; // soft onsets (p, f, h) start under the threshold
+const DIGITAL_SILENCE_DB = -90; // a window this quiet is digital silence, not a room or a bed
+const DIGITAL_SHARE = 0.01; // 1% of the windows
 
 /**
  * dBFS per 20 ms window of the file's audio (channels averaged): { rms, peak }. RMS judges speech
@@ -53,6 +55,13 @@ export function deriveNoise(lvl) {
   for (const [b, c] of hist) if (b < speech - FLOOR_SEARCH_DB && (floor == null || c > hist.get(floor))) floor = b;
   if (floor == null) return { noise: null, reason: `no floor below speech (${speech} dB)`, speech };
   const sep = speech - floor;
+  // Dense speech with short pauses (a TTS voice-over) can leave the most common quiet bin inside the
+  // speech itself, which reads as a music bed. Digital silence in the pauses says there is no bed:
+  // the floor is that silence. Only this case changes; a take that already reads as no-bed does not.
+  const digital = lvl.filter((v) => v <= DIGITAL_SILENCE_DB).length / lvl.length;
+  if (sep < MIN_SEPARATION_DB && digital >= DIGITAL_SHARE) {
+    return { noise: speech - SPEECH_OFFSET_DB, speech, floor, sep, digitalSilence: +digital.toFixed(3) };
+  }
   if (sep < MIN_SEPARATION_DB) {
     const bed = pct(sorted, 0.1);
     return { noise: +(bed + (speech - bed) / 3).toFixed(1), speech, floor, sep, bed: +bed.toFixed(1) };

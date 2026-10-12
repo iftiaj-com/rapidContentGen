@@ -22,6 +22,11 @@ const SOFT_FILLERS = ['you know', 'i mean', 'like'];
 const STOP = new Set(('a an the and or but so of to in on at it is i you we that this for with be was are my me if '
   + "it's it'll i'm they he she do not there then just").split(' '));
 const META = /(?<=^| )(wait|sorry|hold on|shoot|oops|start (?:again|over)|one more time|let me (?:start|do (?:that|this|it)|try|say (?:that|it))(?: (?:again|over))?|take two|again)(?= |$)/g;
+// "wait", "sorry", "again" and "hold on" are everyday words ("the inbox can wait", "we were 17 again"):
+// alone they are a restart cue only when they open a clause ("Wait, ...") or sit next to another cue
+// ("wait, sorry"). The longer cues above are always one. (Not in the ai-video-editor design.)
+const SOFT_META = new Set(['wait', 'sorry', 'again', 'hold on']);
+const CUE_WORDS = new Set(['wait', 'sorry', 'again', 'hold', 'shoot', 'oops', 'okay', 'ok', 'let']);
 const LIKE_BEFORE = new Set(['and', 'so', 'but', 'or', 'um', 'uh', 'was', 'were']);
 const ENDS = /[.?!]$/;
 
@@ -195,6 +200,11 @@ export function findCandidates(w, { keepFillers = false } = {}) {
       const b = seq[w1][1];
       if (a >= tail) continue;
       if (kind === 'filler' && (keepFillers || (m[0] === 'like' && !looseLike(w, a)))) continue;
+      if (kind === 'meta' && SOFT_META.has(m[0])) {
+        const opens = a === 0 || /[.?!,;:]$/.test(w[a - 1].text.trim()) || w[a].start - w[a - 1].end >= 0.3;
+        const beside = CUE_WORDS.has(seq[w0 - 1]?.[0]) || CUE_WORDS.has(seq[w1 + 1]?.[0]);
+        if (!opens && !beside) continue;
+      }
       add(kind, a, b, { context: ctx(a, b) });
     }
   }

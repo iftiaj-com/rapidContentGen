@@ -8,6 +8,13 @@ description: Turn a user's video(s) + prompt into a finished edit in rapidConten
 Work from the repo root. Tools: `node tools/rcg.mjs <command>` (run with no command for the list).
 Capabilities and how to call them: `docs/capabilities.md`. Pitfalls: `references/lessons.md`.
 
+**Judgment and sub-agents** (AGENTS.md, "Delegation"): code measures, you judge from the compact
+files each step writes (`transcript.txt`, `candidates.md`, `review.md`, `paper-edit.md`,
+`plan-check.json`), never from raw word JSON or frames. You may hand a bounded list (cut candidates,
+clip scores, one clip's plan in a batch) to a sub-agent with one compact file, its rules and the fixed
+answer file; check its answer against your own reading and the code checks before using it. Keep the
+story, the beat sheet, the style choice and anything the user approves. For a short list, do it yourself.
+
 ## 0. Pick the path
 
 Before starting a full job, check whether a fast path fits:

@@ -82,6 +82,31 @@ valid compositions (the `data-*` timing contract, clips, tracks, animation rules
   `data/credits.json` and `report.md` (`rcg assets credits`). The approved sources do not require
   on-screen credit (`.agents/skills/style-info-graphics/references/assets.md`).
 
+## Delegation: code measures, the agent decides who judges
+
+No rcg tool calls a model. The main agent (any host) decides when to use its own sub-agents; rcg
+keeps the inputs small and the answers checkable.
+
+1. **Code measures.** Anything countable (silences, repeats, loudness, faces, colours, rates, timings)
+   comes from a script. Never read raw transcripts, word JSON or frames when a script summarizes them.
+2. **Read the compact files.** Judge from what each step writes for judgment: `data/cut/transcript.txt`,
+   `candidates.md`, `review.md`, `paper-edit.md` (rcg cut); `data/clips/candidates.md`, `shortlist.md`
+   (clips); `data/plan-check.json` (rcg plan check); `data/anti-ai.json` (style-anti-ai).
+3. **Delegate only bounded, checkable work.** A sub-agent gets one compact file, one question and a fixed
+   answer file: `data/cut/decisions.in.json` (cut candidates), `data/clips/scores.in.json` (clip scores).
+   Good fits: answering a candidate list, scoring clip candidates, looking at one frame sheet, planning one
+   clip of a batch. Give it the rules it needs (`.agents/skills/video-job/SKILL.md` step 1b,
+   `.agents/skills/style-long-video-to-clips/references/ranking.md`) and the answer shape, nothing else.
+4. **Keep the final calls.** The main agent keeps the story, the beat sheet, the style choice, anything the
+   user approves, what a correction means and its scope, and any change to a skill. It never forwards a
+   sub-agent's answer without checking it.
+5. **Check every delegated answer.** Compare it with your own reading where it matters (a cut, a keeper,
+   a top score), spot-check the rest against the source line, and run the code checks (`rcg cut apply` and
+   `verify`, `clips shortlist`, `rcg plan check`, `rcg verify`). Redo a part yourself when its check fails.
+6. **Quality over savings.** When the work is small (a dozen candidates), when the host has no sub-agents,
+   or when a sub-agent's answers keep failing the checks, do it yourself. Delegate to go faster and keep
+   the main context clean, never at the cost of the result.
+
 ## Environment
 
 - Windows 11. Run pipes in Git Bash, not PowerShell 5.1: PowerShell pipes add a UTF-8 BOM

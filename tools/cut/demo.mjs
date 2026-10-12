@@ -7,6 +7,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { run } from '../lib/ffmpeg.mjs';
 import { findCandidates } from './candidates.mjs';
+import { deriveNoise } from './levels.mjs';
 import { apply, build, propose, render } from './cut.mjs';
 import { jobContext, readJson, sha256File, writeJson } from './job.mjs';
 import { SequenceMatcher, canon, locate, nwords, pairByTime } from './text.mjs';
@@ -42,6 +43,22 @@ function units() {
   const fs = cands.find((c) => c.kind === 'false_start' && c.text === 'So the thing about,');
   r.push(check('restart found', Boolean(fs), cands.map((c) => `${c.id} ${c.kind} "${c.text}"`).join('; ')));
   r.push(check('um cut without asking', cands.some((c) => c.auto && c.text === 'Um,')));
+  // everyday "wait" / "again" are not restart cues; "Wait, sorry, let me start again" still is
+  const spoken = (s) => s.split(' ').map((text, i) => ({ text, start: i * 0.35, end: i * 0.35 + 0.3 }));
+  const metaOf = (s) => findCandidates(spoken(s)).filter((c) => c.kind === 'meta').map((c) => c.text);
+  const everyday = ['The inbox can wait. It was Monday.', 'Then my sister called again. She laughed.', 'For ten minutes we were 17 again. Fun.']
+    .flatMap(metaOf);
+  r.push(check('everyday wait / again are not meta', everyday.length === 0, everyday.join('; ')));
+  const cue = metaOf('So the thing is, wait, sorry, let me start again. The thing is simple.');
+  r.push(check('a real restart cue is meta', cue.some((t) => /wait/i.test(t)) && cue.some((t) => /start again/i.test(t)), cue.join('; ')));
+  // dense speech with digital silence in its pauses is not a music bed
+  // like the k8 clip: 2.5% digital silence, a dense quiet bin at -24 (30%), speech -12..-18
+  const tts = [...Array(800)].map((_, k) => (k % 40 === 0 ? -120 : k % 40 <= 12 ? -24 : -12 - (k % 7)));
+  const room = tts.map((v) => (v === -120 ? -24 : v)); // the same with no true silence
+  const d1 = deriveNoise(Float64Array.from(tts));
+  const d2 = deriveNoise(Float64Array.from(room));
+  r.push(check('digital silence: no music bed', d1.bed == null && d1.digitalSilence > 0, JSON.stringify(d1)));
+  r.push(check('no digital silence: the bed rule as before', d2.bed != null, JSON.stringify(d2)));
   // a two-clause line said twice: ONE restart, from the first take to the second (not one per clause)
   const two = "So, I'm doing something. I'm working on something. So, I'm doing something. I'm working on something. And then".split(' ')
     .map((text, i) => ({ text, start: i * 0.4 + (i >= 9 ? 1 : 0), end: i * 0.4 + 0.3 + (i >= 9 ? 1 : 0) }));
