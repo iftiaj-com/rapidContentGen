@@ -155,6 +155,16 @@
       "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
       "flashScale": 0, "defaultMode": "word",
       "sizes": { "word": 64, "2word": 58, "phrase": 50 }
+    },
+    "cl-seam": {
+      "$note": "Style pack character-lighting (library/styles/character-lighting). From the user's reference Short Video-9968 (measured, nothing copied): a short phrase in bold yellow sans on a dark rounded pill, no pop or glow. In the stage layout it sits on the seam between the footage box and the light plot (--y 950).",
+      "font": "Inter", "weight": 800, "uppercase": false,
+      "color": "#f5e04d", "stroke": null,
+      "pill": { "bg": "rgba(12,12,14,0.86)", "radius": 14 },
+      "textShadow": null,
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0, "defaultMode": "phrase",
+      "sizes": { "word": 64, "2word": 58, "phrase": 52 }
     }
   },
   "negative": {

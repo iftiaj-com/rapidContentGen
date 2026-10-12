@@ -394,7 +394,7 @@ export async function addComponent(opts, cache = {}) {
   const seed = Number(opts.seed ?? 1);
   const params = resolveParams(comp, name, opts);
   if (params.x == null && 'x' in comp.params) params.x = geo.safe.left + geo.safe.width / 2;
-  if (comp.prepare) comp.prepare(params, { geo, rnd: prng(seed + 7919), pack, jobDir });
+  if (comp.prepare) comp.prepare(params, { geo, rnd: prng(seed + 7919), pack, jobDir, start, duration });
   const warnings = [];
   const unsafe = safeCheck(name, params, geo, comp);
   if (unsafe && !opts['allow-edge']) throw new Error(`${unsafe}. Move or shrink it, or pass --allow-edge for decoration.`);

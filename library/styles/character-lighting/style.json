@@ -1,0 +1,56 @@
+{
+  "$comment": "Style pack: Character Lighting. Learned from the user's reference Short Video-9968 (a 3D head shown under six lighting setups, each cut on the narrator's cue word, with a top-down light plot below and yellow captions on the seam; measured for technique only, no footage, character, voice or copy taken) and the user's setup breakdown (front = innocence, split = secrecy, under = threat, top = unreadable eyes, blue backlight = coldness, three-point = heroism). The relight is 2D light shaping on real footage: shadows and pools that follow the tracked face (rcg track), the background dropped and rim light drawn from the subject matte (rcg matte). Workflow and judgment: .agents/skills/style-character-lighting/SKILL.md.",
+  "label": "Character Lighting",
+  "use": "Light a character to say who they are: relight real footage per beat (front, split, under, top, blue backlight, three-point, Rembrandt, loop, butterfly, noir, dual colour, silhouette), explain lighting with a top-down light plot, tag the mood a setup carries. Lighting explainers, character reveals, story beats that turn (innocent to guilty, calm to threat), cinematic talking heads.",
+  "keywords": ["character lighting", "lighting", "relight", "light setup", "cinematic lighting", "split light", "side light", "rembrandt", "three-point", "three point", "backlight", "back light", "rim light", "monster light", "under light", "top light", "noir", "silhouette", "low key", "high key", "mood lighting", "light plot", "lighting diagram"],
+  "from": "the user's reference Video-9968 + the user's character lighting breakdown (learned, nothing copied)",
+  "skill": ".agents/skills/style-character-lighting/SKILL.md",
+  "components": "components.mjs",
+  "tokens": {
+    "ground": "#141616",
+    "key-warm": "#ffcf96",
+    "key-soft": "#ffe9d2",
+    "key-white": "#fff6ea",
+    "under": "#ffe2bd",
+    "rim-blue": "#3d7dff",
+    "rim-warm": "#ffe0b0",
+    "dual-warm": "#ff7a3d",
+    "dual-cool": "#2fb8ff",
+    "grade-warm": "#ff9b4a",
+    "grade-cold": "#3557ff",
+    "grade-green": "#2bd9a0",
+    "plot-card": "#f7f6f2",
+    "plot-grid": "#e7e5df",
+    "plot-floor": "#efece4",
+    "plot-wall": "#5a616c",
+    "plot-ink": "#16181c",
+    "plot-muted": "#5d636d",
+    "plot-lens": "#2f6bff",
+    "plot-cone": "rgba(120, 160, 230, 0.30)",
+    "tag-bg": "rgba(10, 10, 12, 0.80)",
+    "tag-ink": "#ffffff",
+    "tag-label": "#f5e04d",
+    "caption": "#f5e04d"
+  },
+  "type": {
+    "label": { "family": "Inter", "weight": 700, "$note": "bundled; tracked uppercase setup names and plot labels" },
+    "strong": { "family": "Inter", "weight": 800, "$note": "bundled; the meaning word on a mood tag" },
+    "body": { "family": "Inter", "weight": 400, "$note": "bundled; small notes" }
+  },
+  "captions": { "style": "cl-seam", "mode": "phrase", "$note": "The reference's caption: a short phrase in bold yellow sans on a dark rounded pill. In the stage layout it sits on the seam between the footage and the light plot (--y 950); on full-frame footage use the normal caption lane." },
+  "motion": {
+    "enter": 0.35, "enterEase": "power3.out",
+    "exit": 0.22, "exitEase": "power2.in",
+    "rise": 24,
+    "fade": 0.3,
+    "flicker": 0.4,
+    "lightMove": 0.45, "lightMoveEase": "power3.inOut",
+    "pop": 0.32, "popEase": "back.out(1.6)",
+    "$note": "Light changes are hard cuts on the cue word by default (the reference). fade and flicker are for a light switching on inside a shot. Plot lights slide from the previous setup when from= is set."
+  },
+  "sfx": {
+    "$note": "A light switching is a click, not a whoosh. Most relights need no sound; use one on a reveal.",
+    "switch": { "name": "click-soft", "volume": 0.3 }
+  },
+  "status": "built"
+}

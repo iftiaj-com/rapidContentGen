@@ -56,6 +56,11 @@ that gate is overridden by the user's mode choice (state this in `JOB.md`).
 
 ## 4. Beat sheet
 
+**Script first.** When the edit needs spoken words the user did not supply in full (a voiceover, a
+script the user will record, or a request to improve their script), follow `script-modern-storytelling`
+before the beat sheet: it writes the peak map (`data/script.md`) and `data/vo-lines.json`, and each
+peak gets the biggest visual change of its stretch. The style skill keeps its tone and visuals.
+
 **Named looks (style packs, `docs/styles.md`).** If the prompt names or matches a pack
 (`rcg style list` prints keywords), load its skill and follow its fast path for steps 4-8:
 paper collage, scrapbook, notebook, cut-out, handmade -> `style-tactile-collage`; quiet, editorial,
@@ -64,7 +69,9 @@ documentary or archival explainer -> `style-vox-parallax`; promo, ad, personal-b
 talking head (one person) -> `style-marketing-pro`; split screen, presenter plus B-roll or an info
 video, "two videos", top and bottom -> `style-split-screen-edit`; infographic, explainer, video essay,
 faceless or topic-only video, "make a video about X", or a script plus assets -> `style-info-graphics`; mix media,
-cork board, scrapbook, paper doll, stop-motion collage, diary, Hi.Boly -> `style-mix-media`. Style packs are built for speech-led edits
+cork board, scrapbook, paper doll, stop-motion collage, diary, Hi.Boly -> `style-mix-media`; character
+lighting, relight, cinematic or dramatic lighting, split, Rembrandt, rim, back, under or monster light, noir,
+silhouette, a lighting explainer or light plot -> `style-character-lighting`. Style packs are built for speech-led edits
 (talking heads, voiceover explainers); recipes below cut to music. Using both in one job is untested.
 
 For a styled edit, start from a recipe (`docs/recipes.md`): `rcg recipe list`, pick the style that

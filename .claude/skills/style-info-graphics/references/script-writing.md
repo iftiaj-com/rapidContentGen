@@ -1,6 +1,8 @@
 # Writing the script (topic mode)
 
 The script is the edit: every scene is a sentence. Write it first, read it as a viewer, then voice it.
+Place the hook and the peaks with the `script-modern-storytelling` skill (peak map, a mini-peak every
+10-15 s); the shape below names the sections, and each peak gets a ground change.
 
 ## Length
 

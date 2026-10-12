@@ -2,6 +2,8 @@
 
 ## Writing the script
 
+- Place the hook and the peaks with the `script-modern-storytelling` skill (peak map, a mini-peak
+  every 10-15 s). The diary tone below wins; each peak gets a new board or a large pop.
 - First person for diary and personal stories; second person for hooks and tutorials.
 - Conversational, like writing in a journal out loud. Short sentences. Room to breathe.
 - Hook (first line, under 3 s): a curiosity line. Build: the story in small concrete details.

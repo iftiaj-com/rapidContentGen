@@ -30,6 +30,8 @@ supports it: `/video-job` in Antigravity (2.0 and CLI) and Claude Code.
 | `style-quiet-editorial` | Quiet, minimal, premium, editorial or product-UI look |
 | `style-vox-parallax` | Vox-style 2.5D parallax from still photos, documentary or archival look |
 | `style-mix-media` | Mix media cork-board scrapbook in stop-motion: the person from the footage as torn-paper cut-outs, handwritten notes, vintage stickers, diary voiceover |
+| `style-character-lighting` | Character lighting: relight footage so the light says who the character is (front, split, under, top, blue backlight, three-point and six more), lighting explainers with a top-down light plot, and lighting rules for any character content |
+| `script-modern-storytelling` | Writing any spoken script (voiceover, shoot script, or an audit of the user's script) with the Modern Story Arc: drop-in hook, first peak within seconds, a mini-peak every 10-15 s, ending written first; outputs a peak map the edit hits |
 
 - **Edit skills in `.agents/skills/` only.** `.claude/skills/` is a copy for Claude Code (which reads
   only that folder). After any change run `node tools/rcg.mjs skills sync`; `rcg doctor` reports a
