@@ -34,6 +34,12 @@ Before starting a full job, check whether a fast path fits:
    instead of the template, without footage, voice, music or renders. `JOB.md` lists the assets the
    copied edit references, and data/ timings still describe the old footage, so re-measure first.
 3. Read `JOB.md` notes and LOOK at each intake sheet. Notes flag: no audio, low fps, hot peaks.
+4. Follow the user's learned rules: the "Learned rules" section at the end of this skill (every job),
+   the one in the style skill you use, and the one in `JOB.md`. To see them in order with each
+   setting's value: `node .agents/skills/learning-from-user-taste/scripts/learn.mjs effective --style <slug> --job jobs/<id>`.
+   A setting is passed as the flag its line names. When the user reacts to a result ("captions too
+   small", "too many zooms") or changes something at an approval stop, follow the
+   `learning-from-user-taste` skill: it sorts bug, one-off and taste, and saves only taste.
 
 ## 1b. Cut (the user's own raw talking take)
 
@@ -133,10 +139,8 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
   4. Place each line as `<audio id="vo1" src="assets/voice/vo1.wav" data-start=".." data-duration="<duration_s>">`.
      Give voice clips their real `data-duration` (lint treats open-ended clips as overlapping).
   5. Duck music under speech with its volume lane (about 0.3 under voice, 0.7 in gaps over 1 s).
-- Negative captions (`--negative`, inverted text) always go behind the subject: `rcg matte` and
-  `rcg pnp` first, then `--negative --insert --behind p1`, at a height where the background shows
-  around the subject (beside the head, not across a body that fills the width). The tool forces
-  white, heavy, 1.3x and no pill, stroke, glow or shadow (user rule, R14).
+- Negative captions (`--negative`, inverted text): `rcg matte` and `rcg pnp` first, then
+  `--negative --insert --behind p1`. Placement and look: the learned rules at the end of this skill.
 - Captions from voiceover or transcript words (Adits styles: tiktok, karaoke, neon, kinetic,
   modern, subtitle, glitch, retro, earthquake, vertical_ghost):
   `node tools/rcg.mjs captions --job jobs/<id> --words jobs/<id>/assets/voice/audio_meta.json --voice vo1 --style tiktok --mode word|2word|phrase --start <voice data-start> --id cap-vo1 --insert`
@@ -259,3 +263,14 @@ If the job came from `inbox/`, mark it finished once the verified render is deli
 `node tools/rcg.mjs inbox done --job jobs/<id>` renames the folder to `<folder>-Complete`, so no agent
 starts it again. Revisions later still work: the job has its own copy of the media. If the rename fails
 because a file in the folder is open, ask the user to close it and run the command again.
+
+<!-- rcg:learned begin -->
+## Learned rules
+
+The user's taste, saved with the `learning-from-user-taste` skill. Follow every line. Change them only with
+`node .agents/skills/learning-from-user-taste/scripts/learn.mjs` (it checks the hard limits and clashes).
+Order: style pack defaults < every job (video-job) < one style < one job (JOB.md). Pitfalls and safe zones still win.
+
+- Credits never appear in the video: no photographer, source, licence or "courtesy of" text on screen, no end card of credits; credits are records only, in `data/credits.json` and `report.md` (user rule, 2026-10-08)
+- Negative captions (`--negative`, inverted text) always go behind the subject, at a height where the background shows around the subject (beside the head, not across a body that fills the width); white, heavy, 1.3x and no pill, stroke, glow or shadow (R14) (user rule, 2026-10-09)
+<!-- rcg:learned end -->

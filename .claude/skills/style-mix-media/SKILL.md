@@ -117,7 +117,7 @@ the centre; later items stack on top. A pose swap inside a scene (stop-motion re
 - Keep the user's story, script and claims. Facts in a script are true or clearly personal.
 - "Hi.Boly" and "Boly" are names from the user's guide. Do not write them on screen unless the user
   says the video is for that brand; the character is the person in the user's footage.
-- Credits never appear on screen (user rule): `data/credits.json` and `report.md` only.
+- Credits never appear on screen: a learned rule in `video-job` (every job).
 - Ask before downloads and installs, as the workspace rules say, unless the user already allowed them.
 
 ## Known gaps

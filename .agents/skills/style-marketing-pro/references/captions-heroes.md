@@ -65,7 +65,7 @@ Negative heroes:
 - **On a bright wall** the word inverts to near-black: R11b "SYSTEM", bg 208, measured 32-48 of 255 in
   the render.
 - **Never on the body caption:** it sits in front of the chest, and negative text goes behind
-  the subject (user rule).
+  the subject (a learned rule in SKILL.md).
 
 ## Keyword clusters (`--clusters`, reference Video-54041)
 

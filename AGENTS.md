@@ -31,8 +31,15 @@ supports it: `/video-job` in Antigravity (2.0 and CLI) and Claude Code.
 | `style-vox-parallax` | Vox-style 2.5D parallax from still photos, documentary or archival look |
 | `style-mix-media` | Mix media cork-board scrapbook in stop-motion: the person from the footage as torn-paper cut-outs, handwritten notes, vintage stickers, diary voiceover |
 | `style-character-lighting` | Character lighting: relight footage so the light says who the character is (front, split, under, top, blue backlight, three-point and six more), lighting explainers with a top-down light plot, and lighting rules for any character content |
+| `learning-from-user-taste` | The user reacts to a result or says "always / never / next time": sort bug, one-off or taste, and save taste as a learned rule (every job, one style or one job), checked against the hard limits and the existing rules |
 | `script-modern-storytelling` | Writing any spoken script (voiceover, shoot script, or an audit of the user's script) with the Modern Story Arc: drop-in hook, first peak within seconds, a mini-peak every 10-15 s, ending written first; outputs a peak map the edit hits |
 
+- **User taste lives in the skills.** The user's rules are lines in each skill's "Learned rules"
+  section (`<!-- rcg:learned begin/end -->`) and in a job's `JOB.md`; follow them on every job, and
+  change them only through the `learning-from-user-taste` skill.
+- **A skill may carry scripts** in `.agents/skills/<name>/scripts/*.mjs`, run with
+  `node .agents/skills/<name>/scripts/<script>.mjs`. They may import `tools/lib/*`; core code in `tools/`
+  never imports skill code, so deleting a skill folder leaves rcg working.
 - **Edit skills in `.agents/skills/` only.** `.claude/skills/` is a copy for Claude Code (which reads
   only that folder). After any change run `node tools/rcg.mjs skills sync`; `rcg doctor` reports a
   stale copy.
