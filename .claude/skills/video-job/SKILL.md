@@ -106,6 +106,8 @@ cork board, scrapbook, paper doll, stop-motion collage, diary, Hi.Boly -> `style
 lighting, relight, cinematic or dramatic lighting, split, Rembrandt, rim, back, under or monster light, noir,
 silhouette, a lighting explainer or light plot -> `style-character-lighting`. Style packs are built for speech-led edits
 (talking heads, voiceover explainers); recipes below cut to music. Using both in one job is untested.
+`style-anti-ai` is not a look: it is a companion check that may run with any pack (when the user
+asks whether an edit looks AI-made or generic, or asks for an anti-AI pass). Never offer it as the style.
 
 For a styled edit, start from a recipe (`docs/recipes.md`): `rcg recipe list`, pick the style that
 matches the prompt (its `keywords`), then `rcg recipe plan --job jobs/<id> --recipe <style>

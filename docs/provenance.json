@@ -13,6 +13,30 @@
       "to": "-"
     },
     {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/style-edit/references/ai-tells.md",
+      "kind": "learn",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "525ad6bba44549ce79a21cead5a49932b7748ade6bb7774c8ef1ca42c054de63",
+      "date": "2026-10-12",
+      "note": "Rule list and levels as a starting point; rewritten for rcg compositions, calibrated on 36 rcg jobs; MIT",
+      "to": ".agents/skills/style-anti-ai/references/rules.md"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/style-edit/scripts/ai_tells.py",
+      "kind": "learn",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "433c8f4c5a43ec826a36c60baa54892f60c098bd26380675ad77f66dfc76d781",
+      "date": "2026-10-12",
+      "note": "Detector ideas (colour bands, grotesk list, copy and icon lists, sfx counts); written fresh for rcg compositions in Node; MIT",
+      "to": ".agents/skills/style-anti-ai/scripts/check.mjs"
+    },
+    {
       "source": "quietEditorial",
       "sourceRoot": "E:/Develop/Antigravity_testing/style-refs/quiet-editorial-ui",
       "from": "SKILL.md",

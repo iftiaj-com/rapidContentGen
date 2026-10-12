@@ -31,6 +31,7 @@ supports it: `/video-job` in Antigravity (2.0 and CLI) and Claude Code.
 | `style-vox-parallax` | Vox-style 2.5D parallax from still photos, documentary or archival look |
 | `style-mix-media` | Mix media cork-board scrapbook in stop-motion: the person from the footage as torn-paper cut-outs, handwritten notes, vintage stickers, diary voiceover |
 | `style-character-lighting` | Character lighting: relight footage so the light says who the character is (front, split, under, top, blue backlight, three-point and six more), lighting explainers with a top-down light plot, and lighting rules for any character content |
+| `style-anti-ai` | Optional companion check (not a look): flags generic-AI looks in any edit (slop copy, emoji, "10x" stats, sparkle icons, purple-blue, neon on black, glass, grotesk display, the same entrance or transition everywhere) with a fix each; style packs' own looks are allowed |
 | `learning-from-user-taste` | The user reacts to a result or says "always / never / next time": sort bug, one-off or taste, and save taste as a learned rule (every job, one style or one job), checked against the hard limits and the existing rules |
 | `script-modern-storytelling` | Writing any spoken script (voiceover, shoot script, or an audit of the user's script) with the Modern Story Arc: drop-in hook, first peak within seconds, a mini-peak every 10-15 s, ending written first; outputs a peak map the edit hits |
 
