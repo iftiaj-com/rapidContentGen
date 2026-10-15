@@ -49,6 +49,10 @@ const BROWSER_COMMANDS = new Set(['check', 'snapshot', 'render', 'preview']);
  * (GTX 1650 / ANGLE D3D11): longer than check/snapshot's fixed 10 s navigation
  * limit, but within render's adjustable --browser-timeout. SwiftShader loads it
  * but took 20 minutes for one check. Found on the R1 regression job (2026-10-07).
+ * With HyperFrames 0.8.143 (2026-10-14) a render fails outright: one capture
+ * worker takes about 72 s to load, past a fixed 45 s readiness limit that
+ * --browser-timeout does not raise (lessons 13a). rcg plan check fails it and
+ * rcg render refuses it (gradedStartMessage).
  * Returns the offending element ids.
  */
 export function gradedAtStart(html) {
@@ -61,6 +65,14 @@ export function gradedAtStart(html) {
     if (start <= 0.05) ids.push((attrs.match(/\bid="([^"]+)"/) || [])[1] || m[1]);
   }
   return ids;
+}
+
+/** The problem and its fix, for rcg plan check and rcg render (lessons 13a). */
+export function gradedStartMessage(ids, fps = 24) {
+  const f2 = (2 / fps).toFixed(3);
+  return `graded media on screen at t = 0 (${ids.map((i) => `#${i}`).join(', ')}): the render would fail after about 1.5 min ` +
+    `("window.__hf not ready after 45000ms", lessons 13a). Fix: put a black block first (data-start 0, data-duration ${f2}) ` +
+    `and start the first graded shot at ${f2} s (2 frames at ${fps} fps), or remove its data-color-grading.`;
 }
 
 const MIRROR = '.rcg-nograde';
@@ -92,7 +104,10 @@ export function gradeFreeMirror(jobDir) {
 
 /**
  * Plan a browser command for jobs with graded media at t = 0:
- *   render            -> stay on the hardware GPU, raise --browser-timeout to 180 s
+ *   render            -> stay on the hardware GPU, raise --browser-timeout to 180 s.
+ *                        Since HyperFrames 0.8.143 this is not enough: a 45 s readiness
+ *                        limit it does not raise fails the render (lessons 13a), so
+ *                        rcg render refuses such a job unless --allow-graded-start.
  *   check / snapshot  -> run in the grade-free mirror (fixed 10 s navigation limit)
  *   preview           -> unchanged (interactive; the user sees the real job)
  * Returns { args, cwd }.

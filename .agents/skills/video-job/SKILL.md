@@ -33,7 +33,8 @@ Before starting a full job, check whether a fast path fits:
    only the folder the user named, or a `free` one. `new-job` claims the folder (`.rcg-claim.json`) and
    refuses one another job holds: tell the user, do not pass `--reclaim` unless they ask. Folders
    ending in `-Complete` are finished jobs: ignore them (`inbox list` hides them; `new-job` refuses them).
-2. Create the job: `node tools/rcg.mjs new-job --name <slug> --video <file> [--audio <file>] [--image <file>] [--prompt-file <file> | --prompt "..."] [--mode a|b|c]`.
+2. Create the job: `node tools/rcg.mjs new-job --name <slug> --video <file> [--audio <file>] [--image <file>] [--prompt-file <file> | --prompt "..."] [--mode a|b|c] [--template horizontal-1920x1080]`
+   (9:16 by default; `--template horizontal-1920x1080` for a 16:9 edit).
    This copies media into `jobs/<id>/assets/`, probes it, writes `data/intake.json`, a safe-zone
    contact sheet per video, and `JOB.md`.
    When the user asks for a video like an earlier one, add `--like jobs/<old-id>`: the old edit
@@ -100,6 +101,9 @@ that gate is overridden by the user's mode choice (state this in `JOB.md`).
 script the user will record, or a request to improve their script), follow `script-modern-storytelling`
 before the beat sheet: it writes the peak map (`data/script.md`) and `data/vo-lines.json`, and each
 peak gets the biggest visual change of its stretch. The style skill keeps its tone and visuals.
+When the edit is a story with a character (a short film, a screenplay, a narrated story, or "make my
+footage a story"), follow `script-film-storytelling` instead: it writes the premise, scene cards,
+screenplay and shot list (`data/film/`), and the cinematic skills cut what it plans.
 
 **Named looks (style packs, `docs/styles.md`).** If the prompt names or matches a pack
 (`rcg style list` prints keywords), load its skill and follow its fast path for steps 4-8:
@@ -111,7 +115,10 @@ video, "two videos", top and bottom -> `style-split-screen-edit`; infographic, e
 faceless or topic-only video, "make a video about X", or a script plus assets -> `style-info-graphics`; mix media,
 cork board, scrapbook, paper doll, stop-motion collage, diary, Hi.Boly -> `style-mix-media`; character
 lighting, relight, cinematic or dramatic lighting, split, Rembrandt, rim, back, under or monster light, noir,
-silhouette, a lighting explainer or light plot -> `style-character-lighting`. Style packs are built for speech-led edits
+silhouette, a lighting explainer or light plot -> `style-character-lighting`; cinematic edit, film look, travel or
+documentary film, B-roll montage, event or brand film, "make my footage cinematic" -> `style-cinematic-long` (16:9 or
+over 1 minute, template `horizontal-1920x1080`) or `style-cinematic-short` (9:16, 10-60 s). "Cinematic lighting" means
+`style-character-lighting`, not these. Style packs are built for speech-led edits
 (talking heads, voiceover explainers); recipes below cut to music. Using both in one job is untested.
 `style-anti-ai` is not a look: it is a companion check that may run with any pack (when the user
 asks whether an edit looks AI-made or generic, or asks for an anti-AI pass). Never offer it as the style.

@@ -8,8 +8,13 @@
 // each other of RAM and GPU. A second one waits for the slot; --lock-wait
 // <minutes> caps the wait (0 = fail at once).
 //
+// Graded media on screen at t = 0 makes the render fail after about 1.5 min
+// (lessons 13a), so such a job is refused before the render starts;
+// --allow-graded-start renders it anyway.
+//
 // Usage: node tools/jobs/render.mjs <jobDir> [--fps 24] [--quality looks|draft|delivery]
 //        [--workers 3] [--name final] [--silence 4.02-4.18] [--skip-mix-check] [--lock-wait 30]
+//        [--allow-graded-start]
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -18,7 +23,7 @@ import { isMain, parseArgs } from '../lib/cli.mjs';
 import { loadConfig } from '../lib/config.mjs';
 import { heavySlot } from '../lib/lock.mjs';
 import { verifyRender } from '../media/verify.mjs';
-import { hf } from './hf.mjs';
+import { gradedAtStart, gradedStartMessage, hf } from './hf.mjs';
 
 function rootAttrs(html) {
   const tag = html.match(/<[a-z]+\b[^>]*data-composition-id[^>]*>/i)?.[0] || '';
@@ -36,6 +41,11 @@ export async function renderJob(jobDir, opts = {}) {
   mkdirSync(join(dir, 'renders'), { recursive: true });
   const out = join(dir, 'renders', `${name}.mp4`);
   const logFile = join(dir, 'renders', `${name}.log`);
+
+  const graded = gradedAtStart(readFileSync(indexHtml, 'utf8'));
+  if (graded.length && !opts.allowGradedStart) {
+    return { ok: false, stage: 'graded-start', message: `Not rendering: ${gradedStartMessage(graded, fps)} (--allow-graded-start renders anyway.)` };
+  }
 
   // A composition with no audible media renders without an audio stream; do not
   // fail it for that (the title-preset demo is silent on purpose).
@@ -85,12 +95,12 @@ export async function renderJob(jobDir, opts = {}) {
 if (isMain(import.meta.url)) {
   const a = parseArgs();
   if (!a._[0]) {
-    console.error('Usage: node tools/jobs/render.mjs <jobDir> [--fps 24] [--quality q] [--workers n] [--name final] [--silence a-b] [--skip-mix-check] [--lock-wait min]');
+    console.error('Usage: node tools/jobs/render.mjs <jobDir> [--fps 24] [--quality q] [--workers n] [--name final] [--silence a-b] [--skip-mix-check] [--lock-wait min] [--allow-graded-start]');
     process.exit(2);
   }
   const res = await renderJob(a._[0], {
     fps: a.fps, quality: a.quality, workers: a.workers, name: typeof a.name === 'string' ? a.name : undefined,
-    silence: a.silence, skipMixCheck: Boolean(a['skip-mix-check']),
+    silence: a.silence, skipMixCheck: Boolean(a['skip-mix-check']), allowGradedStart: Boolean(a['allow-graded-start']),
     lockWait: a['lock-wait'] == null ? undefined : a['lock-wait'], agent: a.agent,
   });
   if (res.verify) {

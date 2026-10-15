@@ -14,6 +14,11 @@ videos and guides (Vox-style parallax, a promo talking-head ad, an info-graphics
 | `character-lighting` | `.agents/skills/style-character-lighting` | light that says who the character is: `relight` puts one of 12 setups (front, split, under, top, blue backlight, three-point, Rembrandt, loop, butterfly, noir, dual colour, silhouette) on real footage, as shadows and light pools that follow the face track, plus a background drop and directional rim light from the matte; `light-plot` top-down lighting diagram (lights slide between setups); `mood-tag`; caption preset `cl-seam` | test job 2026-10-11-character-lighting-test |
 | `vox-parallax` | `.agents/skills/style-vox-parallax` | photos cut into depth layers (`rcg layers`) on a virtual multiplane camera; cut-out props on a colour ground, subject sway, a word inside the scene, depth blur, haze, grain, stepped motion, one finishing layer, orange highlighter labels, serif titles, photo cards, archival plates | R10 |
 
+Two style skills have no pack, because their look comes from the footage: `style-cinematic-long`
+(16:9, over 1 minute) and `style-cinematic-short` (9:16, 10-60 s). They use `cine.mjs` (shot measuring
+and prep, in the long skill's `scripts/`), `rcg assemble`, `rcg camera` and the grades in
+`library/recipes/grades.json`.
+
 ## How a pack is built
 
 Each pack has two halves, following the reference repos (which ship a `SKILL.md`, `references/`,

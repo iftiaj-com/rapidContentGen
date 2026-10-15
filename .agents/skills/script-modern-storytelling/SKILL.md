@@ -15,6 +15,8 @@ length notes.
   how lines connect), this skill wins. The style's own section names (info-graphics: hook, claim,
   evidence, turn, payoff; mix-media: hook, build, turn, close) still work: this skill decides where
   the peaks sit inside them.
+- A story with a character who wants something (a short film, a narrative edit of footage) goes to
+  `script-film-storytelling`; this skill is for talk, explainer and promo scripts.
 - No tool code: this is a writing method. Timing comes from the existing tools (`rcg voice say`,
   `rcg infographics place-voice`, transcripts).
 

@@ -9,6 +9,7 @@
 //   captions   words run outside their block or the composition; captions timed to a voice that
 //              starts elsewhere; captions timed to a cut (rcg cut) the page does not play
 //   safe       text in the bottom no-text zone or the right app-button strip (pitfall 7)
+//   graded     graded media (data-color-grading) on screen at t = 0: the render fails (lessons 13a)
 // WARN
 //   drift      the page changed since the last recorded step (rcg plan diff)
 //   header     text above the header line
@@ -20,6 +21,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { isAbsolute, join } from 'node:path';
 import { parseArgs } from '../lib/cli.mjs';
 import { ROOT, loadConfig } from '../lib/config.mjs';
+import { gradedAtStart, gradedStartMessage } from '../jobs/hf.mjs';
 import { KINDS, validate } from './kinds.mjs';
 import { pageSha, readPage, textBox } from './page.mjs';
 import { loadPlan } from './record.mjs';
@@ -88,12 +90,14 @@ export function checkPlan(job) {
   const warns = [];
   const fail = (check, msg) => fails.push({ check, msg });
   const warn = (check, msg) => warns.push({ check, msg });
+  const html = readFileSync(join(job, 'index.html'), 'utf8');
+  const graded = gradedAtStart(html);
+  if (graded.length) fail('graded', gradedStartMessage(graded, Number(loadConfig().defaults.fps) || 24));
   const plan = loadPlan(job);
   if (!plan) {
     fail('plan', 'no data/plan.json yet: it is written when a block command (rcg captions, title, ...) runs on the job');
     return { ok: false, fails, warns, items: 0 };
   }
-  const html = readFileSync(join(job, 'index.html'), 'utf8');
   const page = readPage(html);
   const byId = new Map(page.elements.filter((e) => e.id).map((e) => [e.id, e]));
   const dur = page.root.duration;

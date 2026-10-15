@@ -31,10 +31,13 @@ supports it: `/video-job` in Antigravity (2.0 and CLI) and Claude Code.
 | `style-vox-parallax` | Vox-style 2.5D parallax from still photos, documentary or archival look |
 | `style-mix-media` | Mix media cork-board scrapbook in stop-motion: the person from the footage as torn-paper cut-outs, handwritten notes, vintage stickers, diary voiceover |
 | `style-character-lighting` | Character lighting: relight footage so the light says who the character is (front, split, under, top, blue backlight, three-point and six more), lighting explainers with a top-down light plot, and lighting rules for any character content |
+| `style-cinematic-long` | Cinematic edit of the user's footage, 16:9 and over 1 minute (travel, documentary, event, brand or B-roll film): shots that flow, chosen for the story, movement only where needed, variety, stable shots, motion blur on speed-ups, matched colour then one grade, mood music and quiet sound design. Carries `cine.mjs` (shot measuring and prep) |
+| `style-cinematic-short` | The same cinematic edit for 9:16, 10 s to 1 minute: a hook in the first second, tight beat cuts, landscape reframed to vertical, a looping ending. Uses the long skill's references and `cine.mjs` |
 | `style-long-video-to-clips` | Workflow (not a look): short vertical clips from a long video the user adds (podcast, talk, stream): find and rank runs of whole sentences, the agent judges, the user picks, one job per clip with a style pack |
 | `style-anti-ai` | Optional companion check (not a look): flags generic-AI looks in any edit (slop copy, emoji, "10x" stats, sparkle icons, purple-blue, neon on black, glass, grotesk display, the same entrance or transition everywhere) with a fix each; style packs' own looks are allowed |
 | `learning-from-user-taste` | The user reacts to a result or says "always / never / next time": sort bug, one-off or taste, and save taste as a learned rule (every job, one style or one job), checked against the hard limits and the existing rules |
 | `script-modern-storytelling` | Writing any spoken script (voiceover, shoot script, or an audit of the user's script) with the Modern Story Arc: drop-in hook, first peak within seconds, a mini-peak every 10-15 s, ending written first; outputs a peak map the edit hits |
+| `script-film-storytelling` | Writing or auditing the story of a short film (scripted, narrated, or found in the user's footage): protagonist, want, obstacle, stakes, scenes that turn, cause and effect, setups and payoffs, subtext; outputs a premise, scene cards, a Fountain screenplay and a shot list where every shot has a story reason |
 
 - **User taste lives in the skills.** The user's rules are lines in each skill's "Learned rules"
   section (`<!-- rcg:learned begin/end -->`) and in a job's `JOB.md`; follow them on every job, and
@@ -137,6 +140,7 @@ node tools/rcg.mjs mix-media prep --job jobs/<id> --src assets/clip.mp4 --times 
 node tools/rcg.mjs level --dir jobs/<id>/assets/voice --lufs -13.5 --ceiling -1.5
 node tools/rcg.mjs captions --job jobs/<id> --words <audio_meta.json|words.json|.srt> --voice vo1 --style tiktok --mode word --start 0.4 --id cap-vo1 --insert   # + --hollow --rgb --shadow; --negative --behind p1
 node tools/rcg.mjs title --job jobs/<id> --text "LINE ONE|LINE TWO" --preset slam --style trailer --start 11 --duration 1.5 --id title-main --insert
+node .agents/skills/style-cinematic-long/scripts/cine.mjs measure jobs/<id>   # shots: motion direction, shake, colour -> data/cine/shots.md; then prep (trim, flip, reverse, speed + blur, stabilize, colour match, reframe)
 node tools/rcg.mjs style list                          # style packs; skills style-tactile-collage, style-quiet-editorial, style-vox-parallax, style-marketing-pro
 node tools/rcg.mjs layers --job jobs/<id> --src assets/photo.jpg --name s1 --layer "mid:person" --layer "fg:chair"   # depth layers for parallax
 node tools/rcg.mjs marketing-pro prep --job jobs/<id> --src assets/clip.mp4 --trim [--intro 3.8 --outro 1.8]     # then plan (--fill-heroes --clusters --cards --whips --strips --music), then build (skill style-marketing-pro)
@@ -194,7 +198,7 @@ node tools/rcg.mjs provenance check
 - `library/`: reusable pieces: `sfx/` (measured manifest), `recipes/` (grades), `styles/` (style packs, `docs/styles.md`),
   `runtime/`, `blocks/`, `shaders/` (filled phase by phase), `adits-fx/` (Adits effects and
   environments, copied unmodified) and `fx/` (the `rcg fx` harness and effect registry).
-- `templates/`: HyperFrames project templates (`vertical-1080x1920`).
+- `templates/`: HyperFrames project templates (`vertical-1080x1920`, the default; `horizontal-1920x1080` for 16:9 via `new-job --template`).
 - `jobs/<date>-<slug>/`: one HyperFrames project per job (git-ignored: jobs stay on each user's machine), with `JOB.md`, `beat-sheet.*`,
   `data/`, `renders/`, `report.md`.
 - `inbox/`: where the user drops media + `prompt.md`.

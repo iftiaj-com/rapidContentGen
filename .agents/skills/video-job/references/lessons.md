@@ -46,6 +46,14 @@ Each entry cost real time on a past job. Read before building.
      limit (check, snapshot) on this laptop's GTX 1650. SwiftShader (`--no-browser-gpu`) loads
      it fine. `rcg hf` and `rcg render` add the flag automatically when they detect it.
      Software rendering is slower; budget more time for check and render on such jobs.
+     With HyperFrames 0.8.143 (2026-10-14) a render with ANY graded video at t = 0 failed: one
+     capture worker took about 72 s to load, past a fixed 45 s readiness limit ("window.__hf not
+     ready after 45000ms") that `--browser-timeout 180` does not raise (`trailer-warm` failed the same
+     way). Starting the first graded shot after 2 black frames (`data-start` 0.083 at 24 fps, a
+     `black` block first) rendered fine, every worker ready in about 1.3 s. `rcg plan check` now
+     FAILs this case (`graded`) and `rcg render` refuses it before rendering, with the fix in the
+     message (`--allow-graded-start` renders anyway). `rcg hf check|snapshot` still run on the
+     grade-free mirror.
 13b. **Measure text with canvas metrics, not layout.** A sub-composition slot that is not on
      screen at load has no layout, so `offsetWidth` reads 0. The caption generator measures
      with `CanvasRenderingContext2D.measureText` after `document.fonts.load()`.
@@ -288,6 +296,13 @@ Each entry cost real time on a past job. Read before building.
      background-position tween on the parent still drifts the fill.
 13bo. **A caption block may run past the root.** Captions hold 0.35 s after the last word plus 0.1 s;
      trim 0.5 s after the last word (lint `clip_ends_past_root_duration` at 0.35 s).
+13bv. **Do not feed HyperFrames full-size 4K clips.** `cine.mjs prep` used to keep the source size.
+     A 2-minute job of 21 prepped 4K drone clips (1.9 GB, 2026-10-15) failed its first `rcg render`:
+     frame extraction reported VIDEO_SOURCE_UNRENDERABLE (ffmpeg_timeout=16, ffmpeg_failed=5).
+     Scaling the clips with lanczos to 1920x1080 (2560x1440 for clips with a push-in) rendered and
+     passed verify. Prep now caps each clip at 4/3 of the format (`room`, shot-prep.md). Also: measuring
+     the render with `cine.mjs measure --src renders/final.mp4` overwrote the source `shots.json`; it
+     now writes `render-flow.*`.
 
 ## Global Visuals and Video Jockey (`rcg fx`, R16)
 

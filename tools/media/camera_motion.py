@@ -9,6 +9,7 @@ Per step (default 15 Hz, analysis at 360 px wide): the global similarity transfo
 Haar face height. Events: a hard cut (few inliers or a large difference) or a zoom step (|log scale|
 > 0.04). Consecutive zoom steps merge into one eased zoom with its total ratio and duration.
 Segments between events report drift: zoom %/s and pan px/s (in the video's own pixels).
+--rows adds the per-step rows to the JSON (used by the cinematic skills for shake).
 """
 import argparse, json, sys
 import cv2
@@ -18,6 +19,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument('video')
 ap.add_argument('--hz', type=float, default=15)
 ap.add_argument('--json')
+ap.add_argument('--rows', action='store_true', help='also write the per-step rows (t, s, tx, ty, inl, diff, face) to --json')
 a = ap.parse_args()
 
 cap = cv2.VideoCapture(a.video)
@@ -78,6 +80,9 @@ out = {'video': a.video, 'size': [W0, H0], 'fps': round(fps, 3), 'duration': row
        'summary': {'cuts': sum(e['kind'] == 'cut' for e in events), 'zooms': len(zooms),
                    'zoomIn': [e['ratio'] for e in zooms if e['ratio'] > 1], 'zoomOut': [e['ratio'] for e in zooms if e['ratio'] < 1],
                    'meanZoomDur': round(float(np.mean([e['dur'] for e in zooms])) if zooms else 0, 3)}}
+if a.rows:
+    out['hz'] = round(fps / step, 3)
+    out['rows'] = [{k: (round(v, 3) if isinstance(v, float) else v) for k, v in r.items()} for r in rows]
 if a.json:
     with open(a.json, 'w', encoding='utf-8') as fh:
         json.dump(out, fh, indent=2)
