@@ -4,6 +4,8 @@ config/workspace.local.json
 # Models, environments, dependencies
 models/
 tools/voice/.venv/
+tools/audio-analyzer/.venv/
+tools/audio-analyzer/node_modules/
 # Extra binaries (for example the ffmpeg HyperFrames uses, see lessons 16b)
 tools/bin/
 node_modules/
