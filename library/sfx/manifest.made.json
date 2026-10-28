@@ -1,0 +1,22 @@
+{
+  "paper-place": {
+    "description": "Soft paper set down on a cork board: a light tap and a short rustle. Pop-in of a note, a cut-out or a sheet (mix-media pack).",
+    "license": "Made in rapidContentGen (tools/audio/paper_sfx.py, procedural noise synthesis); no third-party rights"
+  },
+  "pin-click": {
+    "description": "A push pin pressed into cork: soft thud, tiny metal click and ring. A pin, binder clip or paperclip landing (mix-media pack).",
+    "license": "Made in rapidContentGen (tools/audio/paper_sfx.py, procedural noise synthesis); no third-party rights"
+  },
+  "tape-peel": {
+    "description": "A strip of tape peeled and pressed: fine crackle, then a small snap at the end (about 0.47 s). Tape, washi or masking strips (mix-media pack).",
+    "license": "Made in rapidContentGen (tools/audio/paper_sfx.py, procedural noise synthesis); no third-party rights"
+  },
+  "sticker-press": {
+    "description": "A sticker pressed down with a finger: muffled thump and a little crinkle. Illustrated props popping in (mix-media pack).",
+    "license": "Made in rapidContentGen (tools/audio/paper_sfx.py, procedural noise synthesis); no third-party rights"
+  },
+  "pencil-scribble": {
+    "description": "Pencil or marker scribble, about 0.6 s of quick strokes. A doodle drawn on the board (mix-media pack).",
+    "license": "Made in rapidContentGen (tools/audio/paper_sfx.py, procedural noise synthesis); no third-party rights"
+  }
+}

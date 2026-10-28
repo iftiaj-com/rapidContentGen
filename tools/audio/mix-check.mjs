@@ -141,11 +141,11 @@ export async function mixCheck(htmlPath, { out } = {}) {
     chains.push(`[${i}:a]${steps.join(',')}[a${i}]`);
   });
   const mixInputs = clips.map((_, i) => `[a${i}]`).join('');
-  chains.push(`${mixInputs}amix=inputs=${clips.length}:normalize=0:duration=longest,apad,atrim=0:${total}[mix]`);
+  chains.push(`${mixInputs}amix=inputs=${clips.length}:normalize=0:duration=longest,apad=whole_dur=${total},atrim=0:${total}[mix]`);
 
   const outPath = out ? resolve(out) : join(baseDir, 'data', 'mix-check.wav');
   mkdirSync(dirname(outPath), { recursive: true });
-  await run('ffmpeg', ['-y', '-hide_banner', '-v', 'error', ...inputs, '-filter_complex', chains.join(';'), '-map', '[mix]', '-c:a', 'pcm_f32le', outPath]);
+  await run('ffmpeg', ['-y', '-hide_banner', '-v', 'error', ...inputs, '-filter_complex', chains.join(';'), '-map', '[mix]', '-t', String(total), '-c:a', 'pcm_f32le', outPath]);
 
   const lv = await loudness(outPath);
   const ceiling = cfg.defaults.truePeakCeiling ?? -1;

@@ -14,8 +14,8 @@ owns intake, the working mode, the mix rules, render, report and the final send.
   JetBrains Mono, both bundled by HyperFrames. Captions: `rcg captions --style info-chip`.
 - Assets: `node tools/rcg.mjs assets icon | search | fetch | credit | credits` (`tools/media/assets.mjs`),
   only the approved sources in `references/assets.md` (Phosphor, Unsplash, Pixabay, Pexels by hand,
-  Poly Haven, The Met), every file credited in `data/credits.json`. Credits are records, never
-  on-screen text (user rule): no photographer, source or licence lines in the video.
+  Poly Haven, The Met), every file credited in `data/credits.json`. Credits are records only,
+  never on screen (a learned rule in `video-job`).
 - Timing tool: `node tools/rcg.mjs infographics scaffold | place-voice | resolve`
   (`tools/blocks/infographics.mjs`). Every visual is planned against a spoken word, not a second.
 - Learned from the user's reference Short "Disney vs Midjourney" (YouTube Shorts fZIXlBGaIMs, read
@@ -44,7 +44,7 @@ If the request does not say which, it is topic mode when there is no script text
 2. **Script** (topic mode: write it; script mode: split the user's text into lines). One line per
    sentence or two in `data/vo-lines.json`. Budget about 3 words a second of finished video at the
    default voice settings (10 s = 26-29 words). Facts: `references/script-writing.md`.
-3. **Voice** (TTS defaults, user rule 2026-10-08: speed **1.3x** and **skip silences on**):
+3. **Voice** (TTS defaults from the learned rules at the end of this skill: speed **1.3x** and **skip silences on**):
    `node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice --speed 1.3 --skip-silences`.
    Leave `speed` out of `vo-lines.json`: a per-line `speed` overrides `--speed`, so set one only when
    the user asks for a different pace. Skip silences cuts pauses inside a line (200 ms or longer,
@@ -126,3 +126,13 @@ numbers pass through. `x`, `y` are the item's centre (x defaults to 482, the saf
 - Keep hero objects above y 1360 so the caption chip at y 1440 stays clear; no text in the bottom
   20% or the right 180 px (the pack refuses boxes outside the safe area).
 - Never publish or post. Rendering is local.
+
+<!-- rcg:learned begin -->
+## Learned rules
+
+The user's taste, saved with the `learning-from-user-taste` skill. Follow every line. Change them only with
+`node .agents/skills/learning-from-user-taste/scripts/learn.mjs` (it checks the hard limits and clashes).
+Order: style pack defaults < every job (video-job) < one style < one job (JOB.md). Pitfalls and safe zones still win.
+
+- Voices are made at speed 1.3x with skip silences on (`--skip-silences`); no per-line `speed` in vo-lines.json unless the user asks for a different pace (user rule, 2026-10-08; apply: rcg voice say --speed 1.3)
+<!-- rcg:learned end -->

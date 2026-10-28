@@ -8,6 +8,13 @@ description: Turn a user's video(s) + prompt into a finished edit in rapidConten
 Work from the repo root. Tools: `node tools/rcg.mjs <command>` (run with no command for the list).
 Capabilities and how to call them: `docs/capabilities.md`. Pitfalls: `references/lessons.md`.
 
+**Judgment and sub-agents** (AGENTS.md, "Delegation"): code measures, you judge from the compact
+files each step writes (`transcript.txt`, `candidates.md`, `review.md`, `paper-edit.md`,
+`plan-check.json`), never from raw word JSON or frames. You may hand a bounded list (cut candidates,
+clip scores, one clip's plan in a batch) to a sub-agent with one compact file, its rules and the fixed
+answer file; check its answer against your own reading and the code checks before using it. Keep the
+story, the beat sheet, the style choice and anything the user approves. For a short list, do it yourself.
+
 ## 0. Pick the path
 
 Before starting a full job, check whether a fast path fits:
@@ -26,7 +33,8 @@ Before starting a full job, check whether a fast path fits:
    only the folder the user named, or a `free` one. `new-job` claims the folder (`.rcg-claim.json`) and
    refuses one another job holds: tell the user, do not pass `--reclaim` unless they ask. Folders
    ending in `-Complete` are finished jobs: ignore them (`inbox list` hides them; `new-job` refuses them).
-2. Create the job: `node tools/rcg.mjs new-job --name <slug> --video <file> [--audio <file>] [--image <file>] [--prompt-file <file> | --prompt "..."] [--mode a|b|c]`.
+2. Create the job: `node tools/rcg.mjs new-job --name <slug> --video <file> [--audio <file>] [--image <file>] [--prompt-file <file> | --prompt "..."] [--mode a|b|c] [--template horizontal-1920x1080]`
+   (9:16 by default; `--template horizontal-1920x1080` for a 16:9 edit).
    This copies media into `jobs/<id>/assets/`, probes it, writes `data/intake.json`, a safe-zone
    contact sheet per video, and `JOB.md`.
    When the user asks for a video like an earlier one, add `--like jobs/<old-id>`: the old edit
@@ -34,6 +42,38 @@ Before starting a full job, check whether a fast path fits:
    instead of the template, without footage, voice, music or renders. `JOB.md` lists the assets the
    copied edit references, and data/ timings still describe the old footage, so re-measure first.
 3. Read `JOB.md` notes and LOOK at each intake sheet. Notes flag: no audio, low fps, hot peaks.
+4. Follow the user's learned rules: the "Learned rules" section at the end of this skill (every job),
+   the one in the style skill you use, and the one in `JOB.md`. To see them in order with each
+   setting's value: `node .agents/skills/learning-from-user-taste/scripts/learn.mjs effective --style <slug> --job jobs/<id>`.
+   A setting is passed as the flag its line names. When the user reacts to a result ("captions too
+   small", "too many zooms") or changes something at an approval stop, follow the
+   `learning-from-user-taste` skill: it sorts bug, one-off and taste, and saves only taste.
+
+## 1b. Cut (the user's own raw talking take)
+
+Run it when the footage is the user's own recording of themself talking, raw (retakes, false starts,
+"um", long pauses), and the user did not say it is already cut. Skip it for stock or B-roll footage,
+an already edited clip, or music-only edits. Every later step works from the cut:
+`assets/cut/<name>.mp4` and the re-timed `data/words.json`.
+
+1. `rcg cut transcribe jobs/<id> [--src assets/<take>]` (Whisper `base`, cached; about a quarter of the take's length).
+2. `rcg cut propose jobs/<id>`, then read only `data/cut/transcript.txt` and `data/cut/candidates.md`
+   (never `words.raw.json`). Answer every candidate in `data/cut/decisions.in.json`: `cut`, `keep` or
+   `unsure`; for a restart, `cut` removes the EARLIER attempt (last take wins), and an earlier take that
+   is better is `{"answer": "cut", "keep": "first"}` (goes to the user). Rules: when in doubt, keep; a
+   quotative "like" ("my brain is like, okay") stays; a clean repeat for emphasis stays. A long list can
+   go to a sub-agent with this file as its only input; check its answers against `transcript.txt`.
+   Spans the code missed go in `"extra"`.
+3. `rcg cut apply jobs/<id>` -> `spans.json` + `review.md` (what the user decides).
+4. `rcg cut build jobs/<id>`, then read `paper-edit.md` straight through as the viewer will hear it.
+   CLIPPED words or joins "still in speech" are listed there.
+5. `rcg cut render jobs/<id>` (heavy-work slot), then `rcg cut verify jobs/<id>`. MISSING (a kept word
+   lost at a join) or SURVIVED (a removed word still heard): one fix round (`--pad`, `--gap-quiet-db`,
+   a span in `"extra"`), then show the user what is left. NOT HEARD far from a join and HEARD
+   DIFFERENTLY are transcriber variance, not cut errors.
+6. A misheard name: `rcg cut fix jobs/<id> old=new` (kept in `fixes.json` for later transcripts).
+7. Show the user `paper-edit.md` and `review.md` (and the cut), and continue only after they approve
+   it. In mode (b) state the cut in the report instead.
 
 ## 2. Working mode (ask if not given)
 
@@ -49,12 +89,21 @@ that gate is overridden by the user's mode choice (state this in `JOB.md`).
 ## 3. Analyze (fast, in parallel)
 
 - `rcg probe` output is already in `data/intake.json`.
-- Speech? Transcribe for word timestamps (`rcg hf --cwd <job> transcribe <file>` uses whisper.cpp; faster-whisper is in the voice venv from Phase 1).
+- Speech? After step 1b the words are already in `data/words.json`, timed to the cut. Otherwise
+  transcribe for word timestamps (`rcg voice transcribe <file> --out data/words.json`, faster-whisper in the voice venv).
 - Music? Beats: `rcg hf --cwd <job> beats <audio>`; levels: `rcg probe`.
 - Look at the frames: where are faces and important action? Plan text around them.
 - Footage fps < 30 and the plan needs slow motion: plan a freeze frame or interpolation.
 
 ## 4. Beat sheet
+
+**Script first.** When the edit needs spoken words the user did not supply in full (a voiceover, a
+script the user will record, or a request to improve their script), follow `script-modern-storytelling`
+before the beat sheet: it writes the peak map (`data/script.md`) and `data/vo-lines.json`, and each
+peak gets the biggest visual change of its stretch. The style skill keeps its tone and visuals.
+When the edit is a story with a character (a short film, a screenplay, a narrated story, or "make my
+footage a story"), follow `script-film-storytelling` instead: it writes the premise, scene cards,
+screenplay and shot list (`data/film/`), and the cinematic skills cut what it plans.
 
 **Named looks (style packs, `docs/styles.md`).** If the prompt names or matches a pack
 (`rcg style list` prints keywords), load its skill and follow its fast path for steps 4-8:
@@ -63,8 +112,18 @@ minimal, premium, product UI -> `style-quiet-editorial`; Vox, parallax, 2.5D, "m
 documentary or archival explainer -> `style-vox-parallax`; promo, ad, personal-brand or testimonial
 talking head (one person) -> `style-marketing-pro`; split screen, presenter plus B-roll or an info
 video, "two videos", top and bottom -> `style-split-screen-edit`; infographic, explainer, video essay,
-faceless or topic-only video, "make a video about X", or a script plus assets -> `style-info-graphics`. Style packs are built for speech-led edits
+faceless or topic-only video, "make a video about X", or a script plus assets -> `style-info-graphics`; mix media,
+cork board, scrapbook, paper doll, stop-motion collage, diary, Hi.Boly -> `style-mix-media`; character
+lighting, relight, cinematic or dramatic lighting, split, Rembrandt, rim, back, under or monster light, noir,
+silhouette, a lighting explainer or light plot -> `style-character-lighting`; cinematic edit, film look, travel or
+documentary film, B-roll montage, event or brand film, "make my footage cinematic" -> `style-cinematic-long` (16:9 or
+over 1 minute, template `horizontal-1920x1080`) or `style-cinematic-short` (9:16, 10-60 s). "Cinematic lighting" means
+`style-character-lighting`, not these. Style packs are built for speech-led edits
 (talking heads, voiceover explainers); recipes below cut to music. Using both in one job is untested.
+`style-anti-ai` is not a look: it is a companion check that may run with any pack (when the user
+asks whether an edit looks AI-made or generic, or asks for an anti-AI pass). Never offer it as the style.
+`style-long-video-to-clips` is not a look either: it is the workflow for clips, shorts or highlights from a long
+video (podcast, talk, stream). It makes one job per clip, each edited with a style pack the user picks.
 
 For a styled edit, start from a recipe (`docs/recipes.md`): `rcg recipe list`, pick the style that
 matches the prompt (its `keywords`), then `rcg recipe plan --job jobs/<id> --recipe <style>
@@ -98,10 +157,8 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
   4. Place each line as `<audio id="vo1" src="assets/voice/vo1.wav" data-start=".." data-duration="<duration_s>">`.
      Give voice clips their real `data-duration` (lint treats open-ended clips as overlapping).
   5. Duck music under speech with its volume lane (about 0.3 under voice, 0.7 in gaps over 1 s).
-- Negative captions (`--negative`, inverted text) always go behind the subject: `rcg matte` and
-  `rcg pnp` first, then `--negative --insert --behind p1`, at a height where the background shows
-  around the subject (beside the head, not across a body that fills the width). The tool forces
-  white, heavy, 1.3x and no pill, stroke, glow or shadow (user rule, R14).
+- Negative captions (`--negative`, inverted text): `rcg matte` and `rcg pnp` first, then
+  `--negative --insert --behind p1`. Placement and look: the learned rules at the end of this skill.
 - Captions from voiceover or transcript words (Adits styles: tiktok, karaoke, neon, kinetic,
   modern, subtitle, glitch, retro, earthquake, vertical_ghost):
   `node tools/rcg.mjs captions --job jobs/<id> --words jobs/<id>/assets/voice/audio_meta.json --voice vo1 --style tiktok --mode word|2word|phrase --start <voice data-start> --id cap-vo1 --insert`
@@ -186,6 +243,13 @@ Never quote song lyrics in the beat sheet. Describe sections by time instead.
 
 ## 7. Check
 
+- `node tools/rcg.mjs plan check jobs/<id>` first (milliseconds, JSON and HTML only): every block command
+  run through rcg is recorded in `data/plan.json`, and this checks the whole edit on paper (missing
+  inputs, blocks past the end, captions vs their words and voice, captions timed to an `rcg cut` the
+  page does not play, text in no-text zones, overlapping text, text over the tracked face). Fix every
+  FAIL before rendering; read the WARNs. Always run blocks through `node tools/rcg.mjs`, so they are recorded.
+  After a HyperFrames Studio session, `rcg plan diff` shows what Studio changed; `rcg plan apply`
+  rebuilds the page from the plan (it refuses to overwrite Studio edits without `--force`).
 - `node tools/rcg.mjs hf --cwd jobs/<id> check`: must pass (lint, runtime, layout, motion, contrast).
 - Snapshots at beat midpoints: `rcg hf --cwd jobs/<id> snapshot --at <t1,t2,...> --describe false --output snapshots/beats`, then READ the contact sheet.
 - Mode (c): stop here for preview approval (offer `rcg hf --cwd jobs/<id> preview --background`).
@@ -217,3 +281,14 @@ If the job came from `inbox/`, mark it finished once the verified render is deli
 `node tools/rcg.mjs inbox done --job jobs/<id>` renames the folder to `<folder>-Complete`, so no agent
 starts it again. Revisions later still work: the job has its own copy of the media. If the rename fails
 because a file in the folder is open, ask the user to close it and run the command again.
+
+<!-- rcg:learned begin -->
+## Learned rules
+
+The user's taste, saved with the `learning-from-user-taste` skill. Follow every line. Change them only with
+`node .agents/skills/learning-from-user-taste/scripts/learn.mjs` (it checks the hard limits and clashes).
+Order: style pack defaults < every job (video-job) < one style < one job (JOB.md). Pitfalls and safe zones still win.
+
+- Credits never appear in the video: no photographer, source, licence or "courtesy of" text on screen, no end card of credits; credits are records only, in `data/credits.json` and `report.md` (user rule, 2026-10-08)
+- Negative captions (`--negative`, inverted text) always go behind the subject, at a height where the background shows around the subject (beside the head, not across a body that fills the width); white, heavy, 1.3x and no pill, stroke, glow or shadow (R14) (user rule, 2026-10-09)
+<!-- rcg:learned end -->

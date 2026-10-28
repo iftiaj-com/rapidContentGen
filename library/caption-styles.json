@@ -144,6 +144,27 @@
       "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
       "flashScale": 0, "defaultMode": "word",
       "sizes": { "word": 46, "2word": 44, "phrase": 40 }
+    },
+    "mm-slip": {
+      "$note": "Style pack mix-media (library/styles/mix-media): one spoken word at a time, handwritten Caveat in black ink on a small torn white paper slip, slight tilt, no glow or shadow (text always lives on paper, Hi.Boly rule). Use --mode word near the character.",
+      "font": "MM Caveat", "weight": 500, "uppercase": false,
+      "fontFace": [ { "family": "MM Caveat", "weight": 500, "file": "library/styles/mix-media/fonts/caveat-500.woff2" } ],
+      "color": "#22201c", "stroke": null,
+      "pill": { "bg": "#fffdf8", "radius": 0, "padding": "0.16em 0.5em 0.26em", "clipPath": "polygon(0% 1%, 11% 7%, 22% 3%, 33% 2.5%, 44% 6%, 56% 4.5%, 67% 1.5%, 78% 6.5%, 89% 3%, 100% 5%, 98% 20%, 99.5% 40%, 97.5% 60%, 99% 80%, 100% 96%, 89% 93%, 78% 98.5%, 67% 94%, 56% 97%, 44% 92.5%, 33% 98%, 22% 94.5%, 11% 99%, 0% 95%, 2% 80%, 0.5% 60%, 2.5% 40%, 1% 20%)" },
+      "textShadow": null, "boxShadow": null, "rotate": -2,
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0, "defaultMode": "word",
+      "sizes": { "word": 64, "2word": 58, "phrase": 50 }
+    },
+    "cl-seam": {
+      "$note": "Style pack character-lighting (library/styles/character-lighting). From the user's reference Short Video-9968 (measured, nothing copied): a short phrase in bold yellow sans on a dark rounded pill, no pop or glow. In the stage layout it sits on the seam between the footage box and the light plot (--y 950).",
+      "font": "Inter", "weight": 800, "uppercase": false,
+      "color": "#f5e04d", "stroke": null,
+      "pill": { "bg": "rgba(12,12,14,0.86)", "radius": 14 },
+      "textShadow": null,
+      "glow": { "color": "transparent", "blur": 0, "flashBlur": 0 },
+      "flashScale": 0, "defaultMode": "phrase",
+      "sizes": { "word": 64, "2word": 58, "phrase": 52 }
     }
   },
   "negative": {

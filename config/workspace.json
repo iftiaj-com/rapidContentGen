@@ -14,7 +14,8 @@
     "hfFfprobe": null,
     "fxChrome": null,
     "python311": null,
-    "imagePython": "python"
+    "imagePython": "python",
+    "meloPython": null
   },
   "paths": {
     "library": "library",
@@ -23,10 +24,35 @@
     "inbox": "inbox",
     "models": "models",
     "regression": "regression",
-    "voiceVenv": "tools/voice/.venv"
+    "voiceVenv": "tools/voice/.venv",
+    "audioAnalyzerVenv": "tools/audio-analyzer/.venv"
+  },
+  "audioAnalyzer": {
+    "$comment": "rcg audio-analyzer (tools/audio/audio-analyzer.mjs): Essentia ONNX models + the LAION-CLAP music checkpoint, both under models/ (git-ignored; downloading needs the user's yes). clapSha256 is the official file's hash on Hugging Face (lukewys/laion_clap), checked before the one-time weights-only copy. device: cuda falls back to cpu by itself. extensions: the only file types it reads; footage is never analysed.",
+    "extensions": [".mp3", ".wav"],
+    "device": "cuda",
+    "clapCheckpoint": "models/clap/music_audioset_epoch_15_esc_90.14.pt",
+    "clapSha256": "fae3e9c087f2909c28a09dc31c8dfcdacbc42ba44c70e972b58c1bd1caf6dedd",
+    "essentiaModels": "models/essentia",
+    "hfHome": "models/hf",
+    "cacheDir": "models/audio-analyzer/cache"
+  },
+  "voiceStudio": {
+    "$comment": "AditsVoiceStudio, called in place for cloned voices (rcg voice say --clone <slug>): root = the app folder, python = its venv's python (null: bin.meloPython). Machine paths go in workspace.local.json.",
+    "root": null,
+    "python": null
   },
   "fonts": {
     "label": null
+  },
+  "cut": {
+    "$comment": "rcg cut (tools/cut/cut.mjs). whisperModel must already be cached (rcg doctor checks); language null = detect. maxPause: pauses over this are tightened to 2/3 of it. pad: kept round each cut. gapQuietDb: a gap between words is trimmed as a pause when it stays this far under speech; ai-video-editor uses 12, which ate a soft 'okay' on a real take (2026-10-12), 15 kept it. keepFillers: never cut um/uh or soft fillers.",
+    "whisperModel": "base",
+    "language": null,
+    "maxPause": 0.15,
+    "pad": 0.1,
+    "gapQuietDb": 15,
+    "keepFillers": false
   },
   "defaults": {
     "template": "vertical-1080x1920",

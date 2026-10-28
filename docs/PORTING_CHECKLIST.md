@@ -94,7 +94,12 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | ☐ | `.flow` import | `src/features/project/projectIO.js` | Port (optional) | `tools/import/flow-to-hf.mjs` | P6 |
 | — | Live music-reactive speed, recorders, React UI, IndexedDB, analytics | various | Skip | — | — |
 
-### 5. TTS app (`tts_app modular`)
+### 5. AditsVoiceStudio (formerly the TTS app, `tts_app modular`)
+
+The same git repository, renamed and rebranded (the copies below were made at commit `b73506e3`,
+which is in AditsVoiceStudio's history). Config source key: `aditsVoiceStudio`. Since the rename,
+`rcg provenance check` reports drift on 10 copied files (the app changed after the copy); the
+copies in `tools/voice/` still work as they are.
 
 | ☐ | Feature | Source | Decision | Target | Phase |
 |---|---|---|---|---|---|
@@ -105,7 +110,9 @@ A box is ticked (☑) only after the item is ported AND verified in a phase's re
 | ☑ | Post chain: silence removal → speed → effect → EQ → ambiance → normalize −3 dB | `ui/app.py` `_generate_worker` | Port into one function (no UI import) | `tools/voice/pipeline.py` | P1 |
 | ☑ | Word timestamps | `core/subtitles.py` | Port as new code without torch: faster-whisper words aligned to the script, written in HF `audio_meta.json` shape `voices[].{id,path,duration_s,words[]}` plus SRT | `tools/voice/voice_cli.py` | P1 |
 | ☑ | Audio I/O, constants, self-test | `core/{audio_io,constants,selftest}.py` | Copy / port | `tools/voice/` | P1 |
-| ☐ | pyttsx3, gTTS, Piper, Melo | `engines/*` | Defer | — | P6 |
+| ☑ | MeloTTS (EN-US, EN-BR, EN_INDIA, EN-AU, EN-Default) | `engines/melo_engine.py` | Learn: new `melo_synth.py` runs in the app's own `venv_311` (`bin.meloPython`), offline, all lines in one process; the rest of the chain stays in the voice venv. Verified in job 2026-10-11-mix-media-test (no regression spec yet) | `tools/voice/engines/melo_synth.py`, `rcg voice say --engine melo` | extra |
+| ☐ | pyttsx3, gTTS, Piper | `engines/*` | Defer | — | P6 |
+| ☑ | Cloned voices as effects (`clone:<slug>`): Seed-VC "Quick" (reference audio, no training) and RVC (trained `.pth` + `.index`), one per voice in the app's voice library, run before every other effect | `effects/cloned_voices.py`, `core/voice_cloning/` (client, library, runtime, worker protocol), `vc_runtime/` (worker, Seed-VC and RVC backends) | Learn, called in place (not copied: GPL-3.0 app code plus Seed-VC and Applio installs of 10-12 GB each): `clone_bridge.py` runs under the app's venv (`voiceStudio.python`) with the app folder (`voiceStudio.root`) on its path and calls the app's `VCClient.convert`; the app's worker runs the engine venv. All cloned lines in one worker run; order as in the app (silence removal, clone, other effects, EQ, ambiance, normalize). Tested 2026-10-11 with Seed-VC voice `blj-voiceover-melo` on a Melo line: voiceprint similarity to the voice's reference 0.70 (plain Melo take 0.39); worker ready + conversion about 61 s; RVC path not run yet (no regression spec) | `tools/voice/engines/clone_bridge.py`, `rcg voice say --clone <slug>` | extra |
 | — | GUI, pygame, PyInstaller and installer | `ui/`, `build_exe.py`, `installer.iss` | Skip | — | — |
 
 ### 6. Lessons from the mop-star-trailer job
@@ -128,9 +135,9 @@ Counts are checklist rows (one row can hold several features). "Waiting" means n
 | AditsShaders | 6 | 0 | 0 | 1 |
 | AditsStudio | 2 | 0 | 0 | 2 |
 | flowEditor | 6 | 2 | 0 | 1 |
-| TTS app | 6 | 1 | 0 | 2 |
+| AditsVoiceStudio (was the TTS app) | 8 | 1 | 0 | 2 |
 | mop-star lessons | 2 | 0 | 0 | 0 |
-| **Total** | **49** | **12** | **1** | **10** |
+| **Total** | **51** | **12** | **1** | **10** |
 
 **Adits effects in `library/adits-fx/` (copied unmodified, run by `rcg fx`), 11 of them:**
 - Footage, canvas: Ghost (`AdvGhost`), Motion Trail (`MotionTrails`), Origami.
@@ -167,7 +174,7 @@ Lights, Lightshow and Beat Wash (`rcg fx --effect vj-*`, 26 presets) (R16).
   display modes, in / out animations and Caption Cascade, its font and colour controls, its lyric
   display styles, and the fisheye, 3d_font, premium_impact, motion3d and flying3d looks.
 - flowEditor: newspaper background; `.flow` import.
-- TTS app: pyttsx3, gTTS, Piper, Melo engines.
+- AditsVoiceStudio (was the TTS app): pyttsx3, gTTS and Piper engines.
 - On hold: the 26 Adits GLB models (no license notes).
 
 ## Progress summary

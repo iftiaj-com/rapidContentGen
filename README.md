@@ -135,5 +135,7 @@ MIT, see [LICENSE](LICENSE).
 
 Third-party pieces in the repo keep their own terms: the Phosphor icons in
 `library/icons/phosphor/` are MIT (their LICENSE file is included), and the beat-grid script in
-`tools/audio/hyperframes/` is Apache-2.0 from HyperFrames. `docs/PROVENANCE.md` lists the rest.
+`tools/audio/hyperframes/` is Apache-2.0 from HyperFrames. The cut stage in `tools/cut/` is ported
+from ai-video-editor by NextWork (MIT, `tools/cut/LICENSE-ai-video-editor`). `docs/PROVENANCE.md`
+lists the rest.
 HyperFrames itself is downloaded by `npx` and is not part of this repo.

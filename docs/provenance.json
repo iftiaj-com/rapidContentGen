@@ -1,8 +1,8 @@
 {
   "entries": [
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/version.py",
       "kind": "learn",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -11,6 +11,42 @@
       "date": "2026-10-07",
       "note": "License: GPL-3.0-or-later applies to copied TTS code",
       "to": "-"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/style-edit/references/ai-tells.md",
+      "kind": "learn",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "525ad6bba44549ce79a21cead5a49932b7748ade6bb7774c8ef1ca42c054de63",
+      "date": "2026-10-12",
+      "note": "Rule list and levels as a starting point; rewritten for rcg compositions, calibrated on 36 rcg jobs; MIT",
+      "to": ".agents/skills/style-anti-ai/references/rules.md"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/style-edit/scripts/ai_tells.py",
+      "kind": "learn",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "433c8f4c5a43ec826a36c60baa54892f60c098bd26380675ad77f66dfc76d781",
+      "date": "2026-10-12",
+      "note": "Detector ideas (colour bands, grotesk list, copy and icon lists, sfx counts); written fresh for rcg compositions in Node; MIT",
+      "to": ".agents/skills/style-anti-ai/scripts/check.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/clips/scripts/clips.py",
+      "kind": "learn",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "64c3d72b3eb88ecce8ed4b095a9eb5300b29e9bb33b26b2a096bc301727d2d71",
+      "date": "2026-10-12",
+      "note": "The plan's design (sentences, length runs, features, four questions, shortlist, pads) was learned from this file during the study; the code was written fresh; MIT",
+      "to": ".agents/skills/style-long-video-to-clips/scripts/clips.mjs"
     },
     {
       "source": "quietEditorial",
@@ -3484,8 +3520,8 @@
       "to": "library/vision/vision.js"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "kokoro-v1.0.onnx",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3627,8 +3663,8 @@
       "sha256Dest": "8a3092d34c79d3f57e6ba8592105e8a90f6b07c27891ffecd14cca428bfd3e31"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "voices.bin",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3894,6 +3930,127 @@
       "to": "tools/blocks/three.mjs"
     },
     {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "LICENSE",
+      "kind": "copy",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "6027f80096af0747b52de4292af515590003f0b4f2da6a7de9e1916624baa9b6",
+      "date": "2026-10-12",
+      "note": "MIT notice for the cut stage ported from ai-video-editor",
+      "to": "tools/cut/LICENSE-ai-video-editor",
+      "sha256Dest": "6027f80096af0747b52de4292af515590003f0b4f2da6a7de9e1916624baa9b6"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/retakes.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "17fa415ed103732468c923c7123c23343a7c315c6b297b754d5a69a679c51262",
+      "date": "2026-10-12",
+      "note": "Answers -> quoted spans, merging and review list (decide/to_spans/review_md); MIT",
+      "to": "tools/cut/apply.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/build_timeline.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "58c58410f72b0534702685863f028ec8f999d64f32a41d160fb8455380200114",
+      "date": "2026-10-12",
+      "note": "Spans -> kept frames: snap and pad, pause tightening, splice budget, frame snapping, joins off speech, retime; MIT. Silence by window peak like silencedetect; word-gap threshold 15 dB (was 12)",
+      "to": "tools/cut/build.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/preview_cut.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "ea18b9174458f988f60928696f30e1f369887ab9b35ef5f91a422f5bdd7862e1",
+      "date": "2026-10-12",
+      "note": "paper-edit.md writer and CLIPPED check; MIT. Zero-length labels count by their moment",
+      "to": "tools/cut/build.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/retakes.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "17fa415ed103732468c923c7123c23343a7c315c6b297b754d5a69a679c51262",
+      "date": "2026-10-12",
+      "note": "Candidate finder (restarts, fragments, meta, fillers, alt hooks) rewritten in Node; MIT. Jev judging dropped: the agent answers decisions.in.json. Added: a two-clause retake gives one cut",
+      "to": "tools/cut/candidates.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/build_timeline.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "58c58410f72b0534702685863f028ec8f999d64f32a41d160fb8455380200114",
+      "date": "2026-10-12",
+      "note": "Window levels, derived silence threshold, label fitting, unheard labels; MIT. Added: voiced gaps with no words",
+      "to": "tools/cut/levels.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/render.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "c93f77625818088a4564b1d7e26ccc0c02f2ed4fc39e46875dc632cc44c43bea",
+      "date": "2026-10-12",
+      "note": "Per-range exact re-encode, frame counts, one-pass audio with 8 ms fades; MIT. Heavy slot, filter graph from a file, output check added",
+      "to": "tools/cut/render.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/textnorm.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "0a7712cc6b7d0060247e060de92af6031d4cf83eafea2f696a00f317dbbf0e63",
+      "date": "2026-10-12",
+      "note": "Normalizing, number folding, quote lookup, pair by time; MIT. difflib SequenceMatcher ported (fuzzed against Python: 400 cases identical)",
+      "to": "tools/cut/text.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/transcribe.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "70589764b2d1e4dcde714b07946ba3dbe1b8ec4dd8f590e3389b950946572b5e",
+      "date": "2026-10-12",
+      "note": "Re-check pass for over-long labels; MIT. Added: re-transcribe voiced gaps (Whisper skipped 18 s of a test take)",
+      "to": "tools/cut/transcribe.mjs"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/verify_cut.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "72baaf7e7e0b1b8781ac136fcfa31e0372926cb8869decb10e291359d6123455",
+      "date": "2026-10-12",
+      "note": "Re-transcribe and diff: MISSING, SURVIVED, HEARD DIFFERENTLY, DOUBLED; MIT. MISSING only near a join, the rest listed as transcriber variance",
+      "to": "tools/cut/verify.mjs"
+    },
+    {
       "source": "adits",
       "sourceRoot": "E:/Develop/Antigravity_testing/Adits_Modular",
       "from": "Adits/core/AnamorphicCamera.js",
@@ -3930,8 +4087,8 @@
       "to": "tools/recipes/timeremap.mjs"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/__init__.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3943,8 +4100,8 @@
       "sha256Dest": "a94a8a0ecb8d1f941ab5e3a76ac18ecbe811091811ed339920e6d1a18ab52781"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/audio_io.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3956,8 +4113,8 @@
       "sha256Dest": "b0a63ad636c69fdcf584ff859c553b4e9774efc41bb0d7b5f711bd70e52695a4"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/constants.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3969,8 +4126,8 @@
       "sha256Dest": "dfdc66167e1f5d12e421f1e53d72af4b4d34b610a4a1ebe05086736180850961"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/paths.py",
       "kind": "port",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3981,8 +4138,8 @@
       "to": "tools/voice/core/paths.py"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "effects/__init__.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -3994,8 +4151,8 @@
       "sha256Dest": "ae0730f2299c2b70db7d2f9f58606a42802f9913c8d318e8d082221ad8f8286d"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "effects/audio_effects.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4007,8 +4164,8 @@
       "sha256Dest": "bb042bac94523ad89f35842edf79f298f7ab3e75859f1f59aece2c0cc39444de"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "effects/registry.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4020,8 +4177,8 @@
       "sha256Dest": "5aa42b16f7d9d78a36432a694bf032276f38caef4cc7f8ecd9e90935676d0829"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "engines/__init__.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4033,8 +4190,8 @@
       "sha256Dest": "4f2fc8a98a6777a42fb30eccaa29dfc644e7d66bf91f155a304bec4a10f8f2bf"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "engines/base.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4046,8 +4203,20 @@
       "sha256Dest": "34fa9e426d7e845d43c57f40db785fe2bdc91f8e5dd124ce6423d8f4a30ae266"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
+      "from": "effects/cloned_voices.py",
+      "kind": "learn",
+      "gitHead": "b8bca8d126e55bda6b99a80b8275250a31b1f98d",
+      "dirtyAtCopy": false,
+      "sha256Source": "9c71523ebe81935a82d8c038ea2b9bcb3d0b003ac86ef46cd337f4b91a2801a3",
+      "date": "2026-10-11",
+      "note": "Cloned voices (clone:<slug>) learned: profile load, VCClient.convert, run before the other effects. clone_bridge.py is new code that calls the app's core.voice_cloning in place under the app's own venv; nothing copied (GPL-3.0-or-later).",
+      "to": "tools/voice/engines/clone_bridge.py"
+    },
+    {
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "engines/kokoro_engine.py",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4059,8 +4228,20 @@
       "sha256Dest": "7e5841f8446cfb3ce7c922788bd4f68ae49ac417de79277562608707add0b424"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
+      "from": "engines/melo_engine.py",
+      "kind": "learn",
+      "gitHead": "b8bca8d126e55bda6b99a80b8275250a31b1f98d",
+      "dirtyAtCopy": false,
+      "sha256Source": "1cf2a49ec075260b902d4a6964dd69be38cc5e0d19c15014fd200fc46d9a0e16",
+      "date": "2026-10-10",
+      "note": "MeloTTS call pattern (TTS(language, device), spk2id, tts_to_file, NLTK data check) learned; melo_synth.py is new code that runs in bin.meloPython offline. AditsVoiceStudio is the renamed TTS app (GPL-3.0-or-later); no code copied.",
+      "to": "tools/voice/engines/melo_synth.py"
+    },
+    {
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "ui/app.py",
       "kind": "port",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4071,8 +4252,8 @@
       "to": "tools/voice/pipeline.py"
     },
     {
-      "source": "tts",
-      "sourceRoot": "E:/Develop/Antigravity_testing/tts_app modular",
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "core/subtitles.py",
       "kind": "port",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4080,6 +4261,18 @@
       "sha256Source": "1528804b70aaaa20d6d2d8e71c78c9a5355f78878a1b4b4570801d7fce93fba1",
       "date": "2026-10-07",
       "note": "faster-whisper word timestamps without torch; JSON words aligned to script + SRT",
+      "to": "tools/voice/voice_cli.py"
+    },
+    {
+      "source": "aiVideoEditor",
+      "sourceRoot": "E:/Develop/Antigravity_testing/ai-video-editor",
+      "from": "plugins/ai-editor/skills/cut/scripts/transcribe.py",
+      "kind": "port",
+      "gitHead": "3b01d27704b666699ec7bc2cf4ed7a7d911af1d1",
+      "dirtyAtCopy": false,
+      "sha256Source": "70589764b2d1e4dcde714b07946ba3dbe1b8ec4dd8f590e3389b950946572b5e",
+      "date": "2026-10-12",
+      "note": "transcribe-cut: filler prompt, VAD 500 ms, no previous-text conditioning, beam 5, clip re-transcription; MIT",
       "to": "tools/voice/voice_cli.py"
     }
   ]

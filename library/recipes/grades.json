@@ -79,5 +79,49 @@
         "grainRoughness": 0.6
       }
     }
+  },
+  "teal-orange": {
+    "use": "Cinematic look (style-cinematic-long / -short): teal shadows, warm highlights, a little contrast, light grain. Colour wheels from the HyperFrames wheels example. Rendered in a 6 s test job (2026-10-14, HyperFrames 0.8.143); on a bright studio clip it showed mostly as the vignette. Not yet seen on dark footage.",
+    "grading": {
+      "intensity": 1,
+      "adjust": {
+        "contrast": 0.1,
+        "saturation": -0.06
+      },
+      "wheels": {
+        "shadows": {
+          "hue": 200,
+          "amount": 0.1,
+          "level": -0.02
+        },
+        "highlights": {
+          "hue": 32,
+          "amount": 0.08,
+          "level": 0
+        }
+      },
+      "details": {
+        "vignette": 0.2,
+        "grain": 0.12,
+        "grainSize": 0.22,
+        "grainRoughness": 0.6
+      }
+    }
+  },
+  "natural-film": {
+    "use": "Cinematic finish that keeps the footage colours (style-cinematic-long / -short): a touch of contrast, soft vignette, light grain, no colour shift. Use after shots are colour matched. Rendered in a 6 s test job (2026-10-14, HyperFrames 0.8.143).",
+    "grading": {
+      "intensity": 1,
+      "adjust": {
+        "contrast": 0.08,
+        "highlights": -0.06
+      },
+      "details": {
+        "vignette": 0.18,
+        "grain": 0.1,
+        "grainSize": 0.22,
+        "grainRoughness": 0.6
+      }
+    }
   }
 }

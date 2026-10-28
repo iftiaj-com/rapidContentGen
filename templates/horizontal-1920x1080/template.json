@@ -1,0 +1,19 @@
+{
+  "name": "horizontal-1920x1080",
+  "description": "16:9 long form (YouTube, web, TV). Full-frame footage, letterbox through rcg cinema, safe-zone text cards, flat text clips.",
+  "$comment": "Safe zones are a starting assumption, not measured on a player: 5% title-safe margins left and right, the top 54 px clear, and no text in the bottom 12% where a desktop player draws its controls and auto captions. Adjust per platform when the user names one.",
+  "width": 1920,
+  "height": 1080,
+  "safeZones": {
+    "noTextBottomFrom": 950,
+    "noTextRightFrom": 1824,
+    "headerClearTo": 54,
+    "textBox": { "x": 96, "width": 1728 },
+    "topBand": { "y": 110, "height": 180 },
+    "centerCard": { "y": 340, "height": 400 }
+  },
+  "fonts": ["EB Garamond"],
+  "placeholders": {
+    "video": "assets/main.mp4"
+  }
+}

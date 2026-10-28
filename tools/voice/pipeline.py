@@ -1,7 +1,7 @@
 """
 pipeline.py
 ───────────
-Voice post-processing chain, ported from the TTS app's
+Voice post-processing chain, ported from AditsVoiceStudio's (formerly the TTS app)
 ui/app.py TTSStudioApp._generate_worker (see docs/PROVENANCE.md), without the UI.
 
 Order is the same as the app: silence removal -> speed -> effects -> 3-band EQ

@@ -160,6 +160,8 @@ const isAnchor = (v) => typeof v === 'string' && v.trim().startsWith('@');
 // replaces must stay until the entrance is done (else the reveal opens onto the black root).
 // Seconds per entrance, as in library/styles/info-graphics/components.mjs (ground).
 const ENTER = { cut: 0, fade: 0.3, 'wipe-up': 0.42, 'wipe-left': 0.42, arc: 0.62, iris: 0.5 };
+// A scene opens with a ground (info-graphics) or a board (mix-media, always a hard cut).
+const isGround = (item) => item.component === 'ground' || item.component === 'board';
 const handover = (item) => (item.component === 'ground' ? ENTER[item.enter || 'cut'] ?? 0 : 0);
 
 export function resolvePlan({ job, plan: planPath, out: outPath, meta: metaPath }) {
@@ -185,7 +187,7 @@ export function resolvePlan({ job, plan: planPath, out: outPath, meta: metaPath 
     const o = { ...it, start: f3(Math.max(0, s)) };
     let end;
     if (it.end === 'scene') {
-      const next = items.findIndex((x, k) => k > i && x.component === 'ground');
+      const next = items.findIndex((x, k) => k > i && isGround(x));
       end = next >= 0 ? Math.min(total, starts[next].t + handover(items[next])) : total;
     } else if (typeof it.end === 'string' && it.end.startsWith('#')) {
       const next = items.findIndex((x) => x.id === it.end.slice(1));
@@ -206,8 +208,8 @@ export function resolvePlan({ job, plan: planPath, out: outPath, meta: metaPath 
     for (const k of CUES) if (isAnchor(it[k])) o[k] = f3(anchor(it[k], where).t - s);
     if (Number.isFinite(total) && o.start + o.duration > total + 1e-3) throw new Error(`${where}: ends at ${f3(o.start + o.duration)} s, past the duration ${total} s`);
     // Ride the reveal of a ground that enters at the same moment, earlier in the plan.
-    if (it.component !== 'ground' && it.reveal == null) {
-      const g = items.slice(0, i).reverse().find((x, k) => x.component === 'ground' && Math.abs(starts[i - 1 - k].t - s) < 1e-6);
+    if (!isGround(it) && it.reveal == null) {
+      const g = items.slice(0, i).reverse().find((x, k) => isGround(x) && Math.abs(starts[i - 1 - k].t - s) < 1e-6);
       if (g && g.enter && g.enter !== 'cut') o.reveal = g.enter;
     }
     rows.push({ id: o.id || '', component: o.component, start: o.start, end: f3(o.start + o.duration), word: starts[i].word, times: o.times || '' });

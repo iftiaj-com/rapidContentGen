@@ -17,6 +17,38 @@
 Textures (grain, paper, cardboard) are generated once per job into `assets/textures/` with ffmpeg
 from fixed seeds, so renders repeat exactly.
 
+## The finishing layer (`finish`)
+
+The AE tutorial ends with one adjustment layer over everything: Noise about 10% and Posterize Time.
+`finish` is that layer: full frame, placed last in the plan and spanning the whole edit, so titles,
+labels, boards, cards and parallax shots share one grain. It sits under the captions.
+
+| Param | Default | What it does |
+|---|---|---|
+| `grain` | 0.1 | overlay grain from the same seeded tiles, changing on each step. 0.1 is faint; 0.15-0.2 if the render looks clean |
+| `vignette` | 0.2 | a light darkening of the corners over every shot |
+| `flicker` | 0.03 | a seeded exposure flicker per step (old film); 0 turns it off |
+| `fps` | 12 | the step rate: match the parallax shots (camera.md) |
+
+With `finish` on, set `grain: 0` on each `parallax` (its grain would double) and keep that shot's
+`vignette` lower (0.2) or the corners go heavy. The overlay blend reaches across sub-compositions:
+checked in testing (2026-10-10) with grain 0.6 over an archive plate.
+
+## The word in the scene (`parallax` `word`)
+
+The tutorial's "3D text matched to the camera": text set on a plane inside the stage, at depth
+`wordZ` (units of P), so it parallaxes with the photo and the subject passes in front of it.
+
+- `word` one line (fitted into the safe width), `wordY` its centre, `wordSize` the starting size
+  (shrinks to fit, down to `wordMin`). `wordFont: "caption"` (Oswald caps) for a bold noun,
+  `"serif"` for a phrase. `wordTone` any token or CSS colour; white with a soft shadow by default.
+- Place it where the subject covers part of it at rest (a head over the middle letters reads at
+  once: "H_ME"). Keep the most important letters clear, and check it in a snapshot.
+- `hf check` would flag the hidden letters as occluded text; the component marks them as
+  intended. Contrast is still measured: it passed in testing on a grey wall and a sky ground.
+- `blur: "word:1"` softens it slightly when it sits far back.
+- One or two per edit. It replaces the title or label for that beat, not adds to it.
+
 ## Overlays
 
 - **`highlight`**: the orange highlighter label (#f0500d, mottled, ragged ends), white serif text,

@@ -544,7 +544,7 @@ export function buildCommands(jobDir) {
     const M = loadLayout().presenter.matte;
     cmds.push(rcg('matte', '--job', J, '--src', P.presenter.src, '--name', NAME, '--choke', M.choke, '--feather', M.feather, '--temporal', M.temporal, '--sheet'));
   }
-  cmds.push([me, 'layout', '--job', J]);
+  cmds.push(rcg('split-screen', 'layout', '--job', J));
   for (const w of P.windows.filter((x) => x.layout === 'afull')) {
     cmds.push(rcg('camera', '--job', J, '--target', `#wa${w.i}`, '--track', P.presenter.track, '--id', `cam-wa${w.i}`, ...w.cues.flatMap((c) => ['--cue', c])));
   }
@@ -552,7 +552,7 @@ export function buildCommands(jobDir) {
   P.windows.filter((w) => w.caption).forEach((w, k) => {
     cmds.push(rcg('captions', '--job', J, '--words', `${J}/${w.caption.file}`, '--style', w.caption.style, '--mode', w.caption.mode, '--y', w.caption.y, '--start', w.start, '--id', `cap-w${w.i}`, '--track', 30 + (k % 2), '--insert'));
   });
-  cmds.push([me, 'clamp', '--job', J]);
+  cmds.push(rcg('split-screen', 'clamp', '--job', J));
   for (const t of P.transitions) cmds.push(rcg('transition', '--job', J, '--at', t.at, '--style', t.style, '--d', t.d, '--id', t.id));
   cmds.push(rcg('mix-check', `${J}/index.html`));
   cmds.push([me, 'check', '--job', J]);

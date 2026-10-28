@@ -13,8 +13,26 @@ import { isMain } from '../lib/cli.mjs';
 import { readJson, ROOT } from '../lib/config.mjs';
 import { decodeMono, loudness } from '../lib/ffmpeg.mjs';
 
+/** One readable line from a human label, for sounds with no written description. */
+function labelText(l) {
+  if (!l) return '';
+  return [l.mood && `${l.mood[0].toUpperCase()}${l.mood.slice(1)}.`, l.energy && `Energy ${l.energy}/5.`,
+    l.vocals && `Vocals: ${l.vocals}.`, l.goodFor && `Good for: ${l.goodFor}.`].filter(Boolean).join(' ');
+}
+
+/** The analysis without its bookkeeping and raw per-word scores (those stay in manifest.analyzer.json). */
+function readable({ raw, hash, version, ...rest }) {
+  return rest;
+}
+
 export async function measureSfx(dir = join(ROOT, 'library', 'sfx')) {
   const hf = readJson(join(dir, 'manifest.hyperframes.json'), {});
+  // Sounds made in this workspace (tools/audio/paper_sfx.py) carry their own description and licence.
+  const made = readJson(join(dir, 'manifest.made.json'), {});
+  // What each sound is: human labels from listening (manifest.labels.json, most trusted) and the
+  // measured description from rcg audio-analyzer (manifest.analyzer.json). Both are merged as written.
+  const labels = readJson(join(dir, 'manifest.labels.json'), {});
+  const analyzer = readJson(join(dir, 'manifest.analyzer.json'), {});
   const out = {};
   for (const file of readdirSync(dir).filter((f) => f.endsWith('.mp3')).sort()) {
     const sr = 8000;
@@ -60,8 +78,10 @@ export async function measureSfx(dir = join(ROOT, 'library', 'sfx')) {
       audibleEndS: +((lastIdx * hop) / sr).toFixed(2),
       integratedLufs: lv.integratedLufs,
       truePeakDb: lv.truePeakDb,
-      description: hf[id]?.description || '',
-      license: hf[id] ? 'Pixabay Content License (see CREDITS.md)' : '',
+      description: hf[id]?.description || made[id]?.description || labelText(labels[id]),
+      license: hf[id] ? 'Pixabay Content License (see CREDITS.md)' : made[id]?.license || '',
+      ...(labels[id] ? { labels: labels[id] } : {}),
+      ...(analyzer[id] ? { analysis: readable(analyzer[id]) } : {}),
     };
   }
   writeFileSync(join(dir, 'manifest.json'), JSON.stringify(out, null, 2) + '\n');

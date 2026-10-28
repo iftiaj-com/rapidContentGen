@@ -49,6 +49,31 @@ full size, took in the sofa) and MediaPipe DeepLab (jagged, labelled the sofa as
 Outputs: `assets/layers/<name>/bg.png` + one RGBA PNG per layer (full frame size, aligned),
 `data/layers-<name>.json` (the manifest) and `data/layers-<name>.png` (the check sheet: READ it).
 
+## Props: building a scene from parts
+
+The tutorial builds its scene from separate assets (a subject PNG, buildings, clouds, flames) on a
+coloured solid. `parallax` does the same with `props`, alone or on top of `rcg layers` planes:
+
+```
+"props": "assets/props/clouds.png@1.1:540,420,1300;assets/props/s1-mid.png@0:540,1000,520:30,0;assets/layers/room/fg.png@-0.3",
+"ground": "sky"
+```
+
+- Each prop is `src@z[:x,y,w[:dx,dy]]`: a job-relative PNG (with alpha), SVG or JPG; depth z in
+  units of P (as `depths`); the centre and width in output pixels at rest; an optional eased drift
+  over the shot (clouds sliding, a figure stepping in). No box means a full-frame image aligned
+  with the frame, like a `rcg layers` layer.
+- Props are named `prop1`, `prop2`, ... in the order given, for `sway` and `blur`
+  (`"blur": "prop1:3"`).
+- Without `layers`, `ground` (a token or CSS colour) is the backdrop: the tutorial's sky-blue solid.
+  Haze needs a `bg` layer, so it is off in a props-only scene.
+- Where props come from: the user's PNGs; a cut-out from another photo with `rcg layers`, cropped
+  to its `bbox` (SKILL.md step 5); a Phosphor icon (`rcg assets icon add`, solid shapes read best:
+  `--weight fill`); Unsplash illustrations through `rcg assets`. Ask before each download.
+- A prop is not scaled to cover the frame. One that crosses the left or right edge at rest is
+  checked through the move, and `style build` reports it if it pulls inside. Make edge props wider
+  than the frame (`w` 1300-1600) and check the end of the move in a snapshot.
+
 ## Your own layers (Photoshop)
 
 For hero shots, hand-made layers with a real content-aware fill beat the automatic fill. Export

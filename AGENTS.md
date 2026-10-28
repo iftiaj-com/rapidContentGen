@@ -3,8 +3,8 @@
 An AI video-editing workspace. The user drops a video (or several) plus a prompt,
 in chat or in `inbox/`, and the agent turns it into a finished motion-graphics
 edit. HyperFrames (HTML + GSAP, rendered headless) is the render core. Features
-from the user's other apps (Adits, AditsShaders, AditsStudio, flowEditor, the TTS
-app) are **copied or ported in** and logged in `docs/PROVENANCE.md`.
+from the user's other apps (Adits, AditsShaders, AditsStudio, flowEditor,
+AditsVoiceStudio) are **copied or ported in** and logged in `docs/PROVENANCE.md`.
 
 These instructions are for any coding agent (Antigravity, Claude Code and others).
 `CLAUDE.md` imports this file and adds notes for Claude Code only.
@@ -29,7 +29,22 @@ supports it: `/video-job` in Antigravity (2.0 and CLI) and Claude Code.
 | `style-tactile-collage` | Paper collage, scrapbook, zine, handmade or analog look |
 | `style-quiet-editorial` | Quiet, minimal, premium, editorial or product-UI look |
 | `style-vox-parallax` | Vox-style 2.5D parallax from still photos, documentary or archival look |
+| `style-mix-media` | Mix media cork-board scrapbook in stop-motion: the person from the footage as torn-paper cut-outs, handwritten notes, vintage stickers, diary voiceover |
+| `style-character-lighting` | Character lighting: relight footage so the light says who the character is (front, split, under, top, blue backlight, three-point and six more), lighting explainers with a top-down light plot, and lighting rules for any character content |
+| `style-cinematic-long` | Cinematic edit of the user's footage, 16:9 and over 1 minute (travel, documentary, event, brand or B-roll film): shots that flow, chosen for the story, movement only where needed, variety, stable shots, motion blur on speed-ups, matched colour then one grade, mood music and quiet sound design. Carries `cine.mjs` (shot measuring and prep) |
+| `style-cinematic-short` | The same cinematic edit for 9:16, 10 s to 1 minute: a hook in the first second, tight beat cuts, landscape reframed to vertical, a looping ending. Uses the long skill's references and `cine.mjs` |
+| `style-long-video-to-clips` | Workflow (not a look): short vertical clips from a long video the user adds (podcast, talk, stream): find and rank runs of whole sentences, the agent judges, the user picks, one job per clip with a style pack |
+| `style-anti-ai` | Optional companion check (not a look): flags generic-AI looks in any edit (slop copy, emoji, "10x" stats, sparkle icons, purple-blue, neon on black, glass, grotesk display, the same entrance or transition everywhere) with a fix each; style packs' own looks are allowed |
+| `learning-from-user-taste` | The user reacts to a result or says "always / never / next time": sort bug, one-off or taste, and save taste as a learned rule (every job, one style or one job), checked against the hard limits and the existing rules |
+| `script-modern-storytelling` | Writing any spoken script (voiceover, shoot script, or an audit of the user's script) with the Modern Story Arc: drop-in hook, first peak within seconds, a mini-peak every 10-15 s, ending written first; outputs a peak map the edit hits |
+| `script-film-storytelling` | Writing or auditing the story of a short film (scripted, narrated, or found in the user's footage): protagonist, want, obstacle, stakes, scenes that turn, cause and effect, setups and payoffs, subtext; outputs a premise, scene cards, a Fountain screenplay and a shot list where every shot has a story reason |
 
+- **User taste lives in the skills.** The user's rules are lines in each skill's "Learned rules"
+  section (`<!-- rcg:learned begin/end -->`) and in a job's `JOB.md`; follow them on every job, and
+  change them only through the `learning-from-user-taste` skill.
+- **A skill may carry scripts** in `.agents/skills/<name>/scripts/*.mjs`, run with
+  `node .agents/skills/<name>/scripts/<script>.mjs`. They may import `tools/lib/*`; core code in `tools/`
+  never imports skill code, so deleting a skill folder leaves rcg working.
 - **Edit skills in `.agents/skills/` only.** `.claude/skills/` is a copy for Claude Code (which reads
   only that folder). After any change run `node tools/rcg.mjs skills sync`; `rcg doctor` reports a
   stale copy.
@@ -54,7 +69,7 @@ valid compositions (the `data-*` timing contract, clips, tracks, animation rules
 ## Critical rules
 
 - **Never edit the source projects** (`Adits_Modular`, `AditsShaders`, `AditsStudio`,
-  `flowEditor`, `tts_app modular`). Read them only. To bring something in, use
+  `flowEditor`, `AditsVoiceStudio` (formerly `tts_app modular`)). Read them only. To bring something in, use
   `node tools/rcg.mjs provenance copy|record ...` so it is logged.
 - **No hardcoded absolute paths in committed code.** Every path and binary comes from
   `tools/lib/config.mjs` (`config/workspace.json` + git-ignored `config/workspace.local.json`).
@@ -69,6 +84,31 @@ valid compositions (the `data-*` timing contract, clips, tracks, animation rules
   "courtesy of" text in a video. Credits for collected assets live only in the job's
   `data/credits.json` and `report.md` (`rcg assets credits`). The approved sources do not require
   on-screen credit (`.agents/skills/style-info-graphics/references/assets.md`).
+
+## Delegation: code measures, the agent decides who judges
+
+No rcg tool calls a model. The main agent (any host) decides when to use its own sub-agents; rcg
+keeps the inputs small and the answers checkable.
+
+1. **Code measures.** Anything countable (silences, repeats, loudness, faces, colours, rates, timings)
+   comes from a script. Never read raw transcripts, word JSON or frames when a script summarizes them.
+2. **Read the compact files.** Judge from what each step writes for judgment: `data/cut/transcript.txt`,
+   `candidates.md`, `review.md`, `paper-edit.md` (rcg cut); `data/clips/candidates.md`, `shortlist.md`
+   (clips); `data/plan-check.json` (rcg plan check); `data/anti-ai.json` (style-anti-ai).
+3. **Delegate only bounded, checkable work.** A sub-agent gets one compact file, one question and a fixed
+   answer file: `data/cut/decisions.in.json` (cut candidates), `data/clips/scores.in.json` (clip scores).
+   Good fits: answering a candidate list, scoring clip candidates, looking at one frame sheet, planning one
+   clip of a batch. Give it the rules it needs (`.agents/skills/video-job/SKILL.md` step 1b,
+   `.agents/skills/style-long-video-to-clips/references/ranking.md`) and the answer shape, nothing else.
+4. **Keep the final calls.** The main agent keeps the story, the beat sheet, the style choice, anything the
+   user approves, what a correction means and its scope, and any change to a skill. It never forwards a
+   sub-agent's answer without checking it.
+5. **Check every delegated answer.** Compare it with your own reading where it matters (a cut, a keeper,
+   a top score), spot-check the rest against the source line, and run the code checks (`rcg cut apply` and
+   `verify`, `clips shortlist`, `rcg plan check`, `rcg verify`). Redo a part yourself when its check fails.
+6. **Quality over savings.** When the work is small (a dozen candidates), when the host has no sub-agents,
+   or when a sub-agent's answers keep failing the checks, do it yourself. Delegate to go faster and keep
+   the main context clean, never at the cost of the result.
 
 ## Environment
 
@@ -93,11 +133,14 @@ node tools/rcg.mjs skills sync          # copy .agents/skills to .claude/skills 
 node tools/rcg.mjs new-job --name x --video a.mp4 [--audio m.mp3] [--prompt-file p.md] [--mode a|b|c] [--like jobs/<old-id>]
 node tools/rcg.mjs inbox list                  # free / claimed inbox folders (new-job claims one); release <folder>
 node tools/rcg.mjs inbox done --job jobs/<id>  # job delivered: rename its inbox folder to <folder>-Complete (agents skip these)
+node tools/rcg.mjs cut transcribe jobs/<id> [--src assets/take.mp4]   # raw talking take: then propose, answer data/cut/decisions.in.json, apply, build, render, verify (video-job step 1b)
 node tools/rcg.mjs beat-sheet md jobs/<id>/beat-sheet.json jobs/<id>/beat-sheet.md
-node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice
+node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice   # --engine melo: MeloTTS via bin.meloPython; --clone <slug>: an AditsVoiceStudio cloned voice
+node tools/rcg.mjs mix-media prep --job jobs/<id> --src assets/clip.mp4 --times 1.5,4.5,8.9 [--objects "cup"]   # torn-paper cut-outs, boards (skill style-mix-media)
 node tools/rcg.mjs level --dir jobs/<id>/assets/voice --lufs -13.5 --ceiling -1.5
 node tools/rcg.mjs captions --job jobs/<id> --words <audio_meta.json|words.json|.srt> --voice vo1 --style tiktok --mode word --start 0.4 --id cap-vo1 --insert   # + --hollow --rgb --shadow; --negative --behind p1
 node tools/rcg.mjs title --job jobs/<id> --text "LINE ONE|LINE TWO" --preset slam --style trailer --start 11 --duration 1.5 --id title-main --insert
+node .agents/skills/style-cinematic-long/scripts/cine.mjs measure jobs/<id>   # shots: motion direction, shake, colour -> data/cine/shots.md; then prep (trim, flip, reverse, speed + blur, stabilize, colour match, reframe)
 node tools/rcg.mjs style list                          # style packs; skills style-tactile-collage, style-quiet-editorial, style-vox-parallax, style-marketing-pro
 node tools/rcg.mjs layers --job jobs/<id> --src assets/photo.jpg --name s1 --layer "mid:person" --layer "fg:chair"   # depth layers for parallax
 node tools/rcg.mjs marketing-pro prep --job jobs/<id> --src assets/clip.mp4 --trim [--intro 3.8 --outro 1.8]     # then plan (--fill-heroes --clusters --cards --whips --strips --music), then build (skill style-marketing-pro)
@@ -139,6 +182,8 @@ node tools/rcg.mjs fx --job jobs/<id> --effect vj-lightshow --preset ls_ignition
 node tools/rcg.mjs fx --job jobs/<id> --effect global-visuals --src assets/x.mp4 --start 3 --duration 2 --param fxBnwMode=true --param fxFisheyeEnabled=true --out assets/fx/bnw.mp4   # fxNeonMode fxRgbColors (--audio) fxNegativeMode globalOpacityEnabled
 node tools/rcg.mjs cinema --job jobs/<id> --id cf1 --ud --pos 12 --curve 35 --show 4-7 [--lr --lr-pos 7 --lr-color "#14001f"] [--behind p1]   # Adits Cinema Frames; --remove cf1
 node tools/rcg.mjs limit in.mp3 out.wav [--ceiling -2.5]
+node tools/rcg.mjs audio-analyzer library      # describe new/changed library/sfx audio into manifest.json (labels + analysis); also file <inbox audio> | find "<phrase>" | check. Never footage
+node tools/rcg.mjs plan check jobs/<id>       # the edit on paper (data/plan.json, recorded by every block command run through rcg); also apply | diff | show | demo
 node tools/rcg.mjs mix-check jobs/<id>/index.html
 node tools/rcg.mjs hf --cwd jobs/<id> check
 node tools/rcg.mjs render jobs/<id> --fps 24 [--workers 3] [--silence a-b]   # render, fx, matte, track, layers, hf render/snapshot: one at a time machine-wide; others wait
@@ -154,7 +199,7 @@ node tools/rcg.mjs provenance check
 - `library/`: reusable pieces: `sfx/` (measured manifest), `recipes/` (grades), `styles/` (style packs, `docs/styles.md`),
   `runtime/`, `blocks/`, `shaders/` (filled phase by phase), `adits-fx/` (Adits effects and
   environments, copied unmodified) and `fx/` (the `rcg fx` harness and effect registry).
-- `templates/`: HyperFrames project templates (`vertical-1080x1920`).
+- `templates/`: HyperFrames project templates (`vertical-1080x1920`, the default; `horizontal-1920x1080` for 16:9 via `new-job --template`).
 - `jobs/<date>-<slug>/`: one HyperFrames project per job (git-ignored: jobs stay on each user's machine), with `JOB.md`, `beat-sheet.*`,
   `data/`, `renders/`, `report.md`.
 - `inbox/`: where the user drops media + `prompt.md`.

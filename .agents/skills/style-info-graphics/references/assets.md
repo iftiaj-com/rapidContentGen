@@ -36,7 +36,7 @@ Every fetch writes the file into the job's git-ignored `assets/img|video|tex/` a
 `data/credits.json` (source, id, author, page, licence, sha256). `rcg assets credits --job <dir>`
 prints the Markdown credits table for `report.md`.
 
-**Credits never appear in the video** (user rule, 2026-10-08): no photographer, source, licence or
+**Credits never appear in the video** (a learned rule in `video-job`): no photographer, source, licence or
 "courtesy of" text on screen, no end card of credits. The credits file and the report are the
 record. None of the approved licences requires on-screen credit: Phosphor (MIT) asks for its
 licence with the code, which is `library/icons/phosphor/LICENSE`; Unsplash, Pixabay and Pexels say

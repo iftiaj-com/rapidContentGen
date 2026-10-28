@@ -1,8 +1,8 @@
 # Style packs
 
 A style pack is one reusable visual language: drop a new video, name the style, and the edit is
-built from ready parts instead of hand-written HTML. Five packs exist: two ported from public HyperFrames style skills, three learned from reference
-videos (Vox-style parallax, a promo talking-head ad, an info-graphics video essay):
+built from ready parts instead of hand-written HTML. Seven packs exist: two ported from public HyperFrames style skills, five learned from reference
+videos and guides (Vox-style parallax, a promo talking-head ad, an info-graphics video essay, a mix media cork-board scrapbook, character lighting):
 
 | Pack | Skill | Look | Regression |
 |---|---|---|---|
@@ -10,7 +10,14 @@ videos (Vox-style parallax, a promo talking-head ad, an info-graphics video essa
 | `quiet-editorial` | `.agents/skills/style-quiet-editorial` | serif headline, Inter labels, warm canvas, cards, cursor selection, one green state | R9b |
 | `marketing-pro` | `.agents/skills/style-marketing-pro` | promo talking-head: a planner (`rcg marketing-pro`) turns speech into a moving camera (1.3 base / 1.0 wide / 1.6 punch, drift), hero keywords behind the head styled by meaning, two-tier captions | R11 |
 | `info-graphics` | `.agents/skills/style-info-graphics` | voice-led video essay: a new visual each sentence on dark, cream or grey grounds; type stacks with one orange word, equations, stairs, pyramids, posts, prompt bars with a cursor, orbits, counters, Phosphor icons, photo plates, collages; word-anchored timing (`rcg infographics`); one-word chip captions | R13 |
-| `vox-parallax` | `.agents/skills/style-vox-parallax` | photos cut into depth layers (`rcg layers`) on a virtual multiplane camera; depth blur, haze, grain, 12 fps steps, orange highlighter labels, serif titles, photo cards, archival plates | R10 |
+| `mix-media` | `.agents/skills/style-mix-media` | handmade cork-board scrapbook in stop-motion (the user's Hi.Boly guide): the person from the footage as torn-paper cut-outs (stills and a 12 fps live cut-out, `rcg mix-media`), a cork board whose overlay changes per scene, handwritten notes on torn paper popping on spoken words, 25 drawn vintage stickers, pins and tape, mood tones, paper sounds | test job 2026-10-11-mix-media-test |
+| `character-lighting` | `.agents/skills/style-character-lighting` | light that says who the character is: `relight` puts one of 12 setups (front, split, under, top, blue backlight, three-point, Rembrandt, loop, butterfly, noir, dual colour, silhouette) on real footage, as shadows and light pools that follow the face track, plus a background drop and directional rim light from the matte; `light-plot` top-down lighting diagram (lights slide between setups); `mood-tag`; caption preset `cl-seam` | test job 2026-10-11-character-lighting-test |
+| `vox-parallax` | `.agents/skills/style-vox-parallax` | photos cut into depth layers (`rcg layers`) on a virtual multiplane camera; cut-out props on a colour ground, subject sway, a word inside the scene, depth blur, haze, grain, stepped motion, one finishing layer, orange highlighter labels, serif titles, photo cards, archival plates | R10 |
+
+Two style skills have no pack, because their look comes from the footage: `style-cinematic-long`
+(16:9, over 1 minute) and `style-cinematic-short` (9:16, 10-60 s). They use `cine.mjs` (shot measuring
+and prep, in the long skill's `scripts/`), `rcg assemble`, `rcg camera` and the grades in
+`library/recipes/grades.json`.
 
 ## How a pack is built
 
@@ -44,7 +51,7 @@ sub-composition's `build()` after the fonts load, with `tl` (paused GSAP timelin
 `$(name)` (the element `<id>-<name>`) and `fit(el, text, opts)` (canvas-measured wrap and shrink;
 `|` breaks a line, `*word*` marks emphasis). `ctx` gives `id`, `W`, `H`, `safe`, `tokens`, `type`,
 `motion`, a seeded `rnd()`, `esc()`, `js()` (safe JSON for inline script), `sel()`, `idf()` and
-`family(role)`. `prepare(params, { geo, rnd, pack, jobDir })` fills derived params (seeded tilt, a
+`family(role)`. `prepare(params, { geo, rnd, pack, jobDir, start, duration })` fills derived params (seeded tilt, a
 box computed from end points) before the safe-area check. `sfx` is `{ role, at }` or a function
 returning several hits; roles map to `style.json` `sfx`.
 

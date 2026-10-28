@@ -296,6 +296,51 @@ Source root: `E:/Develop/Antigravity_testing/AditsStudio`
 | port | `server/lib/audio-analysis.mjs` | `tools/audio/analyze.mjs` | 97907a6d | no | 2026-10-07 | analyseTrack ported; decode averages channels (AnalyserNode downmix) instead of ffmpeg -ac 1; added offset |
 | port | `server/lib/ffmpeg.mjs` | `tools/lib/ffmpeg.mjs` | 97907a6d | no | 2026-10-07 | probe + loudnorm/faststart; binaries from config; added loudness, section levels, limiter, contact sheet |
 
+## aditsVoiceStudio
+
+Source root: `E:/Develop/Antigravity_testing/AditsVoiceStudio`
+
+| Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
+|---|---|---|---|---|---|---|
+| learn | `core/version.py` | `-` | b73506e3 | no | 2026-10-07 | License: GPL-3.0-or-later applies to copied TTS code |
+| copy | `kokoro-v1.0.onnx` | `models/kokoro-v1.0.onnx` | b73506e3 | no | 2026-10-07 | Kokoro-82M ONNX weights (git-ignored) |
+| copy | `voices.bin` | `models/voices.bin` | b73506e3 | no | 2026-10-07 | Kokoro voice embeddings (git-ignored) |
+| copy | `core/__init__.py` | `tools/voice/core/__init__.py` | b73506e3 | no | 2026-10-07 |  |
+| copy | `core/audio_io.py` | `tools/voice/core/audio_io.py` | b73506e3 | no | 2026-10-07 | WAV/MP3 I/O via libsndfile |
+| copy | `core/constants.py` | `tools/voice/core/constants.py` | b73506e3 | no | 2026-10-07 | KOKORO_VOICES / KOKORO_LANGS maps (UI tokens unused) |
+| port | `core/paths.py` | `tools/voice/core/paths.py` | b73506e3 | no | 2026-10-07 | shim: bundle_dir() -> rapidContentGen models dir; no frozen-app logic |
+| copy | `effects/__init__.py` | `tools/voice/effects/__init__.py` | b73506e3 | no | 2026-10-07 |  |
+| copy | `effects/audio_effects.py` | `tools/voice/effects/audio_effects.py` | b73506e3 | no | 2026-10-07 | 33 voice effects DSP (GPL-3.0-or-later) |
+| copy | `effects/registry.py` | `tools/voice/effects/registry.py` | b73506e3 | no | 2026-10-07 | effect registry |
+| copy | `engines/__init__.py` | `tools/voice/engines/__init__.py` | b73506e3 | no | 2026-10-07 |  |
+| copy | `engines/base.py` | `tools/voice/engines/base.py` | b73506e3 | no | 2026-10-07 | engine interface |
+| learn | `effects/cloned_voices.py` | `tools/voice/engines/clone_bridge.py` | b8bca8d1 | no | 2026-10-11 | Cloned voices (clone:<slug>) learned: profile load, VCClient.convert, run before the other effects. clone_bridge.py is new code that calls the app's core.voice_cloning in place under the app's own venv; nothing copied (GPL-3.0-or-later). |
+| copy | `engines/kokoro_engine.py` | `tools/voice/engines/kokoro_engine.py` | b73506e3 | no | 2026-10-07 | Kokoro adapter; ONNX path used (no torch installed) |
+| learn | `engines/melo_engine.py` | `tools/voice/engines/melo_synth.py` | b8bca8d1 | no | 2026-10-10 | MeloTTS call pattern (TTS(language, device), spk2id, tts_to_file, NLTK data check) learned; melo_synth.py is new code that runs in bin.meloPython offline. AditsVoiceStudio is the renamed TTS app (GPL-3.0-or-later); no code copied. |
+| port | `ui/app.py` | `tools/voice/pipeline.py` | b73506e3 | no | 2026-10-07 | _generate_worker post chain (silence, speed, effects, EQ, ambiance, normalize) without UI |
+| port | `core/subtitles.py` | `tools/voice/voice_cli.py` | b73506e3 | no | 2026-10-07 | faster-whisper word timestamps without torch; JSON words aligned to script + SRT |
+
+## aiVideoEditor
+
+Source root: `E:/Develop/Antigravity_testing/ai-video-editor`
+
+| Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
+|---|---|---|---|---|---|---|
+| learn | `plugins/ai-editor/skills/style-edit/references/ai-tells.md` | `.agents/skills/style-anti-ai/references/rules.md` | 3b01d277 | no | 2026-10-12 | Rule list and levels as a starting point; rewritten for rcg compositions, calibrated on 36 rcg jobs; MIT |
+| learn | `plugins/ai-editor/skills/style-edit/scripts/ai_tells.py` | `.agents/skills/style-anti-ai/scripts/check.mjs` | 3b01d277 | no | 2026-10-12 | Detector ideas (colour bands, grotesk list, copy and icon lists, sfx counts); written fresh for rcg compositions in Node; MIT |
+| learn | `plugins/ai-editor/skills/clips/scripts/clips.py` | `.agents/skills/style-long-video-to-clips/scripts/clips.mjs` | 3b01d277 | no | 2026-10-12 | The plan's design (sentences, length runs, features, four questions, shortlist, pads) was learned from this file during the study; the code was written fresh; MIT |
+| copy | `LICENSE` | `tools/cut/LICENSE-ai-video-editor` | 3b01d277 | no | 2026-10-12 | MIT notice for the cut stage ported from ai-video-editor |
+| port | `plugins/ai-editor/skills/cut/scripts/retakes.py` | `tools/cut/apply.mjs` | 3b01d277 | no | 2026-10-12 | Answers -> quoted spans, merging and review list (decide/to_spans/review_md); MIT |
+| port | `plugins/ai-editor/skills/cut/scripts/build_timeline.py` | `tools/cut/build.mjs` | 3b01d277 | no | 2026-10-12 | Spans -> kept frames: snap and pad, pause tightening, splice budget, frame snapping, joins off speech, retime; MIT. Silence by window peak like silencedetect; word-gap threshold 15 dB (was 12) |
+| port | `plugins/ai-editor/skills/cut/scripts/preview_cut.py` | `tools/cut/build.mjs` | 3b01d277 | no | 2026-10-12 | paper-edit.md writer and CLIPPED check; MIT. Zero-length labels count by their moment |
+| port | `plugins/ai-editor/skills/cut/scripts/retakes.py` | `tools/cut/candidates.mjs` | 3b01d277 | no | 2026-10-12 | Candidate finder (restarts, fragments, meta, fillers, alt hooks) rewritten in Node; MIT. Jev judging dropped: the agent answers decisions.in.json. Added: a two-clause retake gives one cut |
+| port | `plugins/ai-editor/skills/cut/scripts/build_timeline.py` | `tools/cut/levels.mjs` | 3b01d277 | no | 2026-10-12 | Window levels, derived silence threshold, label fitting, unheard labels; MIT. Added: voiced gaps with no words |
+| port | `plugins/ai-editor/skills/cut/scripts/render.py` | `tools/cut/render.mjs` | 3b01d277 | no | 2026-10-12 | Per-range exact re-encode, frame counts, one-pass audio with 8 ms fades; MIT. Heavy slot, filter graph from a file, output check added |
+| port | `plugins/ai-editor/skills/cut/scripts/textnorm.py` | `tools/cut/text.mjs` | 3b01d277 | no | 2026-10-12 | Normalizing, number folding, quote lookup, pair by time; MIT. difflib SequenceMatcher ported (fuzzed against Python: 400 cases identical) |
+| port | `plugins/ai-editor/skills/cut/scripts/transcribe.py` | `tools/cut/transcribe.mjs` | 3b01d277 | no | 2026-10-12 | Re-check pass for over-long labels; MIT. Added: re-transcribe voiced gaps (Whisper skipped 18 s of a test take) |
+| port | `plugins/ai-editor/skills/cut/scripts/verify_cut.py` | `tools/cut/verify.mjs` | 3b01d277 | no | 2026-10-12 | Re-transcribe and diff: MISSING, SURVIVED, HEARD DIFFERENTLY, DOUBLED; MIT. MISSING only near a join, the rest listed as transcriber variance |
+| port | `plugins/ai-editor/skills/cut/scripts/transcribe.py` | `tools/voice/voice_cli.py` | 3b01d277 | no | 2026-10-12 | transcribe-cut: filler prompt, VAD 500 ms, no previous-text conditioning, beam 5, clip re-transcription; MIT |
+
 ## flowEditor
 
 Source root: `E:/Develop/Antigravity_testing/flowEditor`
@@ -362,25 +407,3 @@ Source root: `E:/Develop/Antigravity_testing/style-refs/hyperframes-tactile-coll
 | port | `assets/frame.md` | `library/styles/tactile-collage/style.json` | ef6a49f5 | no | 2026-10-08 | semantic colour tokens, type roles, motion timings |
 | learn | `scripts/install-fonts.mjs` | `tools/blocks/style.mjs` | ef6a49f5 | no | 2026-10-08 | font install into the composition becomes copyFonts at apply/add time |
 | learn | `assets/components/tactile-safe-zones.html` | `tools/blocks/style.mjs` | ef6a49f5 | no | 2026-10-08 | safe-zone overlay becomes a refused-box check against template.json safe zones |
-
-## tts
-
-Source root: `E:/Develop/Antigravity_testing/tts_app modular`
-
-| Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
-|---|---|---|---|---|---|---|
-| learn | `core/version.py` | `-` | b73506e3 | no | 2026-10-07 | License: GPL-3.0-or-later applies to copied TTS code |
-| copy | `kokoro-v1.0.onnx` | `models/kokoro-v1.0.onnx` | b73506e3 | no | 2026-10-07 | Kokoro-82M ONNX weights (git-ignored) |
-| copy | `voices.bin` | `models/voices.bin` | b73506e3 | no | 2026-10-07 | Kokoro voice embeddings (git-ignored) |
-| copy | `core/__init__.py` | `tools/voice/core/__init__.py` | b73506e3 | no | 2026-10-07 |  |
-| copy | `core/audio_io.py` | `tools/voice/core/audio_io.py` | b73506e3 | no | 2026-10-07 | WAV/MP3 I/O via libsndfile |
-| copy | `core/constants.py` | `tools/voice/core/constants.py` | b73506e3 | no | 2026-10-07 | KOKORO_VOICES / KOKORO_LANGS maps (UI tokens unused) |
-| port | `core/paths.py` | `tools/voice/core/paths.py` | b73506e3 | no | 2026-10-07 | shim: bundle_dir() -> rapidContentGen models dir; no frozen-app logic |
-| copy | `effects/__init__.py` | `tools/voice/effects/__init__.py` | b73506e3 | no | 2026-10-07 |  |
-| copy | `effects/audio_effects.py` | `tools/voice/effects/audio_effects.py` | b73506e3 | no | 2026-10-07 | 33 voice effects DSP (GPL-3.0-or-later) |
-| copy | `effects/registry.py` | `tools/voice/effects/registry.py` | b73506e3 | no | 2026-10-07 | effect registry |
-| copy | `engines/__init__.py` | `tools/voice/engines/__init__.py` | b73506e3 | no | 2026-10-07 |  |
-| copy | `engines/base.py` | `tools/voice/engines/base.py` | b73506e3 | no | 2026-10-07 | engine interface |
-| copy | `engines/kokoro_engine.py` | `tools/voice/engines/kokoro_engine.py` | b73506e3 | no | 2026-10-07 | Kokoro adapter; ONNX path used (no torch installed) |
-| port | `ui/app.py` | `tools/voice/pipeline.py` | b73506e3 | no | 2026-10-07 | _generate_worker post chain (silence, speed, effects, EQ, ambiance, normalize) without UI |
-| port | `core/subtitles.py` | `tools/voice/voice_cli.py` | b73506e3 | no | 2026-10-07 | faster-whisper word timestamps without torch; JSON words aligned to script + SRT |

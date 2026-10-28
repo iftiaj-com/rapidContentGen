@@ -84,3 +84,32 @@ Options for each field: `node tools/rcg.mjs flythrough --list` and `docs/capabil
 - `snap` moves the arrivals onto the beat grid (`grid`: `beats` or `downbeats`); leave it out to
   keep the `arrivalTime` values as written.
 - Video cards show their first frame until they arrive, then play and loop.
+
+## The edit on paper: `data/plan.json` (`rcg plan`)
+
+Written by record mode: every block command run through `node tools/rcg.mjs` that edits the page adds
+or updates its item. Do not hand-edit it; run the block command again instead. Kinds and checks:
+`tools/plan/kinds.mjs`.
+
+```json
+{
+  "version": 1,
+  "format": { "width": 1080, "height": 1920, "duration": 17.86 },
+  "base": { "sha": "...", "at": "2026-10-12 22:05:48 +06:00", "reason": "first recorded step" },
+  "pageSha": "...",
+  "items": [
+    { "key": "cap-body", "command": "captions", "track": "captions",
+      "argv": ["--job", "{job}", "--words", "{job}/data/words-captions.json", "--style", "mp-body", "--id", "cap-body", "--insert"],
+      "cwd": ".", "hosts": ["cap-body"], "recordedAt": "..." }
+  ]
+}
+```
+
+- `items` are in the order they first ran (layering follows it); `track` is captions, camera,
+  blocks, effects, audio or page.
+- `base`: the page (index.html and compositions) before the first recorded step, in
+  `data/plan/base/`. When the page changed outside recorded steps (Studio, a hand edit, a tool run
+  without rcg), that page becomes the base and the earlier items get `"inBase": true`: checked,
+  not replayed.
+- `pageSha`: the page after the last recorded step. A different page is drift (`rcg plan diff`).
+- `rcg plan check` writes `data/plan-check.json` (`fails`, `warns`).

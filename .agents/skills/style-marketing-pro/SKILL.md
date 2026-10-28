@@ -124,8 +124,8 @@ CTA by itself when the last beat says link / bio / follow / call / book.
   `--behind false` puts them all in front.
 - Contrast: tone comes from the sampled background; `hf check` measures every text node. Do not
   override the tone to white on a light wall.
-- Negative text only behind the head (user rule): never `--negative` on the body caption or on a
-  hero in front. Snapshot every negative hero; over a busy or mid-grey patch it reads weakly.
+- Negative heroes (only behind the head: a learned rule at the end of this skill): snapshot every
+  negative hero; over a busy or mid-grey patch it reads weakly.
 - Re-plan with the same `--bloom` the job was built with: a bloom left in index.html by an earlier
   build breaks hf check (`page_error ... reading 'style'`) when the new plan has none.
 - No copying the reference's people, copy, logos or brand colours.
@@ -141,3 +141,13 @@ CTA by itself when the last beat says link / bio / follow / call / book.
   report shows it. Trim or cut such moments.
 - Noise reduction is a light FFT denoise: it cannot remove room echo (R11 floor -26 dBFS after +23 dB
   of gain, unchanged by stronger settings).
+
+<!-- rcg:learned begin -->
+## Learned rules
+
+The user's taste, saved with the `learning-from-user-taste` skill. Follow every line. Change them only with
+`node .agents/skills/learning-from-user-taste/scripts/learn.mjs` (it checks the hard limits and clashes).
+Order: style pack defaults < every job (video-job) < one style < one job (JOB.md). Pitfalls and safe zones still win.
+
+- Negative text only behind the head: never `--negative` on the body caption or on a hero in front (user rule)
+<!-- rcg:learned end -->

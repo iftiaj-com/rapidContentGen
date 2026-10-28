@@ -1,5 +1,5 @@
 # Voice tools (Python 3.11 venv at tools/voice/.venv)
-# Versions pinned to the ones already working in the TTS app's venv_311,
+# Versions pinned to the ones already working in AditsVoiceStudio's venv_311,
 # except librosa (0.9.1 there is too old for numpy 2).
 # No torch, kokoro, misaki, phonemizer-fork, GUI packages, or edge-tts
 # (Edge TTS was declined: it sends text to Microsoft).

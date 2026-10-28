@@ -10,15 +10,18 @@ import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { loadConfig, ROOT } from './lib/config.mjs';
+import { beginRecord } from './plan/record.mjs';
 
 const COMMANDS = {
   'doctor': ['tools/jobs/doctor.mjs', 'Check config, ffmpeg, HyperFrames plugin, Python and the voice venv'],
   'new-job': ['tools/jobs/new-job.mjs', 'Create jobs/<date>-<name>/ from a template with intake probe + sheets'],
   'inbox': ['tools/jobs/inbox.mjs', 'list [--all] | done <folder> | done --job jobs/<id> | release <folder>: free / claimed inbox folders; done renames to <folder>-Complete, which agents skip'],
+  'cut': ['tools/cut/cut.mjs', 'Clean cut of a raw talking take: transcribe | propose | apply | build | render | verify | fix | demo (retakes, false starts, fillers, pauses -> assets/cut/<name>.mp4 + data/words.json)'],
   'beat-sheet': ['tools/jobs/beat-sheet.mjs', 'validate | md: check a beat-sheet.json and write the approval table'],
   'skills': ['tools/skills/sync.mjs', 'Copy the project skills from .agents/skills (edit here) to .claude/skills (Claude Code); check = report differences'],
   'beatgrid': ['tools/audio/hyperframes/analyze-beatgrid.py', 'Music -> audiomap.json: tempo, beats, downbeats, drum hits, energy phases (HyperFrames script, voice venv)'],
   'voice': ['tools/voice/voice_cli.py', 'Voiceover (Kokoro, 54 voices) + 33 voice effects + word timings -> audio_meta.json (Python venv)'],
+  'plan': ['tools/plan/plan.mjs', 'plan.json, the whole edit in one file (every block command records into it): check (safe zones, captions vs words, overlaps, faces, timing) | apply (rebuild the page from it) | diff | show | demo'],
   'probe': ['tools/media/probe.mjs', 'Media summary + loudness/true peak + intake notes (JSON)'],
   'sheet': ['tools/media/contact-sheet.mjs', 'Labeled contact sheet, --safe draws the 9:16 no-text zones'],
   'limit': ['tools/audio/limit.mjs', 'Peak-limit music/voice to a true-peak ceiling (default -2.5 dBTP)'],
@@ -43,6 +46,7 @@ const COMMANDS = {
   'ramp': ['tools/blocks/ramp.mjs', 'Speed ramp on a footage clip as a rate lane: Adits audio speed sync (min/max) or explicit points; refuses < 1x'],
   'marketing-pro': ['tools/recipes/marketing-pro.mjs', 'Promo talking-head edits (style pack marketing-pro): prep (CFR, upscale, voice, transcript) | plan (zoom ladder, heroes, captions) | commands | build'],
   'split-screen': ['tools/recipes/split-screen.mjs', 'Split-screen explainer from a presenter + an info video (skill style-split-screen-edit): prep | plan (layouts, B-roll montage, face-safe panel crop) | commands | build | check'],
+  'mix-media': ['tools/recipes/mix-media.mjs', 'Mix Media cork-board scrapbook (skill style-mix-media): prep (matte, live torn-paper cut-out at 12 fps, pose stills, illustrated object stickers, boards) | boards | pose | object | sticker | sheet'],
   'infographics': ['tools/blocks/infographics.mjs', 'Info-graphics essays (skill style-info-graphics): scaffold (graphics-only job) | place-voice (lines end to end, music ducked) | resolve (word anchors -> style plan)'],
   'assets': ['tools/media/assets.mjs', 'Approved free sources: Phosphor icons into library/icons | search pixabay / polyhaven / met | fetch (also unsplash) into a job with a credit | credit | credits'],
   'broll': ['tools/media/broll.mjs', 'Info-video analysis: scene cuts, segments scored as card / ui / footage / dark, focus point, labelled sheet -> data/broll.json'],
@@ -52,6 +56,7 @@ const COMMANDS = {
   'analyze': ['tools/audio/analyze.mjs', 'Music -> per-frame audio table (bands, onsets, kicks) + seekable shader clock'],
   'mix-check': ['tools/audio/mix-check.mjs', 'Rebuild a composition mix offline and predict HyperFrames gain reduction'],
   'measure-sfx': ['tools/audio/measure-sfx.mjs', 'Re-measure library/sfx onsets, crests, loudness'],
+  'audio-analyzer': ['tools/audio/audio-analyzer.mjs', 'library | file <inbox audio> | find "<phrase>" | check: describe music and SFX once (Essentia mood/energy/vocals + CLAP tags per 10 s) into library/sfx/manifest.json; audio files only, never footage'],
   'render': ['tools/jobs/render.mjs', 'mix-check -> HyperFrames render -> verify (+ frame sheet); shares one machine-wide heavy-work slot with fx, matte, track, layers, hf render/snapshot'],
   'verify': ['tools/media/verify.mjs', 'Verify any rendered video'],
   'hf': ['tools/jobs/hf.mjs', 'Run the HyperFrames CLI via the plugin launcher (--cwd <job>)'],
@@ -80,9 +85,14 @@ if (script.endsWith('.py')) {
     process.exit(1);
   }
 }
+// A block command that edits a job's page is also written into the job's data/plan.json (record mode).
+const record = beginRecord(cmd, rest);
 const child = spawn(bin, [script, ...rest], {
   stdio: 'inherit',
   windowsHide: true,
   env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
 });
-child.on('close', (code) => process.exit(code ?? 1));
+child.on('close', (code) => {
+  record?.finish(code);
+  process.exit(code ?? 1);
+});
