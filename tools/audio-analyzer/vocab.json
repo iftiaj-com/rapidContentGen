@@ -1,0 +1,29 @@
+{
+  "$comment": "Words CLAP scores each sound against (rcg audio-analyzer). Editing this file changes the analysis version, so the next `rcg audio-analyzer library` re-analyses every file. blocked: words CLAP over-uses (the 2026-10 ear test put 'horror' in the top 6 for 8 of 15 tracks, next to 'relaxing'); they are never scored. kindPrompts decide music vs sound effect for a file no manifest names.",
+  "musicTemplate": "{} music",
+  "sfxTemplate": "the sound of {}",
+  "music": [
+    "calm", "relaxing", "peaceful", "sad", "melancholic", "emotional", "happy", "uplifting", "hopeful",
+    "inspiring", "motivational", "playful", "dreamy", "mysterious", "dark", "tense", "suspenseful", "epic",
+    "aggressive", "energetic", "romantic", "cinematic", "ambient", "lo-fi", "hip hop", "electronic", "synthwave",
+    "orchestral", "classical", "piano", "acoustic guitar", "rock", "jazz", "funky", "corporate", "news",
+    "action trailer", "slowly building", "drum heavy", "retro 8-bit chiptune"
+  ],
+  "sfx": [
+    "whoosh", "swoosh transition", "deep bass impact", "hit", "riser", "click", "mouse click", "keyboard typing",
+    "key press", "pop", "chime", "bell ding", "notification", "error buzz", "glitch", "sparkle shimmer",
+    "paper rustle", "tape peeling", "pencil scribble", "sticker", "pin click", "camera shutter", "applause"
+  ],
+  "blocked": ["horror"],
+  "moodGroups": {
+    "$comment": "Mood families. A section counts as a mood change only when its top mood falls in another family (calm vs relaxing is not a change). Music words outside these lists are style words (genre, instrument, use) and never count as a change.",
+    "calm": ["calm", "relaxing", "peaceful"],
+    "sad": ["sad", "melancholic", "emotional"],
+    "happy": ["happy", "uplifting", "hopeful", "inspiring", "motivational", "playful"],
+    "dark": ["dark", "mysterious", "tense", "suspenseful"],
+    "intense": ["epic", "aggressive", "energetic"],
+    "dreamy": ["dreamy"],
+    "romantic": ["romantic"]
+  },
+  "kindPrompts": { "music": "This is music.", "sfx": "This is a short sound effect." }
+}

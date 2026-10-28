@@ -182,6 +182,7 @@ node tools/rcg.mjs fx --job jobs/<id> --effect vj-lightshow --preset ls_ignition
 node tools/rcg.mjs fx --job jobs/<id> --effect global-visuals --src assets/x.mp4 --start 3 --duration 2 --param fxBnwMode=true --param fxFisheyeEnabled=true --out assets/fx/bnw.mp4   # fxNeonMode fxRgbColors (--audio) fxNegativeMode globalOpacityEnabled
 node tools/rcg.mjs cinema --job jobs/<id> --id cf1 --ud --pos 12 --curve 35 --show 4-7 [--lr --lr-pos 7 --lr-color "#14001f"] [--behind p1]   # Adits Cinema Frames; --remove cf1
 node tools/rcg.mjs limit in.mp3 out.wav [--ceiling -2.5]
+node tools/rcg.mjs audio-analyzer library      # describe new/changed library/sfx audio into manifest.json (labels + analysis); also file <inbox audio> | find "<phrase>" | check. Never footage
 node tools/rcg.mjs plan check jobs/<id>       # the edit on paper (data/plan.json, recorded by every block command run through rcg); also apply | diff | show | demo
 node tools/rcg.mjs mix-check jobs/<id>/index.html
 node tools/rcg.mjs hf --cwd jobs/<id> check

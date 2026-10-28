@@ -1,0 +1,17 @@
+# rcg audio-analyzer venv (tools/audio-analyzer/.venv, Python 3.11, git-ignored).
+# Ask the user before installing (AGENTS.md). Point TMP/TEMP at a folder on the project drive first,
+# because the PyTorch wheel is several GB.
+#
+#   <python 3.11> -m venv tools/audio-analyzer/.venv
+#   tools/audio-analyzer/.venv/Scripts/python.exe -m pip install --no-cache-dir torch torchaudio --index-url https://download.pytorch.org/whl/cu126
+#   tools/audio-analyzer/.venv/Scripts/python.exe -m pip install --no-cache-dir torchvision==0.29.1+cu126 --index-url https://download.pytorch.org/whl/cu126 --no-deps
+#   tools/audio-analyzer/.venv/Scripts/python.exe -m pip install --no-cache-dir -r tools/audio-analyzer/requirements.txt
+#
+# CPU-only machines: use https://download.pytorch.org/whl/cpu for torch, torchaudio and torchvision,
+# and set audioAnalyzer.device to "cpu" in config/workspace.local.json.
+#
+# Versions tested 2026-10: torch 2.14.1+cu126, torchaudio 2.11.0+cu126, torchvision 0.29.1+cu126.
+laion-clap==1.1.7
+onnxruntime==1.31.0
+soundfile
+safetensors

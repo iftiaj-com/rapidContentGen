@@ -56,6 +56,7 @@ const COMMANDS = {
   'analyze': ['tools/audio/analyze.mjs', 'Music -> per-frame audio table (bands, onsets, kicks) + seekable shader clock'],
   'mix-check': ['tools/audio/mix-check.mjs', 'Rebuild a composition mix offline and predict HyperFrames gain reduction'],
   'measure-sfx': ['tools/audio/measure-sfx.mjs', 'Re-measure library/sfx onsets, crests, loudness'],
+  'audio-analyzer': ['tools/audio/audio-analyzer.mjs', 'library | file <inbox audio> | find "<phrase>" | check: describe music and SFX once (Essentia mood/energy/vocals + CLAP tags per 10 s) into library/sfx/manifest.json; audio files only, never footage'],
   'render': ['tools/jobs/render.mjs', 'mix-check -> HyperFrames render -> verify (+ frame sheet); shares one machine-wide heavy-work slot with fx, matte, track, layers, hf render/snapshot'],
   'verify': ['tools/media/verify.mjs', 'Verify any rendered video'],
   'hf': ['tools/jobs/hf.mjs', 'Run the HyperFrames CLI via the plugin launcher (--cwd <job>)'],

@@ -13,6 +13,7 @@ import { checkLedger } from '../lib/provenance.mjs';
 import { findChrome } from '../fx/chrome.mjs';
 import { hfCommand } from './hf.mjs';
 import { checkSkills } from '../skills/sync.mjs';
+import { checkLibrary } from '../audio/audio-analyzer.mjs';
 
 function version(bin, args = ['-version']) {
   try {
@@ -79,6 +80,11 @@ export function doctor() {
   add('Kokoro weights', kokoro, kokoro ? models : 'not copied yet (Phase 1)', true);
   const wm = whisperCached(cfg.cut?.whisperModel || 'base');
   add(`Whisper ${cfg.cut?.whisperModel || 'base'} (rcg cut, voice timing)`, Boolean(wm), wm || 'not in the Hugging Face cache: downloading it needs the user\'s yes (SETUP.md)', true);
+  const aa = checkLibrary();
+  add('SFX library analysed (rcg audio-analyzer)', aa.stale.length === 0 && aa.gone.length === 0,
+    aa.stale.length || aa.gone.length
+      ? `${aa.stale.length} of ${aa.files} files not analysed or outdated${aa.gone.length ? `, ${aa.gone.length} removed` : ''}: run rcg audio-analyzer library`
+      : `${aa.files} files described in library/sfx/manifest.json`, true);
   add('label font', Boolean(cfg.fonts?.label && existsSync(cfg.fonts.label)), cfg.fonts?.label || 'set fonts.label (contact sheet timestamps)', true);
   const mp = join(models, 'mediapipe');
   const mpFiles = ['wasm/vision_bundle.mjs', 'wasm/vision_wasm_internal.wasm', 'models/face_landmarker.task', 'models/hand_landmarker.task', 'models/selfie_segmenter.tflite'];

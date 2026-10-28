@@ -1,0 +1,123 @@
+{
+  "$comment": "Human labels from listening, the most trusted description of a sound. From the 2026-10 ear test (the user corrected the tools' pre-filled sheet). measure-sfx merges each entry into manifest.json as `labels`; rcg audio-analyzer never writes here. Energy 1 = very calm, 5 = very intense. Vocals: none, some or lead. kind (music | sfx) overrides the analyzer's guess.",
+  "bg-music-autumn-remains": {
+    "kind": "music",
+    "mood": "calm, peaceful, a little melancholic; piano, ambient/neo-classical",
+    "energy": 2,
+    "vocals": "none",
+    "changes": "no, steady",
+    "goodFor": "reflective moments, quiet intro, soft story, slow build up, background under voice"
+  },
+  "bg-music-beyond-the-sea-is-freedom": {
+    "kind": "music",
+    "mood": "bittersweet: melancholic yet uplifting and inspiring; dreamy ambient electronic with guitar",
+    "energy": 2,
+    "vocals": "none",
+    "changes": "slight: a touch more uplifting in the first 10 s, more melancholic and ambient by the end",
+    "goodFor": "travel, sea or nature footage, hopeful reflective ending, freedom or new-start theme"
+  },
+  "bg-music-daily-mail": {
+    "kind": "music",
+    "mood": "mysterious, dark, pulsing synth",
+    "energy": 2,
+    "vocals": "none",
+    "changes": "no, steady",
+    "goodFor": "headline news, tech or news feel, mild tension; short sting and looping background music"
+  },
+  "bg-music-dark-fantasy": {
+    "kind": "music",
+    "mood": "tense, suspenseful, mysterious; piano and strings",
+    "energy": 3,
+    "vocals": "none",
+    "changes": "no",
+    "goodFor": "suspense, mystery, \"something's wrong\" moment, horror tease"
+  },
+  "bg-music-feeling-things-i-cant-explain": {
+    "kind": "music",
+    "mood": "calm, melancholic, dreamy; ambient synth",
+    "energy": 1,
+    "vocals": "none",
+    "changes": "no",
+    "goodFor": "emotional voiceover, reflective story, late-night thoughts, sad stories"
+  },
+  "bg-music-floating-signal": {
+    "kind": "music",
+    "mood": "relaxed, dreamy, light; chillwave",
+    "energy": 2,
+    "vocals": "none",
+    "changes": "no",
+    "goodFor": "soft intro or outro, lifestyle, gentle loop, mysterious news"
+  },
+  "bg-music-is-this-the-end": {
+    "kind": "music",
+    "mood": "melancholic, lo-fi, growth; guitar-led",
+    "energy": 2,
+    "vocals": "none",
+    "changes": "no, the mood holds for all 80 s",
+    "goodFor": "regaining yourself after sadness or reflective story, slow montage, long voiceover bed; the only track long enough for a 60 s video"
+  },
+  "bg-music-levels": {
+    "kind": "music",
+    "mood": "calm and spacey, happy and energetic",
+    "energy": 2,
+    "vocals": "none",
+    "changes": "yes: peaceful ambient 0-10 s, then melancholic and eerie 10-15 s",
+    "goodFor": "calm-to-uneasy turn, space or night visuals, flashback or future thoughts"
+  },
+  "bg-music-mos-6581": {
+    "kind": "music",
+    "mood": "relaxed, electronic, light synthwave",
+    "energy": 2,
+    "vocals": "none",
+    "changes": "slight: more ambient after 10 s",
+    "goodFor": "tech, retro or gaming vibe, calm background"
+  },
+  "bg-music-reve-brvmes": {
+    "kind": "music",
+    "mood": "dark, aggressive, driving electronic",
+    "energy": 4,
+    "vocals": "some: one artificial vocal word only",
+    "changes": "no",
+    "goodFor": "edgy hype moment, fast cuts, night city, gaming"
+  },
+  "bg-music-stranded": {
+    "kind": "music",
+    "mood": "ambient, mysterious, a bit sad and epic",
+    "energy": 1,
+    "vocals": "none",
+    "changes": "no",
+    "goodFor": "lonely or contemplative moment, landscape shot"
+  },
+  "bg-music-tensions-run-high": {
+    "kind": "music",
+    "mood": "epic, tense, aggressive; action trailer, drum heavy",
+    "energy": 4,
+    "vocals": "none",
+    "changes": "no, stays intense",
+    "goodFor": "trailer, hype reel, countdown, big reveal"
+  },
+  "bg-music-track-14": {
+    "kind": "music",
+    "mood": "relaxed but uplifting, motivational; piano and synth",
+    "energy": 2,
+    "vocals": "none",
+    "changes": "no",
+    "goodFor": "motivational line, hopeful ending"
+  },
+  "bg-music-vertigo-insensible": {
+    "kind": "music",
+    "mood": "calm, melancholic, emotional; ambient",
+    "energy": 1,
+    "vocals": "none",
+    "changes": "no",
+    "goodFor": "sad or emotional beat, quiet ending"
+  },
+  "vibe-after-party": {
+    "kind": "music",
+    "mood": "playful, funky, energetic; hip hop",
+    "energy": 5,
+    "vocals": "lead, rap",
+    "changes": "slight: more electronic first 10 s, then funky and playful",
+    "goodFor": "upbeat lifestyle, party, fun promo, intro or moments with no voiceover; the rap clashes with a voiceover"
+  }
+}
