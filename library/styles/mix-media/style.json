@@ -48,7 +48,6 @@
     "place": { "name": "paper-place", "volume": 0.4 },
     "pin": { "name": "pin-click", "volume": 0.45 },
     "tape": { "name": "tape-peel", "volume": 0.45 },
-    "sticker": { "name": "sticker-press", "volume": 0.5 },
     "scribble": { "name": "pencil-scribble", "volume": 0.22 }
   },
   "status": "built"

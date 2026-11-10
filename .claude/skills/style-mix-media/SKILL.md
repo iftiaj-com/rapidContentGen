@@ -13,7 +13,7 @@ owns intake, the working mode, the mix rules, render, report and the final send.
 - Cut-out tool: `node tools/rcg.mjs mix-media prep | boards | pose | object | sticker | sheet`
   (`tools/recipes/mix-media.mjs`, image work in `tools/media/mixmedia_art.py`).
 - Timing: `rcg infographics place-voice` and `resolve` (word anchors; a `board` opens a scene).
-- Sounds: `paper-place`, `pin-click`, `tape-peel`, `sticker-press`, `pencil-scribble` in
+- Sounds: `paper-place`, `pin-click`, `tape-peel`, `pencil-scribble` in
   `library/sfx/` (made here by `tools/audio/paper_sfx.py`, no third-party rights).
 - Voice: `rcg voice say --engine melo` (MeloTTS through `bin.meloPython`) or the Kokoro default.
 - Learned from the user's guide and two reference videos, technique only: `references/reference-analysis.md`.
@@ -132,3 +132,13 @@ the centre; later items stack on top. A pose swap inside a scene (stop-motion re
   "unready meals"); check with Whisper and rephrase.
 - The person speaking in the source clip (a talking head) is untested here: their own audio would
   be the narration (transcribe it for anchors) and `live` `mediaStart` must follow the same clock.
+
+<!-- rcg:learned begin -->
+## Learned rules
+
+The user's taste, saved with the `learning-from-user-taste` skill. Follow every line. Change them only with
+`node .agents/skills/learning-from-user-taste/scripts/learn.mjs` (it checks the hard limits and clashes).
+Order: style pack defaults < every job (video-job) < one style < one job (JOB.md). Pitfalls and safe zones still win.
+
+- Never use the sticker-press sound (deleted from library/sfx): stickers glued flat (attach none) get no sound; pinned or taped stickers keep pin-click or tape-peel (user rule, 2026-11-10)
+<!-- rcg:learned end -->

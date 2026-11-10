@@ -135,7 +135,7 @@ node tools/rcg.mjs inbox list                  # free / claimed inbox folders (n
 node tools/rcg.mjs inbox done --job jobs/<id>  # job delivered: rename its inbox folder to <folder>-Complete (agents skip these)
 node tools/rcg.mjs cut transcribe jobs/<id> [--src assets/take.mp4]   # raw talking take: then propose, answer data/cut/decisions.in.json, apply, build, render, verify (video-job step 1b)
 node tools/rcg.mjs beat-sheet md jobs/<id>/beat-sheet.json jobs/<id>/beat-sheet.md
-node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice   # --engine melo: MeloTTS via bin.meloPython; --clone <slug>: an AditsVoiceStudio cloned voice
+node tools/rcg.mjs voice say --lines jobs/<id>/data/vo-lines.json --out-dir jobs/<id>/assets/voice   # --engine melo: MeloTTS via bin.meloPython; --clone <slug>: a cloned voice from library/voices (in-house Seed-VC, SETUP.md), else from AditsVoiceStudio
 node tools/rcg.mjs mix-media prep --job jobs/<id> --src assets/clip.mp4 --times 1.5,4.5,8.9 [--objects "cup"]   # torn-paper cut-outs, boards (skill style-mix-media)
 node tools/rcg.mjs level --dir jobs/<id>/assets/voice --lufs -13.5 --ceiling -1.5
 node tools/rcg.mjs captions --job jobs/<id> --words <audio_meta.json|words.json|.srt> --voice vo1 --style tiktok --mode word --start 0.4 --id cap-vo1 --insert   # + --hollow --rgb --shadow; --negative --behind p1

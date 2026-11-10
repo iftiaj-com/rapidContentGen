@@ -1,0 +1,14 @@
+{
+  "name": "Ifty Voice",
+  "slug": "ifty",
+  "mode": "seedvc",
+  "reference": "reference.wav",
+  "diffusion_steps": 50,
+  "base": {
+    "engine": "kokoro",
+    "voice": "am_liam",
+    "lang": "a",
+    "speed": 1.09
+  },
+  "consent": "Speaker agreed to this voice being public (confirmed by the repo owner, 2026-11-10)"
+}

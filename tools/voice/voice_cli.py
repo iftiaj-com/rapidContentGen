@@ -24,8 +24,11 @@ named by config bin.meloPython; see engines/melo_synth.py). With melo, --voice i
 --lines may set its own "engine". All Melo lines are made in one process (the model loads once).
 
 Cloned voices: --clone <slug> (or a line's "clone"; --clone-steps / "clone_steps" for Seed-VC,
---clone-pitch / "clone_pitch" for RVC) converts the voice with one of AditsVoiceStudio's cloned
-voices, called in place (engines/clone_bridge.py, config voiceStudio.root / .python). Order as in
+--clone-pitch / "clone_pitch" for RVC) converts the voice. A slug in library/voices runs in-house
+(engines/seedvc_local.py: Seed-VC in its own venv, SETUP.md "Cloned voices"); with no --voice or
+--speed the line is spoken in that voice's Kokoro base voice and speed first. Any other slug is one
+of AditsVoiceStudio's cloned voices, called in place (engines/clone_bridge.py, config
+voiceStudio.root / .python). Order as in
 the app: silence removal -> cloned voice -> other effects -> EQ -> ambiance -> normalize; word times
 come from the final file. All cloned lines go through one worker run.
 
@@ -348,7 +351,8 @@ def parse_eq(s):
 
 
 def line_engine(line, args):
-    """(engine, voice, lang) for a line; Kokoro's defaults map to Melo's under --engine melo."""
+    """(engine, voice, lang) for a line; Kokoro's defaults map to Melo's under --engine melo.
+    With no voice set, a library/voices clone speaks in its own Kokoro base voice."""
     engine_name = line.get("engine", getattr(args, "engine", "kokoro"))
     if engine_name not in ("kokoro", "melo"):
         raise SystemExit(f"Unknown engine '{engine_name}' (kokoro or melo)")
@@ -357,7 +361,19 @@ def line_engine(line, args):
     if engine_name == "melo":
         voice = "EN-US" if voice in (None, "af_heart") else voice
         lang = "EN" if lang in (None, "a") else lang
-    return engine_name, voice, lang
+    elif voice is None:
+        base = clone_base(line, args)
+        voice = base.get("voice", "af_heart")
+        lang = lang or base.get("lang")
+    return engine_name, voice, lang or "a"
+
+
+def line_speed(line, args):
+    """The line's speed, else --speed, else the clone's base speed, else 1.0."""
+    speed = line.get("speed", args.speed)
+    if speed is None:
+        speed = clone_base(line, args).get("speed", 1.0)
+    return float(speed)
 
 
 def clone_of(line, args):
@@ -366,6 +382,28 @@ def clone_of(line, args):
     if not slug:
         return None
     return slug, line.get("clone_steps", getattr(args, "clone_steps", None)), line.get("clone_pitch", getattr(args, "clone_pitch", None))
+
+
+def repo_path(p):
+    p = Path(p)
+    return p if p.is_absolute() else REPO / p
+
+
+def local_voice(slug):
+    """The profile of a cloned voice in library/voices (config paths.voices), or None."""
+    f = repo_path((CFG.get("paths") or {}).get("voices") or "library/voices") / slug / "profile.json"
+    if not f.is_file():
+        return None
+    prof = json.loads(f.read_text(encoding="utf-8-sig"))
+    prof["_dir"] = f.parent
+    return prof
+
+
+def clone_base(line, args):
+    """The Kokoro base voice a library/voices clone was tuned with ({} for none)."""
+    c = clone_of(line, args)
+    prof = local_voice(c[0]) if c else None
+    return (prof or {}).get("base") or {}
 
 
 def voice_studio():
@@ -381,18 +419,68 @@ def voice_studio():
     return root, py
 
 
-def clone_batch(items):
-    """items: [{"in", "out", "slug", "diffusion_steps", "pitch"}]. One process: the worker loads once."""
-    root, py = voice_studio()
+def seedvc_local():
+    """(python, seed-vc checkout) for library/voices clones (config paths.voiceCloneVenv / seedvcRepo)."""
+    paths = CFG.get("paths") or {}
+    venv = repo_path(paths.get("voiceCloneVenv") or "tools/voice-clone/.venv")
+    py = venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+    repo = repo_path(paths.get("seedvcRepo") or "models/seed-vc")
+    for p, what in ((py, "cloned-voice venv"), (repo / "inference.py", "Seed-VC checkout")):
+        if not p.exists():
+            raise SystemExit(f"--clone needs the {what} ({p}). See SETUP.md, section 'Cloned voices'.")
+    return str(py), str(repo)
+
+
+def run_engine(cmd, spec_obj):
     with tempfile.TemporaryDirectory(prefix="rcg_clone_") as tmp:
         spec = Path(tmp) / "spec.json"
-        spec.write_text(json.dumps({"root": root, "items": items}), encoding="utf-8")
-        proc = subprocess.run([py, "-I", str(HERE / "engines" / "clone_bridge.py"), str(spec)], cwd=tmp,
-                              capture_output=True, text=True, encoding="utf-8", errors="replace")
+        spec.write_text(json.dumps(spec_obj), encoding="utf-8")
+        proc = subprocess.run(cmd + [str(spec)], cwd=tmp, capture_output=True, text=True,
+                              encoding="utf-8", errors="replace")
     if proc.returncode != 0:
         tail = (proc.stderr or proc.stdout or "").strip().splitlines()[-6:]
         raise SystemExit("Cloned voice failed:\n" + "\n".join(tail))
     return json.loads(proc.stdout.strip().splitlines()[-1])
+
+
+def clone_batch(items):
+    """items: [{"in", "out", "slug", "diffusion_steps", "pitch"}]. One process per engine: it loads once.
+    Voices in library/voices run in-house (engines/seedvc_local.py); any other slug goes to
+    AditsVoiceStudio (engines/clone_bridge.py) when voiceStudio is set."""
+    local, app = [], []
+    for it in items:
+        prof = local_voice(it["slug"])
+        if prof:
+            if prof.get("mode") != "seedvc":
+                raise SystemExit(f"library/voices/{it['slug']}: only Seed-VC voices run in-house (mode {prof.get('mode')})")
+            local.append(dict(it, ref=str(prof["_dir"] / prof.get("reference", "reference.wav")),
+                              diffusion_steps=it.get("diffusion_steps") or prof.get("diffusion_steps") or 10))
+        else:
+            app.append(it)
+    done, firsts = {}, []
+    if local:
+        py, repo = seedvc_local()
+        res = run_engine([py, "-I", str(HERE / "engines" / "seedvc_local.py")], {"repo": repo, "items": local})
+        sys.stderr.write(f"Seed-VC (in-house) on {res.get('device')}\n")
+        done.update({r["out"]: r for r in res["items"]})
+        firsts.append(res.get("first_done_s"))
+    if app:
+        res = clone_batch_app(app)
+        done.update({r["out"]: r for r in res["items"]})
+        firsts.append(res.get("first_done_s"))
+    return {"ok": True, "items": [done[it["out"]] for it in items],
+            "first_done_s": min((f for f in firsts if f is not None), default=None)}
+
+
+def clone_batch_app(items):
+    """Cloned voices that live only in AditsVoiceStudio, called in place."""
+    if not (CFG.get("voiceStudio") or {}).get("root"):
+        ready = sorted(p.name for p in repo_path((CFG.get("paths") or {}).get("voices") or "library/voices").iterdir()
+                       if (p / "profile.json").is_file())
+        raise SystemExit(f"Cloned voice '{items[0]['slug']}' is not in library/voices "
+                         f"(there: {', '.join(ready) or 'none'}) and voiceStudio.root is not set.")
+    root, py = voice_studio()
+    return run_engine([py, "-I", str(HERE / "engines" / "clone_bridge.py")], {"root": root, "items": items})
 
 
 def say_line(line, args, out_dir, raw_ready=False, raw_path=None, cloned=None):
@@ -401,7 +489,7 @@ def say_line(line, args, out_dir, raw_ready=False, raw_path=None, cloned=None):
     lid = line["id"]
     text = line["text"].strip()
     engine_name, voice, lang = line_engine(line, args)
-    speed = float(line.get("speed", args.speed))
+    speed = line_speed(line, args)
     effects = line.get("effects", args.effect or [])
     raw = Path(raw_path) if raw_path else out_dir / f"{lid}.raw.wav"
     final = out_dir / f"{lid}.wav"
@@ -447,7 +535,7 @@ def cmd_say(args):
         engine_name, voice, lang = line_engine(l, args)
         if engine_name == "melo":
             melo.setdefault(lang, []).append({"text": l["text"].strip(), "out": str(out_dir / f"{l['id']}.raw.wav"),
-                                              "speaker": voice, "speed": float(l.get("speed", args.speed))})
+                                              "speaker": voice, "speed": line_speed(l, args)})
     for lang, jobs in melo.items():
         res = melo_batch(jobs, lang)
         sys.stderr.write(f"MeloTTS {lang}: {len(jobs)} line(s), model load {res.get('load_s')} s\n")
@@ -464,7 +552,7 @@ def cmd_say(args):
         raw = out_dir / f"{lid}.raw.wav"
         if line_engine(l, args)[0] != "melo":
             e, v, lg = line_engine(l, args)
-            synth(l["text"].strip(), str(raw), v, lg, float(l.get("speed", args.speed)))
+            synth(l["text"].strip(), str(raw), v, lg, line_speed(l, args))
         stage = out_dir / f"{lid}.stage.wav"
         process(str(raw), str(stage), speed=1.0, effects=[], skip_silences=args.skip_silences, normalize=False)
         raw.unlink(missing_ok=True)
@@ -538,12 +626,12 @@ def main():
     src.add_argument("--lines", help='JSON list: [{"id","text", optional "voice","lang","speed","effects"}]')
     s.add_argument("--out-dir", required=True)
     s.add_argument("--id", default="vo")
-    s.add_argument("--voice", default="af_heart")
-    s.add_argument("--lang", default="a")
-    s.add_argument("--speed", type=float, default=1.0)
+    s.add_argument("--voice", help="default af_heart, or a --clone voice's own base voice")
+    s.add_argument("--lang", help="default a")
+    s.add_argument("--speed", type=float, help="default 1.0, or a --clone voice's own base speed")
     s.add_argument("--engine", default="kokoro", choices=["kokoro", "melo"])
-    s.add_argument("--clone", help="an AditsVoiceStudio cloned voice (slug), applied before the other effects")
-    s.add_argument("--clone-steps", type=int, help="Seed-VC diffusion steps (default: the voice's own, 10)")
+    s.add_argument("--clone", help="a cloned voice (slug) from library/voices, else from AditsVoiceStudio; applied before the other effects")
+    s.add_argument("--clone-steps", type=int, help="Seed-VC diffusion steps (default: the voice's own)")
     s.add_argument("--clone-pitch", type=int, help="RVC pitch shift in semitones (default: the voice's own)")
     s.add_argument("--effect", action="append")
     s.add_argument("--eq")

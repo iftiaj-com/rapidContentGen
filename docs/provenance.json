@@ -3522,6 +3522,56 @@
     {
       "source": "aditsVoiceStudio",
       "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
+      "from": "vc_runtime_data/voices/ifty/profile.json",
+      "kind": "port",
+      "gitHead": "aeece84e93a46b10beed6dbd21a7b2bda78d3cf3",
+      "dirtyAtCopy": false,
+      "sha256Source": "9353f854e4490462560340c0115b126be4485d66f228e77dd47493813b2a6dc8",
+      "date": "2026-11-10",
+      "note": "Trimmed to the fields rcg uses: name, diffusion steps, Kokoro base voice and speed",
+      "to": "library/voices/ifty/profile.json"
+    },
+    {
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
+      "from": "vc_runtime_data/voices/ifty/reference.wav",
+      "kind": "copy",
+      "gitHead": "aeece84e93a46b10beed6dbd21a7b2bda78d3cf3",
+      "dirtyAtCopy": false,
+      "sha256Source": "2f79ef5745e7ba6f5a1198da97fce302eabe056bec77bdc89cd655e28d43c2ed",
+      "date": "2026-11-10",
+      "note": "Seed-VC reference clip of the cloned voice 'ifty'; committed with the speaker's consent",
+      "to": "library/voices/ifty/reference.wav",
+      "sha256Dest": "2f79ef5745e7ba6f5a1198da97fce302eabe056bec77bdc89cd655e28d43c2ed"
+    },
+    {
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
+      "from": "vc_runtime_data/voices/jawad-voice/profile.json",
+      "kind": "port",
+      "gitHead": "aeece84e93a46b10beed6dbd21a7b2bda78d3cf3",
+      "dirtyAtCopy": false,
+      "sha256Source": "f8e52c10240875f53069f1c74df8ed2981f0529b65d17f906f983a951d736ca2",
+      "date": "2026-11-10",
+      "note": "Trimmed to the fields rcg uses: name, diffusion steps, Kokoro base voice and speed",
+      "to": "library/voices/jawad-voice/profile.json"
+    },
+    {
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
+      "from": "vc_runtime_data/voices/jawad-voice/reference.wav",
+      "kind": "copy",
+      "gitHead": "aeece84e93a46b10beed6dbd21a7b2bda78d3cf3",
+      "dirtyAtCopy": false,
+      "sha256Source": "7dd8ef47e7afdc25df2f401af30d879d477cf9ef5b5c7f0766ed1d4402018025",
+      "date": "2026-11-10",
+      "note": "Seed-VC reference clip of the cloned voice 'jawad-voice'; committed with the speaker's consent",
+      "to": "library/voices/jawad-voice/reference.wav",
+      "sha256Dest": "7dd8ef47e7afdc25df2f401af30d879d477cf9ef5b5c7f0766ed1d4402018025"
+    },
+    {
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
       "from": "kokoro-v1.0.onnx",
       "kind": "copy",
       "gitHead": "b73506e390d1b13181aecd802e3449712bcf156d",
@@ -4085,6 +4135,18 @@
       "date": "2026-10-08",
       "note": "pickSeekTime logic and constants unchanged; Math.random replaced by a seeded mulberry32 so plans repeat",
       "to": "tools/recipes/timeremap.mjs"
+    },
+    {
+      "source": "aditsVoiceStudio",
+      "sourceRoot": "E:/Develop/Antigravity_testing/AditsVoiceStudio",
+      "from": "vc_runtime/requirements-seedvc.txt",
+      "kind": "port",
+      "gitHead": "aeece84e93a46b10beed6dbd21a7b2bda78d3cf3",
+      "dirtyAtCopy": false,
+      "sha256Source": "86cf006b5137f3eb71196306e84fb207e5fc6f275bb668ca495431dbf4ca60ed",
+      "date": "2026-11-10",
+      "note": "Same pins; header rewritten for the rcg cloned-voice venv",
+      "to": "tools/voice-clone/requirements.txt"
     },
     {
       "source": "aditsVoiceStudio",

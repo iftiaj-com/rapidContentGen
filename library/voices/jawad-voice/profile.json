@@ -1,0 +1,14 @@
+{
+  "name": "Jawad Voice",
+  "slug": "jawad-voice",
+  "mode": "seedvc",
+  "reference": "reference.wav",
+  "diffusion_steps": 10,
+  "base": {
+    "engine": "kokoro",
+    "voice": "am_eric",
+    "lang": "a",
+    "speed": 0.9
+  },
+  "consent": "Speaker agreed to this voice being public (confirmed by the repo owner, 2026-11-10)"
+}

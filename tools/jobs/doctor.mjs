@@ -51,6 +51,30 @@ export function whisperCached(size) {
   return hit ? join(snaps, hit) : null;
 }
 
+/**
+ * In-house cloned voices: the voices in paths.voices, the cloned-voice venv, the Seed-VC
+ * checkout at voiceClone.seedvcCommit and its weights. [ok, detail] for add().
+ */
+function clonedVoices(cfg) {
+  const voices = existsSync(cfg.paths.voices)
+    ? readdirSync(cfg.paths.voices).filter((d) => existsSync(join(cfg.paths.voices, d, 'profile.json'))) : [];
+  const py = cfg.paths.voiceCloneVenv && join(cfg.paths.voiceCloneVenv, process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python');
+  const repo = cfg.paths.seedvcRepo;
+  const want = cfg.voiceClone?.seedvcCommit;
+  const head = repo && existsSync(join(repo, 'inference.py')) ? version('git', ['-C', repo, 'rev-parse', 'HEAD']) : null;
+  const ck = repo && join(repo, 'checkpoints');
+  const weights = ['models--Plachta--Seed-VC', 'models--funasr--campplus', 'hf_cache/models--openai--whisper-small',
+    'hf_cache/models--nvidia--bigvgan_v2_22khz_80band_256x'].filter((w) => !(ck && existsSync(join(ck, w))));
+  const todo = [];
+  if (!py || !existsSync(py)) todo.push(`no venv at ${cfg.paths.voiceCloneVenv}`);
+  if (!head) todo.push(`no Seed-VC checkout at ${repo}`);
+  else if (want && head !== want) todo.push(`Seed-VC at ${head.slice(0, 8)}, pinned ${want.slice(0, 8)}`);
+  else if (weights.length) todo.push(`weights missing (${weights.join(', ')})`);
+  const names = voices.join(', ') || 'none';
+  return todo.length ? [false, `${todo.join('; ')}: SETUP.md, "Cloned voices" (voices: ${names})`]
+    : [true, `Seed-VC ${want ? want.slice(0, 8) : head.slice(0, 8)}, voices: ${names}`];
+}
+
 export function doctor() {
   const cfg = loadConfig({ fresh: true });
   const rows = [];
@@ -80,6 +104,7 @@ export function doctor() {
   add('Kokoro weights', kokoro, kokoro ? models : 'not copied yet (Phase 1)', true);
   const wm = whisperCached(cfg.cut?.whisperModel || 'base');
   add(`Whisper ${cfg.cut?.whisperModel || 'base'} (rcg cut, voice timing)`, Boolean(wm), wm || 'not in the Hugging Face cache: downloading it needs the user\'s yes (SETUP.md)', true);
+  add('cloned voices (rcg voice --clone)', ...clonedVoices(cfg), true);
   const aa = checkLibrary();
   add('SFX library analysed (rcg audio-analyzer)', aa.stale.length === 0 && aa.gone.length === 0,
     aa.stale.length || aa.gone.length

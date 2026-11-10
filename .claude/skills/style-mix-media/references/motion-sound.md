@@ -24,7 +24,6 @@
 | place | `paper-place` | a note, a cut-out, a sheet | 0.4 |
 | pin | `pin-click` | pin, binder clip, paperclip | 0.45 |
 | tape | `tape-peel` | tape, washi, masking; a masking note | 0.45 |
-| sticker | `sticker-press` | a sticker glued flat | 0.5 |
 | scribble | `pencil-scribble` | a doodle | 0.22 |
 
 `style build --sfx` places one per piece with its crest on the landing, on free lanes 40-47. The

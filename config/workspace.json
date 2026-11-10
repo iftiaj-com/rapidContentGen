@@ -25,6 +25,9 @@
     "models": "models",
     "regression": "regression",
     "voiceVenv": "tools/voice/.venv",
+    "voiceCloneVenv": "tools/voice-clone/.venv",
+    "seedvcRepo": "models/seed-vc",
+    "voices": "library/voices",
     "audioAnalyzerVenv": "tools/audio-analyzer/.venv"
   },
   "audioAnalyzer": {
@@ -37,8 +40,13 @@
     "hfHome": "models/hf",
     "cacheDir": "models/audio-analyzer/cache"
   },
+  "voiceClone": {
+    "$comment": "In-house cloned voices (rcg voice say --clone <slug> for a slug in paths.voices): Seed-VC at seedvcCommit (GPL-3.0, cloned per machine into paths.seedvcRepo, never committed) run by tools/voice/engines/seedvc_local.py in paths.voiceCloneVenv. SETUP.md, section 'Cloned voices'.",
+    "seedvcUrl": "https://github.com/Plachtaa/seed-vc.git",
+    "seedvcCommit": "51383efd921027683c89e5348211d93ff12ac2a8"
+  },
   "voiceStudio": {
-    "$comment": "AditsVoiceStudio, called in place for cloned voices (rcg voice say --clone <slug>): root = the app folder, python = its venv's python (null: bin.meloPython). Machine paths go in workspace.local.json.",
+    "$comment": "AditsVoiceStudio, called in place for cloned voices that are not in paths.voices (rcg voice say --clone <slug>): root = the app folder, python = its venv's python (null: bin.meloPython). Machine paths go in workspace.local.json.",
     "root": null,
     "python": null
   },
