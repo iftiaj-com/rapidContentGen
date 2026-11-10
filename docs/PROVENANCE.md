@@ -303,8 +303,13 @@ Source root: `E:/Develop/Antigravity_testing/AditsVoiceStudio`
 | Kind | Source file | In rapidContentGen | Commit | Dirty | Date | Note |
 |---|---|---|---|---|---|---|
 | learn | `core/version.py` | `-` | b73506e3 | no | 2026-10-07 | License: GPL-3.0-or-later applies to copied TTS code |
+| port | `vc_runtime_data/voices/ifty/profile.json` | `library/voices/ifty/profile.json` | aeece84e | no | 2026-11-10 | Trimmed to the fields rcg uses: name, diffusion steps, Kokoro base voice and speed |
+| copy | `vc_runtime_data/voices/ifty/reference.wav` | `library/voices/ifty/reference.wav` | aeece84e | no | 2026-11-10 | Seed-VC reference clip of the cloned voice 'ifty'; committed with the speaker's consent |
+| port | `vc_runtime_data/voices/jawad-voice/profile.json` | `library/voices/jawad-voice/profile.json` | aeece84e | no | 2026-11-10 | Trimmed to the fields rcg uses: name, diffusion steps, Kokoro base voice and speed |
+| copy | `vc_runtime_data/voices/jawad-voice/reference.wav` | `library/voices/jawad-voice/reference.wav` | aeece84e | no | 2026-11-10 | Seed-VC reference clip of the cloned voice 'jawad-voice'; committed with the speaker's consent |
 | copy | `kokoro-v1.0.onnx` | `models/kokoro-v1.0.onnx` | b73506e3 | no | 2026-10-07 | Kokoro-82M ONNX weights (git-ignored) |
 | copy | `voices.bin` | `models/voices.bin` | b73506e3 | no | 2026-10-07 | Kokoro voice embeddings (git-ignored) |
+| port | `vc_runtime/requirements-seedvc.txt` | `tools/voice-clone/requirements.txt` | aeece84e | no | 2026-11-10 | Same pins; header rewritten for the rcg cloned-voice venv |
 | copy | `core/__init__.py` | `tools/voice/core/__init__.py` | b73506e3 | no | 2026-10-07 |  |
 | copy | `core/audio_io.py` | `tools/voice/core/audio_io.py` | b73506e3 | no | 2026-10-07 | WAV/MP3 I/O via libsndfile |
 | copy | `core/constants.py` | `tools/voice/core/constants.py` | b73506e3 | no | 2026-10-07 | KOKORO_VOICES / KOKORO_LANGS maps (UI tokens unused) |

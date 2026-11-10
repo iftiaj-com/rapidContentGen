@@ -16,6 +16,7 @@ These are git-ignored and do not come with it:
 | `tools/bin/` (a good ffmpeg) | about 420 MB | clean renders (see step 3) |
 | `tools/voice/.venv` | about 750 MB | voiceover and word timings |
 | `models/` (Kokoro, MediaPipe) | about 380 MB | voiceover, face and hand tracking, background removal |
+| `tools/voice-clone/.venv`, `models/seed-vc` | a few GB (weights 1.8 GB) | cloned voices (optional) |
 | `jobs/` | yours | each video you make (created for you) |
 
 The project is driven by a coding agent: you drop a video and a prompt, and the agent follows the
@@ -167,6 +168,45 @@ Then test:
 ```bash
 node tools/rcg.mjs voice selftest
 ```
+
+### Cloned voices (`rcg voice say --clone ifty`)
+
+The voices in `library/voices/` (now `ifty` and `jawad-voice`) run in-house with Seed-VC. No
+AditsVoiceStudio is needed. Set up the voiceover venv above first (the text is spoken in Kokoro,
+then converted). Each step below downloads; do them once per machine.
+
+Python 3.11 venv with torch. An NVIDIA GPU is strongly advised; on the CPU it works but is slow.
+
+```bash
+py -3.11 -m venv tools/voice-clone/.venv
+tools/voice-clone/.venv/Scripts/python.exe -m pip install torch==2.4.0 torchaudio==2.4.0 --index-url https://download.pytorch.org/whl/cu121
+tools/voice-clone/.venv/Scripts/python.exe -m pip install -r tools/voice-clone/requirements.txt
+```
+
+Seed-VC itself (GPL-3.0, so it is cloned here and never committed), at the pinned commit
+(`voiceClone.seedvcCommit` in `config/workspace.json`):
+
+```bash
+git clone https://github.com/Plachtaa/seed-vc.git models/seed-vc
+git -C models/seed-vc checkout 51383efd921027683c89e5348211d93ff12ac2a8
+```
+
+Its weights (about 1.8 GB from Hugging Face: Seed-VC, Whisper small, BigVGAN, CAM++). Normal runs
+never download; this one step does:
+
+```bash
+tools/voice-clone/.venv/Scripts/python.exe -I tools/voice/engines/seedvc_local.py --fetch models/seed-vc
+```
+
+Then `doctor` shows `cloned voices` as OK. Test:
+
+```bash
+node tools/rcg.mjs voice say --text "Every great edit starts with one clear idea." --clone ifty --out-dir scratch/clone-test
+```
+
+If Seed-VC is already installed elsewhere (for example by AditsVoiceStudio), point
+`paths.voiceCloneVenv` and `paths.seedvcRepo` at it in `config/workspace.local.json` instead.
+To add a voice, see `library/voices/README.md`.
 
 ### Face and hand tracking, background removal (`rcg track`, `rcg matte`, `rcg pnp`)
 
